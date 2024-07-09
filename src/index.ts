@@ -1,3 +1,4 @@
 #!/usr/bin/env node
+import { app } from './app/app'
 
-console.log('hello')
+app.run().catch(console.error)
