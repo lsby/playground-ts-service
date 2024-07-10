@@ -24,7 +24,7 @@ export default new 测试(
         throw new Error('非预期的返回值')
       }
 
-      if (!正确结果.success) throw new Error('应该调用成功, 实际调用错误')
+      if (!正确结果.success) throw new Error('应该调用成功, 实际调用出错')
       var 结果 = 正确结果.data
 
       assert.equal(结果.res, 3)
