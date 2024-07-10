@@ -3,12 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "exports": {
-    "require": "./dist/cjs/index.cjs",
-    "import": "./dist/esm/index.js"
-  },
   "bin": {
-    "playground-ts-bin": "dist/esm/index.js"
+    "playground-service": "dist/esm/index.js"
   },
   "files": [
     "dist"
