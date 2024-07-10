@@ -4,7 +4,7 @@ import { DB } from '../../src/types/db'
 
 export function clearDB(db: Kysely<DB>): Task<void> {
   return new Task(async () => {
-    const 删除语句 = (
+    var 删除语句 = (
       await db.executeQuery(
         CompiledQuery.raw(
           [
@@ -24,7 +24,7 @@ export function clearDB(db: Kysely<DB>): Task<void> {
 
     // 开始事务
     await db.transaction().execute(async (trx) => {
-      for (const statement of 删除语句) {
+      for (var statement of 删除语句) {
         await trx.executeQuery(CompiledQuery.raw(statement, []))
       }
     })

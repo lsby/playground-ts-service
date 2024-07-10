@@ -57,9 +57,9 @@ export class GlobalKysely {
   public static getInstance(): Task<Kysely管理器<DB>> {
     if (GlobalKysely.instance) return Task.pure(this.instance)
     return new Task(async () => {
-      const env = await GlobalEnv.getInstance().run()
+      var env = await GlobalEnv.getInstance().run()
       // 也可以换成其他的方言
-      const dialect = new SqliteDialect({
+      var dialect = new SqliteDialect({
         database: new SQLite(resolve(import.meta.dirname || __dirname, '../../', env.DATABASE_PATH)),
       })
       GlobalKysely.instance = new Kysely管理器<DB>(dialect)
@@ -76,7 +76,7 @@ export class GlobalJWT {
     if (GlobalJWT.instance) return Task.pure(this.instance)
 
     return new Task(async () => {
-      const env = await GlobalEnv.getInstance().run()
+      var env = await GlobalEnv.getInstance().run()
       GlobalJWT.instance = new JWT管理器(env.JWT_SECRET, env.JWT_EXPIRES_IN)
       return GlobalJWT.instance
     })

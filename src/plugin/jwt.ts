@@ -14,7 +14,7 @@ export class JWT解析插件 extends 插件<
       (request, _response) =>
         new Task(async () => {
           var jwt = await GlobalJWT.getInstance().run()
-          const userId = jwt.解析(request.headers.authorization ?? undefined)
+          var userId = jwt.解析(request.headers.authorization ?? undefined)
           return { userId }
         }),
     )

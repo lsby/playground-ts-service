@@ -11,7 +11,7 @@ export class JWT管理器 {
   ) {}
 
   签名(userId: string): string {
-    const token = jwt.sign({ userId } as JWT负载, this.secret, {
+    var token = jwt.sign({ userId } as JWT负载, this.secret, {
       expiresIn: this.expiresIn,
     })
     return token
@@ -24,7 +24,7 @@ export class JWT管理器 {
 
     token = token.replace('Bearer ', '')
     try {
-      const { userId } = jwt.verify(token, this.secret) as JWT负载
+      var { userId } = jwt.verify(token, this.secret) as JWT负载
       return userId
     } catch {
       return undefined

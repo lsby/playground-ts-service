@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { 插件 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 
-const resultSchema = z.object({
+var resultSchema = z.object({
   files: z
     .object({
       name: z.string(),

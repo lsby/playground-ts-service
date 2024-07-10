@@ -15,17 +15,17 @@ export function 请求用例01<接口类型 extends 任意接口类型>(
   },
 ): Task<object> {
   return new Task(async () => {
-    const env = await GlobalEnv.getInstance().run()
+    var env = await GlobalEnv.getInstance().run()
 
-    const login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
+    var login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       name: 登录.用户名,
       pwd: 登录.密码,
     })
-    const token = login.data[登录.凭据属性]
+    var token = login.data[登录.凭据属性]
 
-    const method = 接口类型描述.获得方法()
-    const urlPath = 接口类型描述.获得路径()
-    const url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
+    var method = 接口类型描述.获得方法()
+    var urlPath = 接口类型描述.获得路径()
+    var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
     if (method == 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
     if (method == 'post') return (await axios.post(url, 参数, { headers: { authorization: token } })).data

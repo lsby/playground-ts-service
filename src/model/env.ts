@@ -13,7 +13,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
 
   private 初始化(): Task<void> {
     return new Task(async () => {
-      const log = (await GlobalLog.getInstance().run()).extend('env')
+      var log = (await GlobalLog.getInstance().run()).extend('env')
 
       await log.debug('初始化环境变量...').run()
 
@@ -25,7 +25,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
 
       await log.debug('检查%o...', 'ENV_FILE_PATH').run()
       if (env['ENV_FILE_PATH'] != null) {
-        const ENV_FILE_PATH = env['ENV_FILE_PATH']
+        var ENV_FILE_PATH = env['ENV_FILE_PATH']
         await log.debug('- 当前%o: %o', 'ENV_FILE_PATH', ENV_FILE_PATH).run()
         await log.debug('- 查找目标文件: %o', ENV_FILE_PATH).run()
         if (fs.existsSync(ENV_FILE_PATH)) {
@@ -40,7 +40,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
       await log.debug('- 没有找到环境变量%o', 'ENV_FILE_PATH').run()
 
       await log.debug('检查当前终端路径的.env文件...').run()
-      const cwdEnvPath = path.resolve(process.cwd(), './.env')
+      var cwdEnvPath = path.resolve(process.cwd(), './.env')
       await log.debug('- 查找目标文件: %o', cwdEnvPath).run()
       if (fs.existsSync(cwdEnvPath) && fs.statSync('./.env').isFile()) {
         await log.debug(`- 已找到目标文件: %o`, cwdEnvPath).run()
@@ -52,10 +52,10 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
 
       await log.debug('检查源代码结构下的.env文件...').run()
       await log.debug('读取%o描述...', 'MODE').run()
-      const MODE = env['MODE']
+      var MODE = env['MODE']
       if (MODE != null) {
         await log.debug('- 当前%o: %o', 'MODE', MODE).run()
-        const codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/.env.${MODE}`)
+        var codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/.env.${MODE}`)
         await log.debug('- 查找目标文件: %o', join(cwdEnvPath, `${MODE}.env`)).run()
         if (fs.existsSync(codeEnvPath) && fs.statSync(codeEnvPath).isFile()) {
           await log.debug('- 已找到目标文件').run()
@@ -74,12 +74,12 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
 
   获得环境变量(): Task<z.infer<环境变量描述>> {
     return new Task(async () => {
-      const log = (await GlobalLog.getInstance().run()).extend('env')
+      var log = (await GlobalLog.getInstance().run()).extend('env')
 
       if (this.环境变量 != null) return this.环境变量
 
       await this.初始化().run()
-      const parseResult = this.环境变量描述.safeParse(env)
+      var parseResult = this.环境变量描述.safeParse(env)
       if (parseResult.success === false) {
         await log.err('环境变量验证失败: %o', parseResult.error).run()
         throw new Error(parseResult.error.errors.join('\n'))

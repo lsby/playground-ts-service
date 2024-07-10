@@ -8,6 +8,6 @@ export var app = new Task(async () => {
   var log = (await GlobalLog.getInstance().run()).extend('service')
   var env = await GlobalEnv.getInstance().run()
 
-  const 服务器地址 = (await new 服务器(interfaceList, env.APP_PORT).run().run()).ip
+  var 服务器地址 = (await new 服务器(interfaceList, env.APP_PORT).run().run()).ip
   await log.debug('服务器地址: %O', 服务器地址).run()
 })
