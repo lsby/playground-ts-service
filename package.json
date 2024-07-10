@@ -22,7 +22,7 @@
     "type:typecheck:watch": "tsc --noEmit -w"
   },
   "dependencies": {
-    "@lsby/net-core": "0.0.8",
+    "@lsby/net-core": "0.0.10",
     "@lsby/ts-fp-data": "^0.0.6",
     "axios": "^1.7.2",
     "debug": "^4.3.5",
