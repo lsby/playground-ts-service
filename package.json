@@ -12,13 +12,14 @@
   "scripts": {
     "build:all": "tsc",
     "db:push:dev": "dotenv -e ./.env/.env.development -- prisma migrate dev",
+    "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev",
     "interface:list:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "other:format": "prettier --write .",
     "other:lint": "eslint . --fix",
     "other:pub": "npm run other:check && npm run build:all && bumpp && pnpm -r publish --access public",
-    "start:dev": "npm run interface:list:gen && cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
+    "start:dev": "npm run interface:list:gen && cross-env MODE=development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.ts",
-    "test:unit": "npm run type:check && npm run interface:list:gen && cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
+    "test:unit": "npm run type:check && npm run interface:list:gen && cross-env MODE=test DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
     "type:check": "tsc --noEmit",
     "type:check:watch": "tsc --noEmit -w",
     "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts"
