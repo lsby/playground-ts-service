@@ -3,10 +3,10 @@ import SQLite from 'better-sqlite3'
 import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
 import { Task } from '@lsby/ts-fp-data'
+import { 环境变量管理器 } from '../model/env'
+import { GetProName } from '../model/get-pro-name'
 import { Kysely管理器 } from '../model/kysely'
-import { 环境变量管理器 } from '../tools/env'
-import { GetProName } from '../tools/get-pro-name'
-import { Log } from '../tools/log'
+import { Log } from '../model/log'
 import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({
