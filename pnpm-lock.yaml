@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@lsby/net-core':
-    specifier: 0.0.5-beta.6
-    version: 0.0.5-beta.6(@lsby/ts-fp-data@0.0.6)
+    specifier: 0.0.7
+    version: 0.0.7(@lsby/ts-fp-data@0.0.6)
   '@lsby/ts-fp-data':
     specifier: ^0.0.6
     version: 0.0.6
@@ -654,8 +654,8 @@ packages:
       type-detect: 4.0.8
     dev: true
 
-  /@lsby/net-core@0.0.5-beta.6(@lsby/ts-fp-data@0.0.6):
-    resolution: {integrity: sha512-XgTcWS5/q0HSXqfff95g9NBnYLXWzEbeqM63FrhWXw6bQOseMfqFe1KlLvMFMPXliYV8JWxnOK7Ootk6DNEYBA==}
+  /@lsby/net-core@0.0.7(@lsby/ts-fp-data@0.0.6):
+    resolution: {integrity: sha512-qOqtHqikqtN3cH1tCciLxTCQmX93YAff64RU9w/23B00J7eDsGz7MNeO9V7zSrjNjizCFHwQ750avoTGvVv6pg==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.0.6

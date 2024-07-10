@@ -23,10 +23,11 @@
     "other:typecheck:watch": "tsc --noEmit -w",
     "start:dev": "cross-env DEBUG=playground-service:* dotenv -e ./.env/.env.development tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.ts",
-    "test:unit": "cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts"
+    "test:unit": "cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
+    "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts"
   },
   "dependencies": {
-    "@lsby/net-core": "0.0.5-beta.6",
+    "@lsby/net-core": "0.0.7",
     "@lsby/ts-fp-data": "^0.0.6",
     "axios": "^1.7.2",
     "debug": "^4.3.5",
