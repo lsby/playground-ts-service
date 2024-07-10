@@ -1,3 +1,4 @@
+import { resolve } from 'path'
 import SQLite from 'better-sqlite3'
 import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
@@ -9,7 +10,7 @@ import { Log } from '../tools/log'
 import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({
-  APP_PORT: z.number(),
+  APP_PORT: z.coerce.number(),
   DATABASE_PATH: z.string(),
 })
 
@@ -56,7 +57,7 @@ export class GlobalKysely {
       const env = await GlobalEnv.getInstance().run()
       // 也可以换成其他的方言
       const dialect = new SqliteDialect({
-        database: new SQLite(env.DATABASE_PATH),
+        database: new SQLite(resolve(import.meta.dirname || __dirname, '../../', env.DATABASE_PATH)),
       })
       GlobalKysely.instance = new Kysely管理器<DB>(dialect)
       return GlobalKysely.instance

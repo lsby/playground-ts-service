@@ -18,7 +18,7 @@
     "other:pub": "npm run other:check && npm run build:all && bumpp && pnpm -r publish --access public",
     "start:dev": "npm run interface:list:gen && cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.ts",
-    "test:unit": "cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
+    "test:unit": "npm run interface:list:gen && cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
     "type:check": "tsc --noEmit",
     "type:check:watch": "tsc --noEmit -w",
     "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts"

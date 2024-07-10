@@ -1,3 +1,6 @@
 import { app } from '../src/app/app'
 
-await app.run()
+async function main(): Promise<void> {
+  await app.run()
+}
+main().catch(console.error)

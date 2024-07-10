@@ -1,9 +1,11 @@
 import { 任意接口 } from '@lsby/net-core'
 
-import * as add_index from '../../src/interface/add/index'
-import * as sub_index from '../../src/interface/sub/index'
+import * as base_sub_index from '../../src/interface/base/sub/index'
+import * as base_add_index from '../../src/interface/base/add/index'
+import * as user_register_index from '../../src/interface/user/register/index'
 
 export var interfaceList: 任意接口[] = [
-  add_index.default,
-  sub_index.default
+  base_sub_index.default,
+  base_add_index.default,
+  user_register_index.default
 ]
