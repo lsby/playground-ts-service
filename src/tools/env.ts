@@ -11,7 +11,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
 
   constructor(private 环境变量描述: 环境变量描述) {}
 
-  初始化(): Task<void> {
+  private 初始化(): Task<void> {
     return new Task(async () => {
       const log = (await GlobalLog.getInstance().run()).extend('env')
 
