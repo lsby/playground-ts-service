@@ -1,0 +1,19 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_PATH")
+}
+
+generator kysely {
+  provider = "prisma-kysely"
+  output   = "../src/types"
+  fileName = "db.ts"
+}
+
+// =================================================
+
+// 用户表
+model user {
+  id   Int    @id
+  name String @unique // 用户名
+  pwd  String // 密码
+}

@@ -1,39 +1,7 @@
-import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { 插件 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
-
-interface JWT负载 {
-  userId: string
-}
-
-export class JWT管理器 {
-  constructor(
-    private secret: string,
-    private expiresIn: string,
-  ) {}
-
-  签名(userId: string): string {
-    const token = jwt.sign({ userId } as JWT负载, this.secret, {
-      expiresIn: this.expiresIn,
-    })
-    return token
-  }
-
-  解析(token: string | undefined): string | undefined {
-    if (token === undefined) {
-      return undefined
-    }
-
-    token = token.replace('Bearer ', '')
-    try {
-      const { userId } = jwt.verify(token, this.secret) as JWT负载
-      return userId
-    } catch {
-      return undefined
-    }
-  }
-}
+import { JWT管理器 } from '../model/jwt'
 
 export class JWT签名插件 extends 插件<
   z.ZodObject<{ signJwt: z.ZodFunction<z.ZodTuple<[z.ZodString], null>, z.ZodString> }>

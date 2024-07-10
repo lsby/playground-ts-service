@@ -1,11 +1,16 @@
+import SQLite from 'better-sqlite3'
+import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
 import { Task } from '@lsby/ts-fp-data'
+import { Kysely管理器 } from '../model/kysely'
 import { 环境变量管理器 } from '../tools/env'
 import { GetProName } from '../tools/get-pro-name'
 import { Log } from '../tools/log'
+import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({
-  APP_PORT: z.coerce.number(),
+  APP_PORT: z.number(),
+  DATABASE_PATH: z.string(),
 })
 
 export class GlobalEnv {
@@ -38,6 +43,24 @@ export class GlobalGetProName {
   public static getInstance(): GetProName {
     if (!GlobalGetProName.instance) GlobalGetProName.instance = new GetProName()
     return GlobalGetProName.instance
+  }
+
+  private constructor() {}
+}
+
+export class GlobalKysely {
+  private static instance: Kysely管理器<DB>
+  public static getInstance(): Task<Kysely管理器<DB>> {
+    if (GlobalKysely.instance) return Task.pure(this.instance)
+    return new Task(async () => {
+      const env = await GlobalEnv.getInstance().run()
+      // 也可以换成其他的方言
+      const dialect = new SqliteDialect({
+        database: new SQLite(env.DATABASE_PATH),
+      })
+      GlobalKysely.instance = new Kysely管理器<DB>(dialect)
+      return GlobalKysely.instance
+    })
   }
 
   private constructor() {}
