@@ -1,5 +1,5 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { join } from 'node:path'
 import { env } from 'node:process'
 import dotenv from 'dotenv'
 import type { z } from 'zod'
@@ -18,52 +18,55 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
       await log.debug('初始化环境变量...').run()
 
       await log.debug('开始初始化环境变量...').run()
-      await log.info('环境变量文件读取顺序:').run()
+      await log.info('说明: 环境变量文件读取顺序:').run()
       await log.info('- 环境变量%o指定的文件', 'ENV_FILE_PATH').run()
       await log.info('- 当前终端路径的.env文件').run()
       await log.info('- 源代码结构下的.env文件').run()
 
-      await log.debug("检查'ENV_FILE_PATH'...").run()
-      if (env['ENV_FILE_PATH'] !== undefined) {
+      await log.debug('检查%o...', 'ENV_FILE_PATH').run()
+      if (env['ENV_FILE_PATH'] != null) {
         const ENV_FILE_PATH = env['ENV_FILE_PATH']
-        await log
-          .debug(
-            `- 已找到环境变量'ENV_FILE_PATH'的定义, 将使用 ${ENV_FILE_PATH} 文件定义的环境变量, 但不会覆盖终端环境变量`,
-          )
-          .run()
-        dotenv.config({ path: ENV_FILE_PATH })
-        return
+        await log.debug('- 当前%o: %o', 'ENV_FILE_PATH', ENV_FILE_PATH).run()
+        await log.debug('- 查找目标文件: %o', ENV_FILE_PATH).run()
+        if (fs.existsSync(ENV_FILE_PATH)) {
+          await log.debug('- 已找到目标文件').run()
+          await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量').run()
+          dotenv.config({ path: ENV_FILE_PATH })
+          return
+        } else {
+          await log.debug(`- 没有找到目标文件`).run()
+        }
       }
-      await log.debug("- 没有找到环境变量'ENV_FILE_PATH'").run()
+      await log.debug('- 没有找到环境变量%o', 'ENV_FILE_PATH').run()
 
       await log.debug('检查当前终端路径的.env文件...').run()
       const cwdEnvPath = path.resolve(process.cwd(), './.env')
-      await log.debug('- 当前终端路径: %o', cwdEnvPath).run()
+      await log.debug('- 查找目标文件: %o', cwdEnvPath).run()
       if (fs.existsSync(cwdEnvPath) && fs.statSync('./.env').isFile()) {
-        await log.debug(`- 已找到目标文件: ${cwdEnvPath}`).run()
+        await log.debug(`- 已找到目标文件: %o`, cwdEnvPath).run()
         await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量').run()
         dotenv.config({ path: cwdEnvPath })
         return
       }
-      await log.debug('- 没有找到当前终端路径的.env文件').run()
+      await log.debug('- 没有找目标文件').run()
 
       await log.debug('检查源代码结构下的.env文件...').run()
-      await log.debug('读取NODE_ENV描述...').run()
+      await log.debug('读取%o描述...', 'NODE_ENV').run()
       const NODE_ENV = env['NODE_ENV']
-      if (NODE_ENV == null) {
+      if (NODE_ENV != null) {
+        await log.debug('- 当前%o: %o', 'NODE_ENV', NODE_ENV).run()
+        const codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/${NODE_ENV}.env`)
+        await log.debug('- 查找目标文件: %o', join(cwdEnvPath, `${NODE_ENV}.env`)).run()
+        if (fs.existsSync(codeEnvPath) && fs.statSync(codeEnvPath).isFile()) {
+          await log.debug('- 已找到目标文件').run()
+          await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量').run()
+          dotenv.config({ path: codeEnvPath })
+          return
+        }
+        await log.debug(`- 没有找到目标文件`).run()
+      } else {
         await log.err('- 没有找到环境变量: NODE_ENV').run()
-        throw new Error('没有找到环境变量: NODE_ENV')
       }
-      await log.debug('- 当前NODE_ENV: %o', NODE_ENV).run()
-      const codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/${NODE_ENV}.env`)
-      await log.debug('- 当前源代码对应的.env文件夹路径: %o, 要读取的文件名: %o', cwdEnvPath, `${NODE_ENV}.env`).run()
-      if (fs.existsSync(codeEnvPath) && fs.statSync(codeEnvPath).isFile()) {
-        await log.debug('- 已找到目标文件').run()
-        await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量').run()
-        dotenv.config({ path: codeEnvPath })
-        return
-      }
-      await log.debug(`- 没有找到当前终端路径的.env文件: ${codeEnvPath}`).run()
 
       await log.debug('没有找到任何环境变量文件, 使用终端环境变量').run()
     })
