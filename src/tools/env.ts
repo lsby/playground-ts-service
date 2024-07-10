@@ -55,7 +55,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
       const NODE_ENV = env['NODE_ENV']
       if (NODE_ENV != null) {
         await log.debug('- 当前%o: %o', 'NODE_ENV', NODE_ENV).run()
-        const codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/${NODE_ENV}.env`)
+        const codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/.env.${NODE_ENV}`)
         await log.debug('- 查找目标文件: %o', join(cwdEnvPath, `${NODE_ENV}.env`)).run()
         if (fs.existsSync(codeEnvPath) && fs.statSync(codeEnvPath).isFile()) {
           await log.debug('- 已找到目标文件').run()
