@@ -21,11 +21,14 @@
     "other:pub": "npm run other:typecheck && npm run build:all && bumpp && pnpm -r publish --access public",
     "other:typecheck": "tsc --noEmit",
     "other:typecheck:watch": "tsc --noEmit -w",
-    "start:dev": "cross-env DEBUG=playground-service:* dotenv -e ./.env/.env.development tsx ./src/index.ts"
+    "start:dev": "cross-env DEBUG=playground-service:* dotenv -e ./.env/.env.development tsx ./src/index.ts",
+    "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.ts",
+    "test:unit": "cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.0.4",
+    "@lsby/net-core": "0.0.5-beta.6",
     "@lsby/ts-fp-data": "^0.0.6",
+    "axios": "^1.7.2",
     "debug": "^4.3.5",
     "dotenv": "^16.4.5",
     "zod": "^3.23.8"
@@ -33,6 +36,7 @@
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@types/debug": "^4.1.12",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^20.12.10",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
@@ -43,8 +47,10 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-sort-class-members": "^1.20.0",
     "eslint-plugin-unused-imports": "^3.2.0",
+    "mocha": "^10.6.0",
     "prettier": "3.2.5",
     "prettier-plugin-packagejson": "^2.5.0",
+    "ts-mocha": "^10.0.0",
     "tsx": "^4.9.3",
     "typescript": "^5.4.5"
   }
