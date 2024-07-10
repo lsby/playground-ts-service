@@ -13,7 +13,7 @@ export default new 测试(
     return await 请求用例00(接口类型, {
       a: 1,
       b: 2,
-    })
+    }).run()
   }),
   (data) =>
     new Task(async () => {

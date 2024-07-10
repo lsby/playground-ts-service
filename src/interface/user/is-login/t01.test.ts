@@ -10,10 +10,10 @@ export default new 测试(
   接口类型,
   new Task(async () => {
     var db = (await GlobalKysely.getInstance().run()).获得句柄()
-    await clearDB(db)
+    await clearDB(db).run()
   }),
   new Task(async () => {
-    return await 请求用例00(接口类型, {})
+    return await 请求用例00(接口类型, {}).run()
   }),
   (data) =>
     new Task(async () => {

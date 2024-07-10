@@ -14,11 +14,11 @@ export default new 测试(
   接口类型,
   new Task(async () => {
     var db = (await GlobalKysely.getInstance().run()).获得句柄()
-    await clearDB(db)
+    await clearDB(db).run()
     await db.insertInto('user').values({ id: randomUUID(), name, pwd }).execute()
   }),
   new Task(async () => {
-    return await 请求用例00(接口类型, { name, pwd })
+    return await 请求用例00(接口类型, { name, pwd }).run()
   }),
   (data) =>
     new Task(async () => {
