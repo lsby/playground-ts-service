@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { Task } from '@lsby/ts-fp-data'
 import { 环境变量管理器 } from '../model/env'
 import { GetProName } from '../model/get-pro-name'
+import { JWT管理器 } from '../model/jwt'
 import { Kysely管理器 } from '../model/kysely'
 import { Log } from '../model/log'
 import { DB } from '../types/db'
@@ -12,6 +13,8 @@ import { DB } from '../types/db'
 var 环境变量描述 = z.object({
   APP_PORT: z.coerce.number(),
   DATABASE_PATH: z.string(),
+  JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string(),
 })
 
 export class GlobalEnv {
@@ -61,6 +64,21 @@ export class GlobalKysely {
       })
       GlobalKysely.instance = new Kysely管理器<DB>(dialect)
       return GlobalKysely.instance
+    })
+  }
+
+  private constructor() {}
+}
+
+export class GlobalJWT {
+  private static instance: JWT管理器
+  public static getInstance(): Task<JWT管理器> {
+    if (GlobalJWT.instance) return Task.pure(this.instance)
+
+    return new Task(async () => {
+      const env = await GlobalEnv.getInstance().run()
+      GlobalJWT.instance = new JWT管理器(env.JWT_SECRET, env.JWT_EXPIRES_IN)
+      return GlobalJWT.instance
     })
   }
 
