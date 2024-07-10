@@ -11,16 +11,15 @@
   ],
   "scripts": {
     "build:all": "tsc",
-    "other:clean": "rm -rf dist",
-    "other:format": "prettier --write .",
-    "other:lint": "eslint . --fix",
+    "lint:format": "prettier --write .",
+    "lint:lint": "eslint . --fix",
     "other:pub": "npm run other:typecheck && npm run build:all && bumpp && pnpm -r publish --access public",
-    "other:typecheck": "tsc --noEmit",
-    "other:typecheck:watch": "tsc --noEmit -w",
-    "start:dev": "cross-env DEBUG=playground-service:* dotenv -e ./.env/.env.development tsx ./src/index.ts",
+    "start:dev": "cross-env NODE_ENV=development DEBUG=playground-service:* tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.ts",
     "test:unit": "cross-env NODE_ENV=development DEBUG=@lsby:*,playground-service:* tsx script/run-test.ts",
-    "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts"
+    "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts",
+    "type:typecheck": "tsc --noEmit",
+    "type:typecheck:watch": "tsc --noEmit -w"
   },
   "dependencies": {
     "@lsby/net-core": "0.0.7",
