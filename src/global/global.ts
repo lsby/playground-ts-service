@@ -15,6 +15,7 @@ var 环境变量描述 = z.object({
   DATABASE_PATH: z.string(),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string(),
+  UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
 })
 
 export class GlobalEnv {

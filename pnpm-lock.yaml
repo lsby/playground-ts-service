@@ -17,6 +17,9 @@ dependencies:
   better-sqlite3:
     specifier: ^11.1.2
     version: 11.1.2
+  blob:
+    specifier: ^0.1.0
+    version: 0.1.0
   debug:
     specifier: ^4.3.5
     version: 4.3.5
@@ -32,6 +35,9 @@ dependencies:
   kysely:
     specifier: ^0.27.4
     version: 0.27.4
+  stream-to-blob:
+    specifier: ^2.0.1
+    version: 2.0.1
   zod:
     specifier: ^3.23.8
     version: 3.23.8
@@ -55,6 +61,9 @@ devDependencies:
   '@types/node':
     specifier: ^20.12.10
     version: 20.12.10
+  '@types/stream-to-blob':
+    specifier: ^2.0.0
+    version: 2.0.0
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.8.0
     version: 7.8.0(@typescript-eslint/parser@7.8.0)(eslint@8.57.0)(typescript@5.4.5)
@@ -1422,6 +1431,12 @@ packages:
       '@types/node': 20.12.10
       '@types/send': 0.17.4
 
+  /@types/stream-to-blob@2.0.0:
+    resolution: {integrity: sha512-tZpPRVwoUMe4ZHr0xt2+RyvkqKFoKzdyCUuzW3NxC4HKxbNEwCMLZiumMuZ+FaizAQJx3rUXVJNXpMCnnOffAw==}
+    dependencies:
+      '@types/node': 20.12.10
+    dev: true
+
   /@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0)(eslint@8.57.0)(typescript@5.4.5):
     resolution: {integrity: sha512-gFTT+ezJmkwutUPmB0skOj3GZJtlEGnlssems4AjkVweUPGj7jRwwqg0Hhg7++kPGJqKtTYx+R05Ftww372aIg==}
     engines: {node: ^18.18.0 || >=20.0.0}
@@ -1840,6 +1855,12 @@ packages:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
+
+  /blob@0.1.0:
+    resolution: {integrity: sha512-k+GwK+4Rj+MPNT4qu+y6+kHp+mPmmNd+28zdrIo69QM9UvypK5Vhcw7jnRiY4KaOMAiOdn0NtPQGTb+Ox1Dtng==}
+    dependencies:
+      esm: 3.2.25
+    dev: false
 
   /body-parser@1.20.2:
     resolution: {integrity: sha512-ml9pReCu3M61kGlqoTm2umSXTlRTuGTx0bfYj+uIUKKYycG5NtSbeetV3faSU6R7ajOPw0g/J1PvK4qNy7s5bA==}
@@ -2637,6 +2658,11 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /esm@3.2.25:
+    resolution: {integrity: sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==}
+    engines: {node: '>=6'}
+    dev: false
 
   /espree@9.6.1:
     resolution: {integrity: sha512-oruZaFkjorTpF32kDSI5/75ViwGeZginGGy2NoOSg3Q9bnwlnmDm4HLnkl0RE3n+njDXR037aY1+x58Z/zFdwQ==}
@@ -4719,6 +4745,11 @@ packages:
   /std-env@3.7.0:
     resolution: {integrity: sha512-JPbdCEQLj1w5GilpiHAx3qJvFndqybBysA3qUOnznweH4QbNYUsW/ea8QzSrnh0vNsezMMw5bcVool8lM0gwzg==}
     dev: true
+
+  /stream-to-blob@2.0.1:
+    resolution: {integrity: sha512-GXlqXt3svqwIVWoICenix5Poxi4KbCF0BdXXUbpU1X4vq1V8wmjiEIU3aFJzCGNFpKxfbnG0uoowS3nKUgSPYg==}
+    engines: {node: '>=8'}
+    dev: false
 
   /streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
