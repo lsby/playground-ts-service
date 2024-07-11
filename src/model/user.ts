@@ -23,7 +23,7 @@ export class 用户 {
       return new Just(new 用户({ id: user.id, name: user.name, pwd: user.pwd }))
     })
   }
-  static 创建用户(opt: { name: string; pwd: string }): Task<string> {
+  static 创建用户(opt: { name: string; pwd: string }): Task<用户> {
     return new Task(async () => {
       var db = (await GlobalKysely.getInstance().run()).获得句柄()
 
@@ -33,7 +33,7 @@ export class 用户 {
         .values({ id, ...opt })
         .execute()
 
-      return id
+      return new 用户({ id, ...opt })
     })
   }
 
