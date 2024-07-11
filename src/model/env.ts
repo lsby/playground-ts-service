@@ -51,12 +51,12 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
       await log.debug('- 没有找目标文件').run()
 
       await log.debug('检查源代码结构下的.env文件...').run()
-      await log.debug('读取%o描述...', 'MODE').run()
-      var MODE = env['MODE']
-      if (MODE != null) {
-        await log.debug('- 当前%o: %o', 'MODE', MODE).run()
-        var codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/.env.${MODE}`)
-        await log.debug('- 查找目标文件: %o', join(cwdEnvPath, `${MODE}.env`)).run()
+      await log.debug('读取%o描述...', 'ENV_NAME').run()
+      var ENV_NAME = env['ENV_NAME']
+      if (ENV_NAME != null) {
+        await log.debug('- 当前%o: %o', 'ENV_NAME', ENV_NAME).run()
+        var codeEnvPath = path.resolve(import.meta.dirname || __dirname, `../../.env/.env.${ENV_NAME}`)
+        await log.debug('- 查找目标文件: %o', join(cwdEnvPath, `${ENV_NAME}.env`)).run()
         if (fs.existsSync(codeEnvPath) && fs.statSync(codeEnvPath).isFile()) {
           await log.debug('- 已找到目标文件').run()
           await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量').run()
@@ -65,7 +65,7 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
         }
         await log.debug(`- 没有找到目标文件`).run()
       } else {
-        await log.err('- 没有找到环境变量: MODE').run()
+        await log.err('- 没有找到环境变量: ENV_NAME').run()
       }
 
       await log.debug('没有找到任何环境变量文件, 使用终端环境变量').run()
