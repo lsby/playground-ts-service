@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { Task } from '@lsby/ts-fp-data'
 import { JWT管理器 } from '../model/jwt'
 import { Kysely管理器 } from '../model/kysely'
+import { CronService } from '../tools/common/cron'
 import { 环境变量管理器 } from '../tools/common/env'
 import { Log } from '../tools/common/log'
 import { Package } from '../tools/common/package'
@@ -81,6 +82,18 @@ export class GlobalJWT {
       GlobalJWT.instance = new JWT管理器(env.JWT_SECRET, env.JWT_EXPIRES_IN)
       return GlobalJWT.instance
     })
+  }
+
+  private constructor() {}
+}
+
+export class GlobalCron {
+  private static instance: CronService
+  public static getInstance(): CronService {
+    if (!GlobalCron.instance) {
+      GlobalCron.instance = new CronService([])
+    }
+    return GlobalCron.instance
   }
 
   private constructor() {}
