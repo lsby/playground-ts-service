@@ -4,7 +4,7 @@ import { 插件 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { GlobalEnv } from '../global/global'
 
-var resultSchema = z.object({
+var 类型描述 = z.object({
   files: z
     .object({
       name: z.string(),
@@ -19,22 +19,22 @@ var resultSchema = z.object({
     .array(),
 })
 
-export class 上传文件插件 extends 插件<typeof resultSchema> {
+export class 上传文件插件 extends 插件<typeof 类型描述> {
   constructor() {
     super(
-      resultSchema,
-      (request, response) =>
+      类型描述,
+      (req, res) =>
         new Task(async () => {
           var env = await GlobalEnv.getInstance().run()
 
-          await new Promise((resolve, _reject) =>
-            fileUpload({ limits: { fileSize: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 } })(request, response, () => {
-              resolve(null)
+          await new Promise((resP, _rej) =>
+            fileUpload({ limits: { fileSize: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 } })(req, res, () => {
+              resP(null)
             }),
           )
 
           return {
-            files: Object.values(request.files as unknown as fileUpload.UploadedFile[]),
+            files: Object.values(req.files as unknown as fileUpload.UploadedFile[]),
           }
         }),
     )
