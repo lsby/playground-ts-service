@@ -5,9 +5,9 @@ import { z } from 'zod'
 import { Task } from '@lsby/ts-fp-data'
 import { JWT管理器 } from '../model/jwt'
 import { Kysely管理器 } from '../model/kysely'
-import { Log } from '../model/log'
-import { 环境变量管理器 } from '../tools/env'
-import { GetProName } from '../tools/get-pro-name'
+import { 环境变量管理器 } from '../tools/common/env'
+import { Log } from '../tools/common/log'
+import { Package } from '../tools/common/package'
 import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({
@@ -31,8 +31,8 @@ export class GlobalEnv {
 export class GlobalLog {
   private static instance: Log
   public static getInstance(): Task<Log> {
-    return GlobalGetProName.getInstance()
-      .getProName()
+    return GlobalPackage.getInstance()
+      .getName()
       .map((name) => {
         name = name.replaceAll('/', ':')
         if (!GlobalLog.instance) GlobalLog.instance = new Log(name)
@@ -43,11 +43,11 @@ export class GlobalLog {
   private constructor() {}
 }
 
-export class GlobalGetProName {
-  private static instance: GetProName
-  public static getInstance(): GetProName {
-    if (!GlobalGetProName.instance) GlobalGetProName.instance = new GetProName()
-    return GlobalGetProName.instance
+export class GlobalPackage {
+  private static instance: Package
+  public static getInstance(): Package {
+    if (!GlobalPackage.instance) GlobalPackage.instance = new Package()
+    return GlobalPackage.instance
   }
 
   private constructor() {}
