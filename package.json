@@ -26,8 +26,8 @@
     "type:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts"
   },
   "dependencies": {
-    "@lsby/net-core": "0.0.14",
-    "@lsby/ts-fp-data": "^0.0.6",
+    "@lsby/net-core": "^0.0.15",
+    "@lsby/ts-fp-data": "^0.0.9",
     "axios": "^1.7.2",
     "better-sqlite3": "^11.1.2",
     "debug": "^4.3.5",
