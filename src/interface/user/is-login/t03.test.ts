@@ -1,19 +1,29 @@
 import assert from 'assert'
+import { randomUUID } from 'crypto'
+import axios from 'axios'
 import { 测试 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { clearDB } from '../../../../script/db/clear-db'
-import { GlobalKysely, GlobalLog } from '../../../global/global'
-import { 请求用例00 } from '../../../tools/test/request-case-00'
+import { GlobalEnv, GlobalKysely, GlobalLog } from '../../../global/global'
 import 接口类型 from './type'
+
+var name = 'admin'
+var pwd = '123456'
 
 export default new 测试(
   接口类型,
   new Task(async () => {
     var db = (await GlobalKysely.getInstance().run()).获得句柄()
     await clearDB(db).run()
+    await db.insertInto('user').values({ id: randomUUID(), name, pwd }).execute()
   }),
   new Task(async () => {
-    return await 请求用例00(接口类型, {}).run()
+    var env = await GlobalEnv.getInstance().run()
+
+    var urlPath = 接口类型.获得路径()
+    var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
+
+    return (await axios.post(url, {}, { headers: { authorization: '' } })).data
   }),
   (data) =>
     new Task(async () => {
