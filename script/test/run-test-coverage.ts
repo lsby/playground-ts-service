@@ -7,7 +7,7 @@ if (!filter) {
   filter = '.*'
 }
 
-var command = `npm run test:gen -- ${filter} && ts-mocha -n import=tsx --no-timeout --colors --exit --bail test/unit-test.ts`
+var command = `npm run test:gen -- ${filter} && vitest run --coverage`
 
 try {
   execSync(command, { stdio: 'inherit' })

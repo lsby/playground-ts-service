@@ -1,5 +1,5 @@
 {
-  "include": ["src/**/*.ts", "test/**/*.ts", ".eslintrc.cjs", "script/**/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", ".eslintrc.cjs", "script/**/*.ts", "vitest.config.ts"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
