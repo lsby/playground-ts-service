@@ -7,12 +7,12 @@ export class Package {
 
   private findPackageJson(startPath: string): Task<string | null> {
     return new Task(async () => {
-      let currentPath = startPath
+      var currentPath = startPath
 
       while (true) {
-        const packageJsonPath = join(currentPath, 'package.json')
+        var packageJsonPath = join(currentPath, 'package.json')
         if (existsSync(packageJsonPath)) return packageJsonPath
-        const parentPath = resolve(currentPath, '..')
+        var parentPath = resolve(currentPath, '..')
         if (parentPath === currentPath) break
         currentPath = parentPath
       }

@@ -12,14 +12,14 @@ export default new 测试(
     // 前置步骤, 可以在这里初始化数据库等
   }),
   new Task(async () => {
-    const base64Image = 'data:image/png;base64,iVBORw0KGgo...'
+    var base64Image = 'data:image/png;base64,iVBORw0KGgo...'
 
-    const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
-    const buffer = Buffer.from(base64Data, 'base64')
-    const readableStream = Readable.from([buffer])
-    const blob = await streamToBlob(readableStream)
+    var base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
+    var buffer = Buffer.from(base64Data, 'base64')
+    var readableStream = Readable.from([buffer])
+    var blob = await streamToBlob(readableStream)
 
-    const formData = new FormData()
+    var formData = new FormData()
     formData.append('file', blob, 'image.png')
 
     var env = await GlobalEnv.getInstance().run()
