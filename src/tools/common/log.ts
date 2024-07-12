@@ -6,15 +6,15 @@ export class Log {
   private _debug: debugGen.Debugger
   private _err: debugGen.Debugger
 
-  constructor(private fileName: string) {
-    this.debugObj = debugGen(fileName)
+  constructor(private name: string) {
+    this.debugObj = debugGen(name)
     this._info = this.debugObj.extend('info')
     this._debug = this.debugObj.extend('debug')
     this._err = this.debugObj.extend('err')
   }
 
   extend(name: string): Log {
-    return new Log(`${this.fileName}:${name}`)
+    return new Log(`${this.name}:${name}`)
   }
 
   async info(formatter: unknown, ...args: unknown[]): Promise<void> {
