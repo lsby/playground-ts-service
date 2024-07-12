@@ -4,7 +4,7 @@ export class Cron {
   constructor(
     private name: string,
     private cron: `${string} ${string} ${string} ${string} ${string} ${string}`,
-    private func: Promise<void>,
+    private func: () => Promise<void>,
   ) {}
 
   getName(): string {
@@ -15,8 +15,8 @@ export class Cron {
     return this.cron
   }
 
-  getFunc(): Promise<void> {
-    return this.func
+  async run(): Promise<void> {
+    return await this.func()
   }
 }
 
@@ -38,8 +38,7 @@ export class CronService {
     for (const task of this.tasks) {
       schedule.scheduleJob(task.getCron(), () => {
         task
-          .getFunc()
-          .then()
+          .run()
           .catch((e) => {
             this.errLog.push(String(e))
             if (this.errLog.length > this.maxLogNum) {

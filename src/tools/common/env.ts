@@ -24,18 +24,18 @@ export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
     await log.debug('检查环境变量%o...', 'ENV_FILE_PATH')
     if (env['ENV_FILE_PATH'] != null) {
       var ENV_FILE_PATH = env['ENV_FILE_PATH']
-      await log.debug('- 已找到环境变量%o: %o', 'ENV_FILE_PATH', ENV_FILE_PATH)
-      await log.debug('- 查找目标文件: %o', ENV_FILE_PATH)
+      await log.debug('环境变量存在')
+      await log.debug('查找目标文件: %o', ENV_FILE_PATH)
       if (fs.existsSync(ENV_FILE_PATH)) {
-        await log.debug('- 已找到目标文件: %o', ENV_FILE_PATH)
-        await log.debug('- 将使用该文件定义的环境变量, 但不会覆盖终端环境变量', ENV_FILE_PATH)
+        await log.debug('已找到目标文件')
+        await log.debug('将使用该文件定义的环境变量, 但不会覆盖终端环境变量', ENV_FILE_PATH)
         dotenv.config({ path: ENV_FILE_PATH })
         return
       } else {
-        await log.debug(`- 没有找到目标文件: %o, 将使用终端环境变量`, ENV_FILE_PATH)
+        await log.debug(`没有找到目标文件: %o, 将使用终端环境变量`, ENV_FILE_PATH)
       }
     } else {
-      await log.debug('- 没有找到环境变量%o, 将使用终端环境变量', 'ENV_FILE_PATH')
+      await log.debug('没有找到环境变量%o, 将使用终端环境变量', 'ENV_FILE_PATH')
     }
   }
 
