@@ -19,7 +19,7 @@
     "db:push:dev": "dotenv -e ./.env/.env.development -- prisma migrate dev",
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev",
     "gen:list": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
-    "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts",
+    "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./out/type.ts",
     "pub:public": "npm run check:all && npm run build:all && bumpp && npm publish --access public",
     "run:dev": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
     "run:prod": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",

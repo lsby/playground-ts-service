@@ -15,7 +15,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
 
   // 忽略文件夹
-  ignorePatterns: ['node_modules', 'dist', 'coverage'],
+  ignorePatterns: ['node_modules', 'dist', 'coverage', 'out'],
 
   // 指定ts项目
   root: true,
