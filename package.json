@@ -22,6 +22,7 @@
     "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./dist/type.ts",
     "pub:public": "npm run check:all && npm run build:all && bumpp && npm publish --access public",
     "run:dev": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
+    "run:prod": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.test.ts",
     "test:unit": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-service:* tsx script/test/run-test.ts",
     "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
