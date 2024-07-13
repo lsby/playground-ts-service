@@ -28,7 +28,7 @@
     "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "0.0.19",
+    "@lsby/net-core": "0.0.20-beta.4",
     "@lsby/ts-fp-data": "^0.0.9",
     "axios": "^1.7.2",
     "better-sqlite3": "^11.1.2",

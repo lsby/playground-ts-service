@@ -4,7 +4,6 @@ import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
 import { CronService } from '../tool/common/cron'
 import { 环境变量管理器 } from '../tool/common/env'
-import { JWT管理器 } from '../tool/common/jwt'
 import { Kysely管理器 } from '../tool/common/kysely'
 import { Log } from '../tool/common/log'
 import { Package } from '../tool/common/package'
@@ -64,18 +63,6 @@ export class GlobalKysely {
     })
     GlobalKysely.instance = new Kysely管理器<DB>(dialect)
     return GlobalKysely.instance
-  }
-
-  private constructor() {}
-}
-
-export class GlobalJWT {
-  private static instance: JWT管理器 | null = null
-  public static async getInstance(): Promise<JWT管理器> {
-    if (GlobalJWT.instance) return GlobalJWT.instance
-    var env = await GlobalEnv.getInstance()
-    GlobalJWT.instance = new JWT管理器(env.JWT_SECRET, env.JWT_EXPIRES_IN)
-    return GlobalJWT.instance
   }
 
   private constructor() {}

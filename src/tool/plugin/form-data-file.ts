@@ -1,7 +1,6 @@
 import fileUpload from 'express-fileupload'
 import { z } from 'zod'
 import { 插件 } from '@lsby/net-core'
-import { GlobalEnv } from '../global/global'
 
 var 类型描述 = z.object({
   files: z
@@ -19,12 +18,10 @@ var 类型描述 = z.object({
 })
 
 export class 文件上传插件 extends 插件<typeof 类型描述> {
-  constructor() {
+  constructor(opt: { 文件最大大小: number }) {
     super(类型描述, async (req, res) => {
-      var env = await GlobalEnv.getInstance()
-
       await new Promise((resP, _rej) =>
-        fileUpload({ limits: { fileSize: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 } })(req, res, () => {
+        fileUpload({ limits: { fileSize: opt.文件最大大小 } })(req, res, () => {
           resP(null)
         }),
       )
