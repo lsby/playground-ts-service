@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { 接口类型 } from '@lsby/net-core'
+import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Global } from '../../../global/global'
-import { 文件上传插件 } from '../../../tool/plugin/form-data-file'
 
 export default new 接口类型(
   '/api/base/upload-file',

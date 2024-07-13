@@ -8,6 +8,12 @@ dependencies:
   '@lsby/net-core':
     specifier: 0.0.20
     version: 0.0.20(@types/express@4.17.21)(@types/node@20.12.10)
+  '@lsby/net-core-file-upload':
+    specifier: ^0.0.1
+    version: 0.0.1(@types/express@4.17.21)(@types/node@20.12.10)
+  '@lsby/net-core-jwt':
+    specifier: ^0.0.1
+    version: 0.0.1(@types/express@4.17.21)(@types/node@20.12.10)
   '@lsby/ts-cron':
     specifier: ^0.0.1
     version: 0.0.1(@types/node@20.12.10)
@@ -948,6 +954,54 @@ packages:
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0)(eslint@8.57.0)
     dev: true
 
+  /@lsby/net-core-file-upload@0.0.1(@types/express@4.17.21)(@types/node@20.12.10):
+    resolution: {integrity: sha512-qHHwlGhqEEJgVXu9ZAzI0AooFSQHCYlRI0Dxm2TEfrhTNw4PtNDklWoRwHuhourIATxtHt5qgtFAFThOUPqIUw==}
+    dependencies:
+      '@lsby/net-core': 0.0.20(@types/express@4.17.21)(@types/node@20.12.10)
+      express-fileupload: 1.5.1
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/express'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@lsby/net-core-jwt@0.0.1(@types/express@4.17.21)(@types/node@20.12.10):
+    resolution: {integrity: sha512-8YU7HF7VplOBpkmBA5hO7U9rsKRMk8aB/kfuZWbzVBuPQFKNZcmJ95G+UkzV7wYiPRh45rwQUtMwtGB520hjvw==}
+    dependencies:
+      '@lsby/net-core': 0.0.20(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/express'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
   /@lsby/net-core@0.0.20(@types/express@4.17.21)(@types/node@20.12.10):
     resolution: {integrity: sha512-DLJ+KXPmE5HdHlTxFzebmH47efJ9Ma5Wac+gHOiNvy2k90HhgCvXEFQKXqgUIqxIEerb2ig14vAXWYTcPDtrkg==}
     hasBin: true
@@ -1028,6 +1082,28 @@ packages:
   /@lsby/ts-global@0.0.3(@types/node@20.12.10):
     resolution: {integrity: sha512-5smktNMYP+xkZSPKfuZfpIr+oMfsSJcIbScWr3BPJfYi/iM11JuJXUgxerw9rzuXGC6Eq+1zibWxN8G1cgUpFQ==}
     dependencies:
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@lsby/ts-jwt@0.0.1(@types/node@20.12.10):
+    resolution: {integrity: sha512-ZBUjEUv/o+jAYGdfkLJvdA3YnZaGXx4YDXQcWZyiB33FcJ+GUdTlSkW2joeOQiAnBuX/bCqLOM2fdVCuxHI0Bw==}
+    dependencies:
+      jsonwebtoken: 9.0.2
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -2831,6 +2907,13 @@ packages:
 
   /express-fileupload@1.5.0:
     resolution: {integrity: sha512-jSW3w9evqM37VWkEPkL2Ck5wUo2a8qa03MH+Ou/0ZSTpNlQFBvSLjU12k2nYcHhaMPv4JVvv6+Ac1OuLgUZb7w==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      busboy: 1.6.0
+    dev: false
+
+  /express-fileupload@1.5.1:
+    resolution: {integrity: sha512-LsYG1ALXEB7vlmjuSw8ABeOctMp8a31aUC5ZF55zuz7O2jLFnmJYrCv10py357ky48aEoBQ/9bVXgFynjvaPmA==}
     engines: {node: '>=12.0.0'}
     dependencies:
       busboy: 1.6.0

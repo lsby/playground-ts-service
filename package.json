@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@lsby/net-core": "0.0.20",
+    "@lsby/net-core-file-upload": "^0.0.1",
+    "@lsby/net-core-jwt": "^0.0.1",
     "@lsby/ts-cron": "^0.0.1",
     "@lsby/ts-env": "^0.0.1",
     "@lsby/ts-fp-data": "^0.0.9",
