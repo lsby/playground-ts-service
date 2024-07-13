@@ -1,3 +1,4 @@
+import { existsSync } from 'fs'
 import { resolve } from 'path'
 import SQLite from 'better-sqlite3'
 import { SqliteDialect } from 'kysely'
@@ -6,37 +7,24 @@ import { CronService } from '../tool/common/cron'
 import { 环境变量管理器 } from '../tool/common/env'
 import { Kysely管理器 } from '../tool/common/kysely'
 import { Log } from '../tool/common/log'
-import { Package } from '../tool/common/package'
 import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({
   APP_PORT: z.coerce.number(),
+  DEBUG_NAME: z.string(),
   DATABASE_PATH: z.string(),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string(),
   UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
 })
 
-export class GlobalPackage {
-  private static instance: Package | null = null
-  public static getInstance(): Package {
-    if (!GlobalPackage.instance) GlobalPackage.instance = new Package()
-    return GlobalPackage.instance
-  }
-
-  private constructor() {}
-}
-
 export class GlobalLog {
   private static instance: Log | null = null
   public static async getInstance(): Promise<Log> {
-    return GlobalPackage.getInstance()
-      .getName()
-      .then((name) => {
-        name = name.replaceAll('/', ':')
-        if (!GlobalLog.instance) GlobalLog.instance = new Log(name)
-        return GlobalLog.instance
-      })
+    if (!GlobalLog.instance) {
+      GlobalLog.instance = new Log((await GlobalEnv.getInstance()).DEBUG_NAME.replaceAll('/', ':'))
+    }
+    return GlobalLog.instance
   }
 
   private constructor() {}
@@ -58,8 +46,11 @@ export class GlobalKysely {
     if (GlobalKysely.instance) return GlobalKysely.instance
     var env = await GlobalEnv.getInstance()
     // 也可以换成其他的方言
+    var dbPath = resolve(env.DATABASE_PATH)
+    await (await GlobalLog.getInstance()).debug('读取数据库路径: %o', dbPath)
+    if (!existsSync(dbPath)) throw new Error('无法读取数据库, 文件不存在')
     var dialect = new SqliteDialect({
-      database: new SQLite(resolve(import.meta.dirname || __dirname, '../../', env.DATABASE_PATH)),
+      database: new SQLite(dbPath),
     })
     GlobalKysely.instance = new Kysely管理器<DB>(dialect)
     return GlobalKysely.instance
