@@ -1,7 +1,7 @@
 import assert from 'assert'
 import { 测试 } from '@lsby/net-core'
 import { GlobalLog } from '../../../global/global'
-import { 请求用例00 } from '../../../tools/test/request-case-00'
+import { 请求用例00 } from '../../../util/test/request-case-00'
 import 接口类型 from './type'
 
 export default new 测试(

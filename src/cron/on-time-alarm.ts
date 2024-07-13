@@ -1,5 +1,5 @@
 import { GlobalLog } from '../global/global'
-import { Cron } from '../tools/common/cron'
+import { Cron } from '../tool/common/cron'
 
 export const onTimeAlarm = new Cron('整点报时', '0 0 * * * *', async () => {
   var log = (await GlobalLog.getInstance()).extend('整点报时')
