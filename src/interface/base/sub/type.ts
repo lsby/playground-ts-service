@@ -5,16 +5,14 @@ export default new 接口类型(
   '/api/base/sub',
   'post',
   [
-    Promise.resolve(
-      new JSON解析插件(
-        z.object({
-          body: z.object({
-            a: z.number(),
-            b: z.number(),
-          }),
+    new JSON解析插件(
+      z.object({
+        body: z.object({
+          a: z.number(),
+          b: z.number(),
         }),
-        {},
-      ),
+      }),
+      {},
     ),
   ],
   z.object({

@@ -6,14 +6,12 @@ export default new 接口类型(
   '/api/user/is-login',
   'post',
   [
-    Global.getItem('jwt-plugin').then((a) => a.解析器),
-    Promise.resolve(
-      new JSON解析插件(
-        z.object({
-          body: z.object({}),
-        }),
-        {},
-      ),
+    await Global.getItem('jwt-plugin').then((a) => a.解析器),
+    new JSON解析插件(
+      z.object({
+        body: z.object({}),
+      }),
+      {},
     ),
   ],
   z.object({
