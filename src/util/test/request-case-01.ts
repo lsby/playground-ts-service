@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { 任意接口类型 } from '@lsby/net-core'
-import { GlobalEnv } from '../../global/global'
+import { Global } from '../../global/global'
 import { 从接口类型获得接口JSON参数 } from './type'
 
 export async function 请求用例01<接口类型 extends 任意接口类型>(
@@ -13,7 +13,7 @@ export async function 请求用例01<接口类型 extends 任意接口类型>(
     凭据属性: string
   },
 ): Promise<object> {
-  var env = await GlobalEnv.getInstance()
+  var env = await (await Global.getItem('env')).获得环境变量()
 
   var login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
     name: 登录.用户名,

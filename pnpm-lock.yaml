@@ -8,12 +8,18 @@ dependencies:
   '@lsby/net-core':
     specifier: 0.0.20-beta.4
     version: 0.0.20-beta.4(@types/express@4.17.21)(@types/node@20.12.10)
+  '@lsby/ts-env':
+    specifier: ^0.0.1
+    version: 0.0.1(@types/node@20.12.10)
   '@lsby/ts-fp-data':
     specifier: ^0.0.9
     version: 0.0.9
+  '@lsby/ts-global':
+    specifier: ^0.0.2
+    version: 0.0.2(@types/node@20.12.10)
   '@lsby/ts-log':
-    specifier: ^0.0.1
-    version: 0.0.1(@types/node@20.12.10)
+    specifier: ^0.0.3
+    version: 0.0.3(@types/node@20.12.10)
   axios:
     specifier: ^1.7.2
     version: 1.7.2(debug@4.3.5)
@@ -964,12 +970,56 @@ packages:
       - terser
     dev: false
 
+  /@lsby/ts-env@0.0.1(@types/node@20.12.10):
+    resolution: {integrity: sha512-QChZo2BGTG+gCaxK3i63Du6njo8/4jIiB2OykuUb6HrbSh2GGWr0VS2hwisvsa0qgsfa60cl4ZxHYnsb7RrKWw==}
+    dependencies:
+      '@lsby/ts-log': 0.0.3(@types/node@20.12.10)
+      dotenv: 16.4.5
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
   /@lsby/ts-fp-data@0.0.9:
     resolution: {integrity: sha512-0dmffwj74iFNZXvjqh+DKz3skW8WnrnQuWYqLD81DxCLkoNqAHg4oX0FhE3TQad+umqEBNABPg6+3/E7aNtB7Q==}
     dev: false
 
-  /@lsby/ts-log@0.0.1(@types/node@20.12.10):
-    resolution: {integrity: sha512-jA+wIAG2gyUv47xz9bC2oPJLJ94WDGnTqjv87igoK7Znsla1kWhl4cYu7jGxpkyBLlHzoikP6JyhmJaQg717jQ==}
+  /@lsby/ts-global@0.0.2(@types/node@20.12.10):
+    resolution: {integrity: sha512-QjBJLIymHJktht4HO4RYeZqmw7Ovz0/5psO95ggI635WLP9+0WCOV4Nodohrym/+5qzM+hP4+VQZjtpb28r1xg==}
+    dependencies:
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@lsby/ts-log@0.0.3(@types/node@20.12.10):
+    resolution: {integrity: sha512-ztstLQ2lXOW2QwREmknoM0wHM/G+xyKcbOwEk6vYn099R2RlXvb4ykvwPecgZC4eHp8g93HCtt2GS/Cp94mWaQ==}
     hasBin: true
     dependencies:
       debug: 4.3.5

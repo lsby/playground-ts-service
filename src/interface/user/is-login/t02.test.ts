@@ -2,7 +2,7 @@ import assert from 'assert'
 import { randomUUID } from 'crypto'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
-import { GlobalKysely, GlobalLog } from '../../../global/global'
+import { Global, GlobalKysely } from '../../../global/global'
 import { 请求用例01 } from '../../../util/test/request-case-01'
 import 接口类型 from './type'
 
@@ -20,7 +20,7 @@ export default new 测试(
     return 请求用例01(接口类型, {}, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
   },
   async (data) => {
-    var log = await GlobalLog.getInstance()
+    var log = await Global.getItem('log')
 
     var 正确结果 = 接口类型.获得正确结果类型().safeParse(data)
     var 错误结果 = 接口类型.获得错误结果类型().safeParse(data)

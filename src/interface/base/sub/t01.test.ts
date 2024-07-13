@@ -1,6 +1,6 @@
 import assert from 'assert'
 import { 测试 } from '@lsby/net-core'
-import { GlobalLog } from '../../../global/global'
+import { Global } from '../../../global/global'
 import { 请求用例00 } from '../../../util/test/request-case-00'
 import 接口类型 from './type'
 
@@ -16,7 +16,7 @@ export default new 测试(
     })
   },
   async (data) => {
-    var log = await GlobalLog.getInstance()
+    var log = await Global.getItem('log')
 
     var 正确结果 = 接口类型.获得正确结果类型().safeParse(data)
     var 错误结果 = 接口类型.获得错误结果类型().safeParse(data)

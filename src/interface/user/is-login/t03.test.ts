@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 import axios from 'axios'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
-import { GlobalEnv, GlobalKysely, GlobalLog } from '../../../global/global'
+import { Global, GlobalKysely } from '../../../global/global'
 import 接口类型 from './type'
 
 var name = 'admin'
@@ -17,7 +17,7 @@ export default new 测试(
     await db.insertInto('user').values({ id: randomUUID(), name, pwd }).execute()
   },
   async () => {
-    var env = await GlobalEnv.getInstance()
+    var env = await (await Global.getItem('env')).获得环境变量()
 
     var urlPath = 接口类型.获得路径()
     var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
@@ -25,7 +25,7 @@ export default new 测试(
     return (await axios.post(url, {}, { headers: { authorization: '' } })).data
   },
   async (data) => {
-    var log = await GlobalLog.getInstance()
+    var log = await Global.getItem('log')
 
     var 正确结果 = 接口类型.获得正确结果类型().safeParse(data)
     var 错误结果 = 接口类型.获得错误结果类型().safeParse(data)
