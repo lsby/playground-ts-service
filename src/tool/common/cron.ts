@@ -22,13 +22,15 @@ export class Cron {
 
 export class CronService {
   private isRun = false
-  private maxLogNum = 100
   private runLog: Array<{ name: string; time: Date }> = []
   private errLog: string[] = []
+
+  constructor(private opt?: { maxLogNum?: number }) {}
 
   async run(tasks: Cron[]): Promise<void> {
     if (this.isRun) throw new Error('不可以多次启动')
 
+    var maxLogNum = this.opt?.maxLogNum || 100
     this.isRun = true
     for (const task of tasks) {
       schedule.scheduleJob(task.getCron(), () => {
@@ -36,8 +38,8 @@ export class CronService {
           .run()
           .catch((e) => {
             this.errLog.push(String(e))
-            if (this.errLog.length > this.maxLogNum) {
-              this.errLog = this.errLog.slice(this.maxLogNum * -1)
+            if (this.errLog.length > maxLogNum) {
+              this.errLog = this.errLog.slice(maxLogNum * -1)
             }
           })
           .finally(() => {
@@ -45,8 +47,8 @@ export class CronService {
               name: task.getName(),
               time: new Date(),
             })
-            if (this.runLog.length > this.maxLogNum) {
-              this.runLog = this.runLog.slice(this.maxLogNum * -1)
+            if (this.runLog.length > maxLogNum) {
+              this.runLog = this.runLog.slice(maxLogNum * -1)
             }
           })
       })
