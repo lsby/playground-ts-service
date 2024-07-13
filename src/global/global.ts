@@ -32,6 +32,10 @@ export var Global = new GlobalService([
       .then((env) => new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(env.DATABASE_PATH) }))),
   ),
   new GlobalAsyncItem('jwt-plugin', () =>
-    env.获得环境变量().then((env) => new JWT插件(env.JWT_SECRET, env.JWT_EXPIRES_IN)),
+    env
+      .获得环境变量()
+      .then(
+        (env) => new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), env.JWT_SECRET, env.JWT_EXPIRES_IN),
+      ),
   ),
 ])
