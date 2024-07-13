@@ -26,16 +26,12 @@ export var Global = new GlobalService([
   new GlobalItem('log', new Log('playground-service')),
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
-  new GlobalAsyncItem('kysely', () =>
-    env
-      .获得环境变量()
-      .then((env) => new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(env.DATABASE_PATH) }))),
-  ),
-  new GlobalAsyncItem('jwt-plugin', () =>
-    env
-      .获得环境变量()
-      .then(
-        (env) => new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), env.JWT_SECRET, env.JWT_EXPIRES_IN),
-      ),
-  ),
+  new GlobalAsyncItem('kysely', async () => {
+    var envObj = await env.获得环境变量()
+    return new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(envObj.DATABASE_PATH) }))
+  }),
+  new GlobalAsyncItem('jwt-plugin', async () => {
+    var envObj = await env.获得环境变量()
+    return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), envObj.JWT_SECRET, envObj.JWT_EXPIRES_IN)
+  }),
 ])
