@@ -3,10 +3,10 @@ import { resolve } from 'path'
 import SQLite from 'better-sqlite3'
 import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
+import { Log } from '@lsby/ts-log'
 import { CronService } from '../tool/common/cron'
 import { 环境变量管理器 } from '../tool/common/env'
 import { Kysely管理器 } from '../tool/common/kysely'
-import { Log } from '../tool/common/log'
 import { DB } from '../types/db'
 
 var 环境变量描述 = z.object({

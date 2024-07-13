@@ -11,6 +11,9 @@ dependencies:
   '@lsby/ts-fp-data':
     specifier: ^0.0.9
     version: 0.0.9
+  '@lsby/ts-log':
+    specifier: ^0.0.1
+    version: 0.0.1(@types/node@20.12.10)
   axios:
     specifier: ^1.7.2
     version: 1.7.2(debug@4.3.5)
@@ -963,6 +966,29 @@ packages:
 
   /@lsby/ts-fp-data@0.0.9:
     resolution: {integrity: sha512-0dmffwj74iFNZXvjqh+DKz3skW8WnrnQuWYqLD81DxCLkoNqAHg4oX0FhE3TQad+umqEBNABPg6+3/E7aNtB7Q==}
+    dev: false
+
+  /@lsby/ts-log@0.0.1(@types/node@20.12.10):
+    resolution: {integrity: sha512-jA+wIAG2gyUv47xz9bC2oPJLJ94WDGnTqjv87igoK7Znsla1kWhl4cYu7jGxpkyBLlHzoikP6JyhmJaQg717jQ==}
+    hasBin: true
+    dependencies:
+      debug: 4.3.5
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
     dev: false
 
   /@mrleebo/prisma-ast@0.7.0:

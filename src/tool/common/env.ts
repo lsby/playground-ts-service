@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import { env } from 'node:process'
 import dotenv from 'dotenv'
 import type { z } from 'zod'
-import { Log } from './log'
+import { Log } from '@lsby/ts-log'
 
 export class 环境变量管理器<环境变量描述 extends z.AnyZodObject> {
   private 环境变量: z.infer<环境变量描述> | null = null
