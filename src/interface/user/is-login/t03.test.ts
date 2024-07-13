@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 import axios from 'axios'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
-import { Global, GlobalKysely } from '../../../global/global'
+import { Global } from '../../../global/global'
 import 接口类型 from './type'
 
 var name = 'admin'
@@ -12,7 +12,7 @@ var pwd = '123456'
 export default new 测试(
   接口类型,
   async () => {
-    var db = (await GlobalKysely.getInstance()).获得句柄()
+    var db = (await Global.getItem('kysely')).获得句柄()
     await clearDB(db)
     await db.insertInto('user').values({ id: randomUUID(), name, pwd }).execute()
   },

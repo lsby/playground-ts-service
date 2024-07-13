@@ -1,14 +1,14 @@
 import assert from 'assert'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
-import { Global, GlobalKysely } from '../../../global/global'
+import { Global } from '../../../global/global'
 import { 请求用例00 } from '../../../util/test/request-case-00'
 import 接口类型 from './type'
 
 export default new 测试(
   接口类型,
   async () => {
-    var db = (await GlobalKysely.getInstance()).获得句柄()
+    var db = (await Global.getItem('kysely')).获得句柄()
     await clearDB(db)
   },
   async () => {
@@ -27,7 +27,7 @@ export default new 测试(
     if (!正确结果.success) throw new Error('应该调用成功, 实际调用出错')
     var _结果 = 正确结果.data
 
-    var db = (await GlobalKysely.getInstance()).获得句柄()
+    var db = (await Global.getItem('kysely')).获得句柄()
 
     var r = await db.selectFrom('user').select('id').execute()
     assert.equal(r.length, 1, '应该有一个用户')

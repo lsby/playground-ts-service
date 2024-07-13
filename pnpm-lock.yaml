@@ -15,8 +15,8 @@ dependencies:
     specifier: ^0.0.9
     version: 0.0.9
   '@lsby/ts-global':
-    specifier: ^0.0.2
-    version: 0.0.2(@types/node@20.12.10)
+    specifier: ^0.0.3
+    version: 0.0.3(@types/node@20.12.10)
   '@lsby/ts-log':
     specifier: ^0.0.3
     version: 0.0.3(@types/node@20.12.10)
@@ -997,8 +997,8 @@ packages:
     resolution: {integrity: sha512-0dmffwj74iFNZXvjqh+DKz3skW8WnrnQuWYqLD81DxCLkoNqAHg4oX0FhE3TQad+umqEBNABPg6+3/E7aNtB7Q==}
     dev: false
 
-  /@lsby/ts-global@0.0.2(@types/node@20.12.10):
-    resolution: {integrity: sha512-QjBJLIymHJktht4HO4RYeZqmw7Ovz0/5psO95ggI635WLP9+0WCOV4Nodohrym/+5qzM+hP4+VQZjtpb28r1xg==}
+  /@lsby/ts-global@0.0.3(@types/node@20.12.10):
+    resolution: {integrity: sha512-5smktNMYP+xkZSPKfuZfpIr+oMfsSJcIbScWr3BPJfYi/iM11JuJXUgxerw9rzuXGC6Eq+1zibWxN8G1cgUpFQ==}
     dependencies:
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8

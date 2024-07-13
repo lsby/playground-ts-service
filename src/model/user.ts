@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto'
 import { Just, Maybe, Nothing } from '@lsby/ts-fp-data'
-import { GlobalKysely } from '../global/global'
+import { Global } from '../global/global'
 
 export class 用户模型 {
   private static async 读取用户(索引字段: 'name' | 'id', 值: string): Promise<Maybe<用户模型>> {
-    var db = (await GlobalKysely.getInstance()).获得句柄()
+    var db = (await Global.getItem('kysely')).获得句柄()
 
     var user = await db.selectFrom('user').select(['id', 'name', 'pwd']).where(索引字段, '=', 值).executeTakeFirst()
     if (user == null) return new Nothing()
@@ -20,7 +20,7 @@ export class 用户模型 {
   }
 
   static async 创建用户(opt: { name: string; pwd: string }): Promise<用户模型> {
-    var db = (await GlobalKysely.getInstance()).获得句柄()
+    var db = (await Global.getItem('kysely')).获得句柄()
 
     var id = randomUUID()
     await db
