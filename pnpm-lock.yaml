@@ -20,6 +20,9 @@ dependencies:
   '@lsby/ts-global':
     specifier: ^0.0.3
     version: 0.0.3(@types/node@20.12.10)
+  '@lsby/ts-kysely':
+    specifier: ^0.0.1
+    version: 0.0.1(@types/node@20.12.10)
   '@lsby/ts-log':
     specifier: ^0.0.3
     version: 0.0.3(@types/node@20.12.10)
@@ -1025,6 +1028,28 @@ packages:
   /@lsby/ts-global@0.0.3(@types/node@20.12.10):
     resolution: {integrity: sha512-5smktNMYP+xkZSPKfuZfpIr+oMfsSJcIbScWr3BPJfYi/iM11JuJXUgxerw9rzuXGC6Eq+1zibWxN8G1cgUpFQ==}
     dependencies:
+      vitest: 2.0.2(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: false
+
+  /@lsby/ts-kysely@0.0.1(@types/node@20.12.10):
+    resolution: {integrity: sha512-01fzflzTQ92f0plnkxzw9Lato/y8wJMCSQ2CA7T54v4zL6Qr1Ylww0/D0/6U/4g67h+yPjJ0qB2Os/URgTOJeQ==}
+    dependencies:
+      kysely: 0.27.4
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
     transitivePeerDependencies:

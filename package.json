@@ -33,6 +33,7 @@
     "@lsby/ts-env": "^0.0.1",
     "@lsby/ts-fp-data": "^0.0.9",
     "@lsby/ts-global": "^0.0.3",
+    "@lsby/ts-kysely": "^0.0.1",
     "@lsby/ts-log": "^0.0.3",
     "axios": "^1.7.2",
     "better-sqlite3": "^11.1.2",
