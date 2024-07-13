@@ -18,8 +18,8 @@ dependencies:
     specifier: ^0.0.1
     version: 0.0.1(@types/node@20.12.10)
   '@lsby/ts-env':
-    specifier: ^0.0.1
-    version: 0.0.1(@types/node@20.12.10)
+    specifier: ^0.0.9
+    version: 0.0.9(@types/node@20.12.10)
   '@lsby/ts-fp-data':
     specifier: ^0.0.9
     version: 0.0.9
@@ -1054,8 +1054,8 @@ packages:
       - terser
     dev: false
 
-  /@lsby/ts-env@0.0.1(@types/node@20.12.10):
-    resolution: {integrity: sha512-QChZo2BGTG+gCaxK3i63Du6njo8/4jIiB2OykuUb6HrbSh2GGWr0VS2hwisvsa0qgsfa60cl4ZxHYnsb7RrKWw==}
+  /@lsby/ts-env@0.0.9(@types/node@20.12.10):
+    resolution: {integrity: sha512-AH6zkAM0NEnRKOsmvJtSexa9DjxZnMbjPW5bdBdpXxmSnmDo6w4Qmf7rSDABJqX2R89EpI8Jw0EsTvANkZG46w==}
     dependencies:
       '@lsby/ts-log': 0.0.3(@types/node@20.12.10)
       dotenv: 16.4.5
