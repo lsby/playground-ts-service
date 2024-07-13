@@ -8,8 +8,7 @@ export var app = new Promise(async () => {
   var env = await (await Global.getItem('env')).获得环境变量()
 
   var cron = await Global.getItem('cron')
-  await cron.addTask(onTimeAlarm)
-  await cron.run()
+  await cron.run([onTimeAlarm])
 
   var 服务器地址 = (await new 服务器(interfaceList, env.APP_PORT).run()).ip
   await log.debug('服务器地址: %O', 服务器地址)

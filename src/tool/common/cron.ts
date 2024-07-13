@@ -26,16 +26,11 @@ export class CronService {
   private runLog: Array<{ name: string; time: Date }> = []
   private errLog: string[] = []
 
-  constructor(private tasks: Cron[]) {}
-
-  async addTask(task: Cron): Promise<void> {
-    this.tasks.push(task)
-  }
-
-  async run(): Promise<void> {
+  async run(tasks: Cron[]): Promise<void> {
     if (this.isRun) throw new Error('不可以多次启动')
+
     this.isRun = true
-    for (const task of this.tasks) {
+    for (const task of tasks) {
       schedule.scheduleJob(task.getCron(), () => {
         task
           .run()

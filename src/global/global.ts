@@ -26,7 +26,7 @@ var env = new GlobalItem(
 export var Global = new GlobalService([
   new GlobalItem('log', new Log('playground-service')),
   env,
-  new GlobalItem('cron', new CronService([])),
+  new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('kysely', () =>
     env
       .getValue()
