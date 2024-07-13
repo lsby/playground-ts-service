@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
-import { 请求用例00 } from '../../../util/test/request-case-00'
+import { 请求用例00 } from '../../../util/request-case-00'
 import 接口类型 from './type'
 
 var name = 'admin'

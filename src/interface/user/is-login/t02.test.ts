@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 import { 测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
-import { 请求用例01 } from '../../../util/test/request-case-01'
+import { 请求用例00 } from '../../../util/request-case-00'
 import 接口类型 from './type'
 
 var name = 'admin'
@@ -17,7 +17,7 @@ export default new 测试(
     await db.insertInto('user').values({ id: randomUUID(), name, pwd }).execute()
   },
   async () => {
-    return 请求用例01(接口类型, {}, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
+    return 请求用例00(接口类型, {}, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
   },
   async (data) => {
     var log = await Global.getItem('log')
