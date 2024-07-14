@@ -23,7 +23,10 @@ var env = new Env({
 })
 
 export var Global = new GlobalService([
-  new GlobalItem('log', new Log('playground-service')),
+  new GlobalAsyncItem('log', async () => {
+    var envObj = await env.获得环境变量()
+    return new Log(envObj.DEBUG_NAME)
+  }),
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('kysely', async () => {
