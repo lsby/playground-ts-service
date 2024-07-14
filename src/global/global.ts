@@ -24,17 +24,17 @@ var env = new Env({
 
 export var Global = new GlobalService([
   new GlobalAsyncItem('log', async () => {
-    var envObj = await env.获得环境变量()
-    return new Log(envObj.DEBUG_NAME)
+    var e = await env.获得环境变量()
+    return new Log(e.DEBUG_NAME)
   }),
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('kysely', async () => {
-    var envObj = await env.获得环境变量()
-    return new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(envObj.DATABASE_PATH) }))
+    var e = await env.获得环境变量()
+    return new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) }))
   }),
   new GlobalAsyncItem('jwt-plugin', async () => {
-    var envObj = await env.获得环境变量()
-    return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), envObj.JWT_SECRET, envObj.JWT_EXPIRES_IN)
+    var e = await env.获得环境变量()
+    return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), e.JWT_SECRET, e.JWT_EXPIRES_IN)
   }),
 ])
