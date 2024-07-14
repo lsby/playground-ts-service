@@ -58,9 +58,6 @@ devDependencies:
   '@types/better-sqlite3':
     specifier: ^7.6.11
     version: 7.6.11
-  '@types/debug':
-    specifier: ^4.1.12
-    version: 4.1.12
   '@types/node':
     specifier: ^20.12.10
     version: 20.12.10
@@ -1486,12 +1483,6 @@ packages:
     resolution: {integrity: sha512-KuwNhp3eza+Rhu8IFI5HUXRP0LIhqH5cAjubUvGXXthh4YYBuP2ntwEX+Cz8GJoZUHlKo247wPWOfA9LYEq4cw==}
     dependencies:
       '@types/node': 20.12.10
-    dev: true
-
-  /@types/debug@4.1.12:
-    resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
-    dependencies:
-      '@types/ms': 0.7.34
     dev: true
 
   /@types/debug@4.1.8:

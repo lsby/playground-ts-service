@@ -47,7 +47,6 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@lsby/eslint-config": "^0.0.2",
     "@types/better-sqlite3": "^7.6.11",
-    "@types/debug": "^4.1.12",
     "@types/node": "^20.12.10",
     "@types/stream-to-blob": "^2.0.0",
     "@vitest/coverage-v8": "^2.0.2",
