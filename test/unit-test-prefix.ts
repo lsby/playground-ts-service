@@ -1,3 +1,3 @@
-import { app } from '../src/app/app'
+import { App } from '../src/app/app'
 
-app.catch(console.error)
+new App().run().catch(console.error)
