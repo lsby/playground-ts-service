@@ -17,7 +17,7 @@
     "check:type": "tsc --noEmit",
     "check:type:watch": "tsc --noEmit -w",
     "db:push:dev": "dotenv -e ./.env/.env.development -- prisma migrate dev",
-    "db:push:prod": "dotenv -e ./.env/.env.production -- prisma migrate dev",
+    "db:push:prod": "dotenv -e ./.env/.env.production -- prisma migrate deploy",
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev",
     "gen:list": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./out/type.ts",
