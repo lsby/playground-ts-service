@@ -10,7 +10,9 @@
     "dist"
   ],
   "scripts": {
-    "build:all": "tsc",
+    "build:all": "npm run build:web && npm run build:service",
+    "build:service": "npm run check:all && tsc",
+    "build:web": "npm run check:all && vite build -c vite.config/production.js",
     "check:all": "npm run check:format && npm run check:lint && npm run check:type",
     "check:format": "prettier --write .",
     "check:lint": "eslint . --fix",
@@ -22,13 +24,15 @@
     "gen:list": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./out/type.ts",
     "pub:public": "npm run check:all && npm run build:all && bumpp && npm publish --access public",
-    "run:dev": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-ts-service:* tsx ./src/index.ts",
-    "run:prod": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-ts-service:* tsx ./src/index.ts",
+    "run:dev:service": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-ts-service:* tsx --watch ./src/index.ts",
+    "run:dev:web": "vite -c vite.config/development.js",
+    "run:dev:web:watch": "vite build -w -c vite.config/development.js",
+    "run:prod": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.production DEBUG=@lsby:*,playground-ts-service:* tsx ./src/index.ts",
     "test:unit": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test.ts",
     "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.1.1",
+    "@lsby/net-core": "^0.1.2",
     "@lsby/net-core-file-upload": "^0.0.6",
     "@lsby/net-core-jwt": "^0.0.6",
     "@lsby/ts-cron": "^0.0.1",
@@ -37,8 +41,11 @@
     "@lsby/ts-global": "^0.0.3",
     "@lsby/ts-kysely": "^0.0.1",
     "@lsby/ts-log": "^0.0.3",
+    "@lsby/ts-web-frame": "^0.0.2",
+    "@types/express": "^4.17.21",
     "axios": "^1.7.2",
     "better-sqlite3": "^11.1.2",
+    "express": "^4.19.2",
     "kysely": "^0.27.4",
     "stream-to-blob": "^2.0.1",
     "zod": "^3.23.8"
@@ -60,6 +67,7 @@
     "prisma-kysely": "^1.7.1",
     "tsx": "^4.9.3",
     "typescript": "^5.4.5",
+    "vite": "^5.3.1",
     "vitest": "^2.0.2"
   }
 }

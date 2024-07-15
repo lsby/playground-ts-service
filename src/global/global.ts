@@ -13,12 +13,13 @@ var env = new Env({
   模式: '通过环境变量指定文件路径',
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
-    APP_PORT: z.coerce.number(),
     DEBUG_NAME: z.string(),
     DATABASE_PATH: z.string(),
+    APP_PORT: z.coerce.number(),
+    WEB_PATH: z.string(),
+    UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
-    UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
   }),
 })
 

@@ -1,0 +1,63 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+      {
+      "label": "生产:编译全部",
+      "type": "npm",
+      "script": "build:all",
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "生产:运行",
+      "type": "npm",
+      "script": "run:prod",
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "开发:运行后端",
+      "type": "npm",
+      "script": "run:dev:service",
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "开发:运行前端",
+      "type": "npm",
+      "script": "run:dev:web",
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "开发:编译前端",
+      "type": "npm",
+      "script": "run:dev:web:watch",
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "运行:生产模式运行",
+      "dependsOrder": "sequence",
+      "dependsOn": ["生产:编译全部", "生产:运行"],
+      "problemMatcher": []
+    },
+    {
+      "label": "运行:开发模式合并运行",
+      "dependsOrder": "parallel",
+      "dependsOn": ["开发:编译前端", "开发:运行后端"],
+      "problemMatcher": []
+    },
+    {
+      "label": "运行:开发模式独立运行",
+      "dependsOrder": "parallel",
+      "dependsOn": ["开发:运行后端", "开发:运行前端"],
+      "problemMatcher": []
+    }
+  ]
+}
