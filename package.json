@@ -1,10 +1,10 @@
 {
-  "name": "playground-service",
+  "name": "playground-ts-service",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "bin": {
-    "playground-service": "dist/esm/index.js"
+    "playground-ts-service": "dist/esm/index.js"
   },
   "files": [
     "dist"
@@ -21,11 +21,11 @@
     "gen:list": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/interface ./out/type.ts",
     "pub:public": "npm run check:all && npm run build:all && bumpp && npm publish --access public",
-    "run:dev": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
-    "run:prod": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-service:* tsx ./src/index.ts",
+    "run:dev": "npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-ts-service:* tsx ./src/index.ts",
+    "run:prod": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.development DEBUG=@lsby:*,playground-ts-service:* tsx ./src/index.ts",
     "test:gen": "cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.test.ts",
-    "test:unit": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-service:* tsx script/test/run-test.ts",
-    "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
+    "test:unit": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test.ts",
+    "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
     "@lsby/net-core": "0.0.24",
