@@ -23,12 +23,12 @@ var env = new Env({
 })
 
 export var Global = new GlobalService([
+  new GlobalItem('env', env),
+  new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('log', async () => {
     var e = await env.获得环境变量()
     return new Log(e.DEBUG_NAME)
   }),
-  new GlobalItem('env', env),
-  new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('kysely', async () => {
     var e = await env.获得环境变量()
     return new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) }))

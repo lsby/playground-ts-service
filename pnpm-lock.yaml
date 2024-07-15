@@ -6,14 +6,14 @@ settings:
 
 dependencies:
   '@lsby/net-core':
-    specifier: 0.0.24
-    version: 0.0.24(@lsby/ts-fp-data@0.0.9)(@types/express@4.17.21)(@types/node@20.12.10)
+    specifier: ^0.1.1
+    version: 0.1.1(@lsby/ts-fp-data@0.1.0)(@types/express@4.17.21)(@types/node@20.12.10)
   '@lsby/net-core-file-upload':
-    specifier: 0.0.5
-    version: 0.0.5(@lsby/net-core@0.0.24)(@types/node@20.12.10)
+    specifier: ^0.0.6
+    version: 0.0.6(@lsby/net-core@0.1.1)(@types/node@20.12.10)
   '@lsby/net-core-jwt':
-    specifier: 0.0.5
-    version: 0.0.5(@lsby/net-core@0.0.24)(@types/node@20.12.10)
+    specifier: ^0.0.6
+    version: 0.0.6(@lsby/net-core@0.1.1)(@types/node@20.12.10)
   '@lsby/ts-cron':
     specifier: ^0.0.1
     version: 0.0.1(@types/node@20.12.10)
@@ -21,8 +21,8 @@ dependencies:
     specifier: ^0.0.9
     version: 0.0.9(@types/node@20.12.10)
   '@lsby/ts-fp-data':
-    specifier: ^0.0.9
-    version: 0.0.9
+    specifier: ^0.1.0
+    version: 0.1.0
   '@lsby/ts-global':
     specifier: ^0.0.3
     version: 0.0.3(@types/node@20.12.10)
@@ -927,12 +927,12 @@ packages:
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0)(eslint@8.57.0)
     dev: true
 
-  /@lsby/net-core-file-upload@0.0.5(@lsby/net-core@0.0.24)(@types/node@20.12.10):
-    resolution: {integrity: sha512-GxWgdBV+beJPgpRXZaacgVbF9ubyLUMuK+3npLQuXQphJblB0C+1KnbytmldWyt+rP1dpzNXqD845+fIN9I/qQ==}
+  /@lsby/net-core-file-upload@0.0.6(@lsby/net-core@0.1.1)(@types/node@20.12.10):
+    resolution: {integrity: sha512-KV87V6nz63wx7dVAeku+5CGxjRbGzXGMCWwoMA2+A7bO8CU+sFhQiAcK7hUc6vJsVpZHkU6gBsSC5GqU3ztyeQ==}
     peerDependencies:
-      '@lsby/net-core': ^0.0.24
+      '@lsby/net-core': ^0.1.0
     dependencies:
-      '@lsby/net-core': 0.0.24(@lsby/ts-fp-data@0.0.9)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.1.1(@lsby/ts-fp-data@0.1.0)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
@@ -952,12 +952,12 @@ packages:
       - terser
     dev: false
 
-  /@lsby/net-core-jwt@0.0.5(@lsby/net-core@0.0.24)(@types/node@20.12.10):
-    resolution: {integrity: sha512-di23hz9GqYLXtYG2uNnFtGRLDO2O2j2MUVDKwG8uf6wC98Rim5KXOvY9QildP28yw7+sNASkHJpQymQx8FKkdQ==}
+  /@lsby/net-core-jwt@0.0.6(@lsby/net-core@0.1.1)(@types/node@20.12.10):
+    resolution: {integrity: sha512-YkLZZEMi7ZkZ0npheyGBbkMHO4ym4IldNyUntZxAhoBj+61Ng1DKMYgL/0qz81MZMMq1THiRp7qWS4ua1+MNbA==}
     peerDependencies:
-      '@lsby/net-core': ^0.0.24
+      '@lsby/net-core': ^0.1.0
     dependencies:
-      '@lsby/net-core': 0.0.24(@lsby/ts-fp-data@0.0.9)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.1.1(@lsby/ts-fp-data@0.1.0)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
@@ -977,14 +977,14 @@ packages:
       - terser
     dev: false
 
-  /@lsby/net-core@0.0.24(@lsby/ts-fp-data@0.0.9)(@types/express@4.17.21)(@types/node@20.12.10):
-    resolution: {integrity: sha512-CW7t82UMczK1d3nu1LPeo9dpy9Je+zLSJMc5g28I1vc8CRmxXxbiL9cNXg/dEqjJN1IrsIP9M5auk4Vjnfmh5g==}
+  /@lsby/net-core@0.1.1(@lsby/ts-fp-data@0.1.0)(@types/express@4.17.21)(@types/node@20.12.10):
+    resolution: {integrity: sha512-vUesuLbuy52SAyHwGmtdG9BS+S4m6CjA3w3luonHaYhqn00FV3GdRouaFPs/nF4adFJsOCqKGiTEw4HHv7+A0Q==}
     hasBin: true
     peerDependencies:
-      '@lsby/ts-fp-data': ^0.0.9
+      '@lsby/ts-fp-data': ^0.1.0
       '@types/express': ^4.17.21
     dependencies:
-      '@lsby/ts-fp-data': 0.0.9
+      '@lsby/ts-fp-data': 0.1.0
       '@types/express': 4.17.21
       commander: 12.1.0
       debug: 4.3.5
@@ -1052,8 +1052,8 @@ packages:
       - terser
     dev: false
 
-  /@lsby/ts-fp-data@0.0.9:
-    resolution: {integrity: sha512-0dmffwj74iFNZXvjqh+DKz3skW8WnrnQuWYqLD81DxCLkoNqAHg4oX0FhE3TQad+umqEBNABPg6+3/E7aNtB7Q==}
+  /@lsby/ts-fp-data@0.1.0:
+    resolution: {integrity: sha512-zF/kdahvKM3I77XbbnyrFI/dhd+T2oZAYr2RIPN7IY1kVxIJIhr0Jzhnp2dXAd4NlKIPhKpDs6lWFXsEThFaQw==}
     dev: false
 
   /@lsby/ts-global@0.0.3(@types/node@20.12.10):
