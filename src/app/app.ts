@@ -10,6 +10,7 @@ export var app = new Promise(async () => {
   var cron = await Global.getItem('cron')
   await cron.run([onTimeAlarm])
 
-  var 服务器信息 = await new 服务器(interfaceList, env.APP_PORT).run()
-  await log.debug('服务器地址: %O', 服务器信息.ip)
+  var service = new 服务器(interfaceList, env.APP_PORT)
+  var serviceInfo = await service.run()
+  await log.debug('服务器地址: %O', serviceInfo.ip)
 })
