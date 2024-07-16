@@ -14,5 +14,5 @@ export default new 接口类型(
     }),
   ],
   z.object({}),
-  z.null(),
+  z.never(),
 )

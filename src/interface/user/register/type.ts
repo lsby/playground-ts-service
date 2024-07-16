@@ -18,6 +18,11 @@ export default new 接口类型(
       )
     }),
   ],
-  z.object({}),
-  z.enum(['用户名已存在']),
+  z.object({
+    state: z.literal('success'),
+  }),
+  z.object({
+    state: z.literal('fail'),
+    error: z.enum(['用户名已存在']),
+  }),
 )

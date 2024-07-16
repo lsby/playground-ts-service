@@ -23,5 +23,5 @@ export default new 接口类型(
   z.object({
     isLogin: z.boolean(),
   }),
-  z.null(),
+  z.never(),
 )

@@ -21,5 +21,5 @@ export default new 接口类型(
   z.object({
     res: z.number(),
   }),
-  z.null(),
+  z.never(),
 )

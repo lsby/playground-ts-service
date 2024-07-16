@@ -10,10 +10,13 @@ export default new 接口(接口类型, async (插件结果) => {
 
   if (用户 == null || 用户.getPwd() != 插件结果.body.pwd) {
     await log.err('用户名或密码错误')
-    return new 错误JSON结果('用户名或密码错误' as '用户名或密码错误')
+    return new 错误JSON结果({
+      state: 'fail' as const,
+      error: '用户名或密码错误' as const,
+    })
   }
 
   var token = 插件结果.signJwt({ userId: 用户.getId() })
 
-  return new 正确JSON结果({ token })
+  return new 正确JSON结果({ state: 'success' as const, token })
 })

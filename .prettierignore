@@ -52,6 +52,6 @@ pnpm-lock.yaml
 
 # 忽略生成的文件
 /src/types/db.ts
-/test/unit-test.test.ts
-/out/type.ts
+/src/types/interface-type.ts
 /src/interface/interface-list.ts
+/test/unit-test.test.ts

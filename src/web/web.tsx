@@ -1,5 +1,6 @@
 import { Log } from '@lsby/ts-log'
 import { Flex布局, 按钮, 文本, 空事件监听, 输入框 } from '@lsby/ts-web-frame'
+import { GlobalWeb } from './global-web/global-web'
 
 async function main(): Promise<void> {
   var log = new Log('web')
@@ -37,6 +38,13 @@ async function main(): Promise<void> {
       new Flex布局({ 主轴方向: '上下' }, [
         new 文本({ 文本: '点击按钮后, 上面的输入框会变成两个' }),
         new Flex布局({ 主轴方向: '左右', 主轴项对齐方式: '居中' }, [设置输入框按钮]),
+      ]),
+      new Flex布局({ 主轴方向: '左右', 主轴项对齐方式: '居中' }, [
+        new 按钮({ 文本: '测试后端请求' }, async () => {
+          var 客户端 = await GlobalWeb.getItem('后端客户端')
+          var r = await 客户端.post('/api/base/add', { a: 1, b: 2 })
+          await log.debug('请求结果: %o', r)
+        }),
       ]),
     ]),
   ])

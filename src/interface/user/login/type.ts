@@ -24,7 +24,11 @@ export default new 接口类型(
     }),
   ],
   z.object({
+    state: z.literal('success'),
     token: z.string(),
   }),
-  z.enum(['用户名或密码错误']),
+  z.object({
+    state: z.literal('fail'),
+    error: z.enum(['用户名或密码错误']),
+  }),
 )
