@@ -1,10 +1,11 @@
 import { Log } from '@lsby/ts-log'
 import { Flex布局, 按钮, 文本, 空事件监听, 输入框 } from '@lsby/ts-web-frame'
-import { GlobalWeb } from './global-web/global-web'
+import { GlobalWeb } from './global/global'
 
 async function main(): Promise<void> {
-  var log = new Log('web')
   localStorage['debug'] = '*'
+
+  var log = new Log('web')
 
   const 挂载容器 = document.getElementById('app')
   if (挂载容器 == null) throw new Error('没有找到容器')
