@@ -1,9 +1,9 @@
 import { z } from 'zod'
-import { JSON解析插件, 接口类型 } from '@lsby/net-core'
+import { JSON解析插件, 包装的接口类型 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
 
-export default new 接口类型(
+export default new 包装的接口类型(
   '/api/user/is-login',
   'post',
   [

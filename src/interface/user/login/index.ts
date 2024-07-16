@@ -1,4 +1,4 @@
-import { 接口, 正确JSON结果, 错误JSON结果 } from '@lsby/net-core'
+import { 包装的正确JSON结果, 包装的错误JSON结果, 接口 } from '@lsby/net-core'
 import { Global } from '../../../global/global'
 import { 用户模型 } from '../../../model/user'
 import 接口类型 from './type'
@@ -10,13 +10,10 @@ export default new 接口(接口类型, async (插件结果) => {
 
   if (用户 == null || 用户.getPwd() != 插件结果.body.pwd) {
     await log.err('用户名或密码错误')
-    return new 错误JSON结果({
-      state: 'fail' as const,
-      error: '用户名或密码错误' as const,
-    })
+    return new 包装的错误JSON结果('用户名或密码错误' as const)
   }
 
   var token = 插件结果.signJwt({ userId: 用户.getId() })
 
-  return new 正确JSON结果({ state: 'success' as const, token })
+  return new 包装的正确JSON结果({ token })
 })

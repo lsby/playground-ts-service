@@ -24,9 +24,7 @@ export default new 测试(
     var env = await (await Global.getItem('env')).获得环境变量()
     var urlPath = 接口类型.获得路径()
     var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
-    await axios.post(url, formData, {})
-
-    return {}
+    return (await axios.post(url, formData, {})).data
   },
   async (data) => {
     var log = await Global.getItem('log')

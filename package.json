@@ -10,10 +10,10 @@
     "dist"
   ],
   "scripts": {
-    "build:all": "npm run build:web && npm run build:service",
+    "build:all": "npm run gen:list && npm run gen:type && npm run build:web && npm run build:service",
     "build:service": "npm run check:all && tsc",
     "build:web": "npm run check:all && vite build -c vite.config/production.js",
-    "check:all": "npm run check:format && npm run check:lint && npm run check:type",
+    "check:all": "npm run gen:list && npm run gen:type && npm run check:format && npm run check:lint && npm run check:type",
     "check:format": "prettier --write .",
     "check:lint": "eslint . --fix",
     "check:type": "tsc --noEmit",
@@ -33,7 +33,7 @@
     "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.1.6",
+    "@lsby/net-core": "^0.1.9",
     "@lsby/net-core-file-upload": "^0.0.6",
     "@lsby/net-core-jwt": "^0.0.6",
     "@lsby/ts-cron": "^0.0.1",

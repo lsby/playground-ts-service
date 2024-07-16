@@ -14,8 +14,8 @@ class 后端客户端 {
 
   async 登录(用户名: string, 密码: string): Promise<void> {
     var c = await this.post('/api/user/login', { name: 用户名, pwd: 密码 })
-    if (c.state == 'fail') throw new Error(c.error)
-    this.token = c.token
+    if (c.status == 'fail') throw new Error(c.data)
+    this.token = c.data.token
   }
 }
 

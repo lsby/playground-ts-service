@@ -19,7 +19,7 @@ export async function 请求用例00<接口类型 extends 任意接口类型>(
       name: 登录.用户名,
       pwd: 登录.密码,
     })
-    var token = login.data[登录.凭据属性]
+    var token = login.data.data[登录.凭据属性]
   }
 
   var method = 接口类型描述.获得方法()

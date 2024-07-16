@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { JSON解析插件, 接口类型 } from '@lsby/net-core'
+import { JSON解析插件, 包装的接口类型 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 
-export default new 接口类型(
+export default new 包装的接口类型(
   '/api/user/register',
   'post',
   [
@@ -21,8 +21,5 @@ export default new 接口类型(
   z.object({
     state: z.literal('success'),
   }),
-  z.object({
-    state: z.literal('fail'),
-    error: z.enum(['用户名已存在']),
-  }),
+  z.enum(['用户名已存在']),
 )

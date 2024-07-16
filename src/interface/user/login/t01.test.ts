@@ -32,6 +32,6 @@ export default new 测试(
     if (!正确结果.success) throw new Error('应该调用成功, 实际调用出错')
     var 结果 = 正确结果.data
 
-    assert.notEqual(结果.token.length, null)
+    assert.notEqual(结果.data.token.length, null)
   },
 )
