@@ -4,10 +4,10 @@ import 接口类型 from './type'
 
 export default new 接口(接口类型, async (插件结果) => {
   var log = (await Global.getItem('log')).extend('login')
-  var db = await Global.getItem('kysely')
+  var db = await (await Global.getItem('kysely')).获得句柄()
 
   var user = await db
-    .获得句柄()
+
     .selectFrom('user')
     .select(['id'])
     .where('name', '=', 插件结果.body.name)
