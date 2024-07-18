@@ -7,7 +7,7 @@ async function main(): Promise<void> {
 
   var log = new Log('web')
 
-  const 挂载容器 = document.getElementById('app')
+  var 挂载容器 = document.getElementById('app')
   if (挂载容器 == null) throw new Error('没有找到容器')
 
   var 输入框组件1: 输入框 = new 输入框({ 内容: '你好世界1' }, async (输入事件) =>

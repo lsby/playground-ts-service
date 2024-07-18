@@ -22,10 +22,10 @@ function 任务() {
 }
 任务()
 
-let 定时器句柄: NodeJS.Timeout
-let 状态: '执行中' | '空闲中' | '等待稍后执行' = '空闲中'
-const 延时 = 1000
-let 执行堆积 = false
+var 定时器句柄: NodeJS.Timeout
+var 状态: '执行中' | '空闲中' | '等待稍后执行' = '空闲中'
+var 延时 = 1000
+var 执行堆积 = false
 nodeWatch(
   path.resolve(watchPath),
   {
