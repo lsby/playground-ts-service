@@ -33,9 +33,9 @@
     "test:unit:coverage": "npm run check:all && npm run gen:list && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.1.9",
-    "@lsby/net-core-file-upload": "^0.0.6",
-    "@lsby/net-core-jwt": "^0.0.6",
+    "@lsby/net-core": "^0.2.0",
+    "@lsby/net-core-file-upload": "^0.0.7",
+    "@lsby/net-core-jwt": "^0.0.7",
     "@lsby/ts-cron": "^0.0.1",
     "@lsby/ts-env": "^0.0.9",
     "@lsby/ts-fp-data": "^0.1.0",

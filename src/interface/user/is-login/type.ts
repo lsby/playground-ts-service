@@ -12,12 +12,7 @@ export default new 包装的接口类型(
       return jwt.解析器
     }),
     new Task(async () => {
-      return new JSON解析插件(
-        z.object({
-          body: z.object({}),
-        }),
-        {},
-      )
+      return new JSON解析插件(z.object({}), {})
     }),
   ],
   z.object({
