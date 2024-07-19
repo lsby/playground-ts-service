@@ -21,11 +21,18 @@ export class 用户 {
     if (user == null) return new Nothing()
     return new Just(user)
   }
-  static async 创建用户(name: string, pwd: string): Promise<用户> {
+  static async 不安全的创建用户(name: string, pwd: string): Promise<用户> {
     var db = (await Global.getItem('kysely')).获得句柄()
     var id = randomUUID()
     await db.insertInto('user').values({ id, name, pwd }).execute()
     return new 用户(id)
+  }
+  static async 创建用户(name: string, pwd: string): Promise<Maybe<用户>> {
+    try {
+      return new Just(await 用户.不安全的创建用户(name, pwd))
+    } catch (e) {
+      return new Nothing()
+    }
   }
 
   private constructor(private id: string) {}

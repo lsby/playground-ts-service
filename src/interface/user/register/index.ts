@@ -12,7 +12,7 @@ export default new 接口(接口类型, async (ctx) => {
     return new 包装的错误JSON结果('用户名已存在' as const)
   }
 
-  await 用户.创建用户(ctx.body.name, ctx.body.pwd)
+  await 用户.不安全的创建用户(ctx.body.name, ctx.body.pwd)
 
   return new 包装的正确JSON结果({
     state: 'success' as const,
