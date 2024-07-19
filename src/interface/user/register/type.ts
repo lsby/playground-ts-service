@@ -19,5 +19,5 @@ export default new 包装的接口类型(
   z.object({
     state: z.literal('success'),
   }),
-  z.enum(['用户名已存在']),
+  z.enum(['用户名已存在', '非预期的错误']),
 )

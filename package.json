@@ -38,7 +38,7 @@
     "@lsby/net-core-jwt": "^0.0.7",
     "@lsby/ts-cron": "^0.0.1",
     "@lsby/ts-env": "^0.0.9",
-    "@lsby/ts-fp-data": "^0.1.0",
+    "@lsby/ts-fp-data": "^0.1.4",
     "@lsby/ts-global": "^0.0.5",
     "@lsby/ts-kysely": "^0.0.1",
     "@lsby/ts-log": "^0.0.3",
