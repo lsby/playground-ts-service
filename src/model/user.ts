@@ -22,7 +22,7 @@ export class 用户 {
     return new 用户(id)
   }
 
-  constructor(private id: string) {}
+  private constructor(private id: string) {}
 
   async getId(): Promise<Maybe<string>> {
     var db = (await Global.getItem('kysely')).获得句柄()
