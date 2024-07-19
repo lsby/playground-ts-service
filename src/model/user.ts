@@ -15,6 +15,12 @@ export class 用户 {
     if (user == null) return new Nothing()
     return new Just(new 用户(user.id))
   }
+  static async 通过名称读取用户基本信息(name: string): Promise<Maybe<{ id: string; name: string; pwd: string }>> {
+    var db = (await Global.getItem('kysely')).获得句柄()
+    var user = await db.selectFrom('user').select(['id', 'name', 'pwd']).where('name', '=', name).executeTakeFirst()
+    if (user == null) return new Nothing()
+    return new Just(user)
+  }
   static async 创建用户(name: string, pwd: string): Promise<用户> {
     var db = (await Global.getItem('kysely')).获得句柄()
     var id = randomUUID()
