@@ -15,8 +15,8 @@ dependencies:
     specifier: ^0.1.0
     version: 0.1.0(@lsby/net-core@0.3.0)(@types/node@20.12.10)
   '@lsby/ts-cron':
-    specifier: ^0.0.1
-    version: 0.0.1(@types/node@20.12.10)
+    specifier: ^0.0.2
+    version: 0.0.2(@types/node@20.12.10)
   '@lsby/ts-env':
     specifier: ^0.0.9
     version: 0.0.9(@types/node@20.12.10)
@@ -1018,12 +1018,11 @@ packages:
       - terser
     dev: false
 
-  /@lsby/ts-cron@0.0.1(@types/node@20.12.10):
-    resolution: {integrity: sha512-xuj6kOkOfImTc/rA9KXpFxCkp3bloR0Au2zJ/p1hp2cDi3kinKCTedEsNP3IXaM1dlI2DlY+zye2cnDEGoppQA==}
+  /@lsby/ts-cron@0.0.2(@types/node@20.12.10):
+    resolution: {integrity: sha512-BgDDGlwgsagCNpw2jSmn8nsT80tgYaybz33gEfXP+wkuh1Mo0pxMkfMBQ78L2UWn48fGJAazFjR4hNJ2p1S3hg==}
     dependencies:
       node-schedule: 2.1.1
       vitest: 2.0.2(@types/node@20.12.10)
-      zod: 3.23.8
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@types/node'
