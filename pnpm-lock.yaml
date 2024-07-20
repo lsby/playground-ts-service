@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@lsby/net-core':
     specifier: ^0.3.0
-    version: 0.3.0(@lsby/ts-fp-data@0.2.0)(@types/express@4.17.21)(@types/node@20.12.10)
+    version: 0.3.0(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
   '@lsby/net-core-file-upload':
     specifier: ^0.1.0
     version: 0.1.0(@lsby/net-core@0.3.0)(@types/node@20.12.10)
@@ -21,8 +21,8 @@ dependencies:
     specifier: ^0.0.9
     version: 0.0.9(@types/node@20.12.10)
   '@lsby/ts-fp-data':
-    specifier: ^0.2.0
-    version: 0.2.0
+    specifier: ^0.2.1
+    version: 0.2.1
   '@lsby/ts-global':
     specifier: ^0.0.5
     version: 0.0.5(@types/node@20.12.10)
@@ -941,7 +941,7 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.0
     dependencies:
-      '@lsby/net-core': 0.3.0(@lsby/ts-fp-data@0.2.0)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.0(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
@@ -966,7 +966,7 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.0
     dependencies:
-      '@lsby/net-core': 0.3.0(@lsby/ts-fp-data@0.2.0)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.0(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.2(@types/node@20.12.10)
       zod: 3.23.8
@@ -986,14 +986,14 @@ packages:
       - terser
     dev: false
 
-  /@lsby/net-core@0.3.0(@lsby/ts-fp-data@0.2.0)(@types/express@4.17.21)(@types/node@20.12.10):
+  /@lsby/net-core@0.3.0(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10):
     resolution: {integrity: sha512-n0Blk635o0+EheAvN3ttDmCMGuP1M83wCiRP+zNJWO6LeVJOBBdzR24cFLVVbpghRubx0Qq/RT+rc4+nI++gYA==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.0
       '@types/express': ^4.17.21
     dependencies:
-      '@lsby/ts-fp-data': 0.2.0
+      '@lsby/ts-fp-data': 0.2.1
       '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
       '@lsby/ts-log': 0.0.3(@types/node@20.12.10)
       '@types/express': 4.17.21
@@ -1083,8 +1083,8 @@ packages:
       - terser
     dev: false
 
-  /@lsby/ts-fp-data@0.2.0:
-    resolution: {integrity: sha512-2k4NjKWEVoEfg3Ct01b3s+lF15Jx6rathWkNRXMs0K0VU493tG2QGbGYDG7XC89aU2QSICeZOMfPi77FZP6jCQ==}
+  /@lsby/ts-fp-data@0.2.1:
+    resolution: {integrity: sha512-QgQ0HPRAdFZIL7CaG+LEJUTyCt6tU0QPB8f6ucqMUH1GokyBv1+BmA7VC/2J8UzflVIxSDYvIe5WuHDbPEilPA==}
     dev: false
 
   /@lsby/ts-global@0.0.3(@types/node@20.12.10):
