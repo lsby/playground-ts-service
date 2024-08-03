@@ -15,15 +15,15 @@ export async function 请求用例00<接口类型 extends 任意接口类型>(
   var env = await (await Global.getItem('env')).获得环境变量()
 
   if (登录) {
-    var login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
+    var login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       name: 登录.用户名,
       pwd: 登录.密码,
-    })
+    })) as { data: { data: { [key: string]: string } } }
     var token = login.data.data[登录.凭据属性]
   }
 
-  var method = 接口类型描述.获得方法()
-  var urlPath = 接口类型描述.获得路径()
+  var method = 接口类型描述.获得方法() as string
+  var urlPath = 接口类型描述.获得路径() as string
   var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
   if (method == 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
