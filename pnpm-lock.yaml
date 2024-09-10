@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: ^0.3.3
-        version: 0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+        specifier: ^0.3.5
+        version: 0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.0(@lsby/net-core@0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-jwt':
         specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.0(@lsby/net-core@0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.2
         version: 0.0.2(@types/node@20.12.10)
@@ -611,8 +611,8 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.0
 
-  '@lsby/net-core@0.3.3':
-    resolution: {integrity: sha512-FfPWevummaXqNpWOUZO1h9L7bt0b4IO+OfsmtRul9ig3/yIL5BIUSAiwpPFLRUSRynP7sv1xDWUB11nHxuRpKQ==}
+  '@lsby/net-core@0.3.5':
+    resolution: {integrity: sha512-gwORDjy+DklJsFZs0AUTgXYpp2SIY0Ce5l/i7Mjfn8c6UJjX0R3t/A5mmvbUDeVlDEhbMV1KWKeBc49EqG8uNg==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.0
@@ -3640,9 +3640,9 @@ snapshots:
       eslint-plugin-sort-class-members: 1.20.0(eslint@8.57.0)
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)
 
-  '@lsby/net-core-file-upload@0.1.0(@lsby/net-core@0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-file-upload@0.1.0(@lsby/net-core@0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3662,9 +3662,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.0(@lsby/net-core@0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-jwt@0.1.0(@lsby/net-core@0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3684,7 +3684,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.3(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)':
+  '@lsby/net-core@0.3.5(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.1
       '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
