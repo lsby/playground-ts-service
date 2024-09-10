@@ -6,9 +6,7 @@ import 接口类型 from './type'
 
 export default new 测试(
   接口类型,
-  async () => {
-    // 前置步骤, 可以在这里初始化数据库等
-  },
+  async () => {},
   async () => {
     return 请求用例00(接口类型, {
       a: 2,
