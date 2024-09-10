@@ -1,7 +1,7 @@
 import { Cron抽象类 } from '@lsby/ts-cron'
 import { Global } from '../global/global'
 
-class OnTimeAlarm extends Cron抽象类 {
+class 定时任务实现 extends Cron抽象类 {
   override getName(): string {
     return '整点报时'
   }
@@ -14,4 +14,4 @@ class OnTimeAlarm extends Cron抽象类 {
   }
 }
 
-export var onTimeAlarm = new OnTimeAlarm()
+export var onTimeAlarm = new 定时任务实现()
