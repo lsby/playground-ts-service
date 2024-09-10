@@ -9,7 +9,7 @@ export class App {
     var env = await (await Global.getItem('env')).获得环境变量()
 
     var cron = await Global.getItem('cron')
-    await cron.run([onTimeAlarm])
+    await cron.执行([onTimeAlarm])
 
     var service = new 服务器(interfaceList, env.APP_PORT, env.WEB_PATH)
     var serviceInfo = await service.run()

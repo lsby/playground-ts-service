@@ -37,7 +37,7 @@
     "@lsby/net-core": "^0.3.5",
     "@lsby/net-core-file-upload": "^0.1.0",
     "@lsby/net-core-jwt": "^0.1.0",
-    "@lsby/ts-cron": "^0.0.2",
+    "@lsby/ts-cron": "^0.0.6",
     "@lsby/ts-env": "^0.0.9",
     "@lsby/ts-fp-data": "^0.2.1",
     "@lsby/ts-global": "^0.0.5",
