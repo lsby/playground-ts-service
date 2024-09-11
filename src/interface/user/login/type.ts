@@ -13,7 +13,7 @@ var 输出zod = z.object({
 })
 var 错误zod = z.enum([兜底错误, '用户不存在', '密码错误'])
 
-export type 输入 = z.infer<typeof 输入zod> & { 签名函数: (args_0: { userId?: string | undefined }) => string }
+export type 输入 = z.infer<typeof 输入zod> & { 签名函数: (a: { userId: string }) => string }
 export type 输出 = z.infer<typeof 输出zod>
 export type 错误 = z.infer<typeof 错误zod>
 
