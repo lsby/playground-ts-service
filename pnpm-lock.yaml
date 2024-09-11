@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@lsby/net-core':
         specifier: ^0.3.11
-        version: 0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+        version: 0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-jwt':
         specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@20.12.10)
@@ -24,8 +24,8 @@ importers:
         specifier: ^0.0.9
         version: 0.0.9(@types/node@20.12.10)
       '@lsby/ts-fp-data':
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.2
+        version: 0.2.2
       '@lsby/ts-global':
         specifier: ^0.0.5
         version: 0.0.5(@types/node@20.12.10)
@@ -112,8 +112,8 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
       vite:
-        specifier: ^5.4.3
-        version: 5.4.3(@types/node@20.12.10)
+        specifier: ^5.4.4
+        version: 5.4.4(@types/node@20.12.10)
       vitest:
         specifier: ^2.0.5
         version: 2.0.5(@types/node@20.12.10)
@@ -627,8 +627,8 @@ packages:
   '@lsby/ts-format@0.0.1':
     resolution: {integrity: sha512-wEIDpZdpJNQSmEUoRUE7l4MqFqIkGclL5KN1WB3/NQaWfZCEjjXc/8UJqIhFkIV9CUWEXc9orJRIozIo/xOFEw==}
 
-  '@lsby/ts-fp-data@0.2.1':
-    resolution: {integrity: sha512-QgQ0HPRAdFZIL7CaG+LEJUTyCt6tU0QPB8f6ucqMUH1GokyBv1+BmA7VC/2J8UzflVIxSDYvIe5WuHDbPEilPA==}
+  '@lsby/ts-fp-data@0.2.2':
+    resolution: {integrity: sha512-2o0EdmKZ/Cb4VWMYC/LUeXmMPmrqvwBS8ZzHrYdjSqHVwJu08F9q7X5u1eMEEhU0lAsN+d4jAn0yzS674X/Bhw==}
 
   '@lsby/ts-global@0.0.3':
     resolution: {integrity: sha512-5smktNMYP+xkZSPKfuZfpIr+oMfsSJcIbScWr3BPJfYi/iM11JuJXUgxerw9rzuXGC6Eq+1zibWxN8G1cgUpFQ==}
@@ -3138,8 +3138,8 @@ packages:
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
 
-  vite@5.4.3:
-    resolution: {integrity: sha512-IH+nl64eq9lJjFqU+/yrRnrHPVTlgy42/+IzbOdaFDVlyLgI/wDlf+FCobXLX1cT0X5+7LMyH1mIy2xJdLfo8Q==}
+  vite@5.4.4:
+    resolution: {integrity: sha512-RHFCkULitycHVTtelJ6jQLd+KSAAzOgEYorV32R2q++M6COBjKJR6BxqClwp5sf0XaBDjVMuJ9wnNfyAJwjMkA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -3640,9 +3640,9 @@ snapshots:
       eslint-plugin-sort-class-members: 1.20.0(eslint@8.57.0)
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)
 
-  '@lsby/net-core-file-upload@0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-file-upload@0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3662,9 +3662,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-jwt@0.1.0(@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3684,9 +3684,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.1)(@types/express@4.17.21)(@types/node@20.12.10)':
+  '@lsby/net-core@0.3.11(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)':
     dependencies:
-      '@lsby/ts-fp-data': 0.2.1
+      '@lsby/ts-fp-data': 0.2.2
       '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
       '@lsby/ts-log': 0.0.3(@types/node@20.12.10)
       '@types/express': 4.17.21
@@ -3773,7 +3773,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-fp-data@0.2.1': {}
+  '@lsby/ts-fp-data@0.2.2': {}
 
   '@lsby/ts-global@0.0.3(@types/node@20.12.10)':
     dependencies:
@@ -6582,7 +6582,7 @@ snapshots:
       debug: 4.3.6
       pathe: 1.1.2
       tinyrainbow: 1.2.0
-      vite: 5.4.3(@types/node@20.12.10)
+      vite: 5.4.4(@types/node@20.12.10)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6594,7 +6594,7 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.4.3(@types/node@20.12.10):
+  vite@5.4.4(@types/node@20.12.10):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.45
@@ -6621,7 +6621,7 @@ snapshots:
       tinybench: 2.8.0
       tinypool: 1.0.0
       tinyrainbow: 1.2.0
-      vite: 5.4.3(@types/node@20.12.10)
+      vite: 5.4.4(@types/node@20.12.10)
       vite-node: 2.0.5(@types/node@20.12.10)
       why-is-node-running: 2.3.0
     optionalDependencies:

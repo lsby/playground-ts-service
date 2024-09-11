@@ -39,7 +39,7 @@
     "@lsby/net-core-jwt": "^0.1.0",
     "@lsby/ts-cron": "^0.0.6",
     "@lsby/ts-env": "^0.0.9",
-    "@lsby/ts-fp-data": "^0.2.1",
+    "@lsby/ts-fp-data": "^0.2.2",
     "@lsby/ts-global": "^0.0.5",
     "@lsby/ts-kysely": "^0.0.2",
     "@lsby/ts-log": "^0.0.3",
@@ -70,7 +70,7 @@
     "prisma-kysely": "^1.8.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.2",
-    "vite": "^5.4.3",
+    "vite": "^5.4.4",
     "vitest": "^2.0.5"
   },
   "packageManager": "pnpm@9.5.0"
