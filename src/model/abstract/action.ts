@@ -213,7 +213,7 @@ export abstract class 业务行为<
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
       if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       return Either.pure(f(我的结果.assertRight().getRight()))
-    }, `映射结果(${this.业务行为名称})`)
+    }, this.业务行为名称)
   }
   映射错误<新错误类型 extends 业务行为错误类型>(
     f: (a: 错误类型) => 新错误类型,
@@ -222,6 +222,6 @@ export abstract class 业务行为<
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
       if (我的结果.isLeft()) return new Left(f(我的结果.assertLeft().getLeft()))
       return Either.pure(我的结果.assertRight().getRight())
-    }, `映射错误(${this.业务行为名称})`)
+    }, this.业务行为名称)
   }
 }
