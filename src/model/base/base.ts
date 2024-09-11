@@ -136,7 +136,7 @@ export abstract class 业务行为<
   /**
    * 混合合并 的数组版本
    */
-  static 混合合并数组<A extends 任意业务行为[]>(...arr: [...A]): 计算混合合并数组<A> {
+  static 混合合并数组<A extends 任意业务行为[]>(arr: [...A]): 计算混合合并数组<A> {
     return arr.reduce((s, a) => s.混合合并(a)) as any
   }
 
