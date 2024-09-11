@@ -2,6 +2,17 @@ import { z } from 'zod'
 import { JSON解析插件, 包装的接口类型 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
+import { 兜底错误 } from '../../../model/base/base'
+
+var 输入zod = z.object({})
+var 输出zod = z.object({
+  isLogin: z.boolean(),
+})
+var 错误zod = z.enum([兜底错误])
+
+export type 输入 = z.infer<typeof 输入zod>
+export type 输出 = z.infer<typeof 输出zod>
+export type 错误 = z.infer<typeof 错误zod>
 
 export default new 包装的接口类型(
   '/api/user/is-login',
@@ -12,11 +23,9 @@ export default new 包装的接口类型(
       return jwt.解析器
     }),
     new Task(async () => {
-      return new JSON解析插件(z.object({}), {})
+      return new JSON解析插件(输入zod, {})
     }),
   ],
-  z.object({
-    isLogin: z.boolean(),
-  }),
-  z.never(),
+  输出zod,
+  错误zod,
 )
