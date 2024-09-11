@@ -62,6 +62,7 @@ export abstract class 业务行为<
   错误类型 extends 业务行为错误类型,
   返回类型 extends 业务行为返回类型,
 > {
+  // ================================= 静态 =================================
   static 通过实现构造<
     参数类型 extends 业务行为参数类型,
     错误类型 extends 业务行为错误类型,
@@ -126,7 +127,7 @@ export abstract class 业务行为<
     return arr.reduce((s, a) => s.混合合并(a)) as any
   }
 
-  // =================================
+  // ================================= 私有 =================================
   private 业务行为名称: string
   constructor(业务行为名称?: string) {
     if (!业务行为名称) this.业务行为名称 = this.constructor.name || '<匿名>'
@@ -139,6 +140,7 @@ export abstract class 业务行为<
     return await this.业务行为实现(上下文, 参数)
   }
 
+  // ================================= 公开 =================================
   设置业务行为名称(业务行为名称: string): this {
     this.业务行为名称 = 业务行为名称
     return this
@@ -146,10 +148,8 @@ export abstract class 业务行为<
 
   async 运行业务行为(kysely: Kysely<DB>, 参数: 参数类型): Promise<Either<错误类型, 返回类型>> {
     var log = (await Global.getItem('log')).extend(this.业务行为名称)
-
     try {
       var r: Either<错误类型, 返回类型>
-
       if (!kysely.isTransaction) {
         r = await kysely.connection().execute(async (db) => {
           return db.transaction().execute(async (trx) => {
@@ -161,26 +161,23 @@ export abstract class 业务行为<
       } else {
         r = await this.业务行为实现({ kesely: kysely, log }, 参数)
       }
-
       return r
     } catch (e) {
-      if (e instanceof Either) {
-        return e
-      } else {
+      if (e instanceof Either) return e
+      else {
         await log.err('业务行为发生非预期的异常: %O', e)
         return new Left(兜底错误 as 错误类型)
       }
     }
   }
 
+  // ================================= 合并 =================================
   流式合并<B错误类型 extends 业务行为错误类型, B返回类型 extends 业务行为返回类型>(
     b: 业务行为<返回类型, B错误类型, B返回类型>,
   ): 业务行为<参数类型, 错误类型 | B错误类型, B返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数): Promise<Either<错误类型 | B错误类型, B返回类型>> => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
-      if (我的结果.isLeft()) {
-        return new Left(我的结果.assertLeft().getLeft())
-      }
+      if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       return b.非事务的运行业务行为(kesely, 我的结果.assertRight().getRight())
     }, `流式合并(${this.业务行为名称}, ${b.业务行为名称})`)
   }
@@ -189,22 +186,19 @@ export abstract class 业务行为<
   ): 计算混合合并<参数类型, 错误类型, 返回类型, B参数类型, B错误类型, B返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数): Promise<Either<错误类型 | B错误类型, 返回类型 & B返回类型>> => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
-      if (我的结果.isLeft()) {
-        return new Left(我的结果.assertLeft().getLeft())
-      }
+      if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       var 对方结果 = await b.非事务的运行业务行为(kesely, { ...参数, ...我的结果.assertRight().getRight() } as any)
       return 对方结果.map((a) => Object.assign(a, 我的结果.assertRight().getRight()))
     }, `混合合并(${this.业务行为名称}, ${b.业务行为名称})`)
   }
 
+  // ================================= 映射 =================================
   映射结果<新返回类型 extends 业务行为返回类型>(
     f: (a: 返回类型) => 新返回类型,
   ): 业务行为<参数类型, 错误类型, 新返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数) => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
-      if (我的结果.isLeft()) {
-        return new Left(我的结果.assertLeft().getLeft())
-      }
+      if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       return Either.pure(f(我的结果.assertRight().getRight()))
     }, `映射结果(${this.业务行为名称})`)
   }
@@ -213,9 +207,7 @@ export abstract class 业务行为<
   ): 业务行为<参数类型, 新错误类型, 返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数) => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
-      if (我的结果.isLeft()) {
-        return new Left(f(我的结果.assertLeft().getLeft()))
-      }
+      if (我的结果.isLeft()) return new Left(f(我的结果.assertLeft().getLeft()))
       return Either.pure(我的结果.assertRight().getRight())
     }, `映射错误(${this.业务行为名称})`)
   }
