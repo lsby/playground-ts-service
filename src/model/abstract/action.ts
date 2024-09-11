@@ -13,7 +13,7 @@ export type 业务行为实现上下文 = {
   log: Log
 }
 type 任意业务行为 = 业务行为<any, any, any>
-type 计算混合合并<
+type 计算混合组合<
   A参数类型,
   A错误类型 extends 业务行为错误类型,
   A返回类型 extends 业务行为返回类型,
@@ -21,16 +21,16 @@ type 计算混合合并<
   B错误类型 extends 业务行为错误类型,
   B返回类型 extends 业务行为返回类型,
 > = 业务行为<A参数类型 & Omit<B参数类型, keyof A返回类型>, A错误类型 | B错误类型, A返回类型 & B返回类型>
-type 计算混合单一合并<A, B> =
+type 计算混合单一组合<A, B> =
   A extends 业务行为<infer A参数, infer A错误, infer A返回>
     ? B extends 业务行为<infer B参数, infer B错误, infer B返回>
-      ? 计算混合合并<A参数, A错误, A返回, B参数, B错误, B返回>
+      ? 计算混合组合<A参数, A错误, A返回, B参数, B错误, B返回>
       : never
     : never
-type 计算混合合并数组<Arr> = Arr extends [infer x, infer y]
-  ? 计算混合单一合并<x, y>
+type 计算混合组合数组<Arr> = Arr extends [infer x, infer y]
+  ? 计算混合单一组合<x, y>
   : Arr extends [infer x, infer y, ...infer s]
-    ? 计算混合合并数组<[计算混合单一合并<x, y>, ...s]>
+    ? 计算混合组合数组<[计算混合单一组合<x, y>, ...s]>
     : never
 
 /**
@@ -100,7 +100,7 @@ export abstract class 业务行为<
    * - 错误: a模型的错误+b模型的错误
    * - 返回值: b模型的返回值
    */
-  static 流式合并<
+  static 流式组合<
     A参数类型 extends 业务行为参数类型,
     A错误类型 extends 业务行为错误类型,
     A返回类型 extends 业务行为返回类型,
@@ -110,17 +110,17 @@ export abstract class 业务行为<
     a: 业务行为<A参数类型, A错误类型, A返回类型>,
     b: 业务行为<A返回类型, B错误类型, B返回类型>,
   ): 业务行为<A参数类型, A错误类型 | B错误类型, B返回类型> {
-    return a.流式合并(b)
+    return a.流式组合(b)
   }
   /**
    * 将两个模型串接, 得到一个新的模型
-   * 相比流式合并, 本函数不要求串联位置参数匹配, 缺少的参数将在调用时补全
+   * 相比流式组合, 本函数不要求串联位置参数匹配, 缺少的参数将在调用时补全
    * 新模型的类型是:
    * - 参数: a模型的参数+(b模型的参数-a模型的返回值)
    * - 错误: a模型的错误+b模型的错误
    * - 返回值: a模型的返回值+b模型的返回值
    */
-  static 混合合并<
+  static 混合组合<
     A参数类型 extends 业务行为参数类型,
     A错误类型 extends 业务行为错误类型,
     A返回类型 extends 业务行为返回类型,
@@ -130,14 +130,14 @@ export abstract class 业务行为<
   >(
     a: 业务行为<A参数类型, A错误类型, A返回类型>,
     b: 业务行为<B参数类型, B错误类型, B返回类型>,
-  ): 计算混合合并<A参数类型, A错误类型, A返回类型, B参数类型, B错误类型, B返回类型> {
-    return a.混合合并(b)
+  ): 计算混合组合<A参数类型, A错误类型, A返回类型, B参数类型, B错误类型, B返回类型> {
+    return a.混合组合(b)
   }
   /**
-   * 混合合并 的数组版本
+   * 针对多个项混合组合
    */
-  static 混合合并数组<A extends 任意业务行为[]>(arr: [...A]): 计算混合合并数组<A> {
-    return arr.reduce((s, a) => s.混合合并(a)) as any
+  static 混合组合多项<A extends 任意业务行为[]>(arr: [...A]): 计算混合组合数组<A> {
+    return arr.reduce((s, a) => s.混合组合(a)) as any
   }
 
   // ================================= 私有 =================================
@@ -184,25 +184,25 @@ export abstract class 业务行为<
     }
   }
 
-  // ================================= 合并 =================================
-  流式合并<B错误类型 extends 业务行为错误类型, B返回类型 extends 业务行为返回类型>(
+  // ================================= 组合 =================================
+  流式组合<B错误类型 extends 业务行为错误类型, B返回类型 extends 业务行为返回类型>(
     b: 业务行为<返回类型, B错误类型, B返回类型>,
   ): 业务行为<参数类型, 错误类型 | B错误类型, B返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数): Promise<Either<错误类型 | B错误类型, B返回类型>> => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
       if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       return b.非事务的运行业务行为(kesely, 我的结果.assertRight().getRight())
-    }, `流式合并(${this.业务行为名称}, ${b.业务行为名称})`)
+    }, `流式组合(${this.业务行为名称}, ${b.业务行为名称})`)
   }
-  混合合并<B参数类型 extends 业务行为参数类型, B错误类型 extends 业务行为错误类型, B返回类型 extends 业务行为返回类型>(
+  混合组合<B参数类型 extends 业务行为参数类型, B错误类型 extends 业务行为错误类型, B返回类型 extends 业务行为返回类型>(
     b: 业务行为<B参数类型, B错误类型, B返回类型>,
-  ): 计算混合合并<参数类型, 错误类型, 返回类型, B参数类型, B错误类型, B返回类型> {
+  ): 计算混合组合<参数类型, 错误类型, 返回类型, B参数类型, B错误类型, B返回类型> {
     return 业务行为.通过实现构造(async (kesely, 参数): Promise<Either<错误类型 | B错误类型, 返回类型 & B返回类型>> => {
       const 我的结果 = await this.非事务的运行业务行为(kesely, 参数)
       if (我的结果.isLeft()) return new Left(我的结果.assertLeft().getLeft())
       var 对方结果 = await b.非事务的运行业务行为(kesely, { ...参数, ...我的结果.assertRight().getRight() } as any)
       return 对方结果.map((a) => Object.assign(a, 我的结果.assertRight().getRight()))
-    }, `混合合并(${this.业务行为名称}, ${b.业务行为名称})`)
+    }, `混合组合(${this.业务行为名称}, ${b.业务行为名称})`)
   }
 
   // ================================= 映射 =================================
