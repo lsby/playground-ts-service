@@ -168,6 +168,7 @@ export abstract class 业务行为<
 
   // ================================= 私有 =================================
   private 业务行为名称: string
+
   constructor(业务行为名称?: string) {
     if (!业务行为名称) this.业务行为名称 = this.constructor.name || '<匿名>'
     else this.业务行为名称 = 业务行为名称
