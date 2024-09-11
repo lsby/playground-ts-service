@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto'
 import { API接口, 包装的正确JSON结果, 包装的错误JSON结果, 计算实现参数, 计算实现结果 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
-import { 业务行为, 业务行为实现上下文 } from '../../../model/base/base'
+import { 业务行为, 业务行为实现上下文 } from '../../../model/abstract/action'
 import API类型定义, { 输入, 输出, 错误 } from './type'
 
 export class 注册 extends 业务行为<输入, 错误, 输出> implements API接口<typeof API类型定义> {

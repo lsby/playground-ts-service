@@ -3,7 +3,7 @@ import { 包装的接口类型 } from '@lsby/net-core'
 import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Task } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
-import { 兜底错误 } from '../../../model/base/base'
+import { 兜底错误 } from '../../../model/abstract/action'
 
 var 输入zod = z.object({})
 var 输出zod = z.object({})

@@ -1,6 +1,6 @@
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { user } from '../../types/db'
-import { 业务行为, 业务行为实现上下文, 兜底错误 } from '../base/base'
+import { 业务行为, 业务行为实现上下文, 兜底错误 } from '../abstract/action'
 
 type 输入 = {
   用户: user

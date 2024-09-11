@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { JSON解析插件, 包装的接口类型 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
-import { 兜底错误 } from '../../../model/base/base'
+import { 兜底错误 } from '../../../model/abstract/action'
 
 var 输入zod = z.object({
   name: z.string(),
