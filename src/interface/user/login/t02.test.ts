@@ -33,7 +33,7 @@ class 我的测试 extends 测试抽象类 {
     if (!错误结果.success) throw new Error('应该调用出错, 实际调用成功')
     var 结果 = 错误结果.data
 
-    assert.equal(结果.data, '用户名或密码错误')
+    assert.equal(结果.data, '用户不存在')
   }
 }
 
