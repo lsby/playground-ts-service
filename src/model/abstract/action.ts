@@ -179,12 +179,18 @@ export abstract class 业务行为<
     return await this.业务行为实现(上下文, 参数)
   }
 
-  // ================================= 公开 =================================
+  // ================================= 设置 =================================
   设置业务行为名称(业务行为名称: string): this {
     this.业务行为名称 = 业务行为名称
     return this
   }
+  设置参数<A extends Partial<参数类型>>(设置参数: A): 业务行为<Omit<参数类型, keyof A>, 错误类型, 返回类型> {
+    return 业务行为.通过实现构造(async (kesely, 参数) => {
+      return await this.非事务的运行业务行为(kesely, { ...设置参数, ...参数 } as any)
+    }, this.业务行为名称)
+  }
 
+  // ================================= 运行 =================================
   async 运行业务行为(kysely: Kysely<DB>, 参数: 参数类型): Promise<Either<错误类型, 返回类型>> {
     var log = (await Global.getItem('log')).extend(this.业务行为名称)
     try {
