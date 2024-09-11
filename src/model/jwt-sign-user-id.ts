@@ -4,7 +4,7 @@ import { 业务行为, 业务行为实现上下文, 兜底错误 } from './base/
 
 type 输入 = {
   用户: user
-  签名函数: (args_0: { userId?: string | undefined }) => string
+  签名函数: (a: { userId: string }) => string
 }
 type 输出 = {
   签名: string

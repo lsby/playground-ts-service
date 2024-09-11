@@ -4,7 +4,7 @@ import { Global } from '../../../global/global'
 import { 业务行为, 业务行为实现上下文 } from '../../../model/base/base'
 import { 检查用户密码 } from '../../../model/check-user-pwd'
 import { 查找用户 } from '../../../model/find-user'
-import { 签名用户id } from '../../../model/sign-user-id'
+import { 签名用户id } from '../../../model/jwt-sign-user-id'
 import API类型定义, { 输入, 输出, 错误 } from './type'
 
 export class 登录 extends 业务行为<输入, 错误, 输出> implements API接口<typeof API类型定义> {
