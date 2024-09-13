@@ -7,6 +7,7 @@ import { Env } from '@lsby/ts-env'
 import { GlobalAsyncItem, GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import { Log } from '@lsby/ts-log'
+import { Kysely插件 } from '../model/plugin/kysely'
 import { DB } from '../types/db'
 
 var env = new Env({
@@ -37,5 +38,9 @@ export var Global = new GlobalService([
   new GlobalAsyncItem('jwt-plugin', async () => {
     var e = await env.获得环境变量()
     return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), e.JWT_SECRET, e.JWT_EXPIRES_IN)
+  }),
+  new GlobalAsyncItem('kysely-plugin', async () => {
+    var e = await env.获得环境变量()
+    return new Kysely插件(new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })).获得句柄())
   }),
 ])

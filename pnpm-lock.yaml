@@ -9,14 +9,14 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: ^0.3.12
-        version: 0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
+        specifier: ^0.3.14
+        version: 0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/net-core-file-upload':
-        specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        specifier: ^0.1.2
+        version: 0.1.2(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-jwt':
-        specifier: ^0.1.0
-        version: 0.1.0(@lsby/net-core@0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        specifier: ^0.1.2
+        version: 0.1.2(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@20.12.10)
@@ -601,18 +601,18 @@ packages:
       eslint-plugin-sort-class-members: ^1.20.0
       eslint-plugin-unused-imports: ^3.2.0
 
-  '@lsby/net-core-file-upload@0.1.0':
-    resolution: {integrity: sha512-ruaVpfpoQScJqnrzyrtQXYTB2r8SLuli0w1eG0AF/p/kF94zhwF+K0srn7G7uwbTWXIPL7ieeKjGgGNO/7OSzQ==}
+  '@lsby/net-core-file-upload@0.1.2':
+    resolution: {integrity: sha512-U15SDU6p2yeRUVry0BPznUHHpNT/VpEcpVDxzgPnLwny5hfzbKQalygJLKkNh6G1vxWO+9c/JkWfkgLFdghozw==}
     peerDependencies:
-      '@lsby/net-core': ^0.3.0
+      '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core-jwt@0.1.0':
-    resolution: {integrity: sha512-NXbuDXzcvOPTe209xHvyDyRL6FeJ/2j/7z20dgL41MyvvJtZQ+/lyjaDV55yd5hOfWhQe41ZkISlSnejf52RDw==}
+  '@lsby/net-core-jwt@0.1.2':
+    resolution: {integrity: sha512-T5mliRz9kQC8jfydCvB/xowCYHjn1eiN+9Swp6kZOB2fVOJ5PFkKimTIZJz7dI/7tEp7yPzfu7ta967h5JeExg==}
     peerDependencies:
-      '@lsby/net-core': ^0.3.0
+      '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core@0.3.12':
-    resolution: {integrity: sha512-3Np81uhwKNebgoUwQm8rbzLA8/uVNOgBssN2g2ZEesVpdotyw6MHzQayl2fASpkLhxJXIUXhos1SzRARf9nnVg==}
+  '@lsby/net-core@0.3.14':
+    resolution: {integrity: sha512-TPO6O1WU7d4x9xlO3ryEB4dBCPiJugGFG+LBwzHF+FMypYrfZvCU8jXxyB86Y0Hhvezn9c+qbF/GQMc2n9Ffkg==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.0
@@ -3640,9 +3640,9 @@ snapshots:
       eslint-plugin-sort-class-members: 1.20.0(eslint@8.57.0)
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)
 
-  '@lsby/net-core-file-upload@0.1.0(@lsby/net-core@0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3662,9 +3662,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.0(@lsby/net-core@0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3684,7 +3684,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.12(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)':
+  '@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.2
       '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
