@@ -17,6 +17,9 @@ importers:
       '@lsby/net-core-jwt':
         specifier: ^0.1.2
         version: 0.1.2(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+      '@lsby/net-core-kysely':
+        specifier: 0.0.1
+        version: 0.0.1(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@20.12.10)
@@ -608,6 +611,11 @@ packages:
 
   '@lsby/net-core-jwt@0.1.2':
     resolution: {integrity: sha512-T5mliRz9kQC8jfydCvB/xowCYHjn1eiN+9Swp6kZOB2fVOJ5PFkKimTIZJz7dI/7tEp7yPzfu7ta967h5JeExg==}
+    peerDependencies:
+      '@lsby/net-core': ^0.3.13
+
+  '@lsby/net-core-kysely@0.0.1':
+    resolution: {integrity: sha512-OspsyiQQWGvtWcSCrD+ayoeYY1fKes8yR5RIyQgrP2SGguqRk+gIrEMNtMCi3URb7dA6blevH6tcBFTOOL6qXg==}
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
@@ -3666,6 +3674,28 @@ snapshots:
     dependencies:
       '@lsby/net-core': 0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
+      vitest: 2.0.5(@types/node@20.12.10)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+    dependencies:
+      '@lsby/net-core': 0.3.14(@lsby/ts-fp-data@0.2.2)(@types/express@4.17.21)(@types/node@20.12.10)
+      kysely: 0.27.4
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
     transitivePeerDependencies:
