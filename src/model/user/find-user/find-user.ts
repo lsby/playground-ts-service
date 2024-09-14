@@ -1,11 +1,11 @@
 import { z } from 'zod'
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Right } from '@lsby/ts-fp-data'
-import { 输入形状, 输出形状, 错误形状 } from './type'
+import { 输入描述, 输出描述, 错误描述 } from './type'
 
-type 输入 = z.infer<typeof 输入形状>
-type 输出 = z.infer<typeof 输出形状>
-type 错误 = z.infer<typeof 错误形状>
+type 输入 = z.infer<typeof 输入描述>
+type 输出 = z.infer<typeof 输出描述>
+type 错误 = z.infer<typeof 错误描述>
 
 export class 查找用户 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
