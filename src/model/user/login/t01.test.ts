@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 import { 接口测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
-import { 请求用例00 } from '../../../util/request-case-00'
+import { 请求用例00 } from '../../../tools/request'
 import { 接口描述 } from './type'
 
 export class 我的测试 extends 接口测试 {
