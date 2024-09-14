@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: ^0.3.24
-        version: 0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+        specifier: ^0.3.25
+        version: 0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.2(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-jwt':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.2(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-kysely':
         specifier: 0.0.1
-        version: 0.0.1(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.0.1(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@20.12.10)
@@ -622,8 +622,8 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core@0.3.24':
-    resolution: {integrity: sha512-4EsPdZTwmckdxlQRt2gmPJp+esgXjO4drG3CKDNnHHRHnpNsEYkYdUdjwPo5HP88JNAYs+ktfq8zxyrwmicXvQ==}
+  '@lsby/net-core@0.3.25':
+    resolution: {integrity: sha512-yfPzl6FN6JW174HBENCv4XjiBb1bJWcEF7kTUrbSC4EPSOoU/htUtV/fYerpdbqwl5KDAtlZjNgKmrXMwgM+uw==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.3
@@ -3748,7 +3748,7 @@ snapshots:
   '@eslint/eslintrc@2.1.4':
     dependencies:
       ajv: 6.12.6
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       espree: 9.6.1
       globals: 13.24.0
       ignore: 5.3.1
@@ -3764,7 +3764,7 @@ snapshots:
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -3830,9 +3830,9 @@ snapshots:
       eslint-plugin-sort-class-members: 1.20.0(eslint@8.57.0)
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)
 
-  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3852,9 +3852,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3874,9 +3874,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
       kysely: 0.27.4
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3896,7 +3896,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.24(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)':
+  '@lsby/net-core@0.3.25(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.3
       '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
@@ -4417,7 +4417,7 @@ snapshots:
       '@typescript-eslint/type-utils': 7.8.0(eslint@8.57.0)(typescript@5.6.2)
       '@typescript-eslint/utils': 7.8.0(eslint@8.57.0)(typescript@5.6.2)
       '@typescript-eslint/visitor-keys': 7.8.0
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       eslint: 8.57.0
       graphemer: 1.4.0
       ignore: 5.3.1
@@ -4435,7 +4435,7 @@ snapshots:
       '@typescript-eslint/types': 7.8.0
       '@typescript-eslint/typescript-estree': 7.8.0(typescript@5.6.2)
       '@typescript-eslint/visitor-keys': 7.8.0
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       eslint: 8.57.0
     optionalDependencies:
       typescript: 5.6.2
@@ -4451,7 +4451,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/typescript-estree': 7.8.0(typescript@5.6.2)
       '@typescript-eslint/utils': 7.8.0(eslint@8.57.0)(typescript@5.6.2)
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       eslint: 8.57.0
       ts-api-utils: 1.3.0(typescript@5.6.2)
     optionalDependencies:
@@ -4465,10 +4465,10 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 7.8.0
       '@typescript-eslint/visitor-keys': 7.8.0
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       globby: 11.1.0
       is-glob: 4.0.3
-      minimatch: 9.0.4
+      minimatch: 9.0.5
       semver: 7.6.3
       ts-api-utils: 1.3.0(typescript@5.6.2)
     optionalDependencies:
@@ -5191,7 +5191,7 @@ snapshots:
       '@es-joy/jsdoccomment': 0.48.0
       are-docs-informative: 0.0.2
       comment-parser: 1.4.1
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       escape-string-regexp: 4.0.0
       eslint: 8.57.0
       espree: 10.1.0
@@ -5238,7 +5238,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.3
-      debug: 4.3.6
+      debug: 4.3.7(supports-color@8.1.1)
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.2
