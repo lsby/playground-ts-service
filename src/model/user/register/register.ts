@@ -1,30 +1,9 @@
 import { randomUUID } from 'crypto'
-import { z } from 'zod'
-import { JSON状态接口, JSON状态接口类型, JSON解析插件, 计算JSON状态接口返回, 计算接口参数 } from '@lsby/net-core'
-import { Left, Right, Task } from '@lsby/ts-fp-data'
-import { Global } from '../../../global/global'
-import { 查找用户 } from './find-user'
+import { JSON状态接口, 计算JSON状态接口返回, 计算接口参数 } from '@lsby/net-core'
+import { Left, Right } from '@lsby/ts-fp-data'
+import { 查找用户 } from '../find-user/find-user'
+import { 接口描述 } from './type'
 
-var 接口描述 = new JSON状态接口类型(
-  '/api/user/register',
-  'post',
-  [
-    new Task(async () => {
-      return await Global.getItem('kysely-plugin')
-    }),
-    new Task(async () => {
-      return new JSON解析插件(
-        z.object({
-          name: z.string(),
-          pwd: z.string(),
-        }),
-        {},
-      )
-    }),
-  ],
-  z.object({}),
-  z.enum(['用户名已存在']),
-)
 type 接口描述类型 = typeof 接口描述
 
 export class 注册 extends JSON状态接口<接口描述类型> {

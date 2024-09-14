@@ -1,45 +1,9 @@
-import { z } from 'zod'
-import {
-  JSON状态接口,
-  JSON状态接口类型,
-  JSON解析插件,
-  业务行为,
-  计算JSON状态接口返回,
-  计算业务行为参数,
-  计算接口参数,
-} from '@lsby/net-core'
-import { Task } from '@lsby/ts-fp-data'
-import { Global } from '../../../global/global'
+import { JSON状态接口, 业务行为, 计算JSON状态接口返回, 计算业务行为参数, 计算接口参数 } from '@lsby/net-core'
 import { user } from '../../../types/db'
-import { 检查用户密码 } from './check-user-pwd'
-import { 查找用户 } from './find-user'
+import { 检查用户密码 } from '../check-user-pwd/check-user-pwd'
+import { 查找用户 } from '../find-user/find-user'
+import { 接口描述 } from './type'
 
-var 接口描述 = new JSON状态接口类型(
-  '/api/user/login',
-  'post',
-  [
-    new Task(async () => {
-      var jwt = await Global.getItem('jwt-plugin')
-      return jwt.签名器
-    }),
-    new Task(async () => {
-      return await Global.getItem('kysely-plugin')
-    }),
-    new Task(async () => {
-      return new JSON解析插件(
-        z.object({
-          name: z.string(),
-          pwd: z.string(),
-        }),
-        {},
-      )
-    }),
-  ],
-  z.object({
-    token: z.string(),
-  }),
-  z.enum(['用户不存在', '密码错误']),
-)
 type 接口描述类型 = typeof 接口描述
 
 export class 登录 extends JSON状态接口<接口描述类型> {
