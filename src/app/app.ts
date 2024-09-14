@@ -1,7 +1,7 @@
 import { 服务器 } from '@lsby/net-core'
 import { onTimeAlarm } from '../cron/on-time-alarm'
 import { Global } from '../global/global.js'
-import { interfaceList } from '../interface/interface-list'
+import { interfaceList } from '../types/interface-list'
 
 export class App {
   async run(): Promise<void> {

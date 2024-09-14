@@ -1,6 +1,6 @@
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
-import { user } from '../../types/db'
+import { user } from '../../../types/db'
 
 type 输入 = {
   用户: user

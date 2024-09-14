@@ -1,7 +1,7 @@
 import { Kysely } from 'kysely'
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Right } from '@lsby/ts-fp-data'
-import { DB, user } from '../../types/db'
+import { DB, user } from '../../../types/db'
 
 type 输入 = {
   用户名: string

@@ -32,10 +32,10 @@ nodeWatch(
     recursive: true,
     filter: (name) => {
       console.log(name)
-      if (name.includes('src/interface/types.ts')) return false
-      if (name.includes('src\\interface\\types.ts')) return false
-      if (name.includes('src/interface/index.ts')) return false
-      if (name.includes('src\\interface\\index.ts')) return false
+      if (name.includes('src/types/interface-list.ts')) return false
+      if (name.includes('src\\types\\interface-list.ts')) return false
+      if (name.includes('src/types/interface-type.ts')) return false
+      if (name.includes('src\\types\\interface-type.ts')) return false
       return true
     },
   },
