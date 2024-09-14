@@ -1,11 +1,13 @@
 import { Kysely } from 'kysely'
-import { DB, user } from '../../../types/db'
+import { z } from 'zod'
+import { DB } from '../../../types/db'
+import { userSchema } from '../../../types/db-zod'
 
-export type 输入 = {
-  用户名: string
-  kysely: Kysely<DB>
-}
-export type 输出 = {
-  用户: user | null
-}
-export type 错误 = never
+export var 输入形状 = z.object({
+  用户名: z.string(),
+  kysely: z.custom<Kysely<DB>>((instance) => instance instanceof Kysely),
+})
+export var 输出形状 = z.object({
+  用户: userSchema.or(z.null()),
+})
+export var 错误形状 = z.never()

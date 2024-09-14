@@ -1,8 +1,9 @@
-import { user } from '../../../types/db'
+import { z } from 'zod'
+import { userSchema } from '../../../types/db-zod'
 
-export type 输入 = {
-  用户: user
-  输入密码: string
-}
-export type 输出 = {}
-export type 错误 = '密码错误'
+export var 输入形状 = z.object({
+  用户: userSchema,
+  输入密码: z.string(),
+})
+export var 输出形状 = z.object({})
+export var 错误形状 = z.enum(['密码错误'])
