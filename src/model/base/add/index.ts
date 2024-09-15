@@ -5,7 +5,7 @@ import { 接口描述 } from './type'
 type 接口描述类型 = typeof 接口描述
 
 export class 加法 extends JSON状态接口<接口描述类型> {
-  override 获得API类型(): 接口描述类型 {
+  override 获得接口类型(): 接口描述类型 {
     return 接口描述
   }
   protected override async 业务行为实现(参数: 计算接口参数<接口描述类型>): 计算JSON状态接口返回<接口描述类型> {
