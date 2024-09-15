@@ -2,7 +2,7 @@ import assert from 'assert'
 import { 接口测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
-import { 请求用例00 } from '../../../tools/request'
+import { 请求用例 } from '../../../tools/request'
 import { 接口描述 } from './type'
 
 export class 我的测试 extends 接口测试 {
@@ -12,7 +12,7 @@ export class 我的测试 extends 接口测试 {
   }
 
   override async 中置实现(): Promise<object> {
-    return 请求用例00(接口描述, {})
+    return 请求用例(接口描述, {})
   }
 
   override async 后置实现(中置结果: object): Promise<void> {

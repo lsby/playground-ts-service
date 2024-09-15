@@ -1,9 +1,22 @@
 import { z } from 'zod'
+import { JSON状态接口类型, JSON解析插件 } from '@lsby/net-core'
+import { Task } from '@lsby/ts-fp-data'
 import { userSchema } from '../../../types/db-zod'
 
-export var 输入描述 = z.object({
-  用户: userSchema,
-  输入密码: z.string(),
-})
-export var 输出描述 = z.object({})
-export var 错误描述 = z.enum(['密码错误'])
+export var 接口描述 = new JSON状态接口类型(
+  null,
+  'post',
+  [
+    new Task(async () => {
+      return new JSON解析插件(
+        z.object({
+          用户: userSchema,
+          输入密码: z.string(),
+        }),
+        {},
+      )
+    }),
+  ],
+  z.object({}),
+  z.enum(['密码错误']),
+)

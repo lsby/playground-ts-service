@@ -1,14 +1,14 @@
 import assert from 'assert'
 import { 接口测试 } from '@lsby/net-core'
 import { Global } from '../../../global/global'
-import { 请求用例00 } from '../../../tools/request'
+import { 请求用例 } from '../../../tools/request'
 import { 接口描述 } from './type'
 
 export class 我的测试 extends 接口测试 {
   override async 前置实现(): Promise<void> {}
 
   override async 中置实现(): Promise<object> {
-    return 请求用例00(接口描述, {
+    return 请求用例(接口描述, {
       a: 2,
       b: 1,
     })

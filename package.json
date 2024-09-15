@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build:all": "npm run gen:db-zod && npm run gen:list && npm run gen:type && npm run build:web && npm run build:service",
+    "build:all": "npm run clear:gen && npm run gen:db-zod && npm run gen:list && npm run gen:type && npm run build:web && npm run build:service",
     "build:service": "npm run check:all && tsc",
     "build:web": "npm run check:all && vite build -c vite.config/production.js",
     "check:all": "npm run gen:list && npm run gen:type && npm run check:format && npm run check:lint && npm run check:type",
@@ -18,12 +18,13 @@
     "check:lint": "eslint . --fix",
     "check:type": "tsc --noEmit",
     "check:type:watch": "tsc --noEmit -w",
+    "clear:gen": "rm -rf ./src/types/db-zod.ts && rm -rf ./src/types/interface-list.ts && rm -rf ./src/types/interface-type.ts && rm -rf ./test/unit-test.test.ts",
     "db:push:dev": "dotenv -e ./.env/.env.development -- prisma migrate dev",
     "db:push:prod": "dotenv -e ./.env/.env.production -- prisma migrate deploy",
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev",
-    "gen:db-zod": "rm -rf ./src/types/db-zod.ts && cross-env DEBUG=@lsby:* tsx script/gen/db-zod.ts",
-    "gen:list": "rm -rf ./src/types/interface-list.ts && cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/model ./src/types/interface-list.ts",
-    "gen:type": "rm -rf ./src/types/interface-type.ts && cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/model ./src/types/interface-type.ts",
+    "gen:db-zod": "cross-env DEBUG=@lsby:* tsx script/gen/db-zod.ts",
+    "gen:list": "cross-env DEBUG=@lsby:* lsby-net-core-gen-list ./tsconfig.json ./src/model ./src/types/interface-list.ts",
+    "gen:type": "cross-env DEBUG=@lsby:* lsby-net-core-gen-type ./tsconfig.json ./src/model ./src/types/interface-type.ts",
     "gen:type:watch": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/interface/ \"npx lsby-net-core-gen-type ./tsconfig.json ./src/model ./src/types/interface-type.ts\"",
     "prepare": "husky",
     "pub:public": "npm run check:all && npm run build:all && bumpp && npm publish --access public",
@@ -35,7 +36,7 @@
     "test:unit:coverage": "npm run check:all && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.3.26",
+    "@lsby/net-core": "^0.3.27",
     "@lsby/net-core-file-upload": "^0.1.2",
     "@lsby/net-core-jwt": "^0.1.2",
     "@lsby/net-core-kysely": "0.0.1",

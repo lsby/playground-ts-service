@@ -1,13 +1,27 @@
-import { Kysely } from 'kysely'
 import { z } from 'zod'
-import { DB } from '../../../types/db'
+import { JSON状态接口类型, JSON解析插件 } from '@lsby/net-core'
+import { Task } from '@lsby/ts-fp-data'
+import { Global } from '../../../global/global'
 import { userSchema } from '../../../types/db-zod'
 
-export var 输入描述 = z.object({
-  用户名: z.string(),
-  kysely: z.custom<Kysely<DB>>((instance) => instance instanceof Kysely),
-})
-export var 输出描述 = z.object({
-  用户: userSchema.or(z.null()),
-})
-export var 错误描述 = z.never()
+export var 接口描述 = new JSON状态接口类型(
+  null,
+  'post',
+  [
+    new Task(async () => {
+      return await Global.getItem('kysely-plugin')
+    }),
+    new Task(async () => {
+      return new JSON解析插件(
+        z.object({
+          用户名: z.string(),
+        }),
+        {},
+      )
+    }),
+  ],
+  z.object({
+    用户: userSchema.or(z.null()),
+  }),
+  z.never(),
+)
