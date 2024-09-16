@@ -7,7 +7,7 @@ if (!filter) {
   filter = '.*'
 }
 
-var command = `cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/model ./test/unit-test.test.ts ${filter} && vitest run`
+var command = `cross-env DEBUG=@lsby:* lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit-test.test.ts ${filter} && vitest run`
 
 try {
   execSync(command, { stdio: 'inherit' })
