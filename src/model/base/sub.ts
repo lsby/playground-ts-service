@@ -2,6 +2,7 @@ import { 业务行为 } from '@lsby/net-core'
 import { Either, Right } from '@lsby/ts-fp-data'
 
 type 输入 = {
+  userId: string
   a: number
   b: number
 }

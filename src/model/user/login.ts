@@ -2,7 +2,7 @@ import { Kysely } from 'kysely'
 import { 业务行为, 计算业务行为参数 } from '@lsby/net-core'
 import { Either } from '@lsby/ts-fp-data'
 import { DB, user } from '../../types/db'
-import { 检查用户密码 } from './check-user-pwd'
+import { 检查用户密码 } from '../check/check-user-pwd'
 import { 查找用户 } from './find-user'
 
 type 输入 = {
