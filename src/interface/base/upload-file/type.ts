@@ -4,7 +4,7 @@ import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Task } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
 
-export var 接口描述 = new JSON状态接口类型(
+export default new JSON状态接口类型(
   '/api/base/upload-file',
   'post',
   [

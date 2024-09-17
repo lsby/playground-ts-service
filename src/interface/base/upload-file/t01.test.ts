@@ -3,14 +3,13 @@ import axios from 'axios'
 import streamToBlob from 'stream-to-blob'
 import { 接口测试 } from '@lsby/net-core'
 import { Global } from '../../../global/global'
-import { 接口描述 } from './type'
+import 接口描述 from './type'
 
-export class 我的测试 extends 接口测试 {
-  override async 前置实现(): Promise<void> {}
+export default new 接口测试(
+  async () => {},
 
-  override async 中置实现(): Promise<object> {
+  async () => {
     var base64Image = 'data:image/png;base64,iVBORw0KGgo...'
-
     var base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
     var buffer = Buffer.from(base64Data, 'base64')
     var readableStream = Readable.from([buffer])
@@ -22,10 +21,11 @@ export class 我的测试 extends 接口测试 {
     var env = await (await Global.getItem('env')).获得环境变量()
     var urlPath = 接口描述.获得路径()
     var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
-    return (await axios.post(url, formData, {})).data
-  }
 
-  override async 后置实现(中置结果: object): Promise<void> {
+    return (await axios.post(url, formData, {})).data
+  },
+
+  async (中置结果) => {
     var log = await Global.getItem('log')
 
     var 正确结果 = 接口描述.获得正确结果类型().safeParse(中置结果)
@@ -37,5 +37,5 @@ export class 我的测试 extends 接口测试 {
 
     if (!正确结果.success) throw new Error('应该调用成功, 实际调用出错')
     var _结果 = 正确结果.data
-  }
-}
+  },
+)

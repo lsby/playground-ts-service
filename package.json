@@ -36,13 +36,13 @@
     "test:unit:coverage": "npm run check:all && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.3.28",
+    "@lsby/net-core": "^0.3.29",
     "@lsby/net-core-file-upload": "^0.1.2",
     "@lsby/net-core-jwt": "^0.1.2",
     "@lsby/net-core-kysely": "0.0.1",
     "@lsby/ts-cron": "^0.0.6",
     "@lsby/ts-env": "^0.0.9",
-    "@lsby/ts-fp-data": "^0.2.3",
+    "@lsby/ts-fp-data": "^0.2.4",
     "@lsby/ts-global": "^0.0.5",
     "@lsby/ts-kysely": "^0.0.2",
     "@lsby/ts-log": "^0.0.3",

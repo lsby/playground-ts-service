@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { 从接口类型获得JSON参数, 有效的接口类型 } from '@lsby/net-core'
+import { 从接口类型获得JSON参数, 任意接口类型 } from '@lsby/net-core'
 import { Global } from '../global/global'
 
-export async function 请求用例<接口类型 extends 有效的接口类型>(
+export async function 请求用例<接口类型 extends 任意接口类型>(
   接口类型描述: 接口类型,
   参数: 从接口类型获得JSON参数<接口类型>,
   登录?: {

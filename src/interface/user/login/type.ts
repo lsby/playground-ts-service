@@ -3,7 +3,7 @@ import { JSON状态接口类型, JSON解析插件 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { Global } from '../../../global/global'
 
-export var 接口描述 = new JSON状态接口类型(
+export default new JSON状态接口类型(
   '/api/user/login',
   'post',
   [

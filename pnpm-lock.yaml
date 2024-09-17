@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: ^0.3.28
-        version: 0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+        specifier: ^0.3.29
+        version: 0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.2(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-jwt':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.1.2(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/net-core-kysely':
         specifier: 0.0.1
-        version: 0.0.1(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
+        version: 0.0.1(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@20.12.10)
@@ -27,8 +27,8 @@ importers:
         specifier: ^0.0.9
         version: 0.0.9(@types/node@20.12.10)
       '@lsby/ts-fp-data':
-        specifier: ^0.2.3
-        version: 0.2.3
+        specifier: ^0.2.4
+        version: 0.2.4
       '@lsby/ts-global':
         specifier: ^0.0.5
         version: 0.0.5(@types/node@20.12.10)
@@ -622,11 +622,11 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core@0.3.28':
-    resolution: {integrity: sha512-iXBKZYZ/q036zCeDJSU9nl2XXFVEUDl33Vq2ZQJGdNGxnBNBLG6GPRT6LuG1D4r53173ktkb5rgYLRQ7kRF3SA==}
+  '@lsby/net-core@0.3.29':
+    resolution: {integrity: sha512-3FKtu16iRT2/T8G0+EzWyFkx9wn0HscjivdoPGqCiLe7Z0jVVk7Y6sUu9ut2chmegabtDcCLu51d05JEy7iefg==}
     hasBin: true
     peerDependencies:
-      '@lsby/ts-fp-data': ^0.2.3
+      '@lsby/ts-fp-data': ^0.2.4
       '@types/express': ^4.17.21
 
   '@lsby/ts-cron@0.0.6':
@@ -638,11 +638,8 @@ packages:
   '@lsby/ts-format@0.0.1':
     resolution: {integrity: sha512-wEIDpZdpJNQSmEUoRUE7l4MqFqIkGclL5KN1WB3/NQaWfZCEjjXc/8UJqIhFkIV9CUWEXc9orJRIozIo/xOFEw==}
 
-  '@lsby/ts-fp-data@0.2.3':
-    resolution: {integrity: sha512-P86H9mY7X1y3LeZEeQ+UC+c2TVPBsiH57NH4tlTlc2LApX1FzZs2ih5H1GIM45ZnoCryRRqNTfOzVqnGteVdLg==}
-
-  '@lsby/ts-global@0.0.3':
-    resolution: {integrity: sha512-5smktNMYP+xkZSPKfuZfpIr+oMfsSJcIbScWr3BPJfYi/iM11JuJXUgxerw9rzuXGC6Eq+1zibWxN8G1cgUpFQ==}
+  '@lsby/ts-fp-data@0.2.4':
+    resolution: {integrity: sha512-3wQYIw1Xe+4As9Ksjd0RKiWpy8yB6UQNeXaTpIS4Esc6p0hkoVrZUWXnVwJ7jssrAQgUfMHn/gcXBGUNRRkxag==}
 
   '@lsby/ts-global@0.0.5':
     resolution: {integrity: sha512-AwqWfOKleUpXUNJ7CBeXJURvIbzQbdggqyrFLqJFTfYi0lq7tIrZBZsBKwerddjbLj6AjFY5Tq0rhBm7Ar7yEQ==}
@@ -3830,9 +3827,9 @@ snapshots:
       eslint-plugin-sort-class-members: 1.20.0(eslint@8.57.0)
       eslint-plugin-unused-imports: 3.2.0(@typescript-eslint/eslint-plugin@7.8.0(@typescript-eslint/parser@7.8.0(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)(typescript@5.6.2))(eslint@8.57.0)
 
-  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10)
       express-fileupload: 1.5.1
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3852,9 +3849,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10)
       '@lsby/ts-jwt': 0.0.1(@types/node@20.12.10)
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3874,9 +3871,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
+  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10))(@types/node@20.12.10)':
     dependencies:
-      '@lsby/net-core': 0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)
+      '@lsby/net-core': 0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10)
       kysely: 0.27.4
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
@@ -3896,10 +3893,10 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.28(@lsby/ts-fp-data@0.2.3)(@types/express@4.17.21)(@types/node@20.12.10)':
+  '@lsby/net-core@0.3.29(@lsby/ts-fp-data@0.2.4)(@types/express@4.17.21)(@types/node@20.12.10)':
     dependencies:
-      '@lsby/ts-fp-data': 0.2.3
-      '@lsby/ts-global': 0.0.3(@types/node@20.12.10)
+      '@lsby/ts-fp-data': 0.2.4
+      '@lsby/ts-global': 0.0.5(@types/node@20.12.10)
       '@lsby/ts-log': 0.0.3(@types/node@20.12.10)
       '@types/express': 4.17.21
       commander: 12.1.0
@@ -3986,27 +3983,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-fp-data@0.2.3': {}
-
-  '@lsby/ts-global@0.0.3(@types/node@20.12.10)':
-    dependencies:
-      vitest: 2.0.5(@types/node@20.12.10)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
+  '@lsby/ts-fp-data@0.2.4': {}
 
   '@lsby/ts-global@0.0.5(@types/node@20.12.10)':
     dependencies:
