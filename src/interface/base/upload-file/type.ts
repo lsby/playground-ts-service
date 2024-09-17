@@ -9,10 +9,14 @@ export default new JSON状态接口类型(
   'post',
   [
     new Task(async () => {
+      var jwt = await Global.getItem('jwt-plugin')
+      return jwt.解析器
+    }),
+    new Task(async () => {
       var env = await (await Global.getItem('env')).获得环境变量()
       return new 文件上传插件({ 文件最大大小: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 })
     }),
   ],
   z.object({}),
-  z.never(),
+  z.enum(['未登录']),
 )

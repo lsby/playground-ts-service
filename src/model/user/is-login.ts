@@ -2,7 +2,7 @@ import { 业务行为 } from '@lsby/net-core'
 import { Either, Right } from '@lsby/ts-fp-data'
 
 type 输入 = {
-  userId: string | undefined
+  userId?: string | undefined
 }
 type 错误 = never
 type 输出 = {

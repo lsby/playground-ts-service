@@ -22,7 +22,15 @@ export default new 接口测试(
     var urlPath = 接口描述.获得路径()
     var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
-    return (await axios.post(url, formData, {})).data
+    var name = 'admin'
+    var pwd = '123456'
+    var login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${'/api/user/login'}`, {
+      name,
+      pwd,
+    })) as { data: { data: { [key: string]: string } } }
+    var token = login.data.data['token']
+
+    return (await axios.post(url, formData, { headers: { authorization: token } })).data
   },
 
   async (中置结果) => {

@@ -8,8 +8,8 @@ export default new 接口测试(
   async (): Promise<void> => {},
 
   async (): Promise<object> => {
-    var name = 'admin'
-    var pwd = '123456'
+    var name = ''
+    var pwd = ''
     return 请求用例(
       接口描述,
       {
@@ -30,9 +30,9 @@ export default new 接口测试(
       throw new Error('非预期的返回值')
     }
 
-    if (!正确结果.success) throw new Error('应该调用成功, 实际调用出错')
-    var 结果 = 正确结果.data
+    if (!错误结果.success) throw new Error('应该调用出错, 实际调用成功')
+    var 结果 = 错误结果.data
 
-    assert.equal(结果.data.res, 1)
+    assert.equal(结果.data, '未登录')
   },
 )
