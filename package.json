@@ -36,7 +36,7 @@
     "test:unit:coverage": "npm run check:all && cross-env ENV_FILE_PATH=./.env/.env.test DEBUG=@lsby:*,playground-ts-service:* tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html"
   },
   "dependencies": {
-    "@lsby/net-core": "^0.3.29",
+    "@lsby/net-core": "^0.3.30",
     "@lsby/net-core-file-upload": "^0.1.2",
     "@lsby/net-core-jwt": "^0.1.2",
     "@lsby/net-core-kysely": "0.0.1",
