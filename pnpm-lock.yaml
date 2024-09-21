@@ -38,9 +38,6 @@ importers:
       '@lsby/ts-log':
         specifier: ^0.0.3
         version: 0.0.3(@types/node@20.12.10)
-      '@lsby/ts-web-frame':
-        specifier: ^0.0.2
-        version: 0.0.2(@types/node@20.12.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.7.7
         version: 1.7.7
@@ -53,6 +50,12 @@ importers:
       node-watch:
         specifier: ^0.7.4
         version: 0.7.4
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       stream-to-blob:
         specifier: ^2.0.1
         version: 2.0.1
@@ -72,6 +75,12 @@ importers:
       '@types/node':
         specifier: ^20.12.10
         version: 20.12.10
+      '@types/react':
+        specifier: ^18.3.8
+        version: 18.3.8
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.0
       '@types/stream-to-blob':
         specifier: ^2.0.0
         version: 2.0.0
@@ -635,9 +644,6 @@ packages:
   '@lsby/ts-env@0.0.9':
     resolution: {integrity: sha512-AH6zkAM0NEnRKOsmvJtSexa9DjxZnMbjPW5bdBdpXxmSnmDo6w4Qmf7rSDABJqX2R89EpI8Jw0EsTvANkZG46w==}
 
-  '@lsby/ts-format@0.0.1':
-    resolution: {integrity: sha512-wEIDpZdpJNQSmEUoRUE7l4MqFqIkGclL5KN1WB3/NQaWfZCEjjXc/8UJqIhFkIV9CUWEXc9orJRIozIo/xOFEw==}
-
   '@lsby/ts-fp-data@0.2.5':
     resolution: {integrity: sha512-PbegSfedf2lHqWIRGCahYaQqp/cR9Y8D2dzO/QzbB8c5/meUJyY1kxjvU5og6ToTSyqhJ1s0lGHmq7LXwdV/fA==}
 
@@ -653,12 +659,6 @@ packages:
   '@lsby/ts-log@0.0.3':
     resolution: {integrity: sha512-ztstLQ2lXOW2QwREmknoM0wHM/G+xyKcbOwEk6vYn099R2RlXvb4ykvwPecgZC4eHp8g93HCtt2GS/Cp94mWaQ==}
     hasBin: true
-
-  '@lsby/ts-web-frame@0.0.2':
-    resolution: {integrity: sha512-xUmVomIRfnf9RFARGpPIiiTKrlc0QMUdMg1PxAxmDq5fRTir84wfCygGxCulWCF5xrK997Wge/YQiVj0Q2QpeQ==}
-    peerDependencies:
-      react: ^18.3.1
-      react-dom: ^18.3.1
 
   '@mrleebo/prisma-ast@0.7.0':
     resolution: {integrity: sha512-GTPkYf1meO2UXXIrz/SIDFWz+P4kXo2PTt36LYh/oNxV1PieYi7ZgenQk4IV0ut71Je3Z8ZoNZ8Tr7v2c1X1pg==}
@@ -853,11 +853,20 @@ packages:
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
 
+  '@types/prop-types@15.7.13':
+    resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
+
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
+
+  '@types/react-dom@18.3.0':
+    resolution: {integrity: sha512-EhwApuTmMBmXuFOikhQLIBUn6uFg81SwLMOAUgodJF14SOBOCMdU04gDoYi0WOJJHD144TL32z4yDqCW3dnkQg==}
+
+  '@types/react@18.3.8':
+    resolution: {integrity: sha512-syBUrW3/XpnW4WJ41Pft+I+aPoDVbrBVQGEnbD7NijDGlVC+8gV/XKRY+7vMDlfPpbwYt0l1vd/Sj8bJGMbs9Q==}
 
   '@types/retry@0.12.0':
     resolution: {integrity: sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==}
@@ -3963,26 +3972,6 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-format@0.0.1(@types/node@20.12.10)':
-    dependencies:
-      vitest: 2.0.5(@types/node@20.12.10)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
   '@lsby/ts-fp-data@0.2.5': {}
 
   '@lsby/ts-global@0.0.5(@types/node@20.12.10)':
@@ -4050,30 +4039,6 @@ snapshots:
       debug: 4.3.5
       vitest: 2.0.5(@types/node@20.12.10)
       zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
-  '@lsby/ts-web-frame@0.0.2(@types/node@20.12.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@lsby/ts-format': 0.0.1(@types/node@20.12.10)
-      csstype: 3.1.3
-      lodash: 4.17.21
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-      vitest: 2.0.5(@types/node@20.12.10)
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@types/node'
@@ -4363,9 +4328,20 @@ snapshots:
 
   '@types/normalize-package-data@2.4.4': {}
 
+  '@types/prop-types@15.7.13': {}
+
   '@types/qs@6.9.15': {}
 
   '@types/range-parser@1.2.7': {}
+
+  '@types/react-dom@18.3.0':
+    dependencies:
+      '@types/react': 18.3.8
+
+  '@types/react@18.3.8':
+    dependencies:
+      '@types/prop-types': 15.7.13
+      csstype: 3.1.3
 
   '@types/retry@0.12.0': {}
 

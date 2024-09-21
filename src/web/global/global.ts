@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
+import { Log } from '@lsby/ts-log'
 import { Get请求后端函数类型, Post请求后端函数类型 } from '../../types/interface-type'
 
 class 后端客户端 {
@@ -19,4 +20,7 @@ class 后端客户端 {
   }
 }
 
-export var GlobalWeb = new GlobalService([new GlobalItem('后端客户端', new 后端客户端())])
+export var GlobalWeb = new GlobalService([
+  new GlobalItem('后端客户端', new 后端客户端()),
+  new GlobalItem('log', new Log('web')),
+])
