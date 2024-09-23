@@ -1,5 +1,10 @@
 module.exports = {
-  extends: ['@lsby/eslint-config', 'react-app'],
+  extends: ['@lsby/eslint-config', 'plugin:react/recommended'],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     'react/jsx-pascal-case': 'off',
   },
