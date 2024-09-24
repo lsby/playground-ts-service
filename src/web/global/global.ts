@@ -7,10 +7,10 @@ class 后端客户端 {
   private token: string | undefined
 
   post: Post请求后端函数类型 = async (路径, 参数) => {
-    return (await axios.post(路径, 参数, { headers: { authorization: this.token } })).data
+    return await axios.post(路径, 参数, { headers: { authorization: this.token } })
   }
   get: Get请求后端函数类型 = async (路径, 参数) => {
-    return (await axios.get(路径, { ...参数, headers: { authorization: this.token } })).data
+    return await axios.get(路径, { ...参数, headers: { authorization: this.token } })
   }
 
   async 登录(用户名: string, 密码: string): Promise<void> {
