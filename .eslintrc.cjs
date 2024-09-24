@@ -5,10 +5,8 @@ module.exports = {
   extends: [
     // 主配置
     '@lsby/eslint-config',
-    // hook规则
-    'plugin:react-hooks/recommended',
   ],
-  plugins: ['react'],
+  plugins: ['react', 'react-hooks'],
   rules: {
     // 迭代元素必须有key
     'react/jsx-key': 'error',
@@ -22,5 +20,9 @@ module.exports = {
     'react/no-unknown-property': 'error',
     // 不应该多传props
     'react/prefer-exact-props': 'error',
+    // 只在顶层调用hook & 仅从react函数调用hook
+    'react-hooks/rules-of-hooks': 'error',
+    // hook的依赖必须被声明
+    'react-hooks/exhaustive-deps': 'error',
   },
 }
