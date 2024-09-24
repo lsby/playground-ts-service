@@ -1,5 +1,5 @@
-import assert from 'assert'
 import { 接口测试 } from '@lsby/net-core'
+import assert from 'assert'
 import { Global } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口描述 from './type'

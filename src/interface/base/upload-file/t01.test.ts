@@ -1,7 +1,7 @@
-import { Readable } from 'stream'
-import axios from 'axios'
-import streamToBlob from 'stream-to-blob'
 import { 接口测试 } from '@lsby/net-core'
+import axios from 'axios'
+import { Readable } from 'stream'
+import streamToBlob from 'stream-to-blob'
 import { Global } from '../../../global/global'
 import 接口描述 from './type'
 

@@ -1,7 +1,7 @@
-import { z } from 'zod'
 import { JSON状态接口类型 } from '@lsby/net-core'
 import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Task } from '@lsby/ts-fp-data'
+import { z } from 'zod'
 import { Global } from '../../../global/global'
 
 export default new JSON状态接口类型(

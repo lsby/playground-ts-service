@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
+import axios from 'axios'
 import { Get请求后端函数类型, Post请求后端函数类型 } from '../../types/interface-type'
 
 class 后端客户端 {

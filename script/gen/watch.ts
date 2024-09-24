@@ -1,6 +1,6 @@
 import { execSync } from 'child_process'
-import * as path from 'path'
 import nodeWatch from 'node-watch'
+import * as path from 'path'
 
 var args = process.argv.slice(2)
 var watchPath = args[0]

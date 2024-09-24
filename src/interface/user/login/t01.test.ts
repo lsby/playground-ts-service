@@ -1,6 +1,6 @@
+import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import { randomUUID } from 'crypto'
-import { 接口测试 } from '@lsby/net-core'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
