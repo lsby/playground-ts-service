@@ -25,6 +25,40 @@
       "group": { "kind": "build", "isDefault": true }
     },
     {
+      "label": "_监视生成接口列表",
+      "type": "npm",
+      "script": "gen:list:watch",
+      "problemMatcher": [
+        {
+          "pattern": {
+            "kind": "file",
+            "regexp": "(错误: .*)",
+            "file": 1,
+            "message": 1
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^========生成开始========$",
+            "endsPattern": "^========生成结束========$"
+          }
+        }
+      ],
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+     {
+      "label": "_监视类型检查",
+      "type": "npm",
+      "script": "check:type:watch",
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
       "label": "_运行后端",
       "type": "npm",
       "script": "run:dev:service",
@@ -51,13 +85,13 @@
     {
       "label": "运行:合并运行",
       "dependsOrder": "parallel",
-      "dependsOn": ["_监视生成接口类型", "_编译前端", "_运行后端"],
+      "dependsOn": ["_监视类型检查", "_监视生成接口类型", "_监视生成接口列表", "_编译前端", "_运行后端"],
       "problemMatcher": []
     },
     {
       "label": "运行:独立运行",
       "dependsOrder": "parallel",
-      "dependsOn": ["_监视生成接口类型", "_运行后端", "_运行前端"],
+      "dependsOn": ["_监视类型检查", "_监视生成接口类型", "_监视生成接口列表", "_运行后端", "_运行前端"],
       "problemMatcher": []
     }
   ]

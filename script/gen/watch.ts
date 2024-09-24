@@ -31,11 +31,20 @@ nodeWatch(
   {
     recursive: true,
     filter: (name) => {
-      console.log(name)
-      if (name.includes('src/types/interface-list.ts')) return false
-      if (name.includes('src\\types\\interface-list.ts')) return false
-      if (name.includes('src/types/interface-type.ts')) return false
-      if (name.includes('src\\types\\interface-type.ts')) return false
+      console.log('文件变化: ' + name)
+
+      var 忽略 = false
+
+      if (name.includes('src/interface/interface-list.ts')) 忽略 = true
+      if (name.includes('src\\interface\\interface-list.ts')) 忽略 = true
+      if (name.includes('src/types/interface-type.ts')) 忽略 = true
+      if (name.includes('src\\types\\interface-type.ts')) 忽略 = true
+
+      if (忽略) {
+        console.log('忽略')
+        return false
+      }
+
       return true
     },
   },
