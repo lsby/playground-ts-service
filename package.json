@@ -28,8 +28,8 @@
     "run:service:dev": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx --watch ./src/index.ts",
     "run:service:prod": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.production tsx --watch ./src/index.ts",
     "run:web:dev": "vite -c vite.config/development.js",
-    "test:unit": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx script/test/run-test.ts",
-    "test:unit:coverage": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html",
+    "test:unit": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test.ts",
+    "test:unit:coverage": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html",
     "watch:check:type": "tsc --noEmit -w",
     "watch:gen:list": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/ \"npm run _gen:list\"",
     "watch:gen:type": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/ \"npm run _gen:type\""
