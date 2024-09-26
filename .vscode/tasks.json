@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "_监视生成接口类型",
+      "label": "_持续生成接口类型",
       "type": "npm",
-      "script": "gen:type:watch",
+      "script": "watch:gen:type",
       "problemMatcher": [
         {
           "pattern": {
@@ -25,9 +25,9 @@
       "group": { "kind": "build", "isDefault": true }
     },
     {
-      "label": "_监视生成接口列表",
+      "label": "_持续生成接口列表",
       "type": "npm",
-      "script": "gen:list:watch",
+      "script": "watch:gen:list",
       "problemMatcher": [
         {
           "pattern": {
@@ -48,9 +48,9 @@
       "group": { "kind": "build", "isDefault": true }
     },
      {
-      "label": "_监视类型检查",
+      "label": "_持续类型检查",
       "type": "npm",
-      "script": "check:type:watch",
+      "script": "watch:check:type",
       "problemMatcher": [
         "$tsc-watch"
       ],
@@ -61,7 +61,7 @@
     {
       "label": "_运行后端",
       "type": "npm",
-      "script": "run:dev:service",
+      "script": "run:service:dev",
       "isBackground": true,
       "presentation": { "reveal": "never" },
       "group": { "kind": "build", "isDefault": true }
@@ -69,29 +69,15 @@
     {
       "label": "_运行前端",
       "type": "npm",
-      "script": "run:dev:web",
+      "script": "run:web:dev",
       "isBackground": true,
       "presentation": { "reveal": "never" },
       "group": { "kind": "build", "isDefault": true }
     },
     {
-      "label": "_编译前端",
-      "type": "npm",
-      "script": "run:dev:web:watch",
-      "isBackground": true,
-      "presentation": { "reveal": "never" },
-      "group": { "kind": "build", "isDefault": true }
-    },
-    {
-      "label": "运行:合并运行",
+      "label": "运行全部",
       "dependsOrder": "parallel",
-      "dependsOn": ["_监视类型检查", "_监视生成接口类型", "_监视生成接口列表", "_编译前端", "_运行后端"],
-      "problemMatcher": []
-    },
-    {
-      "label": "运行:独立运行",
-      "dependsOrder": "parallel",
-      "dependsOn": ["_监视类型检查", "_监视生成接口类型", "_监视生成接口列表", "_运行后端", "_运行前端"],
+      "dependsOn": ["_持续类型检查", "_持续生成接口类型", "_持续生成接口列表", "_运行后端", "_运行前端"],
       "problemMatcher": []
     }
   ]
