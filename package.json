@@ -31,8 +31,8 @@
     "test:unit": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test.ts",
     "test:unit:coverage": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html",
     "watch:check:type": "tsc --noEmit -w",
-    "watch:gen:list": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/ \"npm run _gen:list\"",
-    "watch:gen:type": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/ \"npm run _gen:type\""
+    "watch:gen:list": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/interface/ \"npm run _gen:list\"",
+    "watch:gen:type": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/interface/ \"npm run _gen:type\""
   },
   "dependencies": {
     "@lsby/net-core": "^0.3.33",
