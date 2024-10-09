@@ -1,15 +1,22 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
+import { randomUUID } from 'crypto'
+import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口描述 from './type'
 
+var name = 'admin'
+var pwd = '123456'
+
 export default new 接口测试(
-  async (): Promise<void> => {},
+  async (): Promise<void> => {
+    var db = (await Global.getItem('kysely')).获得句柄()
+    await clearDB(db)
+    await db.insertInto('user').values({ id: randomUUID(), name: name, pwd: pwd }).execute()
+  },
 
   async (): Promise<object> => {
-    var name = 'admin'
-    var pwd = '123456'
     return 请求用例(
       接口描述,
       {

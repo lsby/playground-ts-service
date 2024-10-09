@@ -1,12 +1,21 @@
 import { 接口测试 } from '@lsby/net-core'
 import axios from 'axios'
+import { randomUUID } from 'crypto'
 import { Readable } from 'stream'
 import streamToBlob from 'stream-to-blob'
+import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
 import 接口描述 from './type'
 
+var name = 'admin'
+var pwd = '123456'
+
 export default new 接口测试(
-  async () => {},
+  async () => {
+    var db = (await Global.getItem('kysely')).获得句柄()
+    await clearDB(db)
+    await db.insertInto('user').values({ id: randomUUID(), name: name, pwd: pwd }).execute()
+  },
 
   async () => {
     var base64Image = 'data:image/png;base64,iVBORw0KGgo...'
@@ -22,8 +31,6 @@ export default new 接口测试(
     var urlPath = 接口描述.获得路径()
     var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
-    var name = 'admin'
-    var pwd = '123456'
     var login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${'/api/user/login'}`, {
       name,
       pwd,
