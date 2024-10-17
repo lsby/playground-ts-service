@@ -1,6 +1,6 @@
 import { JSON状态接口, 业务行为 } from '@lsby/net-core'
-import { 上传文件 } from '../../../model/base/upload-file'
-import { 检查登录 } from '../../../model/check/check-login'
+import { 上传文件 } from '../../../interface-action/base/upload-file'
+import { 检查登录 } from '../../../interface-action/check/check-login'
 import 接口描述 from './type'
 
 export default new JSON状态接口<typeof 接口描述>(
