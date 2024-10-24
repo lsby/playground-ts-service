@@ -13,7 +13,10 @@ generator kysely {
 
 // 用户表
 model user {
-  id   String @id
+  id         String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
   name String @unique // 用户名
   pwd  String // 密码
 }

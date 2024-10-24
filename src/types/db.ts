@@ -6,6 +6,8 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type user = {
     id: string;
+    created_at: Generated<string>;
+    updated_at: Generated<string>;
     name: string;
     pwd: string;
 };

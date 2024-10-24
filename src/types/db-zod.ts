@@ -5,6 +5,8 @@ export const timestampSchema = z.date()
 
 export const userSchema = z.object({
   id: z.string(),
+  created_at: z.string(),
+  updated_at: z.string(),
   name: z.string(),
   pwd: z.string(),
 })

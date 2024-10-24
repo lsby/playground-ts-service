@@ -1,6 +1,6 @@
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
-import { Kysely } from 'kysely'
+import { Insertable, Kysely } from 'kysely'
 import { DB, user } from '../../types/db'
 
 type 输入 = {
@@ -9,7 +9,7 @@ type 输入 = {
 }
 type 错误 = '用户不存在'
 type 输出 = {
-  用户: user
+  用户: Insertable<user>
 }
 
 export class 检查用户存在 extends 业务行为<输入, 错误, 输出> {
