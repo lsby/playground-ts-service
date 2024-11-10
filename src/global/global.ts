@@ -11,7 +11,6 @@ import { z } from 'zod'
 import { DB } from '../types/db'
 
 var env = new Env({
-  模式: '通过环境变量指定文件路径',
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
     DEBUG_NAME: z.string(),

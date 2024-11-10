@@ -24,8 +24,8 @@ importers:
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.6.1)
       '@lsby/ts-env':
-        specifier: ^0.0.9
-        version: 0.0.9(@types/node@22.6.1)
+        specifier: ^0.0.10
+        version: 0.0.10(@types/node@22.6.1)
       '@lsby/ts-fp-data':
         specifier: ^0.2.5
         version: 0.2.5
@@ -663,8 +663,8 @@ packages:
   '@lsby/ts-cron@0.0.6':
     resolution: {integrity: sha512-vBHg3Pq+bS4QrfiTjU79WaGgRzjUboMw/08V02M+hpVDh0ONc8LMPdODQ+EClkWA0RNpCtYWUnDaSBsoo4B7YQ==}
 
-  '@lsby/ts-env@0.0.9':
-    resolution: {integrity: sha512-AH6zkAM0NEnRKOsmvJtSexa9DjxZnMbjPW5bdBdpXxmSnmDo6w4Qmf7rSDABJqX2R89EpI8Jw0EsTvANkZG46w==}
+  '@lsby/ts-env@0.0.10':
+    resolution: {integrity: sha512-GlRkIrWTqi1g2GOoCuu3Mx1mxIbqkjpVQ6WiwiFvY/2A1BB9bTIMbvzd81YXtOtIHxewvkrhGcgNjQNJJH8GSw==}
 
   '@lsby/ts-fp-data@0.2.5':
     resolution: {integrity: sha512-PbegSfedf2lHqWIRGCahYaQqp/cR9Y8D2dzO/QzbB8c5/meUJyY1kxjvU5og6ToTSyqhJ1s0lGHmq7LXwdV/fA==}
@@ -4405,7 +4405,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-env@0.0.9(@types/node@22.6.1)':
+  '@lsby/ts-env@0.0.10(@types/node@22.6.1)':
     dependencies:
       '@lsby/ts-log': 0.0.3(@types/node@22.6.1)
       dotenv: 16.4.5
