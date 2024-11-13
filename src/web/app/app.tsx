@@ -39,7 +39,7 @@ function 主页(): React.JSX.Element {
   }
 }
 
-function 登录页({ on登录 }: { on登录: (e: boolean) => void }): React.JSX.Element {
+function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Element {
   const 上下文 = useContext(上下文描述)
 
   return (
@@ -90,7 +90,7 @@ function 登录页({ on登录 }: { on登录: (e: boolean) => void }): React.JSX.
 
     const 结果 = await 上下文.客户端.登录(用户名, 密码)
     if (结果.status === 'fail') return alert(结果.data)
-    on登录(true)
+    on登录()
   }
 }
 
@@ -100,7 +100,7 @@ export function App(): React.JSX.Element {
 
   return (
     <上下文描述.Provider value={上下文}>
-      {!已登录 ? <登录页 on登录={(e: boolean) => 设置已登录(e)}></登录页> : <主页></主页>}
+      {!已登录 ? <登录页 on登录={() => 设置已登录(true)}></登录页> : <主页></主页>}
     </上下文描述.Provider>
   )
 }
