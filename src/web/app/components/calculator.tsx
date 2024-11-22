@@ -13,7 +13,7 @@ export function 计算器(): React.JSX.Element {
   if (数据.status === 'fail') return <div>发生错误: {数据.data}</div>
 
   return (
-    <div className="text-center m-5">
+    <div>
       <div className="mb-4">
         <span>数字 a: </span>
         <input type="number" value={数字a} onChange={更新数字a} placeholder="输入数字 a" className="ml-2 p-1 w-24" />
