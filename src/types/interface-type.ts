@@ -1,4 +1,5 @@
-export type InterfaceType = [{ path: "/api/base/add"; method: "post"; input: { a: number; b: number; }; successOutput: { status: "success"; data: { res: number; }; }; errorOutput: { status: "fail"; data: never; }; },{ path: "/api/base/sub"; method: "post"; input: { a: number; b: number; }; successOutput: { status: "success"; data: { res: number; }; }; errorOutput: { status: "fail"; data: "未登录"; }; },{ path: "/api/base/upload-file"; method: "post"; input: {}; successOutput: { status: "success"; data: {}; }; errorOutput: { status: "fail"; data: "未登录"; }; },{ path: "/api/user/is-login"; method: "post"; input: {}; successOutput: { status: "success"; data: { isLogin: boolean; }; }; errorOutput: { status: "fail"; data: never; }; },{ path: "/api/user/login"; method: "post"; input: { name: string; pwd: string; }; successOutput: { status: "success"; data: { token: string; }; }; errorOutput: { status: "fail"; data: "用户不存在" | "密码错误"; }; },{ path: "/api/user/register"; method: "post"; input: { name: string; pwd: string; }; successOutput: { status: "success"; data: {}; }; errorOutput: { status: "fail"; data: "用户名已存在"; }; }]
+export type InterfaceType = [{ path: "/api/base/add"; method: "post"; input: { a: number; b: number; }; successOutput: { status: "success"; data: { res: number; }; }; errorOutput: { status: "fail"; data: never; }; },{ path: "/api/base/sub"; method: "post"; input: { a: number; b: number; }; successOutput: { status: "success"; data: { res: number; }; }; errorOutput: { status: "fail"; data: "未登录"; }; },{ path: "/api/base/upload-file"; method: "post"; input: {}; successOutput: { status: "success"; data: {}; }; errorOutput: { status: "fail"; data: "未登录"; }; },{ path: "/api/user/is-login"; method: "post"; input: {}; successOutput: { status: "success"; data: { isLogin: boolean; }; }; errorOutput: { status: "fail"; data: never; }; },{ path: "/api/user/login"; method: "post"; input: { name: string; pwd: string; }; successOutput: { status: "success"; data: { token: string; }; }; errorOutput: { status: "fail"; data: "用户不存在" | "密码错误"; }; },{ path: "/api/user/register"; method: "post"; input: { name: string; pwd: string; }; successOutput: { status: "success"; data: {}; }; errorOutput: { status: "fail"; data: "用户名已存在"; }; },{ path: "/api/base/ws-test"; method: "post"; input: {}; successOutput: { status: "success"; data: {}; }; errorOutput: { status: "fail"; data: never; }; }]
+export type InterfaceWsType = [{ path: "/api/base/ws-test"; data: { data: string; }; }]
 
 export type 元组转联合<T> = T extends any[] ? T[number] : never
 
@@ -41,6 +42,17 @@ export type 从路径获得参数<Path, A = InterfaceType> = A extends []
           ? x['input']
           : never
         : 从路径获得参数<Path, xs>
+      : never
+    : never
+export type 从路径获得WS参数<Path, A = InterfaceWsType> = A extends []
+  ? never
+  : A extends [infer x, ...infer xs]
+    ? 'path' extends keyof x
+      ? x['path'] extends Path
+        ? 'data' extends keyof x
+          ? x['data']
+          : never
+        : 从路径获得WS参数<Path, xs>
       : never
     : never
 export type 从路径获得方法<Path, A = InterfaceType> = A extends []
@@ -102,4 +114,7 @@ export type Get请求后端函数类型 = <路径 extends 元组转联合<Get接
 export type Post请求后端函数类型 = <路径 extends 元组转联合<Post接口路径们>>(
   路径: 路径,
   参数: 从路径获得参数<路径>,
+  ws信息回调?: (信息: 从路径获得WS参数<路径>) => void,
+  ws关闭回调?: (信息: CloseEvent) => void,
+  ws错误回调?: (信息: Event) => void,
 ) => Promise<从路径获得正确返回<路径> | 从路径获得错误返回<路径>>

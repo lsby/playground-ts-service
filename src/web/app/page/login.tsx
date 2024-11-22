@@ -1,0 +1,57 @@
+import React, { useContext } from 'react'
+import { 上下文描述 } from '../../ctx/ctx'
+
+export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Element {
+  const 上下文 = useContext(上下文描述)
+
+  return (
+    <div className="max-w-md mx-auto p-8 border border-gray-300 rounded-lg shadow-lg bg-gray-50">
+      <h1 className="text-center mb-5 text-gray-800">登录</h1>
+      <form>
+        <div className="mb-5">
+          <label htmlFor="用户名" className="block mb-2 font-bold">
+            用户名:
+          </label>
+          <input
+            type="text"
+            id="用户名"
+            name="用户名"
+            required
+            className="w-full p-2 rounded border border-gray-300 box-border"
+          />
+        </div>
+        <div className="mb-5">
+          <label htmlFor="密码" className="block mb-2 font-bold">
+            密码:
+          </label>
+          <input
+            type="password"
+            id="密码"
+            name="密码"
+            required
+            className="w-full p-2 rounded border border-gray-300 box-border"
+          />
+        </div>
+        <button
+          type="submit"
+          className="w-full p-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-500 transition"
+          onMouseOver={(e) => (e.currentTarget.className = 'w-full p-3 rounded bg-blue-700 text-white font-semibold')}
+          onMouseOut={(e) => (e.currentTarget.className = 'w-full p-3 rounded bg-blue-600 text-white font-semibold')}
+          onClick={登录按钮点击事件}
+        >
+          登录
+        </button>
+      </form>
+    </div>
+  )
+
+  async function 登录按钮点击事件(e: React.MouseEvent<HTMLButtonElement>): Promise<void> {
+    e.preventDefault()
+    const 用户名 = (document.getElementById('用户名') as HTMLInputElement).value
+    const 密码 = (document.getElementById('密码') as HTMLInputElement).value
+
+    const 结果 = await 上下文.客户端.登录(用户名, 密码)
+    if (结果.status === 'fail') return alert(结果.data)
+    on登录()
+  }
+}

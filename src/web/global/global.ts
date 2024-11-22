@@ -2,6 +2,7 @@ import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import * as uuid from 'uuid'
 import {
   Get请求后端函数类型,
   Post接口路径们,
@@ -15,8 +16,32 @@ import {
 export class 后端客户端 {
   private token: string | undefined
 
-  post: Post请求后端函数类型 = async (路径, 参数) => {
-    const c = await axios.post(路径, 参数, { headers: { authorization: this.token } })
+  post: Post请求后端函数类型 = async (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
+    var 扩展头: { [key: string]: string } = {}
+    if (ws信息回调) {
+      var wsId = uuid.v1()
+      var ws连接 = new WebSocket(`/ws?id=${wsId}`)
+
+      await new Promise((res, _rej) => {
+        ws连接.onopen = (): void => {
+          res(null)
+        }
+      })
+      ws连接.onmessage = (event: MessageEvent): void => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        var data = JSON.parse(event.data)
+        ws信息回调(data)
+      }
+      ws连接.onclose = (event): void => {
+        ws关闭回调?.(event)
+      }
+      ws连接.onerror = (error): void => {
+        ws错误回调?.(error)
+      }
+      扩展头 = { 'ws-client-id': wsId }
+    }
+
+    var c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
     if (c.status >= 500) {
       const log = new Log('web')
       await log.err('服务器错误: %o', c)

@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: ^0.3.36
-        version: 0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
+        specifier: ^0.3.37
+        version: 0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
+        version: 0.1.2(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
       '@lsby/net-core-jwt':
         specifier: ^0.1.2
-        version: 0.1.2(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
+        version: 0.1.2(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
       '@lsby/net-core-kysely':
         specifier: 0.0.1
-        version: 0.0.1(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
+        version: 0.0.1(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.6.1)
@@ -53,6 +53,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      uuid:
+        specifier: ^11.0.3
+        version: 11.0.3
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -653,8 +656,8 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core@0.3.36':
-    resolution: {integrity: sha512-CgI25WXJCsJCjyZ5GjGOaof/j+3YmY9OXarK3xjSODaeFHJ/PacLBK3ITGaftK7vRSZkkPTwUh+yme5YnKsuJA==}
+  '@lsby/net-core@0.3.37':
+    resolution: {integrity: sha512-MyQ3hKSnptpM3rX5iXqRbfieEiMr+ob7eICGs2I5WD1AC2mlEq20SBLXQKbJ883N/HLcNj+jOYrp3kpU7dJvaw==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.4
@@ -3743,6 +3746,10 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
+  uuid@11.0.3:
+    resolution: {integrity: sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==}
+    hasBin: true
+
   uuid@9.0.0:
     resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==}
     hasBin: true
@@ -3882,6 +3889,18 @@ packages:
 
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
+
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
 
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
@@ -4286,9 +4305,9 @@ snapshots:
       typescript: 5.5.4
       typescript-eslint: 8.7.0(eslint@8.57.1)(typescript@5.5.4)
 
-  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
+  '@lsby/net-core-file-upload@0.1.2(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
     dependencies:
-      '@lsby/net-core': 0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
+      '@lsby/net-core': 0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
       express-fileupload: 1.5.1
       vitest: 2.1.1(@types/node@22.6.1)
       zod: 3.23.8
@@ -4309,9 +4328,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
+  '@lsby/net-core-jwt@0.1.2(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
     dependencies:
-      '@lsby/net-core': 0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
+      '@lsby/net-core': 0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
       '@lsby/ts-jwt': 0.0.1(@types/node@22.6.1)
       vitest: 2.1.1(@types/node@22.6.1)
       zod: 3.23.8
@@ -4332,9 +4351,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
+  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
     dependencies:
-      '@lsby/net-core': 0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
+      '@lsby/net-core': 0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
       kysely: 0.27.4
       vitest: 2.1.1(@types/node@22.6.1)
       zod: 3.23.8
@@ -4355,7 +4374,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.3.36(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)':
+  '@lsby/net-core@0.3.37(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-global': 0.0.5(@types/node@22.6.1)
@@ -4366,12 +4385,14 @@ snapshots:
       lodash: 4.17.21
       short-uuid: 5.2.0
       vitest: 2.1.1(@types/node@22.6.1)
+      ws: 8.18.0
       zod: 3.23.8
     transitivePeerDependencies:
       - '@edge-runtime/vm'
       - '@types/node'
       - '@vitest/browser'
       - '@vitest/ui'
+      - bufferutil
       - happy-dom
       - jsdom
       - less
@@ -4383,6 +4404,7 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+      - utf-8-validate
 
   '@lsby/ts-cron@0.0.6(@types/node@22.6.1)':
     dependencies:
@@ -7999,6 +8021,8 @@ snapshots:
 
   utils-merge@1.0.1: {}
 
+  uuid@11.0.3: {}
+
   uuid@9.0.0: {}
 
   uuid@9.0.1: {}
@@ -8161,6 +8185,8 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
+
+  ws@8.18.0: {}
 
   yallist@3.1.1: {}
 
