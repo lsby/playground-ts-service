@@ -10,6 +10,10 @@ import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
 import { DB } from '../types/db'
 
+export const CONST = {
+  INIT_FLAG: 'INIT_FLAG',
+}
+
 var env = new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
