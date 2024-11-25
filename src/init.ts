@@ -14,8 +14,9 @@ export async function init(): Promise<void> {
 
   await log.debug('初始化标记不存在, 开始初始化...')
 
+  var 项目名称 = '用户'
   try {
-    await log.debug('初始化用户...')
+    await log.debug(`初始化${项目名称}...`)
     await kysely
       .insertInto('user')
       .values({
@@ -24,9 +25,9 @@ export async function init(): Promise<void> {
         pwd: '123456',
       })
       .execute()
-    await log.debug('初始化用户完成')
+    await log.debug(`初始化${项目名称}完成`)
   } catch (e) {
-    await log.debug('初始化用户失败: %O', e)
+    await log.debug(`初始化${项目名称}失败: %O`, e)
   }
 
   await log.debug('初始化完成, 写入初始化标记...')
