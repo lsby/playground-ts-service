@@ -17,6 +17,16 @@ generator kysely {
 
 // =================================================
 
+// 配置
+model config {
+  id         String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  key   String
+  value String
+}
+
 // 用户
 model user {
   id         String   @id
