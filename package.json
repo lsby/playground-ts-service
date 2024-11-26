@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "playground-ts-service": "dist/esm/index.js"
+    "playground-ts-service": "dist/src/index.js"
   },
   "files": [
     "dist"
