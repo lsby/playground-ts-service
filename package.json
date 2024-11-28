@@ -36,7 +36,7 @@
     "watch:gen:type": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/interface/ \"npm run _gen:type\""
   },
   "dependencies": {
-    "@lsby/net-core": "^0.3.37",
+    "@lsby/net-core": "^0.3.38",
     "@lsby/net-core-file-upload": "^0.1.2",
     "@lsby/net-core-jwt": "^0.1.2",
     "@lsby/net-core-kysely": "0.0.1",

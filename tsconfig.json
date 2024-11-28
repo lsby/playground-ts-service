@@ -8,6 +8,7 @@
     "vitest.config.ts",
     "vite.config/**/*.js"
   ],
+  "exclude": ["node_modules", "dist", "db"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
 
