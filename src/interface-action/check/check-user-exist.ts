@@ -14,7 +14,7 @@ type 输出 = {
 
 export class 检查用户存在 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
-    var user = await 参数.kysely
+    let user = await 参数.kysely
       .selectFrom('user')
       .select(['id', 'name', 'pwd'])
       .where('name', '=', 参数.用户名)

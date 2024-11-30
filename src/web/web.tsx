@@ -5,10 +5,10 @@ import './css/tailwind.css'
 
 localStorage['debug'] = '*'
 
-var app容器 = document.getElementById('app')
+let app容器 = document.getElementById('app')
 if (!app容器) throw new Error('没有找到容器')
 
-const root = createRoot(app容器)
+let root = createRoot(app容器)
 root.render(
   <StrictMode>
     <App></App>

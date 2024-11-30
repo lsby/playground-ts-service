@@ -12,19 +12,20 @@ export async function 请求用例<接口类型 extends 任意接口类型>(
     凭据属性: string
   },
 ): Promise<object> {
-  var env = await (await Global.getItem('env')).获得环境变量()
+  let env = await (await Global.getItem('env')).获得环境变量()
 
+  let token: string | undefined
   if (登录) {
-    var login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
+    let login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       name: 登录.用户名,
       pwd: 登录.密码,
     })) as { data: { data: { [key: string]: string } } }
-    var token = login.data.data[登录.凭据属性]
+    token = login.data.data[登录.凭据属性]
   }
 
-  var method = 接口类型描述.获得方法() as string
-  var urlPath = 接口类型描述.获得路径() as string
-  var url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
+  let method = 接口类型描述.获得方法() as string
+  let urlPath = 接口类型描述.获得路径() as string
+  let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
   if (method == 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
   if (method == 'post') return (await axios.post(url, 参数, { headers: { authorization: token } })).data

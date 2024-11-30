@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { usePost } from '../../global/global'
 
 export function 计算器(): React.JSX.Element {
-  const [数字a, 设置数字a] = useState<number>(1)
-  const [数字b, 设置数字b] = useState<number>(2)
-  const [数据, _刷新数据, _设置正确数据, _设置错误数据] = usePost('/api/base/add', { a: 数字a, b: 数字b })
+  let [数字a, 设置数字a] = useState<number>(1)
+  let [数字b, 设置数字b] = useState<number>(2)
+  let [数据, _刷新数据, _设置正确数据, _设置错误数据] = usePost('/api/base/add', { a: 数字a, b: 数字b })
 
-  const 更新数字a = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字a(Number(e.target.value))
-  const 更新数字b = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字b(Number(e.target.value))
+  let 更新数字a = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字a(Number(e.target.value))
+  let 更新数字b = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字b(Number(e.target.value))
 
   if (数据 == null) return <div>加载中...</div>
   if (数据.status === 'fail') return <div>发生错误: {数据.data}</div>

@@ -14,11 +14,11 @@ type 输出 = {}
 
 export class WebSocket测试 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
-    var 数据 = ['你', '好', '世', '界']
-    var 当前索引 = 0
+    let 数据 = ['你', '好', '世', '界']
+    let 当前索引 = 0
 
-    var 定时器句柄 = setInterval(async () => {
-      var 当前数据 = 数据[当前索引]
+    let 定时器句柄 = setInterval(async () => {
+      let 当前数据 = 数据[当前索引]
       当前索引++
       if (当前数据 == null) {
         clearInterval(定时器句柄)

@@ -4,8 +4,8 @@ import { 主页 } from './page'
 import { 登录页 } from './page/login'
 
 export function App(): React.JSX.Element {
-  const 上下文 = useContext(上下文描述)
-  const [已登录, 设置已登录] = useState(上下文.客户端.已登录())
+  let 上下文 = useContext(上下文描述)
+  let [已登录, 设置已登录] = useState(上下文.客户端.已登录())
 
   return (
     <上下文描述.Provider value={上下文}>

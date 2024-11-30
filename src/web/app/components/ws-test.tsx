@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react'
 import { 上下文描述 } from '../../ctx/ctx'
 
 export function WS测试组件(): React.JSX.Element {
-  const 上下文 = useContext(上下文描述)
+  let 上下文 = useContext(上下文描述)
 
-  var [文本值, 设置文本值] = useState('')
+  let [文本值, 设置文本值] = useState('')
 
   return (
     <div>

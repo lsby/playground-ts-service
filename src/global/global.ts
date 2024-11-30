@@ -10,11 +10,11 @@ import { SqliteDialect } from 'kysely'
 import { z } from 'zod'
 import { DB } from '../types/db'
 
-export const CONST = {
+export let CONST = {
   INIT_FLAG: 'INIT_FLAG',
 }
 
-var env = new Env({
+let env = new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
     DEBUG_NAME: z.string(),
@@ -27,23 +27,23 @@ var env = new Env({
   }),
 })
 
-export var Global = new GlobalService([
+export let Global = new GlobalService([
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
   new GlobalAsyncItem('log', async () => {
-    var e = await env.获得环境变量()
+    let e = await env.获得环境变量()
     return new Log(e.DEBUG_NAME)
   }),
   new GlobalAsyncItem('kysely', async () => {
-    var e = await env.获得环境变量()
+    let e = await env.获得环境变量()
     return new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) }))
   }),
   new GlobalAsyncItem('jwt-plugin', async () => {
-    var e = await env.获得环境变量()
+    let e = await env.获得环境变量()
     return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), e.JWT_SECRET, e.JWT_EXPIRES_IN)
   }),
   new GlobalAsyncItem('kysely-plugin', async () => {
-    var e = await env.获得环境变量()
+    let e = await env.获得环境变量()
     return new Kysely插件(new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })).获得句柄())
   }),
 ])

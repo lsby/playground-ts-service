@@ -8,7 +8,7 @@ export default new JSON状态接口类型(
   'post',
   [
     new Task(async () => {
-      var jwt = await Global.getItem('jwt-plugin')
+      let jwt = await Global.getItem('jwt-plugin')
       return jwt.签名器
     }),
     new Task(async () => {

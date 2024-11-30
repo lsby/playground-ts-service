@@ -15,7 +15,7 @@ type 输出 = {}
 
 export class 注册 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
-    var 用户存在 = (await new 查找用户().运行业务行为({ kysely: 参数.kysely, 用户名: 参数.name }))
+    let 用户存在 = (await new 查找用户().运行业务行为({ kysely: 参数.kysely, 用户名: 参数.name }))
       .assertRight()
       .getRight()
     if (用户存在.用户) return new Left('用户名已存在')

@@ -9,9 +9,9 @@ class 定时任务实现 extends Cron抽象类 {
     return '0 0 * * * *'
   }
   override async run(): Promise<void> {
-    var log = (await Global.getItem('log')).extend('整点报时')
+    let log = (await Global.getItem('log')).extend('整点报时')
     await log.debug('我的天啊你看看都%o点了', new Date().getHours())
   }
 }
 
-export var onTimeAlarm = new 定时任务实现()
+export let onTimeAlarm = new 定时任务实现()

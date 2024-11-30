@@ -18,7 +18,7 @@ type 输出 = {
 
 export class 登录 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
-    var 结果 = await 业务行为
+    let 结果 = await 业务行为
       .混合组合多项([new 检查用户存在(), new 检查用户密码()])
       .映射结果((a) => ({ token: 参数.signJwt({ userId: a.用户.id }) }))
       .运行业务行为({ kysely: 参数.kysely, 用户名: 参数.name, 输入密码: 参数.pwd })

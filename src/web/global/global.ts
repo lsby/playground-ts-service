@@ -17,10 +17,10 @@ export class 后端客户端 {
   private token: string | undefined
 
   post: Post请求后端函数类型 = async (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
-    var 扩展头: { [key: string]: string } = {}
+    let 扩展头: { [key: string]: string } = {}
     if (ws信息回调) {
-      var wsId = uuid.v1()
-      var ws连接 = new WebSocket(`/ws?id=${wsId}`)
+      let wsId = uuid.v1()
+      let ws连接 = new WebSocket(`/ws?id=${wsId}`)
 
       await new Promise((res, _rej) => {
         ws连接.onopen = (): void => {
@@ -29,7 +29,7 @@ export class 后端客户端 {
       })
       ws连接.onmessage = (event: MessageEvent): void => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        var data = JSON.parse(event.data)
+        let data = JSON.parse(event.data)
         ws信息回调(data)
       }
       ws连接.onclose = (event): void => {
@@ -41,18 +41,18 @@ export class 后端客户端 {
       扩展头 = { 'ws-client-id': wsId }
     }
 
-    var c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
+    let c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
     if (c.status >= 500) {
-      const log = new Log('web')
+      let log = new Log('web')
       await log.err('服务器错误: %o', c)
       throw new Error('服务器错误')
     }
     return c.data
   }
   get: Get请求后端函数类型 = async (路径, 参数) => {
-    const c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
+    let c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
     if (c.status >= 500) {
-      const log = new Log('web')
+      let log = new Log('web')
       await log.err('服务器错误: %o', c)
       throw new Error('服务器错误')
     }
@@ -60,11 +60,11 @@ export class 后端客户端 {
   }
 
   async 初始化(): Promise<this> {
-    const storedToken = localStorage.getItem('token')
+    let storedToken = localStorage.getItem('token')
     if (storedToken) {
       this.token = storedToken
     }
-    var c = await this.post('/api/user/is-login', {})
+    let c = await this.post('/api/user/is-login', {})
     if (!c.data.isLogin) {
       localStorage.removeItem('token')
       this.token = undefined
@@ -74,7 +74,7 @@ export class 后端客户端 {
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async 登录(用户名: string, 密码: string) {
-    const c = await this.post('/api/user/login', { name: 用户名, pwd: 密码 })
+    let c = await this.post('/api/user/login', { name: 用户名, pwd: 密码 })
     if (c.status !== 'fail') {
       this.token = c.data.token
       localStorage.setItem('token', this.token)
@@ -91,7 +91,7 @@ export class 后端客户端 {
   }
 }
 
-export var GlobalWeb = new GlobalService([
+export let GlobalWeb = new GlobalService([
   new GlobalItem('后端客户端', new 后端客户端()),
   new GlobalItem('log', new Log('web')),
 ])
@@ -111,19 +111,19 @@ export function usePost<
   (正确结果: 正确类型['data']) => void,
   (错误结果: 错误类型['data']) => void,
 ] {
-  const [返回数据, 设置数据] = useState<正确类型 | 错误类型>()
-  var [刷新标志, 设置刷新标志] = useState(false)
-  var 参数文本 = JSON.stringify(参数)
+  let [返回数据, 设置数据] = useState<正确类型 | 错误类型>()
+  let [刷新标志, 设置刷新标志] = useState(false)
+  let 参数文本 = JSON.stringify(参数)
 
   useEffect(() => {
     if (刷新标志) {
       设置刷新标志(false)
     }
 
-    var 已请求 = false
-    var 当前重试次数 = 0
+    let 已请求 = false
+    let 当前重试次数 = 0
 
-    const 请求数据 = (): void => {
+    let 请求数据 = (): void => {
       GlobalWeb.getItem('后端客户端')
         .then((客户端) => {
           客户端
@@ -139,7 +139,7 @@ export function usePost<
                   请求数据()
                 }, 重试延时)
               } else {
-                var 错误: 错误类型 = { status: 'fail', data: String(e) } as 错误类型
+                let 错误: 错误类型 = { status: 'fail', data: String(e) } as 错误类型
                 if (已请求) return
                 设置数据(错误)
               }

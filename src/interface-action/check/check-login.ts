@@ -11,7 +11,7 @@ type 输出 = {
 
 export class 检查登录 extends 业务行为<输入, 错误, 输出> {
   protected override async 业务行为实现(参数: 输入): Promise<Either<错误, 输出>> {
-    var userId = 参数.userId
+    let userId = 参数.userId
     if (userId == null) return new Left('未登录')
     return new Right({ userId: userId })
   }

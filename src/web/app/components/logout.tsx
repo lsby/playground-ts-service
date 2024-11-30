@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { 上下文描述 } from '../../ctx/ctx'
 
 export function 注销按钮(): React.JSX.Element {
-  const 上下文 = useContext(上下文描述)
+  let 上下文 = useContext(上下文描述)
 
   return (
     <button

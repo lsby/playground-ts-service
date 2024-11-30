@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { 上下文描述 } from '../../ctx/ctx'
 
 export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Element {
-  const 上下文 = useContext(上下文描述)
+  let 上下文 = useContext(上下文描述)
 
   return (
     <div className="max-w-md mx-auto p-8 border border-gray-300 rounded-lg shadow-lg bg-gray-50">
@@ -47,10 +47,10 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
 
   async function 登录按钮点击事件(e: React.MouseEvent<HTMLButtonElement>): Promise<void> {
     e.preventDefault()
-    const 用户名 = (document.getElementById('用户名') as HTMLInputElement).value
-    const 密码 = (document.getElementById('密码') as HTMLInputElement).value
+    let 用户名 = (document.getElementById('用户名') as HTMLInputElement).value
+    let 密码 = (document.getElementById('密码') as HTMLInputElement).value
 
-    const 结果 = await 上下文.客户端.登录(用户名, 密码)
+    let 结果 = await 上下文.客户端.登录(用户名, 密码)
     if (结果.status === 'fail') return alert(结果.data)
     on登录()
   }
