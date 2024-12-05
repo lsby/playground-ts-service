@@ -19,7 +19,7 @@ export class 检查用户存在 extends 业务行为<输入, 错误, 输出> {
       .select(['id', 'name', 'pwd'])
       .where('name', '=', 参数.用户名)
       .executeTakeFirst()
-    if (user == null) return new Left('用户不存在')
+    if (!user) return new Left('用户不存在')
     return new Right({ 用户: user })
   }
 }

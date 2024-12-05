@@ -20,7 +20,7 @@ export class WebSocket测试 extends 业务行为<输入, 错误, 输出> {
     let 定时器句柄 = setInterval(async () => {
       let 当前数据 = 数据[当前索引]
       当前索引++
-      if (当前数据 == null) {
+      if (!当前数据) {
         clearInterval(定时器句柄)
         await 参数.ws操作?.关闭ws连接()
         return

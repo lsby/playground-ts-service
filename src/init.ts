@@ -11,7 +11,7 @@ export async function init(): Promise<void> {
     .select('value')
     .where('key', '=', CONST.INIT_FLAG)
     .executeTakeFirst()
-  if (初始化标记?.value == 'true') {
+  if (初始化标记?.value === 'true') {
     await log.debug('初始化标记已存在, 跳过初始化')
     return
   }

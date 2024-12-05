@@ -27,8 +27,8 @@ export async function 请求用例<接口类型 extends 任意接口类型>(
   let urlPath = 接口类型描述.获得路径() as string
   let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
-  if (method == 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
-  if (method == 'post') return (await axios.post(url, 参数, { headers: { authorization: token } })).data
+  if (method === 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
+  if (method === 'post') return (await axios.post(url, 参数, { headers: { authorization: token } })).data
 
   throw new Error('意外的请求模式')
 }
