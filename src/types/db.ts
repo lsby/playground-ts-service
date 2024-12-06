@@ -4,7 +4,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   : ColumnType<T, T | undefined, T>;
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
-export type config = {
+export type system_config = {
     id: string;
     created_at: Generated<string>;
     updated_at: Generated<string>;
@@ -19,6 +19,6 @@ export type user = {
     pwd: string;
 };
 export type DB = {
-    config: config;
+    system_config: system_config;
     user: user;
 };

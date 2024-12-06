@@ -17,8 +17,8 @@ generator kysely {
 
 // =================================================
 
-// 配置
-model config {
+// 系统配置
+model system_config {
   id         String   @id
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt

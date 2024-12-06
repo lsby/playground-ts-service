@@ -7,7 +7,7 @@ export async function init(): Promise<void> {
 
   await log.debug('检索初始化标记...')
   let 初始化标记 = await kysely
-    .selectFrom('config')
+    .selectFrom('system_config')
     .select('value')
     .where('key', '=', CONST.INIT_FLAG)
     .executeTakeFirst()
@@ -37,6 +37,6 @@ export async function init(): Promise<void> {
   }
 
   await log.debug('初始化完成, 写入初始化标记...')
-  await kysely.insertInto('config').values({ id: randomUUID(), key: CONST.INIT_FLAG, value: 'true' }).execute()
+  await kysely.insertInto('system_config').values({ id: randomUUID(), key: CONST.INIT_FLAG, value: 'true' }).execute()
   await log.debug('写入初始化标记完成')
 }
