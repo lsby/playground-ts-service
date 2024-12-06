@@ -15,7 +15,7 @@ export async function 请求用例<接口类型 extends 任意接口类型>(
   let env = await (await Global.getItem('env')).获得环境变量()
 
   let token: string | undefined
-  if (登录) {
+  if (typeof 登录 !== 'undefined') {
     let login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       name: 登录.用户名,
       pwd: 登录.密码,

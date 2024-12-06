@@ -18,7 +18,7 @@ export class 后端客户端 {
 
   post: Post请求后端函数类型 = async (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
     let 扩展头: { [key: string]: string } = {}
-    if (ws信息回调) {
+    if (typeof ws信息回调 !== 'undefined') {
       let wsId = uuid.v1()
       let ws连接 = new WebSocket(`/ws?id=${wsId}`)
 
@@ -61,7 +61,7 @@ export class 后端客户端 {
 
   async 初始化(): Promise<this> {
     let storedToken = localStorage.getItem('token')
-    if (storedToken) {
+    if (storedToken !== null) {
       this.token = storedToken
     }
     let c = await this.post('/api/user/is-login', {})
