@@ -6,7 +6,7 @@ import './css/tailwind.css'
 localStorage['debug'] = '*'
 
 let app容器 = document.getElementById('app')
-if (!app容器) throw new Error('没有找到容器')
+if (app容器 === null) throw new Error('没有找到容器')
 
 let root = createRoot(app容器)
 root.render(

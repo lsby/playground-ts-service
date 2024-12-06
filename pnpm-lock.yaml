@@ -64,8 +64,11 @@ importers:
         specifier: ^4.3.1
         version: 4.3.1(prettier@3.3.3)
       '@lsby/eslint-config':
-        specifier: ^0.2.10
-        version: 0.2.10(@lsby/eslint-plugin@0.0.4(eslint@8.57.1))(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint-plugin-jsdoc@50.2.4(eslint@8.57.1))(eslint-plugin-react-hooks@4.6.2(eslint@8.57.1))(eslint-plugin-react@7.36.1(eslint@8.57.1))(eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1))(eslint@8.57.1)(typescript-eslint@8.7.0(eslint@8.57.1)(typescript@5.5.4))(typescript@5.5.4)
+        specifier: ^0.2.16
+        version: 0.2.16(@lsby/eslint-plugin@0.0.8(eslint@8.57.1))(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint-plugin-jsdoc@50.2.4(eslint@8.57.1))(eslint-plugin-react-hooks@4.6.2(eslint@8.57.1))(eslint-plugin-react@7.36.1(eslint@8.57.1))(eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1))(eslint@8.57.1)(typescript-eslint@8.7.0(eslint@8.57.1)(typescript@5.5.4))(typescript@5.5.4)
+      '@lsby/eslint-plugin':
+        specifier: ^0.0.8
+        version: 0.0.8(eslint@8.57.1)
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.11
@@ -628,10 +631,10 @@ packages:
     resolution: {integrity: sha512-f5DRIOZf7wxogefH03RjMPMdBF7ADTWUMoOs9kaJo06EfwF+aFhMZMDZxHg/Xe12hptN9xoZjGso2fdjapBRIA==}
     engines: {node: '>=10'}
 
-  '@lsby/eslint-config@0.2.10':
-    resolution: {integrity: sha512-lOnbZxEzcddq0eOWI0jdSSD0UIE7cQv6XUHpUFXih3T742h42xKw3WkQGo9vuhxQdHXuev/Zcy89x4u9C/vqnA==}
+  '@lsby/eslint-config@0.2.16':
+    resolution: {integrity: sha512-ku6Bvt+XdoiazF2Q0jAYhpLojItVBujDmoUtwkTVPvmc27bpt6eJsNQLj85/wwa5zHCQ5xx1V6zMomZxpw5VMw==}
     peerDependencies:
-      '@lsby/eslint-plugin': ^0.0.4
+      '@lsby/eslint-plugin': ^0.0.8
       '@types/eslint': ^9.6.1
       eslint: ^8.57.0
       eslint-config-prettier: ^9.1.0
@@ -642,8 +645,8 @@ packages:
       typescript: <5.6.0
       typescript-eslint: 8.7.0
 
-  '@lsby/eslint-plugin@0.0.4':
-    resolution: {integrity: sha512-u/Ha99N4QSmUJVZxB3md102IjAraHO2ISKraeMGFVKqMQTUTiSVRCiPJDw1yu8XQAPxIgFaVm4urnrZ70uz8TQ==}
+  '@lsby/eslint-plugin@0.0.8':
+    resolution: {integrity: sha512-4NthzMLm91mPnuzo82sXq9k6WaPlM/XVE+kgFgLViToOuHcC526wSsZOoFnMoZ/xa+aXQgniwOuqqjRwO2o+1g==}
     peerDependencies:
       eslint: ^8.56.0
 
@@ -4299,9 +4302,9 @@ snapshots:
       string-argv: 0.3.2
       type-detect: 4.1.0
 
-  '@lsby/eslint-config@0.2.10(@lsby/eslint-plugin@0.0.4(eslint@8.57.1))(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint-plugin-jsdoc@50.2.4(eslint@8.57.1))(eslint-plugin-react-hooks@4.6.2(eslint@8.57.1))(eslint-plugin-react@7.36.1(eslint@8.57.1))(eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1))(eslint@8.57.1)(typescript-eslint@8.7.0(eslint@8.57.1)(typescript@5.5.4))(typescript@5.5.4)':
+  '@lsby/eslint-config@0.2.16(@lsby/eslint-plugin@0.0.8(eslint@8.57.1))(@types/eslint@9.6.1)(eslint-config-prettier@9.1.0(eslint@8.57.1))(eslint-plugin-jsdoc@50.2.4(eslint@8.57.1))(eslint-plugin-react-hooks@4.6.2(eslint@8.57.1))(eslint-plugin-react@7.36.1(eslint@8.57.1))(eslint-plugin-sort-class-members@1.20.0(eslint@8.57.1))(eslint@8.57.1)(typescript-eslint@8.7.0(eslint@8.57.1)(typescript@5.5.4))(typescript@5.5.4)':
     dependencies:
-      '@lsby/eslint-plugin': 0.0.4(eslint@8.57.1)
+      '@lsby/eslint-plugin': 0.0.8(eslint@8.57.1)
       '@types/eslint': 9.6.1
       eslint: 8.57.1
       eslint-config-prettier: 9.1.0(eslint@8.57.1)
@@ -4312,7 +4315,7 @@ snapshots:
       typescript: 5.5.4
       typescript-eslint: 8.7.0(eslint@8.57.1)(typescript@5.5.4)
 
-  '@lsby/eslint-plugin@0.0.4(eslint@8.57.1)':
+  '@lsby/eslint-plugin@0.0.8(eslint@8.57.1)':
     dependencies:
       eslint: 8.57.1
 

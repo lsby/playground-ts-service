@@ -14,7 +14,7 @@ import {
 } from '../../types/interface-type'
 
 export class 后端客户端 {
-  private token: string | undefined
+  private token: string | null = null
 
   post: Post请求后端函数类型 = async (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
     let 扩展头: { [key: string]: string } = {}
@@ -65,9 +65,9 @@ export class 后端客户端 {
       this.token = storedToken
     }
     let c = await this.post('/api/user/is-login', {})
-    if (!c.data.isLogin) {
+    if (c.data.isLogin === false) {
       localStorage.removeItem('token')
-      this.token = undefined
+      this.token = null
     }
     return this
   }
@@ -83,11 +83,11 @@ export class 后端客户端 {
   }
   async 退出登录(): Promise<void> {
     localStorage.removeItem('token')
-    this.token = undefined
+    this.token = null
   }
 
   已登录(): boolean {
-    return !!this.token
+    return this.token !== null
   }
 }
 
@@ -106,12 +106,12 @@ export function usePost<
   最大重试次数: number = 5,
   重试延时: number = 1000,
 ): [
-  正确类型 | 错误类型 | undefined,
+  正确类型 | 错误类型 | null,
   () => void,
   (正确结果: 正确类型['data']) => void,
   (错误结果: 错误类型['data']) => void,
 ] {
-  let [返回数据, 设置数据] = useState<正确类型 | 错误类型>()
+  let [返回数据, 设置数据] = useState<正确类型 | 错误类型 | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
   let 参数文本 = JSON.stringify(参数)
 

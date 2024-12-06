@@ -9,7 +9,7 @@ export function 计算器(): React.JSX.Element {
   let 更新数字a = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字a(Number(e.target.value))
   let 更新数字b = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字b(Number(e.target.value))
 
-  if (!数据) return <div>加载中...</div>
+  if (数据 === null) return <div>加载中...</div>
   if (数据.status === 'fail') return <div>发生错误: {数据.data}</div>
 
   return (

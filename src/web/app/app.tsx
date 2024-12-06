@@ -9,7 +9,7 @@ export function App(): React.JSX.Element {
 
   return (
     <上下文描述.Provider value={上下文}>
-      {!已登录 ? <登录页 on登录={() => 设置已登录(true)}></登录页> : <主页></主页>}
+      {已登录 === false ? <登录页 on登录={() => 设置已登录(true)}></登录页> : <主页></主页>}
     </上下文描述.Provider>
   )
 }
