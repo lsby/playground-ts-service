@@ -61,7 +61,7 @@
     {
       "label": "_运行后端",
       "type": "npm",
-      "script": "run:service:dev",
+      "script": "run:service:debug",
       "isBackground": true,
       "presentation": { "reveal": "never" },
       "group": { "kind": "build", "isDefault": true }
@@ -69,7 +69,7 @@
     {
       "label": "_运行前端",
       "type": "npm",
-      "script": "run:web:dev",
+      "script": "run:web:debug",
       "isBackground": true,
       "presentation": { "reveal": "never" },
       "group": { "kind": "build", "isDefault": true }

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { 上下文描述 } from '../ctx/ctx'
-import { 主页 } from './page'
+import { 主页 } from './page/index'
 import { 登录页 } from './page/login'
 
 export function App(): React.JSX.Element {

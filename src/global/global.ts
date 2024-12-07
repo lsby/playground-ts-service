@@ -20,7 +20,6 @@ let env = new Env({
     DEBUG_NAME: z.string(),
     DATABASE_PATH: z.string(),
     APP_PORT: z.coerce.number(),
-    WEB_PATH: z.string(),
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
