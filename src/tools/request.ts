@@ -14,13 +14,13 @@ export async function 请求用例<接口类型 extends 任意接口类型>(
 ): Promise<object> {
   let env = await (await Global.getItem('env')).获得环境变量()
 
-  let token: string | undefined
+  let token: string | null = null
   if (typeof 登录 !== 'undefined') {
     let login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       name: 登录.用户名,
       pwd: 登录.密码,
     })) as { data: { data: { [key: string]: string } } }
-    token = login.data.data[登录.凭据属性]
+    token = login.data.data[登录.凭据属性] ?? null
   }
 
   let method = 接口类型描述.获得方法() as string
