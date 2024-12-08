@@ -41,22 +41,26 @@ export class 后端客户端 {
       扩展头 = { 'ws-client-id': wsId }
     }
 
-    let c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
-    if (c.status >= 500) {
+    try {
+      let c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
+      return c.data
+    } catch (e) {
       let log = new Log('web')
-      await log.err('服务器错误: %o', c)
+      await log.err('服务器错误: %o', e)
+      alert(`服务器错误: ${e}`)
       throw new Error('服务器错误')
     }
-    return c.data
   }
   get: Get请求后端函数类型 = async (路径, 参数) => {
-    let c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
-    if (c.status >= 500) {
+    try {
+      let c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
+      return c.data
+    } catch (e) {
       let log = new Log('web')
-      await log.err('服务器错误: %o', c)
+      await log.err('服务器错误: %o', e)
+      alert(`服务器错误: ${e}`)
       throw new Error('服务器错误')
     }
-    return c.data
   }
 
   async 初始化(): Promise<this> {
