@@ -18,6 +18,7 @@ let env = new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
     DEBUG_NAME: z.string(),
+    DB_TYPE: z.enum(['sqlite', 'pg']),
     DATABASE_PATH: z.string(),
     APP_PORT: z.coerce.number(),
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
@@ -29,6 +30,10 @@ let env = new Env({
 export let Global = new GlobalService([
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
+  new GlobalAsyncItem('DB_TYPE', async () => {
+    let e = await env.获得环境变量()
+    return e.DB_TYPE
+  }),
   new GlobalAsyncItem('log', async () => {
     let e = await env.获得环境变量()
     return new Log(e.DEBUG_NAME)
