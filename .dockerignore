@@ -37,4 +37,6 @@ dist
 coverage
 .cache
 
+# 忽略sqlite相关文件
 **/*.db
+**/*.db-journal
