@@ -47,8 +47,7 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
     </div>
   )
 
-  async function 登录按钮点击事件(e: React.MouseEvent<HTMLButtonElement>): Promise<void> {
-    e.preventDefault()
+  async function 登录按钮点击事件(_e: React.MouseEvent<HTMLButtonElement>): Promise<void> {
     let 用户名 = (document.getElementById('用户名') as HTMLInputElement).value
     let 密码 = (document.getElementById('密码') as HTMLInputElement).value
 
