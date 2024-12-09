@@ -17,6 +17,7 @@ export let CONST = {
 let env = new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
+    NODE_ENV: z.enum(['development', 'production', 'test']),
     DEBUG_NAME: z.string(),
     DB_TYPE: z.enum(['sqlite', 'pg']),
     DATABASE_PATH: z.string(),
