@@ -12,6 +12,9 @@ export default new JSON状态接口类型(
       return jwt.解析器
     }),
     new Task(async () => {
+      return await Global.getItem('kysely-plugin')
+    }),
+    new Task(async () => {
       return new JSON解析插件(z.object({}), {})
     }),
   ],
