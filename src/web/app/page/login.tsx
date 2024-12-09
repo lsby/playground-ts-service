@@ -18,6 +18,7 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
             name="用户名"
             required
             className="w-full p-2 rounded border border-gray-300 box-border"
+            autoComplete="username"
           />
         </div>
         <div className="mb-5">
@@ -30,6 +31,7 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
             name="密码"
             required
             className="w-full p-2 rounded border border-gray-300 box-border"
+            autoComplete="current-password"
           />
         </div>
         <button
