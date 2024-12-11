@@ -49,6 +49,9 @@ export let Global = new GlobalService([
   }),
   new GlobalAsyncItem('kysely-plugin', async () => {
     let e = await env.获得环境变量()
-    return new Kysely插件(new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })).获得句柄())
+    return new Kysely插件(
+      'kysely',
+      new Kysely管理器<DB>(new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })).获得句柄(),
+    )
   }),
 ])

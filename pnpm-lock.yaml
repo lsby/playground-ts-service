@@ -18,8 +18,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2(@lsby/net-core@0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
       '@lsby/net-core-kysely':
-        specifier: 0.0.1
-        version: 0.0.1(@lsby/net-core@0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
+        specifier: 0.0.2
+        version: 0.0.2(@lsby/net-core@0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.6.1)
@@ -746,8 +746,8 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
-  '@lsby/net-core-kysely@0.0.1':
-    resolution: {integrity: sha512-OspsyiQQWGvtWcSCrD+ayoeYY1fKes8yR5RIyQgrP2SGguqRk+gIrEMNtMCi3URb7dA6blevH6tcBFTOOL6qXg==}
+  '@lsby/net-core-kysely@0.0.2':
+    resolution: {integrity: sha512-8IeDFnW1JRghq5vS6IL9FlveTyl4XZ/yZHI+ovTuKcZKLKVMiL7p/VgHf6PaGpvZdGnWmKFRIoTp3SEOmNKKNw==}
     peerDependencies:
       '@lsby/net-core': ^0.3.13
 
@@ -4599,7 +4599,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.1(@lsby/net-core@0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
+  '@lsby/net-core-kysely@0.0.2(@lsby/net-core@0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1))(@types/node@22.6.1)':
     dependencies:
       '@lsby/net-core': 0.3.44(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)
       kysely: 0.27.4
