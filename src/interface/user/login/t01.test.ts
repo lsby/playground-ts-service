@@ -1,6 +1,6 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
-import { randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
@@ -12,7 +12,10 @@ export default new 接口测试(
   async (): Promise<void> => {
     let db = (await Global.getItem('kysely')).获得句柄()
     await clearDB(db)
-    await db.insertInto('user').values({ id: randomUUID(), name: name, pwd: pwd }).execute()
+    await db
+      .insertInto('user')
+      .values({ id: randomUUID(), name: name, pwd: createHash('md5').update(pwd).digest('hex') })
+      .execute()
   },
 
   async (): Promise<object> => {

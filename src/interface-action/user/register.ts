@@ -1,6 +1,6 @@
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
-import { randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
 import { Kysely } from 'kysely'
 import { DB } from '../../types/db'
 import { 查找用户 } from './find-user'
@@ -35,7 +35,12 @@ export class 注册 extends 业务行为<输入, 错误, 输出> {
       .assertRight()
       .getRight()
     if (用户存在.用户 !== null) return new Left('用户名已存在')
-    await 参数.kysely.insertInto('user').values({ id: randomUUID(), name: 参数.name, pwd: 参数.pwd }).execute()
+
+    await 参数.kysely
+      .insertInto('user')
+      .values({ id: randomUUID(), name: 参数.name, pwd: createHash('md5').update(参数.pwd).digest('hex') })
+      .execute()
+
     return new Right({})
   }
 }

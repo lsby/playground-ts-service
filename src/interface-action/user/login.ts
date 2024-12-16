@@ -1,5 +1,6 @@
 import { 业务行为 } from '@lsby/net-core'
 import { Either, Left } from '@lsby/ts-fp-data'
+import { createHash } from 'crypto'
 import { Kysely } from 'kysely'
 import { DB } from '../../types/db'
 import { 检查用户存在 } from '../check/check-user-exist'
@@ -38,7 +39,11 @@ export class 登录 extends 业务行为<输入, 错误, 输出> {
     let 结果 = await 业务行为
       .混合组合多项([new 检查用户存在(), new 检查用户密码()])
       .映射结果((a) => ({ token: 参数.signJwt({ userId: a.用户.id }) }))
-      .运行业务行为({ kysely: 参数.kysely, 用户名: 参数.name, 输入密码: 参数.pwd })
+      .运行业务行为({
+        kysely: 参数.kysely,
+        用户名: 参数.name,
+        输入密码: createHash('md5').update(参数.pwd).digest('hex'),
+      })
     return 结果
   }
 }

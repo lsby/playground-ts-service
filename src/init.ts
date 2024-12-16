@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
 import { CONST, Global } from './global/global'
 
 export async function init(): Promise<void> {
@@ -28,7 +28,7 @@ export async function init(): Promise<void> {
       .values({
         id: randomUUID(),
         name: 'admin',
-        pwd: '123456',
+        pwd: createHash('md5').update('123456').digest('hex'),
       })
       .execute()
     await log.debug(`初始化${项目名称}完成`)

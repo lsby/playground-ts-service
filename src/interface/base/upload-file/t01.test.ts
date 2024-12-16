@@ -1,6 +1,6 @@
 import { 接口测试 } from '@lsby/net-core'
 import axios from 'axios'
-import { randomUUID } from 'crypto'
+import { createHash, randomUUID } from 'crypto'
 import { Readable } from 'stream'
 import streamToBlob from 'stream-to-blob'
 import { clearDB } from '../../../../script/db/clear-db'
@@ -14,7 +14,10 @@ export default new 接口测试(
   async () => {
     let db = (await Global.getItem('kysely')).获得句柄()
     await clearDB(db)
-    await db.insertInto('user').values({ id: randomUUID(), name: name, pwd: pwd }).execute()
+    await db
+      .insertInto('user')
+      .values({ id: randomUUID(), name: name, pwd: createHash('md5').update(pwd).digest('hex') })
+      .execute()
   },
 
   async () => {
