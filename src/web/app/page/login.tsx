@@ -7,7 +7,7 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
   return (
     <div className="max-w-md mx-auto p-8 border border-gray-300 rounded-lg shadow-lg bg-gray-50">
       <h1 className="text-center mb-5 text-gray-800">登录</h1>
-      <form>
+      <div>
         <div className="mb-5">
           <label htmlFor="用户名" className="block mb-2 font-bold">
             用户名:
@@ -43,7 +43,7 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
         >
           登录
         </button>
-      </form>
+      </div>
     </div>
   )
 
