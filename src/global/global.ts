@@ -22,6 +22,8 @@ let env = new Env({
     DB_TYPE: z.enum(['sqlite', 'pg']),
     DATABASE_PATH: z.string(),
     APP_PORT: z.coerce.number(),
+    SYSTEM_USER: z.string(),
+    SYSTEM_PWD: z.string(),
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),

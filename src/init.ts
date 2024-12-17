@@ -3,6 +3,7 @@ import { CONST, Global } from './global/global'
 
 export async function init(): Promise<void> {
   let log = (await Global.getItem('log')).extend('init')
+  let env = await (await Global.getItem('env')).获得环境变量()
   let kysely = (await Global.getItem('kysely')).获得句柄()
 
   await log.debug('检索初始化标记...')
@@ -27,8 +28,8 @@ export async function init(): Promise<void> {
       .insertInto('user')
       .values({
         id: randomUUID(),
-        name: 'admin',
-        pwd: createHash('md5').update('123456').digest('hex'),
+        name: env.SYSTEM_USER,
+        pwd: createHash('md5').update(env.SYSTEM_PWD).digest('hex'),
       })
       .execute()
     await log.debug(`初始化${项目名称}完成`)
