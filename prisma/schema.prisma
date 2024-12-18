@@ -25,6 +25,8 @@ model system_config {
 
   key   String
   value String
+
+  @@unique([key])
 }
 
 // 用户

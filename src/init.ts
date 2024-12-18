@@ -38,6 +38,7 @@ export async function init(): Promise<void> {
   }
 
   await log.debug('初始化完成, 写入初始化标记...')
+  await kysely.deleteFrom('system_config').where('key', '=', CONST.INIT_FLAG).execute()
   await kysely.insertInto('system_config').values({ id: randomUUID(), key: CONST.INIT_FLAG, value: 'true' }).execute()
   await log.debug('写入初始化标记完成')
 }
