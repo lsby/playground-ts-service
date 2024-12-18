@@ -20,6 +20,21 @@ export async function init(): Promise<void> {
   await log.debug('初始化标记不存在, 开始初始化...')
 
   let 项目名称: string
+  let 初始用户id: string
+
+  let 用户存在判定 =
+    (await kysely
+      .selectFrom('user')
+      .select('id')
+      .where('name', '=', env.SYSTEM_USER)
+      .where('pwd', '=', createHash('md5').update(env.SYSTEM_PWD).digest('hex'))
+      .executeTakeFirst()) ?? null
+
+  if (用户存在判定 !== null) {
+    初始用户id = 用户存在判定.id
+  } else {
+    初始用户id = randomUUID()
+  }
 
   项目名称 = '用户'
   try {
@@ -27,7 +42,7 @@ export async function init(): Promise<void> {
     await kysely
       .insertInto('user')
       .values({
-        id: randomUUID(),
+        id: 初始用户id,
         name: env.SYSTEM_USER,
         pwd: createHash('md5').update(env.SYSTEM_PWD).digest('hex'),
       })
