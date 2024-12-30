@@ -4,7 +4,7 @@ import { usePost } from '../../global/global'
 export function 计算器(): React.JSX.Element {
   let [数字a, 设置数字a] = useState<number>(1)
   let [数字b, 设置数字b] = useState<number>(2)
-  let [数据, _刷新数据, _设置正确数据, _设置错误数据] = usePost('/api/base/add', { a: 数字a, b: 数字b })
+  let [数据, _刷新数据, _设置错误数据, _设置正确数据] = usePost('/api/base/add', { a: 数字a, b: 数字b })
 
   let 更新数字a = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字a(Number(e.target.value))
   let 更新数字b = (e: React.ChangeEvent<HTMLInputElement>): void => 设置数字b(Number(e.target.value))

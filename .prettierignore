@@ -51,7 +51,7 @@ pnpm-lock.yaml
 *.xlsx
 
 # 忽略生成的文件
-/src/types/db.ts
-/src/types/interface-type.ts
-/src/interface/interface-list.ts
+/src/types/*.ts
+/src/interface-api/interface-api-list.ts
+/src/interface-table/interface-table-list.ts
 /test/unit-test.test.ts

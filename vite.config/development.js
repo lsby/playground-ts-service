@@ -24,6 +24,10 @@ export default defineConfig({
         ws: true,
         changeOrigin: true,
       },
+      '/table': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+      },
     },
   },
 })
