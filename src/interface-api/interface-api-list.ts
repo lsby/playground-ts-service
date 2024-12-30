@@ -8,7 +8,7 @@ import _src_interface_api_user_register_index_ts from './user/register/index'
 import _src_interface_api_user_is_login_index_ts from './user/is-login/index'
 import _src_interface_api_base_ws_test_index_ts from './base/ws-test/index'
 
-export let interfaceList: 任意接口[] = [
+export let interfaceApiList: 任意接口[] = [
   _src_interface_api_base_add_index_ts,
   _src_interface_api_base_sub_index_ts,
   _src_interface_api_user_login_index_ts,

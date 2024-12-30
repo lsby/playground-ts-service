@@ -20,6 +20,7 @@ export function WS测试组件(): React.JSX.Element {
           cursor: 'pointer',
           fontSize: '16px',
           transition: 'background-color 0.3s ease',
+          width: '100%',
         }}
         onMouseEnter={(e) => {
           ;(e.target as HTMLButtonElement).style.backgroundColor = '#45a049'
