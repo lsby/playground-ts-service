@@ -131,16 +131,17 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
     let 已请求 = false
 
     let 请求数据 = async (): Promise<void> => {
+      if (已请求) return
+
       let log = await GlobalWeb.getItem('log')
       let 客户端 = await GlobalWeb.getItem('后端客户端')
       let 请求路径 = 资源路径 + '/get'
-      if (已请求) return
 
       let 验证筛选条件文本 = (筛选条件文本 as string | undefined) ?? null
       let 验证分页条件文本 = (分页条件文本 as string | undefined) ?? null
       let 验证排序条件文本 = (排序条件文本 as string | undefined) ?? null
 
-      let 数据 = await 客户端.post(
+      let 结果 = await 客户端.post(
         请求路径 as any,
         {
           construction: JSON.parse(构造参数文本) as unknown,
@@ -149,11 +150,12 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
           sort: 验证排序条件文本 !== null ? (JSON.parse(排序条件文本) as unknown) : void 0,
         } as any,
       )
-      if (数据.status === 'fail') {
-        await log.err('请求 %o 发生错误: %o', 请求路径, 数据.data)
+      if (结果.status === 'fail') {
+        await log.err('请求 %o 发生错误: %o', 请求路径, 结果.data)
         return
       }
-      设置数据(数据.data as any)
+
+      设置数据(结果.data as any)
     }
 
     请求数据().catch((e) => {
@@ -225,20 +227,9 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
 
 export function usePost<
   路径 extends 元组转联合<Post_API接口路径们>,
-  错误类型 extends 从路径获得API接口一般属性<路径>['errorOutput'],
-  正确类型 extends 从路径获得API接口一般属性<路径>['successOutput'],
->(
-  路径: 路径,
-  参数: 从路径获得API接口一般属性<路径>['input'],
-  最大重试次数: number = 5,
-  重试延时: number = 1000,
-): [
-  错误类型 | 正确类型 | null,
-  () => void,
-  (错误结果: 错误类型['data']) => void,
-  (正确结果: 正确类型['data']) => void,
-] {
-  let [返回数据, 设置数据] = useState<正确类型 | 错误类型 | null>(null)
+  数据类型 extends 从路径获得API接口一般属性<路径>['successOutput']['data'],
+>(路径: 路径, 参数: 从路径获得API接口一般属性<路径>['input']): [数据类型 | null, (新值: 数据类型) => void, () => void] {
+  let [返回数据, 设置数据] = useState<数据类型 | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
   let 参数文本 = JSON.stringify(参数)
 
@@ -248,26 +239,20 @@ export function usePost<
     }
 
     let 已请求 = false
-    let 当前重试次数 = 0
 
     let 请求数据 = async (): Promise<void> => {
-      let 客户端 = await GlobalWeb.getItem('后端客户端')
-      try {
-        let 结果 = await 客户端.post(路径, JSON.parse(参数文本))
-        if (已请求) return
-        设置数据(结果 as 正确类型)
-      } catch (e) {
-        if (当前重试次数 >= 最大重试次数) {
-          let 错误: 错误类型 = { status: 'fail', data: String(e) } as 错误类型
-          if (已请求) return
-          设置数据(错误)
-          return
-        }
+      if (已请求) return
 
-        await sleep(重试延时)
-        当前重试次数++
-        await 请求数据()
+      let log = await GlobalWeb.getItem('log')
+      let 客户端 = await GlobalWeb.getItem('后端客户端')
+
+      let 结果 = await 客户端.post(路径, JSON.parse(参数文本))
+      if (结果.status === 'fail') {
+        await log.err('请求 %o 发生错误: %o', 路径, 结果.data)
+        return
       }
+
+      设置数据(结果.data as any)
     }
 
     请求数据().catch((e) => {
@@ -279,24 +264,11 @@ export function usePost<
     return (): void => {
       已请求 = true
     }
-  }, [路径, 参数文本, 最大重试次数, 重试延时, 刷新标志])
+  }, [路径, 参数文本, 刷新标志])
 
-  return [
-    返回数据,
-    (): void => {
-      设置刷新标志(true)
-    },
-    (错误结果: 错误类型['data']): void => {
-      设置数据({ status: 'fail', data: 错误结果 } as 错误类型)
-    },
-    (正确结果: 正确类型['data']): void => {
-      设置数据({ status: 'success', data: 正确结果 } as unknown as 正确类型)
-    },
-  ]
-}
+  let 强制刷新 = useCallback((): void => {
+    设置刷新标志(true)
+  }, [设置刷新标志])
 
-async function sleep(n: number): Promise<void> {
-  return new Promise((res, _rej) => {
-    setTimeout(() => res(), n)
-  })
+  return [返回数据, 设置数据, 强制刷新]
 }
