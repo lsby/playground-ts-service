@@ -1,7 +1,7 @@
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
 import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import * as uuid from 'uuid'
 import {
   Get请求后端函数类型,
@@ -118,21 +118,17 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
 ] {
   let [数据, 设置数据] = useState<从路径获得表接口属性<路径>['查原始正确值'] | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
-  let 构造参数文本 = JSON.stringify(构造参数)
-  let 筛选条件文本: string | undefined = JSON.stringify(筛选条件)
-  let 分页条件文本: string | undefined = JSON.stringify(分页条件)
-  let 排序条件文本: string | undefined = JSON.stringify(排序条件)
+  let 构造参数文本 = useMemo(() => JSON.stringify(构造参数), [构造参数])
+  let 筛选条件文本 = useMemo(() => JSON.stringify(筛选条件), [筛选条件])
+  let 分页条件文本 = useMemo(() => JSON.stringify(分页条件), [分页条件])
+  let 排序条件文本 = useMemo(() => JSON.stringify(排序条件), [排序条件])
 
   useEffect(() => {
     if (刷新标志) {
       设置刷新标志(false)
     }
 
-    let 已请求 = false
-
     let 请求数据 = async (): Promise<void> => {
-      if (已请求) return
-
       let log = await GlobalWeb.getItem('log')
       let 客户端 = await GlobalWeb.getItem('后端客户端')
       let 请求路径 = 资源路径 + '/get'
@@ -151,6 +147,7 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
         } as any,
       )
       if (结果.status === 'fail') {
+        alert('发生错误')
         await log.err('请求 %o 发生错误: %o', 请求路径, 结果.data)
         return
       }
@@ -164,9 +161,7 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
         .catch(console.error)
     })
 
-    return (): void => {
-      已请求 = true
-    }
+    return (): void => {}
   }, [资源路径, 构造参数文本, 筛选条件文本, 分页条件文本, 排序条件文本, 刷新标志])
 
   let 增 = useCallback(
@@ -231,28 +226,25 @@ export function usePost<
 >(路径: 路径, 参数: 从路径获得API接口一般属性<路径>['input']): [数据类型 | null, (新值: 数据类型) => void, () => void] {
   let [返回数据, 设置数据] = useState<数据类型 | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
-  let 参数文本 = JSON.stringify(参数)
+  let 参数文本 = useMemo(() => JSON.stringify(参数), [参数])
 
   useEffect(() => {
     if (刷新标志) {
       设置刷新标志(false)
     }
 
-    let 已请求 = false
-
     let 请求数据 = async (): Promise<void> => {
-      if (已请求) return
-
       let log = await GlobalWeb.getItem('log')
       let 客户端 = await GlobalWeb.getItem('后端客户端')
 
       let 结果 = await 客户端.post(路径, JSON.parse(参数文本))
       if (结果.status === 'fail') {
+        alert('发生错误')
         await log.err('请求 %o 发生错误: %o', 路径, 结果.data)
         return
       }
 
-      设置数据(结果.data as any)
+      设置数据(结果.data as 数据类型)
     }
 
     请求数据().catch((e) => {
@@ -261,9 +253,7 @@ export function usePost<
         .catch(console.error)
     })
 
-    return (): void => {
-      已请求 = true
-    }
+    return (): void => {}
   }, [路径, 参数文本, 刷新标志])
 
   let 强制刷新 = useCallback((): void => {
