@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { 上下文描述 } from '../../ctx/ctx'
 import { useTable } from '../../global/global'
 import { 计算器 } from '../components/calculator'
-import { 注销按钮 } from '../components/logout'
 import { WS测试组件 } from '../components/ws-test'
 
-export function 主页(): React.JSX.Element {
-  let [用户信息表] = useTable('/table/user-info', {})
+export function 演示页(): React.JSX.Element {
+  let 上下文 = useContext(上下文描述)
 
+  let [用户信息表] = useTable('/table/user-info', {})
   if (用户信息表 === null) return <div>加载中...</div>
 
   return (
@@ -45,7 +46,15 @@ export function 主页(): React.JSX.Element {
           boxShadow: '0 10px 30px rgba(156, 39, 176, 0.3)',
         }}
       >
-        <注销按钮 />
+        <button
+          onClick={async () => {
+            await 上下文.客户端.退出登录()
+            上下文.重定向到页面('/')
+          }}
+          className="p-2 bg-blue-500 text-white border-none rounded"
+        >
+          退出登录
+        </button>
       </div>
     </div>
   )

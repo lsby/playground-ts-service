@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { 上下文描述 } from '../../ctx/ctx'
 
-export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Element {
+export function 登录页(): React.JSX.Element {
   let 上下文 = useContext(上下文描述)
 
   return (
@@ -53,6 +53,6 @@ export function 登录页({ on登录 }: { on登录: () => void }): React.JSX.Ele
 
     let 结果 = await 上下文.客户端.登录(用户名, 密码)
     if (结果.status === 'fail') return alert(结果.data)
-    on登录()
+    上下文.重定向到页面('/')
   }
 }
