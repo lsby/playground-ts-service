@@ -63,7 +63,7 @@ export type 从路径获得表接口构造参数<路径, T = InterfaceTableType>
       ? x['路径'] extends 路径
         ? '构造参数' extends keyof x
           ? x['构造参数']
-          : never
+          : 从路径获得表接口构造参数<路径, xs>
         : 从路径获得表接口构造参数<路径, xs>
       : never
     : never
@@ -73,8 +73,8 @@ export type 从路径获得表接口属性<路径, T = InterfaceTableType> = T e
     ? '路径' extends keyof x
       ? x['路径'] extends 路径
         ? x
-        : never
-      : 从路径获得表接口属性<路径, xs>
+        : 从路径获得表接口属性<路径, xs>
+      : never
     : never
 
 export type Get请求后端函数类型 = <路径 extends 元组转联合<Get_API接口路径们>>(
