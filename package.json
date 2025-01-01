@@ -43,7 +43,7 @@
     "watch:gen:table:type": "cross-env DEBUG=@lsby:* tsx script/gen/watch.ts ./src/interface-table/ \"npm run _gen:table:type\""
   },
   "dependencies": {
-    "@lsby/net-core": "0.4.0-beta.9",
+    "@lsby/net-core": "0.4.0-beta.10",
     "@lsby/net-core-file-upload": "^0.1.2",
     "@lsby/net-core-jwt": "^0.1.2",
     "@lsby/net-core-kysely": "0.0.2",
