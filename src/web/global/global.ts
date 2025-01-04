@@ -1,8 +1,9 @@
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
 import axios from 'axios'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as uuid from 'uuid'
+import { z } from 'zod'
 import {
   Get请求后端函数类型,
   Post_API接口路径们,
@@ -48,7 +49,7 @@ export class 后端客户端 {
         return c.data
       } catch (e) {
         let log = new Log('web')
-        await log.err('服务器错误: %o', e)
+        await log.error('服务器错误: %o', e)
         alert(`服务器错误: ${e}`)
         throw new Error('服务器错误')
       }
@@ -60,7 +61,7 @@ export class 后端客户端 {
       return c.data
     } catch (e) {
       let log = new Log('web')
-      await log.err('服务器错误: %o', e)
+      await log.error('服务器错误: %o', e)
       alert(`服务器错误: ${e}`)
       throw new Error('服务器错误')
     }
@@ -105,18 +106,19 @@ export let GlobalWeb = new GlobalService([
 
 export function useTable<路径 extends 元组转联合<所有表接口路径们>>(
   资源路径: 路径,
-  构造参数: 从路径获得表接口构造参数<路径>,
+  构造参数: 从路径获得表接口构造参数<路径> | null,
   筛选条件?: 从路径获得表接口属性<路径>['查参数_筛选条件'] | undefined,
   分页条件?: 从路径获得表接口属性<路径>['查参数_分页条件'] | undefined,
   排序条件?: 从路径获得表接口属性<路径>['查参数_排序条件'] | undefined,
-): [
-  从路径获得表接口属性<路径>['查原始正确值'] | null,
-  (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => void,
-  (筛选条件: 从路径获得表接口属性<路径>['删参数_筛选条件']) => void,
-  (新值: 从路径获得表接口属性<路径>['改参数_新值'], 筛选条件: 从路径获得表接口属性<路径>['改参数_筛选条件']) => void,
-  () => void,
-] {
-  let [数据, 设置数据] = useState<从路径获得表接口属性<路径>['查原始正确值'] | null>(null)
+): {
+  数据: MutableRefObject<从路径获得表接口属性<路径>['查原始正确值'] | null>
+  增: (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => void
+  删: (筛选条件: 从路径获得表接口属性<路径>['删参数_筛选条件']) => void
+  改: (新值: 从路径获得表接口属性<路径>['改参数_新值'], 筛选条件: 从路径获得表接口属性<路径>['改参数_筛选条件']) => void
+  强制刷新: () => void
+  仅修改: (新值: 从路径获得表接口属性<路径>['查原始正确值'] | null) => void
+} {
+  let [数据, 设置数据] = useSyncState<从路径获得表接口属性<路径>['查原始正确值'] | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
   let 构造参数文本 = useMemo(() => JSON.stringify(构造参数), [构造参数])
   let 筛选条件文本 = useMemo(() => JSON.stringify(筛选条件), [筛选条件])
@@ -124,6 +126,8 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
   let 排序条件文本 = useMemo(() => JSON.stringify(排序条件), [排序条件])
 
   useEffect(() => {
+    if (构造参数文本 === 'null') return
+
     if (刷新标志) {
       设置刷新标志(false)
     }
@@ -148,7 +152,7 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
       )
       if (结果.status === 'fail') {
         alert('发生错误')
-        await log.err('请求 %o 发生错误: %o', 请求路径, 结果.data)
+        await log.error('请求 %o 发生错误: %o', 请求路径, 结果.data)
         return
       }
 
@@ -157,12 +161,12 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
 
     请求数据().catch((e) => {
       GlobalWeb.getItem('log')
-        .then((log) => log.err(e))
+        .then((log) => log.error(e))
         .catch(console.error)
     })
 
     return (): void => {}
-  }, [资源路径, 构造参数文本, 筛选条件文本, 分页条件文本, 排序条件文本, 刷新标志])
+  }, [资源路径, 构造参数文本, 筛选条件文本, 分页条件文本, 排序条件文本, 刷新标志, 设置数据])
 
   let 增 = useCallback(
     async (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => {
@@ -201,7 +205,14 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
     设置刷新标志(true)
   }, [设置刷新标志])
 
-  return [数据, 增, 删, 改, 强制刷新]
+  return {
+    数据,
+    增,
+    删,
+    改,
+    强制刷新,
+    仅修改: 设置数据,
+  }
 
   async function 增删改请求({ url, body }: { url: string; body: any }): Promise<void> {
     let log = await GlobalWeb.getItem('log')
@@ -209,12 +220,12 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
     try {
       let response = await 客户端.post(url as any, body)
       if (response.status === 'fail') {
-        await log.err('请求 %o 发生错误: %o', url, response.data)
+        await log.error('请求 %o 发生错误: %o', url, response.data)
         return
       }
       设置刷新标志(true)
     } catch (error) {
-      await log.err('请求 %o 异常: %o', url, error)
+      await log.error('请求 %o 异常: %o', url, error)
       throw error
     }
   }
@@ -240,7 +251,7 @@ export function usePost<
       let 结果 = await 客户端.post(路径, JSON.parse(参数文本))
       if (结果.status === 'fail') {
         alert('发生错误')
-        await log.err('请求 %o 发生错误: %o', 路径, 结果.data)
+        await log.error('请求 %o 发生错误: %o', 路径, 结果.data)
         return
       }
 
@@ -249,7 +260,7 @@ export function usePost<
 
     请求数据().catch((e) => {
       GlobalWeb.getItem('log')
-        .then((log) => log.err(e))
+        .then((log) => log.error(e))
         .catch(console.error)
     })
 
@@ -261,4 +272,61 @@ export function usePost<
   }, [设置刷新标志])
 
   return [返回数据, 设置数据, 强制刷新]
+}
+
+type 计算get参数类型<Arr> = Arr extends []
+  ? {}
+  : Arr extends [infer x, ...infer xs]
+    ? x extends string
+      ? Record<x, string> & 计算get参数类型<xs>
+      : never
+    : never
+export function useQueryParams<参数描述 extends string[]>(参数描述: [...参数描述]): 计算get参数类型<参数描述> | null {
+  let [params, setParams] = useState<计算get参数类型<参数描述> | null>(null)
+  let 参数描述文本 = JSON.stringify(参数描述)
+
+  useEffect(() => {
+    let queryParams = new URLSearchParams(window.location.search)
+
+    let queryObject: Record<string, string> = {}
+    queryParams.forEach((value, key) => {
+      queryObject[key] = value
+    })
+
+    let result = z
+      .object(
+        (JSON.parse(参数描述文本) as string[])
+          .map((a) => ({ [a]: z.string() }))
+          .reduce((s, a) => Object.assign(s, a), {}),
+      )
+      .safeParse(queryObject)
+
+    if (result.success) {
+      setParams(result.data as any)
+    } else {
+      ;(async (): Promise<void> => {
+        let log = await GlobalWeb.getItem('log')
+        await log.error('获得get参数失败: %O', result.error)
+      })().catch(console.error)
+      setParams(null)
+    }
+  }, [参数描述文本])
+
+  return params
+}
+
+export function useSyncState<A>(状态值: A): [MutableRefObject<A>, (新数据: A) => void] {
+  let [数据, 设置数据] = useState<A>(状态值)
+  let 数据Ref = useRef(状态值)
+
+  useEffect(() => {
+    数据Ref.current = 数据
+  }, [数据])
+
+  let 更新数据 = useCallback((新数据: A) => {
+    数据Ref.current = 新数据
+    设置数据(新数据)
+  }, [])
+
+  return [数据Ref, 更新数据]
 }
