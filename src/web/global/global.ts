@@ -1,7 +1,7 @@
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
 import axios from 'axios'
-import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as uuid from 'uuid'
 import { z } from 'zod'
 import {
@@ -111,7 +111,7 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
   分页条件?: 从路径获得表接口属性<路径>['查参数_分页条件'] | undefined,
   排序条件?: 从路径获得表接口属性<路径>['查参数_排序条件'] | undefined,
 ): {
-  数据: MutableRefObject<从路径获得表接口属性<路径>['查原始正确值'] | null>
+  数据: SyncState<从路径获得表接口属性<路径>['查原始正确值'] | null>
   增: (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => void
   删: (筛选条件: 从路径获得表接口属性<路径>['删参数_筛选条件']) => void
   改: (新值: 从路径获得表接口属性<路径>['改参数_新值'], 筛选条件: 从路径获得表接口属性<路径>['改参数_筛选条件']) => void
@@ -234,8 +234,11 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
 export function usePost<
   路径 extends 元组转联合<Post_API接口路径们>,
   数据类型 extends 从路径获得API接口一般属性<路径>['successOutput']['data'],
->(路径: 路径, 参数: 从路径获得API接口一般属性<路径>['input']): [数据类型 | null, (新值: 数据类型) => void, () => void] {
-  let [返回数据, 设置数据] = useState<数据类型 | null>(null)
+>(
+  路径: 路径,
+  参数: 从路径获得API接口一般属性<路径>['input'],
+): [SyncState<数据类型 | null>, (新值: 数据类型) => void, () => void] {
+  let [返回数据, 设置数据] = useSyncState<数据类型 | null>(null)
   let [刷新标志, 设置刷新标志] = useState(false)
   let 参数文本 = useMemo(() => JSON.stringify(参数), [参数])
 
@@ -265,7 +268,7 @@ export function usePost<
     })
 
     return (): void => {}
-  }, [路径, 参数文本, 刷新标志])
+  }, [路径, 参数文本, 刷新标志, 设置数据])
 
   let 强制刷新 = useCallback((): void => {
     设置刷新标志(true)
@@ -315,8 +318,11 @@ export function useQueryParams<参数描述 extends string[]>(参数描述: [...
   return params
 }
 
-export function useSyncState<A>(状态值: A): [MutableRefObject<A>, (新数据: A) => void] {
-  let [数据, 设置数据] = useState<A>(状态值)
+export type SyncState<A> = {
+  value: A
+}
+export function useSyncState<A>(状态值: A): [SyncState<A>, (新数据: A) => void] {
+  let [数据, 设置数据] = useState(状态值)
   let 数据Ref = useRef(状态值)
 
   useEffect(() => {
@@ -328,5 +334,12 @@ export function useSyncState<A>(状态值: A): [MutableRefObject<A>, (新数据:
     设置数据(新数据)
   }, [])
 
-  return [数据Ref, 更新数据]
+  return [
+    {
+      get value(): A {
+        return 数据Ref.current
+      },
+    },
+    更新数据,
+  ]
 }
