@@ -7,8 +7,8 @@ import { WS测试组件 } from '../components/ws-test'
 export function 演示页(): React.JSX.Element {
   let 上下文 = useContext(上下文描述)
 
-  let { 数据: 用户信息 } = useTable('/table/user-info', {})
-  if (用户信息.value === null) return <div>加载中...</div>
+  let [用户信息表数据] = useTable('/table/user-info', {})
+  if (用户信息表数据.value === null) return <div>加载中...</div>
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 bg-gradient-to-b from-indigo-900 to-black space-y-12">
@@ -20,7 +20,7 @@ export function 演示页(): React.JSX.Element {
         }}
       >
         <p className="text-4xl font-extrabold text-white text-center drop-shadow-lg">
-          欢迎您: {用户信息.value[0]?.name}
+          欢迎您: {用户信息表数据.value[0]?.name}
         </p>
       </div>
       <div
