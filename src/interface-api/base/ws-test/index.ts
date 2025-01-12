@@ -45,7 +45,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
         await 参数.ws操作?.关闭ws连接()
         return
       }
-      await 参数.ws操作?.发送ws信息({ data: 当前数据 })
+      await 参数.ws操作?.发送ws信息({ data: 当前数据 }).catch(() => {})
     }, 1000)
 
     return new Right({})
