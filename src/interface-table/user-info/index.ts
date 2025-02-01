@@ -55,17 +55,29 @@ export default class 我的模型 extends 虚拟表<
     return 接口逻辑.构造([], async (_参数) => new Left('不允许'))
   }
   override async 查(
-    _筛选条件?: 条件组<翻译列描述<列描述>>,
-    _分页条件?: 分页选项,
-    _排序条件?: 排序选项<keyof 列描述>,
+    筛选条件?: 条件组<翻译列描述<列描述>>,
+    分页条件?: 分页选项,
+    排序条件?: 排序选项<keyof 列描述>,
   ): Promise<接口逻辑<插件项类型[], {}, 查错误类型, 翻译查询列描述<列描述>[]>> {
     return new 登录检查器().混合(
       接口逻辑.构造([new Task(async () => await Global.getItem('kysely-plugin'))], async (参数, 附加参数) => {
-        let 查询结果 = await 参数.kysely
-          .selectFrom('user')
-          .select(['id', 'name'])
-          .where('id', '=', 附加参数.userId)
-          .execute()
+        let 构造 = 参数.kysely.selectFrom('user').select(['id', 'name']).where('id', '=', 附加参数.userId)
+
+        if (筛选条件 !== void 0) {
+          for (let 条件 of 筛选条件) {
+            构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+          }
+        }
+
+        if (分页条件 !== void 0) {
+          构造 = 构造.limit(分页条件.大小).offset((分页条件.页数 - 1) * 分页条件.大小)
+        }
+
+        if (排序条件 !== void 0) {
+          构造 = 构造.orderBy(排序条件.排序列, 排序条件.排序模式 === '正序' ? 'asc' : 'desc')
+        }
+
+        let 查询结果 = await 构造.execute()
         return new Right(查询结果)
       }),
     )
