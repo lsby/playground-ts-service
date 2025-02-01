@@ -29,6 +29,20 @@ model system_config {
   @@unique([key])
 }
 
+// 用户配置
+model user_config {
+  id         String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  key     String
+  value   String
+  user_id String // 所属用户id
+  user    user   @relation(fields: [user_id], references: [id], onUpdate: Restrict, onDelete: Restrict)
+
+  @@unique([key])
+}
+
 // 用户
 model user {
   id         String   @id
@@ -37,4 +51,6 @@ model user {
 
   name String @unique // 用户名
   pwd  String // 密码
+
+  user_config user_config[]
 }
