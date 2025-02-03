@@ -29,7 +29,7 @@
     "public:docker": "tsx script/docker/make-docker.ts",
     "public:npm": "npm publish --access public",
     "release": "cross-env DEBUG=@lsby:*,playground-ts-service:* npm run _gen:all && npm run _check:all && npm run _build:all && bumpp",
-    "run:service:debug": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx --watch ./src/index.ts",
+    "run:service:debug": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx watch --exclude ./src/types/**/* --exclude ./src/interface-api/interface-api-list.ts --exclude ./src/interface-table/interface-table-list.ts ./src/index.ts",
     "run:service:dev": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.development node ./dist/src/index.js",
     "run:service:prod": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.production node ./dist/src/index.js",
     "run:service:test": "cross-env DEBUG=@lsby:*,playground-ts-service:* ENV_FILE_PATH=./.env/.env.test node ./dist/src/index.js",
