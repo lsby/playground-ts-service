@@ -61,7 +61,7 @@ export default class 我的模型 extends 虚拟表<
   ): Promise<接口逻辑<插件项类型[], {}, 查错误类型, 翻译查询列描述<列描述>[]>> {
     return new 登录检查器().混合(
       接口逻辑.构造([new Task(async () => await Global.getItem('kysely-plugin'))], async (参数, 附加参数) => {
-        let 构造 = 参数.kysely.selectFrom('user').select(['id', 'name']).where('id', '=', 附加参数.userId)
+        let 构造 = 参数.kysely.selectFrom('user').select(['id', 'name']).where('user.id', '=', 附加参数.userId)
 
         if (筛选条件 !== void 0) {
           for (let 条件 of 筛选条件) {
