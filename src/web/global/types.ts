@@ -80,7 +80,7 @@ export type 从路径获得表接口属性<路径, T = InterfaceTableType> = T e
 export type Get请求后端函数类型 = <路径 extends 元组转联合<Get_API接口路径们>>(
   路径: 路径,
   参数: 从路径获得API接口一般属性<路径>['input'],
-) => Promise<从路径获得API接口一般属性<路径>['errorOutput'] | 从路径获得API接口一般属性<路径>['successOutput']>
+) => Promise<从路径获得API接口一般属性<路径>['successOutput']['data']>
 export type Post请求后端函数类型 = <路径 extends 元组转联合<Post_API接口路径们> | 所有表接口路径对应API路径>(
   路径: 路径,
   参数: 路径 extends 元组转联合<Post_API接口路径们>
@@ -115,7 +115,7 @@ export type Post请求后端函数类型 = <路径 extends 元组转联合<Post_
   ws关闭回调?: (信息: CloseEvent) => void,
   ws错误回调?: (信息: Event) => void,
 ) => 路径 extends 元组转联合<Post_API接口路径们>
-  ? Promise<从路径获得API接口一般属性<路径>['errorOutput'] | 从路径获得API接口一般属性<路径>['successOutput']>
+  ? Promise<从路径获得API接口一般属性<路径>['successOutput']['data']>
   : 路径 extends 所有表接口路径对应API路径
     ? 路径 extends `${infer 资源路径}/add`
       ? Promise<从路径获得表接口属性<资源路径>['增包装结果']>

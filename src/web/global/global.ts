@@ -48,13 +48,18 @@ export class 后端客户端 {
         let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('post')
         await log.info(`请求:%o:%o`, 路径, 参数)
         let c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
+        if (c.data.status === 'fail') {
+          await log.error(`错误:%o:%o`, 路径, c.data)
+          alert(`错误: ${c.data}`)
+          throw new Error(c.data)
+        }
         await log.info(`结果:%o:%o`, 路径, c)
-        return c.data
+        return c.data.data
       } catch (e) {
         let log = new Log('web')
         await log.error(`错误:%o:%o`, 路径, e)
-        alert(`服务器错误: ${e}`)
-        throw new Error('服务器错误')
+        alert(`错误: ${e}`)
+        throw e
       }
     })() as any
   }
@@ -63,13 +68,18 @@ export class 后端客户端 {
       let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('get')
       await log.info(`请求:%o:%o`, 路径, 参数)
       let c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
+      if (c.data.status === 'fail') {
+        await log.error(`错误:%o:%o`, 路径, c.data)
+        alert(`错误: ${c.data}`)
+        throw new Error(c.data)
+      }
       await log.info(`结果:%o:%o`, 路径, c)
-      return c.data
+      return c.data.data
     } catch (e) {
       let log = new Log('web')
       await log.error(`错误:%o:%o`, 路径, e)
-      alert(`服务器错误: ${e}`)
-      throw new Error('服务器错误')
+      alert(`错误: ${e}`)
+      throw e
     }
   }
 
@@ -79,7 +89,7 @@ export class 后端客户端 {
       this.token = storedToken
     }
     let c = await this.post('/api/user/is-login', {})
-    if (c.data.isLogin === false) {
+    if (c.isLogin === false) {
       localStorage.removeItem('token')
       this.token = null
     }
@@ -89,10 +99,8 @@ export class 后端客户端 {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async 登录(用户名: string, 密码: string) {
     let c = await this.post('/api/user/login', { name: 用户名, pwd: 密码 })
-    if (c.status !== 'fail') {
-      this.token = c.data.token
-      localStorage.setItem('token', this.token)
-    }
+    this.token = c.token
+    localStorage.setItem('token', this.token)
     return c
   }
   async 退出登录(): Promise<void> {
@@ -155,14 +163,9 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
 
     await log.info(`请求:%o:%o`, 请求路径, 请求参数)
     let 结果 = await 客户端.post(请求路径 as any, 请求参数 as any)
-    if (结果.status === 'fail') {
-      alert('发生错误')
-      await log.error(`错误:%o:%o`, 请求路径, 结果.data)
-      return
-    }
-    await log.info(`结果:%o:%o`, 请求路径, 结果.data)
+    await log.info(`结果:%o:%o`, 请求路径, 结果)
 
-    设置数据(结果.data as any)
+    设置数据(结果 as any)
   }, [分页条件文本, 排序条件文本, 构造参数文本, 筛选条件文本, 设置数据, 资源路径])
 
   let 增删改请求 = useCallback(
@@ -172,11 +175,6 @@ export function useTable<路径 extends 元组转联合<所有表接口路径们
       try {
         await log.info(`请求:%o:%o`, url, body)
         let response = await 客户端.post(url as any, body)
-        if (response.status === 'fail') {
-          alert('发生错误')
-          await log.error(`错误:%o:%o`, url, response.data)
-          return
-        }
         await log.info(`结果:%o:%o`, url, response)
 
         await 请求数据()
@@ -257,14 +255,9 @@ export function usePost<
 
     await log.info(`请求:%o:%o`, 路径, JSON.parse(参数文本))
     let 结果 = await 客户端.post(路径, JSON.parse(参数文本))
-    if (结果.status === 'fail') {
-      alert('发生错误')
-      await log.error(`错误:%o:%o`, 路径, 结果.data)
-      return
-    }
-    await log.info(`结果:%o:%o`, 路径, 结果.data)
+    await log.info(`结果:%o:%o`, 路径, 结果)
 
-    设置数据(结果.data as 数据类型)
+    设置数据(结果 as 数据类型)
   }, [参数文本, 设置数据, 路径])
 
   let 强制刷新 = useCallback(async (): Promise<void> => {

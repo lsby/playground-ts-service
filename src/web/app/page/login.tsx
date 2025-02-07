@@ -51,8 +51,7 @@ export function 登录页(): React.JSX.Element {
     let 用户名 = (document.getElementById('用户名') as HTMLInputElement).value
     let 密码 = (document.getElementById('密码') as HTMLInputElement).value
 
-    let 结果 = await 上下文.客户端.登录(用户名, 密码)
-    if (结果.status === 'fail') return alert(结果.data)
+    await 上下文.客户端.登录(用户名, 密码)
     上下文.重定向到页面('/')
   }
 }
