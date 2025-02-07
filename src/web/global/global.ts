@@ -1,6 +1,6 @@
 import { GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Log } from '@lsby/ts-log'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import * as nanoid from 'nanoid'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { z } from 'zod'
@@ -20,6 +20,8 @@ export class 后端客户端 {
 
   post: Post请求后端函数类型 = (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
     return (async (): Promise<any> => {
+      let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('post')
+
       let 扩展头: { [key: string]: string } = {}
       if (typeof ws信息回调 !== 'undefined') {
         let wsId = nanoid.nanoid()
@@ -44,43 +46,47 @@ export class 后端客户端 {
         扩展头 = { 'ws-client-id': wsId }
       }
 
+      let 结果: AxiosResponse<any, any>
       try {
-        let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('post')
         await log.info(`请求:%o:%o`, 路径, 参数)
-        let c = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
-        if (c.data.status === 'fail') {
-          await log.error(`错误:%o:%o`, 路径, c.data)
-          alert(`错误: ${c.data}`)
-          throw new Error(c.data)
-        }
-        await log.info(`结果:%o:%o`, 路径, c)
-        return c.data.data
+        结果 = await axios.post(路径, 参数, { headers: Object.assign({ authorization: this.token }, 扩展头) })
+        await log.info(`结果:%o:%o`, 路径, 结果)
       } catch (e) {
-        let log = new Log('web')
         await log.error(`错误:%o:%o`, 路径, e)
-        alert(`错误: ${e}`)
+        alert(`发生了错误`)
         throw e
       }
+
+      if (结果.data.status === 'fail') {
+        await log.error(`错误:%o:%o`, 路径, 结果.data)
+        alert(`错误: ${JSON.stringify(结果.data)}`)
+        throw new Error(结果.data)
+      }
+
+      return 结果.data.data
     })() as any
   }
   get: Get请求后端函数类型 = async (路径, 参数) => {
+    let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('get')
+
+    let 结果: AxiosResponse<any, any>
     try {
-      let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('get')
       await log.info(`请求:%o:%o`, 路径, 参数)
-      let c = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
-      if (c.data.status === 'fail') {
-        await log.error(`错误:%o:%o`, 路径, c.data)
-        alert(`错误: ${c.data}`)
-        throw new Error(c.data)
-      }
-      await log.info(`结果:%o:%o`, 路径, c)
-      return c.data.data
+      结果 = await axios.get(路径, { ...参数, headers: { authorization: this.token } })
+      await log.info(`结果:%o:%o`, 路径, 结果)
     } catch (e) {
-      let log = new Log('web')
       await log.error(`错误:%o:%o`, 路径, e)
-      alert(`错误: ${e}`)
+      alert(`发生了错误`)
       throw e
     }
+
+    if (结果.data.status === 'fail') {
+      await log.error(`错误:%o:%o`, 路径, 结果.data)
+      alert(`错误: ${JSON.stringify(结果.data)}`)
+      throw new Error(结果.data)
+    }
+
+    return 结果.data.data
   }
 
   async 初始化(): Promise<this> {
