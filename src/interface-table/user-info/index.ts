@@ -28,8 +28,8 @@ let _列描述 = z.object({
   }),
 })
 let _增错误 = z.enum(['不允许'])
-let _删错误 = z.enum(['不允许'])
-let _改错误 = z.enum(['不允许'])
+let _删错误 = z.enum(['未登录'])
+let _改错误 = z.enum(['未登录'])
 let _查错误 = z.enum(['未登录'])
 
 export default class 我的模型 extends 虚拟表<
@@ -45,14 +45,42 @@ export default class 我的模型 extends 虚拟表<
   override async 增(_数据们: 翻译插入列描述<列描述>[]): Promise<接口逻辑<插件项类型[], {}, 增错误类型, {}>> {
     return 接口逻辑.构造([], async (_参数) => new Left('不允许'))
   }
-  override async 删(_筛选条件: 条件组<翻译列描述<列描述>>): Promise<接口逻辑<插件项类型[], {}, 删错误类型, {}>> {
-    return 接口逻辑.构造([], async (_参数) => new Left('不允许'))
+  override async 删(筛选条件: 条件组<翻译列描述<列描述>>): Promise<接口逻辑<插件项类型[], {}, 删错误类型, {}>> {
+    return new 登录检查器().混合(
+      接口逻辑.构造([new Task(async () => await Global.getItem('kysely-plugin'))], async (参数, 附加参数) => {
+        let 构造 = 参数.kysely.deleteFrom('user')
+
+        构造 = 构造.where('user.id', '=', 附加参数.userId)
+        for (let 条件 of 筛选条件) {
+          构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+        }
+
+        await 构造.execute()
+        return new Right({})
+      }),
+    )
   }
   override async 改(
-    _新值: Partial<列描述>,
-    _筛选条件: 条件组<翻译列描述<列描述>>,
+    新值: Partial<列描述>,
+    筛选条件: 条件组<翻译列描述<列描述>>,
   ): Promise<接口逻辑<插件项类型[], {}, 改错误类型, {}>> {
-    return 接口逻辑.构造([], async (_参数) => new Left('不允许'))
+    return new 登录检查器().混合(
+      接口逻辑.构造([new Task(async () => await Global.getItem('kysely-plugin'))], async (参数, 附加参数) => {
+        let 构造 = 参数.kysely.updateTable('user')
+
+        for (let 设置值 of Object.entries(新值)) {
+          构造 = 构造.set({ [设置值[0]]: 设置值[1] })
+        }
+
+        构造 = 构造.where('user.id', '=', 附加参数.userId)
+        for (let 条件 of 筛选条件) {
+          构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+        }
+
+        await 构造.execute()
+        return new Right({})
+      }),
+    )
   }
   override async 查(
     筛选条件?: 条件组<翻译列描述<列描述>>,
@@ -61,8 +89,9 @@ export default class 我的模型 extends 虚拟表<
   ): Promise<接口逻辑<插件项类型[], {}, 查错误类型, 翻译查询列描述<列描述>[]>> {
     return new 登录检查器().混合(
       接口逻辑.构造([new Task(async () => await Global.getItem('kysely-plugin'))], async (参数, 附加参数) => {
-        let 构造 = 参数.kysely.selectFrom('user').select(['id', 'name']).where('user.id', '=', 附加参数.userId)
+        let 构造 = 参数.kysely.selectFrom('user').select(['id', 'name'])
 
+        构造 = 构造.where('user.id', '=', 附加参数.userId)
         if (筛选条件 !== void 0) {
           for (let 条件 of 筛选条件) {
             构造 = 构造.where(条件.列, 条件.符号, 条件.值)
