@@ -52,7 +52,7 @@ export default class 我的模型 extends 虚拟表<
 
         构造 = 构造.where('user.id', '=', 附加参数.userId)
         for (let 条件 of 筛选条件) {
-          构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+          构造 = 构造.where(`user.${条件.列}`, 条件.符号, 条件.值)
         }
 
         await 构造.execute()
@@ -74,7 +74,7 @@ export default class 我的模型 extends 虚拟表<
 
         构造 = 构造.where('user.id', '=', 附加参数.userId)
         for (let 条件 of 筛选条件) {
-          构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+          构造 = 构造.where(`user.${条件.列}`, 条件.符号, 条件.值)
         }
 
         await 构造.execute()
@@ -94,7 +94,7 @@ export default class 我的模型 extends 虚拟表<
         构造 = 构造.where('user.id', '=', 附加参数.userId)
         if (筛选条件 !== void 0) {
           for (let 条件 of 筛选条件) {
-            构造 = 构造.where(条件.列, 条件.符号, 条件.值)
+            构造 = 构造.where(`user.${条件.列}`, 条件.符号, 条件.值)
           }
         }
 
