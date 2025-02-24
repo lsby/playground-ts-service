@@ -51,23 +51,28 @@ const { environment } = await inquirer.prompt([
   },
 ])
 
+// 根据操作系统选择 shell
+const shell = process.platform === 'win32' ? 'cmd' : 'sh'
+const shellArg = process.platform === 'win32' ? '/c' : '-c'
+
 // 根据用户输入生成 Docker 构建命令
-const command = `cd ${import.meta.dirname}/../.. && docker build -t ${customName}:${packageJson.version} -f ./deploy/${environment}/dockerfile .`
+const dockerfilePath = path.join('deploy', environment, 'dockerfile')
+const command = `cd ${path.resolve(import.meta.dirname, '../..')} && docker build -t ${customName}:${packageJson.version} -f ${dockerfilePath} .`
 console.log('命令: %O', command)
 
 // 使用 spawn 启动命令
-const process = spawn('cmd', ['/c', command])
+const buildProcess = spawn(shell, [shellArg, command])
 
-process.stdout.on('data', (data: Buffer) => {
+buildProcess.stdout.on('data', (data) => {
   console.log(`stdout: ${data.toString()}`)
 })
 
-process.stderr.on('data', (data: Buffer) => {
+buildProcess.stderr.on('data', (data) => {
   console.error(`stderr: ${data.toString()}`)
 })
 
-process.on('close', async (code: number) => {
-  console.log(`child process exited with code ${code}`)
+buildProcess.on('close', async (code) => {
+  console.log(`子进程退出，退出码: ${code}`)
 
   if (code === 0) {
     // 打包成功，询问是否执行 push
@@ -85,18 +90,18 @@ process.on('close', async (code: number) => {
       const pushCommand = `docker push ${customName}:${packageJson.version}`
       console.log('执行命令: %O', pushCommand)
 
-      const pushProcess = spawn('cmd', ['/c', pushCommand])
+      const pushProcess = spawn(shell, [shellArg, pushCommand])
 
-      pushProcess.stdout.on('data', (data: Buffer) => {
+      pushProcess.stdout.on('data', (data) => {
         console.log(`stdout: ${data.toString()}`)
       })
 
-      pushProcess.stderr.on('data', (data: Buffer) => {
+      pushProcess.stderr.on('data', (data) => {
         console.error(`stderr: ${data.toString()}`)
       })
 
-      pushProcess.on('close', (pushCode: number) => {
-        console.log(`docker push process exited with code ${pushCode}`)
+      pushProcess.on('close', (pushCode) => {
+        console.log(`docker push 进程退出，退出码: ${pushCode}`)
       })
     }
   }
