@@ -18,7 +18,16 @@ export type user = {
     name: string;
     pwd: string;
 };
+export type user_config = {
+    id: string;
+    created_at: Generated<string>;
+    updated_at: Generated<string>;
+    key: string;
+    value: string;
+    user_id: string;
+};
 export type DB = {
     system_config: system_config;
     user: user;
+    user_config: user_config;
 };

@@ -18,6 +18,7 @@ export class App {
       interfaceTableList,
       env.APP_PORT,
       resolve(import.meta.dirname, '../../web'),
+      resolve(import.meta.dirname, '../../web/index.html'),
     )
     let serviceInfo = await service.run()
     await log.debug('服务器地址: %O', serviceInfo.ip)
