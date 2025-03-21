@@ -22,6 +22,7 @@ export function App(): React.JSX.Element {
 
   if (已登录 === false && 当前路径 !== '/login') {
     上下文.重定向到页面('/login')
+    location.reload()
     return <p>等待跳转...</p>
   }
 
