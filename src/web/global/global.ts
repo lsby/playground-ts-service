@@ -9,10 +9,7 @@ import {
   Post_API接口路径们,
   Post请求后端函数类型,
   从路径获得API接口一般属性,
-  从路径获得表接口属性,
-  从路径获得表接口构造参数,
   元组转联合,
-  所有表接口路径们,
 } from './types'
 
 export class 后端客户端 {
@@ -123,127 +120,6 @@ export let GlobalWeb = new GlobalService([
   new GlobalItem('后端客户端', new 后端客户端()),
   new GlobalItem('log', new Log('web')),
 ])
-
-export function useTable<路径 extends 元组转联合<所有表接口路径们>>(
-  资源路径: 路径,
-  构造参数: 从路径获得表接口构造参数<路径> | null,
-  筛选条件?: 从路径获得表接口属性<路径>['查参数_筛选条件'] | undefined,
-  分页条件?: 从路径获得表接口属性<路径>['查参数_分页条件'] | undefined,
-  排序条件?: 从路径获得表接口属性<路径>['查参数_排序条件'] | undefined,
-): [
-  数据: SyncState<从路径获得表接口属性<路径>['查原始正确值'] | null>,
-  {
-    增: (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => Promise<void>
-    删: (筛选条件: 从路径获得表接口属性<路径>['删参数_筛选条件']) => Promise<void>
-    改: (
-      新值: 从路径获得表接口属性<路径>['改参数_新值'],
-      筛选条件: 从路径获得表接口属性<路径>['改参数_筛选条件'],
-    ) => Promise<void>
-    强制刷新: () => Promise<void>
-    仅修改: (新值: 从路径获得表接口属性<路径>['查原始正确值'] | null) => void
-  },
-] {
-  let [数据, 设置数据] = useSyncState<从路径获得表接口属性<路径>['查原始正确值'] | null>(null)
-  let 构造参数文本 = useMemo(() => JSON.stringify(构造参数), [构造参数])
-  let 筛选条件文本 = useMemo(() => JSON.stringify(筛选条件), [筛选条件])
-  let 分页条件文本 = useMemo(() => JSON.stringify(分页条件), [分页条件])
-  let 排序条件文本 = useMemo(() => JSON.stringify(排序条件), [排序条件])
-
-  let 请求数据 = useCallback(async (): Promise<void> => {
-    if (构造参数文本 === 'null') return
-
-    let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('useTable')
-    let 客户端 = await GlobalWeb.getItem('后端客户端')
-    let 请求路径 = 资源路径 + '/get'
-
-    let 验证筛选条件文本 = (筛选条件文本 as string | undefined) ?? null
-    let 验证分页条件文本 = (分页条件文本 as string | undefined) ?? null
-    let 验证排序条件文本 = (排序条件文本 as string | undefined) ?? null
-
-    let 请求参数 = {
-      construction: JSON.parse(构造参数文本) as unknown,
-      where: 验证筛选条件文本 !== null ? (JSON.parse(筛选条件文本) as unknown) : void 0,
-      page: 验证分页条件文本 !== null ? (JSON.parse(分页条件文本) as unknown) : void 0,
-      sort: 验证排序条件文本 !== null ? (JSON.parse(排序条件文本) as unknown) : void 0,
-    }
-
-    await log.info(`请求:%o:%o`, 请求路径, 请求参数)
-    let 结果 = await 客户端.post(请求路径 as any, 请求参数 as any)
-    await log.info(`结果:%o:%o`, 请求路径, 结果)
-
-    设置数据(结果 as any)
-  }, [分页条件文本, 排序条件文本, 构造参数文本, 筛选条件文本, 设置数据, 资源路径])
-
-  let 增删改请求 = useCallback(
-    async ({ url, body }: { url: string; body: any }): Promise<void> => {
-      let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('useTable')
-      let 客户端 = await GlobalWeb.getItem('后端客户端')
-      try {
-        await log.info(`请求:%o:%o`, url, body)
-        let response = await 客户端.post(url as any, body)
-        await log.info(`结果:%o:%o`, url, response)
-
-        await 请求数据()
-      } catch (error) {
-        await log.error('请求 %o 异常: %o', url, error)
-        throw error
-      }
-    },
-    [请求数据],
-  )
-
-  let 增 = useCallback(
-    async (数据们: 从路径获得表接口属性<路径>['增参数_数据们']) => {
-      let 请求路径 = `${资源路径}/add`
-      await 增删改请求({
-        url: 请求路径,
-        body: { construction: JSON.parse(构造参数文本) as unknown, value: 数据们 },
-      })
-    },
-    [资源路径, 构造参数文本, 增删改请求],
-  )
-  let 删 = useCallback(
-    async (筛选条件: 从路径获得表接口属性<路径>['删参数_筛选条件']) => {
-      let 请求路径 = `${资源路径}/del`
-      await 增删改请求({
-        url: 请求路径,
-        body: { construction: JSON.parse(构造参数文本) as unknown, where: 筛选条件 },
-      })
-    },
-    [资源路径, 构造参数文本, 增删改请求],
-  )
-  let 改 = useCallback(
-    async (
-      新值: 从路径获得表接口属性<路径>['改参数_新值'],
-      筛选条件: 从路径获得表接口属性<路径>['改参数_筛选条件'],
-    ) => {
-      let 请求路径 = `${资源路径}/set`
-      await 增删改请求({
-        url: 请求路径,
-        body: { construction: JSON.parse(构造参数文本) as unknown, value: 新值, where: 筛选条件 },
-      })
-    },
-    [资源路径, 构造参数文本, 增删改请求],
-  )
-  let 强制刷新 = useCallback(async (): Promise<void> => {
-    await 请求数据()
-  }, [请求数据])
-
-  let 表操作 = useMemo(() => {
-    return { 增, 删, 改, 强制刷新, 仅修改: 设置数据 }
-  }, [删, 增, 强制刷新, 改, 设置数据])
-
-  useEffect(() => {
-    请求数据().catch((e) => {
-      GlobalWeb.getItem('log')
-        .then((log) => log.error(e))
-        .catch(console.error)
-    })
-    return (): void => {}
-  }, [请求数据])
-
-  return [数据, 表操作]
-}
 
 export function usePost<
   路径 extends 元组转联合<Post_API接口路径们>,

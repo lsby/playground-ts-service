@@ -3,7 +3,6 @@ import { resolve } from 'path'
 import { onTimeAlarm } from '../cron/on-time-alarm'
 import { Global } from '../global/global'
 import { interfaceApiList } from '../interface-api/interface-api-list'
-import { interfaceTableList } from '../interface-table/interface-table-list'
 
 export class App {
   async run(): Promise<void> {
@@ -15,7 +14,6 @@ export class App {
 
     let service = new 服务器(
       interfaceApiList,
-      interfaceTableList,
       env.APP_PORT,
       resolve(import.meta.dirname, '../../web'),
       resolve(import.meta.dirname, '../../web/index.html'),
