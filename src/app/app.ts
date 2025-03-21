@@ -19,6 +19,7 @@ export class App {
       resolve(import.meta.dirname, '../../web/index.html'),
     )
     let serviceInfo = await service.run()
+    await log.debug('api路径: %O', serviceInfo.api)
     await log.debug('服务器地址: %O', serviceInfo.ip)
   }
 }

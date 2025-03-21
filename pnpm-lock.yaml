@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: 0.5.0-beta.2
-        version: 0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
+        specifier: 0.5.0-beta.3
+        version: 0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.3
-        version: 0.1.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
+        version: 0.1.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
       '@lsby/net-core-jwt':
         specifier: ^0.1.3
-        version: 0.1.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
+        version: 0.1.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
       '@lsby/net-core-kysely':
         specifier: 0.0.3
-        version: 0.0.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
+        version: 0.0.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.6.1)(lightningcss@1.29.2)
@@ -800,8 +800,8 @@ packages:
     peerDependencies:
       '@lsby/net-core': ^0.4.0
 
-  '@lsby/net-core@0.5.0-beta.2':
-    resolution: {integrity: sha512-kueqIjYN7oMtA4Va0y/RrsPhhUtHuTJsF8bkrgsDUVUZ9rTMKgt5PPlbKhj/H0Op8zR0GFK8EZfx4EKSsIHgdg==}
+  '@lsby/net-core@0.5.0-beta.3':
+    resolution: {integrity: sha512-/r9vqHb6pDDKngM+OjFSQ3zJe+QO3JozLj05vAzg/UzDwVrF8YIG0Nh3AOW+H/A/iYYiMFPYX+yMKZ5S6WDhjw==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.4
@@ -1477,10 +1477,6 @@ packages:
 
   call-bind-apply-helpers@1.0.2:
     resolution: {integrity: sha512-Sp1ablJ0ivDkSzjcaJdxEunN5/XvksFJ2sMBFfq6x0ryhQV/2b/KwFe21cMpmHtPOSij8K99/wSfoEuTObmuMQ==}
-    engines: {node: '>= 0.4'}
-
-  call-bind@1.0.7:
-    resolution: {integrity: sha512-GHTSNSYICQ7scH7sZ+M2rFopRoLh8t2bLSW6BbgrtLsahOIB5iyAVJf9GjWK3cYTDaMj4XdBpM1cA6pIS0Kv2w==}
     engines: {node: '>= 0.4'}
 
   call-bind@1.0.8:
@@ -3148,10 +3144,6 @@ packages:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
 
-  object-inspect@1.13.2:
-    resolution: {integrity: sha512-IRZSRuzJiynemAXPYtPe5BoI/RESNYR7TYm50MC5Mqbd3Jmw5y790sErYw3V6SryFJD64b74qQQs9wn5Bg/k3g==}
-    engines: {node: '>= 0.4'}
-
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
@@ -3685,10 +3677,6 @@ packages:
 
   side-channel-weakmap@1.0.2:
     resolution: {integrity: sha512-WPS/HvHQTYnHisLo9McqBHOJk2FkHO/tlpvldyrnem4aeQp4hai3gythswg6p01oSoTl58rcpiFAjF2br2Ak2A==}
-    engines: {node: '>= 0.4'}
-
-  side-channel@1.0.6:
-    resolution: {integrity: sha512-fDW/EZ6Q9RiO8eFG8Hj+7u/oW+XrPTIChwCOM2+th2A6OblDtYYIpve9m+KvI9Z4C9qSEXlaGR6bTEYHReuglA==}
     engines: {node: '>= 0.4'}
 
   side-channel@1.1.0:
@@ -4809,9 +4797,9 @@ snapshots:
     dependencies:
       eslint: 8.57.1
 
-  '@lsby/net-core-file-upload@0.1.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
+  '@lsby/net-core-file-upload@0.1.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
     dependencies:
-      '@lsby/net-core': 0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
+      '@lsby/net-core': 0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
       express-fileupload: 1.5.1
       vitest: 2.1.1(@types/node@22.6.1)(lightningcss@1.29.2)
       zod: 3.23.8
@@ -4832,9 +4820,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
+  '@lsby/net-core-jwt@0.1.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
     dependencies:
-      '@lsby/net-core': 0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
+      '@lsby/net-core': 0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
       '@lsby/ts-jwt': 0.0.1(@types/node@22.6.1)(lightningcss@1.29.2)
       vitest: 2.1.1(@types/node@22.6.1)(lightningcss@1.29.2)
       zod: 3.23.8
@@ -4855,9 +4843,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.3(@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
+  '@lsby/net-core-kysely@0.0.3(@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2))(@types/node@22.6.1)(lightningcss@1.29.2)':
     dependencies:
-      '@lsby/net-core': 0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
+      '@lsby/net-core': 0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)
       kysely: 0.27.6
       vitest: 2.1.1(@types/node@22.6.1)(lightningcss@1.29.2)
       zod: 3.23.8
@@ -4878,7 +4866,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.5.0-beta.2(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)':
+  '@lsby/net-core@0.5.0-beta.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.6.1)(lightningcss@1.29.2)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-global': 0.0.5(@types/node@22.6.1)(lightningcss@1.29.2)
@@ -5882,14 +5870,6 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
       function-bind: 1.1.2
-
-  call-bind@1.0.7:
-    dependencies:
-      es-define-property: 1.0.0
-      es-errors: 1.3.0
-      function-bind: 1.1.2
-      get-intrinsic: 1.2.4
-      set-function-length: 1.2.2
 
   call-bind@1.0.8:
     dependencies:
@@ -7647,8 +7627,6 @@ snapshots:
 
   object-assign@4.1.1: {}
 
-  object-inspect@1.13.2: {}
-
   object-inspect@1.13.4: {}
 
   object-keys@1.1.1: {}
@@ -7954,7 +7932,7 @@ snapshots:
 
   qs@6.13.0:
     dependencies:
-      side-channel: 1.0.6
+      side-channel: 1.1.0
 
   queue-lit@1.5.2: {}
 
@@ -8249,13 +8227,6 @@ snapshots:
       get-intrinsic: 1.3.0
       object-inspect: 1.13.4
       side-channel-map: 1.0.1
-
-  side-channel@1.0.6:
-    dependencies:
-      call-bind: 1.0.7
-      es-errors: 1.3.0
-      get-intrinsic: 1.2.4
-      object-inspect: 1.13.2
 
   side-channel@1.1.0:
     dependencies:
