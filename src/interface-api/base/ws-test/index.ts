@@ -38,9 +38,9 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
     let 当前索引 = 0
 
     let 定时器句柄 = setInterval(async () => {
-      let 当前数据 = 数据[当前索引] ?? null
+      let 当前数据 = 数据[当前索引]
       当前索引++
-      if (当前数据 === null) {
+      if (当前数据 === void 0) {
         clearInterval(定时器句柄)
         await 参数.ws操作?.关闭ws连接()
         return

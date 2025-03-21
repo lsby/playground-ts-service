@@ -43,9 +43,12 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
   }
 
   override async 实现(参数: 参数类型, 附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
-    let 用户存在 =
-      (await 参数.kysely.selectFrom('user').select('id').where('name', '=', 附加参数.name).executeTakeFirst()) ?? null
-    if (用户存在 !== null) return new Left('用户名已存在')
+    let 用户存在 = await 参数.kysely
+      .selectFrom('user')
+      .select('id')
+      .where('name', '=', 附加参数.name)
+      .executeTakeFirst()
+    if (用户存在 !== void 0) return new Left('用户名已存在')
 
     await 参数.kysely
       .insertInto('user')

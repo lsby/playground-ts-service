@@ -36,11 +36,14 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
   }
 
   override async 实现(参数: 参数类型, _附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
-    let userId = 参数.userId ?? null
-    if (userId === null) return new Right({ isLogin: false })
-    let 用户存在确认 =
-      (await 参数.kysely.selectFrom('user').select('id').where('user.id', '=', userId).executeTakeFirst()) ?? null
-    if (用户存在确认 === null) return new Right({ isLogin: false })
+    let userId = 参数.userId
+    if (userId === void 0) return new Right({ isLogin: false })
+    let 用户存在确认 = await 参数.kysely
+      .selectFrom('user')
+      .select('id')
+      .where('user.id', '=', userId)
+      .executeTakeFirst()
+    if (用户存在确认 === void 0) return new Right({ isLogin: false })
     return new Right({ isLogin: true })
   }
 }
