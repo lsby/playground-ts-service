@@ -54,6 +54,7 @@ export type Post请求后端函数类型 = <路径 extends 元组转联合<Post_
   ws信息回调?: (信息: 从路径获得API接口WS属性<路径>['data']) => void,
   ws关闭回调?: (信息: CloseEvent) => void,
   ws错误回调?: (信息: Event) => void,
+  获得ws句柄?: (ws句柄: WebSocket) => void,
 ) => 路径 extends 元组转联合<Post_API接口路径们>
   ? Promise<从路径获得API接口一般属性<路径>['successOutput']['data']>
   : never

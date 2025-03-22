@@ -15,31 +15,48 @@ import {
 export class 后端客户端 {
   private token: string | null = null
 
-  post: Post请求后端函数类型 = (路径, 参数, ws信息回调, ws关闭回调, ws错误回调) => {
+  post: Post请求后端函数类型 = (路径, 参数, ws信息回调, ws关闭回调, ws错误回调, 获得ws句柄) => {
     return (async (): Promise<any> => {
       let log = (await GlobalWeb.getItem('log')).extend(nanoid.nanoid()).extend('post')
 
       let 扩展头: { [key: string]: string } = {}
       if (typeof ws信息回调 !== 'undefined') {
         let wsId = nanoid.nanoid()
-        let ws连接 = new WebSocket(`/ws?id=${wsId}`)
+        let 设置ws连接 = async (wsId: string): Promise<void> => {
+          await log.info(`正在建立 WebSocket 连接: ${wsId}`)
+          let ws连接 = new WebSocket(`/ws?id=${wsId}`)
+          获得ws句柄?.(ws连接)
 
-        await new Promise((res, _rej) => {
-          ws连接.onopen = (): void => {
-            res(null)
+          await new Promise((res, _rej) => {
+            ws连接.onopen = async (): Promise<void> => {
+              await log.info(`WebSocket 连接已打开: ${wsId}`)
+              res(null)
+            }
+          })
+          ws连接.onmessage = async (event: MessageEvent): Promise<void> => {
+            await log.debug(`收到 WebSocket 消息: ${event.data}`)
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            let data = JSON.parse(event.data)
+            ws信息回调(data)
           }
-        })
-        ws连接.onmessage = (event: MessageEvent): void => {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          let data = JSON.parse(event.data)
-          ws信息回调(data)
+          ws连接.onclose = async (event): Promise<void> => {
+            ws关闭回调?.(event)
+            if (event.code === 1000) {
+              await log.info(`WebSocket 连接正常关闭: ${wsId}`)
+              return
+            }
+            let 退避时间 = 100
+            await log.warn(`WebSocket 连接异常关闭 (code: ${event.code}), 将在 ${退避时间} 毫秒后尝试重连: ${wsId}`)
+            await new Promise<void>((res, _rej) => setTimeout(() => res(), 退避时间))
+            await 设置ws连接(wsId)
+          }
+          ws连接.onerror = async (error): Promise<void> => {
+            await log.error(`WebSocket 发生错误: ${wsId}`, error)
+            ws错误回调?.(error)
+          }
         }
-        ws连接.onclose = (event): void => {
-          ws关闭回调?.(event)
-        }
-        ws连接.onerror = (error): void => {
-          ws错误回调?.(error)
-        }
+        await 设置ws连接(wsId)
+
         扩展头 = { 'ws-client-id': wsId }
       }
 
