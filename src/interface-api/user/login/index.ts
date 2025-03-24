@@ -11,8 +11,8 @@ import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
 import { createHash } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查用户名, 检查用户名正确类型 } from '../../action/check-user-name'
-import { 检查密码, 检查密码正确类型 } from '../../action/check-user-pwd'
+import { 检查用户名, 检查用户名正确类型 } from '../../action/user/check-user-name'
+import { 检查密码, 检查密码正确类型 } from '../../action/user/check-user-pwd'
 
 let 接口路径 = '/api/user/login' as const
 let 接口方法 = 'post' as const
@@ -52,8 +52,8 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
     let 用户存在 = await 参数.kysely
       .selectFrom('user')
       .select('id')
-      .where('name', '=', 附加参数.name)
-      .where('pwd', '=', createHash('md5').update(附加参数.pwd).digest('hex'))
+      .where('name', '=', 附加参数.userName)
+      .where('pwd', '=', createHash('md5').update(附加参数.userPassword).digest('hex'))
       .executeTakeFirst()
 
     if (用户存在 === void 0) return new Left('用户不存在或密码错误')

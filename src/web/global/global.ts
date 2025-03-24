@@ -118,7 +118,7 @@ export class 后端客户端 {
 
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   async 登录(用户名: string, 密码: string) {
-    let c = await this.post('/api/user/login', { name: 用户名, pwd: 密码 })
+    let c = await this.post('/api/user/login', { userName: 用户名, userPassword: 密码 })
     this.token = c.token
     localStorage.setItem('token', this.token)
     return c

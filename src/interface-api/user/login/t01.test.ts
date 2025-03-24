@@ -19,7 +19,7 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    return 请求用例(接口, { name: name, pwd: pwd })
+    return 请求用例(接口, { userName: name, userPassword: pwd })
   },
 
   async (中置结果: object): Promise<void> => {
