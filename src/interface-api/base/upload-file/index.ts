@@ -11,7 +11,7 @@ import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 登录检查器, 登录检查器正确类型 } from '../../action/login-check'
+import { 登录检查器, 登录检查器正确类型 } from '../../action/check-login'
 
 let 接口路径 = '/api/base/upload-file' as const
 let 接口方法 = 'post' as const
