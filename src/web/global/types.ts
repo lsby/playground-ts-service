@@ -1,6 +1,10 @@
-import { InterfaceType, InterfaceWsType } from '../../types/interface-api-type'
+import { InterfaceType, InterfaceWsType } from '../../types/interface-type'
 
 export type 元组转联合<T> = T extends any[] ? T[number] : never
+
+type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer U) => any ? U : never
+type LastUnion<T> = UnionToIntersection<T extends any ? (x: T) => any : never> extends (x: infer L) => any ? L : never
+export type 联合转元组<T, Last = LastUnion<T>> = [T] extends [never] ? [] : [...联合转元组<Exclude<T, Last>>, Last]
 
 export type Get_API接口路径们<A = InterfaceType> = A extends []
   ? []
