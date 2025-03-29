@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'crypto'
-import { CONST, Global } from './global/global'
+import { CONST, Global } from '../global/global'
 
 export async function init(): Promise<void> {
   let log = (await Global.getItem('log')).extend('init')

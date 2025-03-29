@@ -4,3 +4,4 @@
 /thunder-tests
 /db/*
 !**/.gitkeep
+.parcel-cache

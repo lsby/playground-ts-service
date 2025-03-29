@@ -35,10 +35,10 @@ nodeWatch(
 
       var 忽略 = false
 
-      if (name.includes('src/interface-api/interface-api-list.ts')) 忽略 = true
-      if (name.includes('src\\interface-api\\interface-api-list.ts')) 忽略 = true
-      if (name.includes('src/types/interface-api-type.ts')) 忽略 = true
-      if (name.includes('src\\types\\interface-api-type.ts')) 忽略 = true
+      if (name.includes('src/interface/interface-list.ts')) 忽略 = true
+      if (name.includes('src\\interface\\interface-list.ts')) 忽略 = true
+      if (name.includes('src/types/interface-type.ts')) 忽略 = true
+      if (name.includes('src\\types\\interface-type.ts')) 忽略 = true
 
       if (name.includes('src/interface-table/interface-table-list.ts')) 忽略 = true
       if (name.includes('src\\interface-table\\interface-table-list.ts')) 忽略 = true
