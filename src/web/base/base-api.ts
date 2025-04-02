@@ -1,18 +1,30 @@
 import { 不安全的扩展WebPost } from '@lsby/ts-post-extend'
 import { 组件基类 } from './base'
 
+type 接口定义项形状 = {
+  path: string
+  method: 'post'
+  input: Record<string, any>
+  errorOutput: { status: 'fail'; data: string }
+  successOutput: { status: 'success'; data: Record<string, any> }
+  webSocketData?: Record<string, any>
+}
+type 接口定义形状 = 接口定义项形状[]
+
+type 通过路径获得接口定义<P extends string, A extends 接口定义形状> = A extends []
+  ? never
+  : A extends [infer x, ...infer xs]
+    ? 'path' extends keyof x
+      ? P extends x['path']
+        ? x
+        : xs extends 接口定义形状
+          ? 通过路径获得接口定义<P, xs>
+          : never
+      : never
+    : never
+
 export abstract class API组件基类<
-  接口定义 extends Record<
-    string,
-    {
-      path: string
-      method: 'post'
-      input: Record<string, any>
-      errorOutput: { status: 'fail'; data: string }
-      successOutput: { status: 'success'; data: Record<string, any> }
-      webSocketData?: Record<string, any>
-    }
-  >,
+  接口定义 extends 接口定义形状,
   属性类型 extends Record<string, string>,
   发出事件类型 extends Record<string, any>,
   监听事件类型 extends Record<string, any>,
@@ -37,33 +49,28 @@ export abstract class API组件基类<
     localStorage.removeItem(this.本地存储名称)
   }
 
-  protected async 请求接口<接口名称 extends keyof 接口定义>(
-    接口名称: 接口名称,
-    参数: 接口定义[接口名称]['input'],
-    ws信息回调?: (data: 接口定义[接口名称]['webSocketData']) => Promise<void>,
+  protected async 请求接口<接口路径 extends 接口定义[number]['path']>(
+    接口路径: 接口路径,
+    参数: 通过路径获得接口定义<接口路径, 接口定义>['input'],
+    ws信息回调?: (data: 通过路径获得接口定义<接口路径, 接口定义>['webSocketData']) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
-  ): Promise<接口定义[接口名称]['errorOutput'] | 接口定义[接口名称]['successOutput']> {
-    return 不安全的扩展WebPost(
-      this.获得属性(接口名称.toString()),
-      参数,
-      { authorization: this.token },
-      ws信息回调,
-      ws关闭回调,
-      ws错误回调,
-    )
+  ): Promise<
+    通过路径获得接口定义<接口路径, 接口定义>['errorOutput'] | 通过路径获得接口定义<接口路径, 接口定义>['successOutput']
+  > {
+    return 不安全的扩展WebPost(接口路径, 参数, { authorization: this.token }, ws信息回调, ws关闭回调, ws错误回调)
   }
 
-  protected async 请求接口并处理错误<接口名称 extends keyof 接口定义>(
-    接口名称: 接口名称,
-    参数: 接口定义[接口名称]['input'],
-    ws信息回调?: (data: 接口定义[接口名称]['webSocketData']) => Promise<void>,
+  protected async 请求接口并处理错误<接口路径 extends 接口定义[number]['path']>(
+    接口路径: 接口路径,
+    参数: 通过路径获得接口定义<接口路径, 接口定义>['input'],
+    ws信息回调?: (data: 通过路径获得接口定义<接口路径, 接口定义>['webSocketData']) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
-  ): Promise<接口定义[接口名称]['successOutput']['data']> {
-    let 请求结果 = await this.请求接口(接口名称, 参数, ws信息回调, ws关闭回调, ws错误回调)
+  ): Promise<通过路径获得接口定义<接口路径, 接口定义>['successOutput']['data']> {
+    let 请求结果 = await this.请求接口(接口路径, 参数, ws信息回调, ws关闭回调, ws错误回调)
     if (请求结果.status === 'fail') {
-      let 提示 = `请求接口失败: ${String(请求结果.data)}`
+      let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
       alert(提示)
       throw new Error(提示)
     }

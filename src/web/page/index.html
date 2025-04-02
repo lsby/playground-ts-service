@@ -4,20 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- 逻辑 -->
     <script src="../process/set-debug.ts" type="module"></script>
     <script src="../process/set-html-full.ts" type="module"></script>
+    <script src="../process/set-login-check.ts" type="module"></script>
 
+    <!-- 布局 -->
     <script src="../layout/row.ts" type="module"></script>
     <script src="../layout/column.ts" type="module"></script>
     <script src="../layout/container.ts" type="module"></script>
     <script src="../layout/flex-item-container.ts" type="module"></script>
 
+    <!-- 组件 -->
+    <script src="../components/login-blocker.ts" type="module"></script>
     <script src="../components/button.ts" type="module"></script>
     <script src="../components/add.ts" type="module"></script>
     <script src="../components/ws-test.ts" type="module"></script>
   </head>
 
   <body>
+    <lsby-login-blocker></lsby-login-blocker>
     <lsby-container>
       <lsby-flex-item-container style="height: 20%">
         <lsby-row>
