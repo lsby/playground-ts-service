@@ -9,8 +9,7 @@ type 接口定义 = {
     successOutput: { status: 'success'; data: { res: number } }
   }
 }
-type 接口属性 = { [接口名称 in keyof 接口定义]: 接口定义[接口名称]['path'] }
-type 属性类型 = 接口属性 & { a: string; b: string }
+type 属性类型 = { a: string; b: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
@@ -33,9 +32,7 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
     this.输入框1.oninput = (): void => this.设置属性('a', this.输入框1.value)
     this.输入框2.oninput = (): void => this.设置属性('a', this.输入框2.value)
   }
-  protected override async 当变化时(name: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
-    if (name === '加法接口') return
-
+  protected override async 当变化时(_name: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
     this.输入框1.value = this.获得属性('a')
     this.输入框2.value = this.获得属性('b')
 
