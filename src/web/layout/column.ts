@@ -5,6 +5,9 @@ type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
+/**
+ * 元素将纵向排列
+ */
 export class LsbyColumn extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {

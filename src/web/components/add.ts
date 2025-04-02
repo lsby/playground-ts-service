@@ -23,8 +23,6 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
   private 结果 = document.createElement('p')
   private 输入框1 = document.createElement('input')
   private 输入框2 = document.createElement('input')
-  private 输入框1改变 = (): void => this.设置属性('a', this.输入框1.value)
-  private 输入框2改变 = (): void => this.设置属性('b', this.输入框2.value)
 
   protected override async 当加载时(): Promise<void> {
     this.shadow.append(this.结果)
@@ -32,12 +30,8 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
     this.shadow.append(this.输入框2)
 
     this.结果.textContent = '计算中...'
-    this.输入框1.addEventListener('input', this.输入框1改变)
-    this.输入框2.addEventListener('input', this.输入框2改变)
-  }
-  protected override async 当卸载时(): Promise<void> {
-    this.输入框1.removeEventListener('input', this.输入框1改变)
-    this.输入框2.removeEventListener('input', this.输入框2改变)
+    this.输入框1.oninput = (): void => this.设置属性('a', this.输入框1.value)
+    this.输入框2.oninput = (): void => this.设置属性('a', this.输入框2.value)
   }
   protected override async 当变化时(name: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
     if (name === '加法接口') return

@@ -5,6 +5,12 @@ type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
+/**
+ * 一个容器:
+ *
+ * - 内部元素横纵都居中
+ * - 占据所在位置的剩余空间
+ */
 export class LsbyContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {

@@ -39,8 +39,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-post-extend':
-        specifier: ^0.0.9
-        version: 0.0.9(@types/node@22.13.14)(lightningcss@1.29.3)
+        specifier: ^0.0.11
+        version: 0.0.11(@types/node@22.13.14)(lightningcss@1.29.3)
       axios:
         specifier: ^1.7.7
         version: 1.8.4
@@ -809,8 +809,8 @@ packages:
     resolution: {integrity: sha512-uaw/L56XqE95gA0MElZHcLlQ9vQ0OpmZ71O4ARb4NljMRbsEHlouv8ZT4qpdZysPNaenV3ivFPog/qXXAsSzDA==}
     hasBin: true
 
-  '@lsby/ts-post-extend@0.0.9':
-    resolution: {integrity: sha512-QFlFDdZOFMw1MyfJ+2Ghh79b2Ns6xVbvThsz+ycWtcmP1jT43k3zNHChiwnfbDNz1vNVSfHJuAv+8K7JWW6SFA==}
+  '@lsby/ts-post-extend@0.0.11':
+    resolution: {integrity: sha512-C/9FZHgnAdeGQ46ny0YjUs3wS8Aygk5wnmpG41TYymLbVeV8jgu7iPFW3yhlrNTOFfma9mbyE/MTjsndvpytjQ==}
 
   '@mischnic/json-sourcemap@0.1.1':
     resolution: {integrity: sha512-iA7+tyVqfrATAIsIRWQG+a7ZLLD0VaOCKV2Wd/v4mqIU3J9c4jx9p7S0nw1XH3gJCKNBOOwACOPYYSUu9pgT+w==}
@@ -5416,7 +5416,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-post-extend@0.0.9(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/ts-post-extend@0.0.11(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
       '@lsby/ts-log': 0.1.2(@types/node@22.13.14)(lightningcss@1.29.3)
       uuid: 11.1.0

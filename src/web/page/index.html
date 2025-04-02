@@ -10,28 +10,31 @@
     <script src="../layout/row.ts" type="module"></script>
     <script src="../layout/column.ts" type="module"></script>
     <script src="../layout/container.ts" type="module"></script>
+    <script src="../layout/flex-item-container.ts" type="module"></script>
 
     <script src="../components/button.ts" type="module"></script>
     <script src="../components/add.ts" type="module"></script>
+    <script src="../components/ws-test.ts" type="module"></script>
   </head>
 
   <body>
-    <lsby-container style="height: 50%">
-      <lsby-row>
-        <lsby-column>
-          <lsby-button 文本="按钮1" 回调="alert('这是按钮1')"></lsby-button>
-          <lsby-button 文本="按钮2" 回调="alert('这是按钮2')"></lsby-button>
-        </lsby-column>
-        <lsby-column>
-          <lsby-button 文本="按钮3" 回调="alert('这是按钮3')"></lsby-button>
-          <lsby-button 文本="按钮4" 回调="alert('这是按钮4')"></lsby-button>
-        </lsby-column>
-      </lsby-row>
-    </lsby-container>
-    <lsby-container style="height: 50%">
-      <lsby-column>
-        <lsby-add 加法接口="/api/base/add" a="1" b="2"></lsby-add>
-      </lsby-column>
+    <lsby-container>
+      <lsby-flex-item-container style="height: 20%">
+        <lsby-row>
+          <lsby-column>
+            <lsby-button 文本="按钮1" 回调="alert('这是按钮1')"></lsby-button>
+          </lsby-column>
+          <lsby-column>
+            <lsby-button 文本="按钮2" 回调="alert('这是按钮2')"></lsby-button>
+          </lsby-column>
+        </lsby-row>
+      </lsby-flex-item-container>
+      <lsby-flex-item-container>
+        <lsby-row>
+          <lsby-add 加法接口="/api/base/add" a="1" b="2"></lsby-add>
+          <lsby-ws-test ws测试接口="/api/base/ws-test"></lsby-ws-test>
+        </lsby-row>
+      </lsby-flex-item-container>
     </lsby-container>
   </body>
 </html>

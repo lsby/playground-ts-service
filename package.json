@@ -50,7 +50,7 @@
     "@lsby/ts-global": "^0.0.7",
     "@lsby/ts-kysely": "^0.1.0",
     "@lsby/ts-log": "^0.1.2",
-    "@lsby/ts-post-extend": "^0.0.9",
+    "@lsby/ts-post-extend": "^0.0.11",
     "axios": "^1.7.7",
     "better-sqlite3": "^11.9.1",
     "kysely": "^0.27.6",
