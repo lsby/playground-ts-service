@@ -1,4 +1,4 @@
-import { InterfaceType, InterfaceWsType } from '../../types/interface-type'
+import { InterfaceType } from '../../types/interface-type'
 
 export type 元组转联合<T> = T extends any[] ? T[number] : never
 
@@ -38,15 +38,6 @@ export type 从路径获得API接口一般属性<Path, A = InterfaceType> = A ex
         : 从路径获得API接口一般属性<Path, xs>
       : never
     : never
-export type 从路径获得API接口WS属性<Path, A = InterfaceWsType> = A extends []
-  ? never
-  : A extends [infer x, ...infer xs]
-    ? 'path' extends keyof x
-      ? x['path'] extends Path
-        ? x
-        : 从路径获得API接口WS属性<Path, xs>
-      : never
-    : never
 
 export type Get请求后端函数类型 = <路径 extends 元组转联合<Get_API接口路径们>>(
   路径: 路径,
@@ -55,7 +46,7 @@ export type Get请求后端函数类型 = <路径 extends 元组转联合<Get_AP
 export type Post请求后端函数类型 = <路径 extends 元组转联合<Post_API接口路径们>>(
   路径: 路径,
   参数: 路径 extends 元组转联合<Post_API接口路径们> ? 从路径获得API接口一般属性<路径>['input'] : never,
-  ws信息回调?: (信息: 从路径获得API接口WS属性<路径>['data']) => void,
+  ws信息回调?: (信息: 从路径获得API接口一般属性<路径>['webSocketData']) => void,
   ws关闭回调?: (信息: CloseEvent) => void,
   ws错误回调?: (信息: Event) => void,
   获得ws句柄?: (ws句柄: WebSocket) => void,
