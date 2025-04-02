@@ -1,14 +1,8 @@
 import { API组件基类 } from '../base/base-api'
+import { 从路径获得接口定义 } from '../global/types'
 
 type 接口定义 = {
-  ws测试接口: {
-    path: '/api/base/ws-test'
-    method: 'post'
-    input: {}
-    errorOutput: { status: 'fail'; data: never }
-    successOutput: { status: 'success'; data: {} }
-    webSocketData: { data: string }
-  }
+  ws测试接口: 从路径获得接口定义<'/api/base/ws-test'>
 }
 type 属性类型 = {}
 type 发出事件类型 = {}
