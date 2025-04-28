@@ -9,17 +9,17 @@ importers:
   .:
     dependencies:
       '@lsby/net-core':
-        specifier: 0.6.3
-        version: 0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
+        specifier: 0.6.4
+        version: 0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.7
-        version: 0.1.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
+        version: 0.1.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/net-core-jwt':
         specifier: ^0.1.7
-        version: 0.1.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
+        version: 0.1.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/net-core-kysely':
         specifier: 0.0.7
-        version: 0.0.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
+        version: 0.0.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.13.14)(lightningcss@1.29.3)
@@ -773,8 +773,8 @@ packages:
       '@lsby/net-core': ^0.6.0
       '@lsby/ts-fp-data': ^0.2.4
 
-  '@lsby/net-core@0.6.3':
-    resolution: {integrity: sha512-84ERQKe4s9S787bpxav7tIKd8dBT+Ktm1gLvEf3THhzMkAk9r1yRxUUwMuSqIQXllOeIiGBxu6qLnAzRpXuZCg==}
+  '@lsby/net-core@0.6.4':
+    resolution: {integrity: sha512-dddE8ERWenc56i/6lBoK44Gsthwa5V8SZ6IUMqZI0MtCMhjkcTo8ej2Tfi7NVw4K1ao9M9OfOnG82duUjPvmCQ==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.4
@@ -5157,9 +5157,9 @@ snapshots:
     dependencies:
       eslint: 8.57.1
 
-  '@lsby/net-core-file-upload@0.1.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/net-core-file-upload@0.1.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
-      '@lsby/net-core': 0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
+      '@lsby/net-core': 0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-fp-data': 0.2.5
       express-fileupload: 1.5.1
       vitest: 2.1.9(@types/node@22.13.14)(lightningcss@1.29.3)
@@ -5181,9 +5181,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-jwt@0.1.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/net-core-jwt@0.1.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
-      '@lsby/net-core': 0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
+      '@lsby/net-core': 0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-jwt': 0.0.1(@types/node@22.13.14)(lightningcss@1.29.3)
       vitest: 2.1.9(@types/node@22.13.14)(lightningcss@1.29.3)
@@ -5205,9 +5205,9 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.7(@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/net-core-kysely@0.0.7(@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
-      '@lsby/net-core': 0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
+      '@lsby/net-core': 0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-fp-data': 0.2.5
       kysely: 0.27.6
       vitest: 2.1.9(@types/node@22.13.14)(lightningcss@1.29.3)
@@ -5229,7 +5229,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core@0.6.3(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/net-core@0.6.4(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-global': 0.0.5(@types/node@22.13.14)(lightningcss@1.29.3)
