@@ -1,4 +1,4 @@
-import { 组件基类 } from '../base/base'
+import { 组件基类 } from '../../base/base'
 
 type 属性类型 = { 文本: string; 回调: string }
 type 发出事件类型 = {}

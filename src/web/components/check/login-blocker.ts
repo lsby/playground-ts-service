@@ -1,5 +1,5 @@
-import { API组件基类 } from '../base/base-api'
-import { 通过路径获得接口定义 } from '../global/types'
+import { API组件基类 } from '../../base/base-api'
+import { 通过路径获得接口定义 } from '../../global/types'
 
 type 接口定义 = [通过路径获得接口定义<'/api/user/is-login'>]
 type 属性类型 = {}

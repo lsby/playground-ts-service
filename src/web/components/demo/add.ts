@@ -1,4 +1,4 @@
-import { API组件基类 } from '../base/base-api'
+import { API组件基类 } from '../../base/base-api'
 
 type 接口定义 = [
   {

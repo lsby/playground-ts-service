@@ -49,6 +49,12 @@ export abstract class 组件基类<
     return style
   }
 
+  public 清空影子dom(): void {
+    while (this.shadow.firstChild !== null) {
+      this.shadow.removeChild(this.shadow.firstChild)
+    }
+  }
+
   /**
    * 请注意, 只有在dom挂载后初始化才会完成.
    */
@@ -110,9 +116,7 @@ export abstract class 组件基类<
     }
 
     // 清空影子dom, 避免重复挂载, 因为connectedCallback可能会执行多次
-    while (this.shadow.firstChild !== null) {
-      this.shadow.removeChild(this.shadow.firstChild)
-    }
+    this.清空影子dom()
 
     // 执行子类的过程
     await this.当加载时()
