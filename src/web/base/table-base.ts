@@ -11,13 +11,13 @@ export abstract class 表格组件基类<
   数据项 extends { [key: string]: string | number | boolean },
 > extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string
-  protected abstract 请求数据(当前页码: number, 每页数量: number): Promise<{ 数据列表: 数据项[]; 数据总数: number }>
+  protected abstract 请求数据(当前页码: number, 每页数量: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>
   protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
 
   protected async 加载数据(当前页码: number, 每页数量: number): Promise<void> {
-    let { 数据列表, 数据总数 } = await this.请求数据(当前页码, 每页数量)
-    let 第一条数据 = 数据列表[0]
+    let { data, total } = await this.请求数据(当前页码, 每页数量)
+    let 第一条数据 = data[0]
     let 原始列名 = 第一条数据 === void 0 ? [] : Object.keys(第一条数据)
 
     let 容器元素 = document.createElement('div')
@@ -61,7 +61,7 @@ export abstract class 表格组件基类<
     表格元素.appendChild(表头)
 
     let 表体 = document.createElement('tbody')
-    for (let 数据项 of 数据列表) {
+    for (let 数据项 of data) {
       let 行 = document.createElement('tr')
 
       for (let 字段 of 原始列名) {
@@ -118,9 +118,9 @@ export abstract class 表格组件基类<
 
     let 下一页按钮 = document.createElement('button')
     下一页按钮.textContent = '下一页'
-    下一页按钮.disabled = 当前页码 >= Math.ceil(数据总数 / 每页数量)
+    下一页按钮.disabled = 当前页码 >= Math.ceil(total / 每页数量)
     下一页按钮.onclick = async (): Promise<void> => {
-      if (当前页码 < Math.ceil(数据总数 / 每页数量)) {
+      if (当前页码 < Math.ceil(total / 每页数量)) {
         当前页码++
         await this.加载数据(当前页码, 每页数量)
       }
