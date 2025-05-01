@@ -31,7 +31,7 @@ let 逻辑错误类型Zod = z.never()
 let 逻辑正确类型Zod = z.object({
   data: z.array(
     z.object({
-      id: z.number(),
+      id: z.string(),
       value: z.string(),
     }),
   ),
@@ -46,7 +46,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
 
   override async 实现(参数: 参数类型, _附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
     let 全部数据 = Array.from({ length: 100 }, (_, i) => ({
-      id: i + 1,
+      id: `${i + 1}`,
       value: `Value-${i + 1}`,
     }))
     let 开始 = (参数.page - 1) * 参数.size

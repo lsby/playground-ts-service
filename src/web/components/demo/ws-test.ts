@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import { API组件基类 } from '../../base/base-api'
 import { 通过路径获得接口定义 } from '../../global/types'
 
@@ -23,7 +22,7 @@ export class LsbyWsTest extends API组件基类<接口定义, 属性类型, 发�
     this.按钮.textContent = '开始测试'
     this.按钮.onclick = async (): Promise<void> => {
       await this.请求接口('/api/base/ws-test', {}, async (data) => {
-        $(this.结果).text(data.data)
+        this.结果.textContent = data.data
       })
     }
   }
