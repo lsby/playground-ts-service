@@ -7,6 +7,7 @@ import _src_interface_demo_ws_test_index_ts from './demo/ws-test/index'
 import _src_interface_user_is_login_index_ts from './user/is-login/index'
 import _src_interface_user_login_index_ts from './user/login/index'
 import _src_interface_user_register_index_ts from './user/register/index'
+import _src_interface_demo_get_list_index_ts from './demo/get-list/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_add_index_ts,
@@ -16,4 +17,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_user_is_login_index_ts,
   _src_interface_user_login_index_ts,
   _src_interface_user_register_index_ts,
+  _src_interface_demo_get_list_index_ts,
 ]

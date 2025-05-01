@@ -1,5 +1,6 @@
 import { API组件基类 } from '../../base/base-api'
 import { 通过路径获得接口定义 } from '../../global/types'
+import { LsbyContainer } from '../../layout/container'
 
 type 接口定义 = [通过路径获得接口定义<'/api/base/add'>]
 type 属性类型 = { a: string; b: string }
@@ -17,9 +18,21 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
   private 输入框2 = document.createElement('input')
 
   protected override async 当加载时(): Promise<void> {
-    this.shadow.append(this.输入框1)
-    this.shadow.append(this.输入框2)
-    this.shadow.append(this.结果)
+    let 输入框1容器 = new LsbyContainer({})
+    输入框1容器.style.height = 'auto'
+    输入框1容器.append(this.输入框1)
+
+    let 输入框2容器 = new LsbyContainer({})
+    输入框2容器.style.height = 'auto'
+    输入框2容器.append(this.输入框2)
+
+    let 结果容器 = new LsbyContainer({})
+    结果容器.style.height = 'auto'
+    结果容器.append(this.结果)
+
+    this.shadow.append(输入框1容器)
+    this.shadow.append(输入框2容器)
+    this.shadow.append(结果容器)
 
     this.结果.textContent = '计算中...'
     this.输入框1.oninput = (): void => this.设置属性('a', this.输入框1.value)
