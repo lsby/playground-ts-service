@@ -1,5 +1,8 @@
 import { API组件基类, 接口定义形状 } from './base-api'
 
+export type 自定义操作 = Record<string, () => Promise<void>>
+export type 自定义项操作<数据项> = Record<string, (数据: 数据项) => Promise<void>>
+
 export abstract class 表格组件基类<
   接口定义 extends 接口定义形状,
   属性类型 extends Record<string, string>,
@@ -9,8 +12,8 @@ export abstract class 表格组件基类<
 > extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string
   protected abstract 请求数据(当前页码: number, 每页数量: number): Promise<{ 数据列表: 数据项[]; 数据总数: number }>
-  protected abstract 添加数据(): Promise<void>
-  protected abstract 删除数据(数据项: 数据项): Promise<void>
+  protected abstract 获得自定义操作(): Promise<自定义操作>
+  protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
 
   protected async 加载数据(当前页码: number, 每页数量: number): Promise<void> {
     let { 数据列表, 数据总数 } = await this.请求数据(当前页码, 每页数量)
@@ -44,14 +47,15 @@ export abstract class 表格组件基类<
       表头行.appendChild(th)
     }
 
-    // 删除列头 开始
-    let 操作th = document.createElement('th')
-    操作th.textContent = '操作'
-    操作th.style.border = '1px solid #ccc'
-    操作th.style.padding = '8px'
-    操作th.style.textAlign = 'left'
-    表头行.appendChild(操作th)
-    // 删除列头 结束
+    let 自定义项操作们 = await this.获得自定义项操作()
+    for (let 自定义项操作 of Object.entries(自定义项操作们)) {
+      let 操作th = document.createElement('th')
+      操作th.textContent = 自定义项操作[0]
+      操作th.style.border = '1px solid #ccc'
+      操作th.style.padding = '8px'
+      操作th.style.textAlign = 'left'
+      表头行.appendChild(操作th)
+    }
 
     表头.appendChild(表头行)
     表格元素.appendChild(表头)
@@ -70,21 +74,22 @@ export abstract class 表格组件基类<
         行.appendChild(td)
       }
 
-      // 删除列 开始
-      let 删除单元格 = document.createElement('td')
-      删除单元格.style.padding = '8px'
-      删除单元格.style.border = '1px solid #ccc'
+      let 自定义项操作们 = await this.获得自定义项操作()
+      for (let 自定义项操作 of Object.entries(自定义项操作们)) {
+        let 单元格 = document.createElement('td')
+        单元格.style.padding = '8px'
+        单元格.style.border = '1px solid #ccc'
 
-      let 删除按钮 = document.createElement('button')
-      删除按钮.textContent = '删除'
-      删除按钮.onclick = async (): Promise<void> => {
-        await this.删除数据(数据项)
-        await this.加载数据(当前页码, 每页数量)
+        let 按钮 = document.createElement('button')
+        按钮.textContent = 自定义项操作[0]
+        按钮.onclick = async (): Promise<void> => {
+          await 自定义项操作[1](数据项)
+          await this.加载数据(当前页码, 每页数量)
+        }
+
+        单元格.appendChild(按钮)
+        行.appendChild(单元格)
       }
-      // 删除列 结束
-
-      删除单元格.appendChild(删除按钮)
-      行.appendChild(删除单元格)
 
       表体.appendChild(行)
     }
@@ -122,13 +127,16 @@ export abstract class 表格组件基类<
     }
     分页区域.appendChild(下一页按钮)
 
-    let 添加按钮 = document.createElement('button')
-    添加按钮.textContent = '添加数据'
-    添加按钮.onclick = async (): Promise<void> => {
-      await this.添加数据()
-      await this.加载数据(当前页码, 每页数量)
+    let 自定义操作们 = await this.获得自定义操作()
+    for (let 自定义操作 of Object.entries(自定义操作们)) {
+      let 按钮 = document.createElement('button')
+      按钮.textContent = 自定义操作[0]
+      按钮.onclick = async (): Promise<void> => {
+        await 自定义操作[1]()
+        await this.加载数据(当前页码, 每页数量)
+      }
+      分页区域.appendChild(按钮)
     }
-    分页区域.appendChild(添加按钮)
 
     this.shadow.innerHTML = ''
     容器元素.appendChild(分页区域)
