@@ -11,12 +11,12 @@ export abstract class 表格组件基类<
   数据项 extends { [key: string]: string | number | boolean },
 > extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string
-  protected abstract 请求数据(当前页码: number, 每页数量: number): Promise<{ data: 数据项[]; total: number }>
+  protected abstract 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>
   protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
 
-  protected async 加载数据(当前页码: number, 每页数量: number): Promise<void> {
-    let { data, total } = await this.请求数据(当前页码, 每页数量)
+  protected async 加载数据(page: number, size: number): Promise<void> {
+    let { data, total } = await this.请求数据(page, size)
     let 第一条数据 = data[0]
     let 原始列名 = 第一条数据 === void 0 ? [] : Object.keys(第一条数据)
 
@@ -84,7 +84,7 @@ export abstract class 表格组件基类<
         按钮.textContent = 自定义项操作[0]
         按钮.onclick = async (): Promise<void> => {
           await 自定义项操作[1](数据项)
-          await this.加载数据(当前页码, 每页数量)
+          await this.加载数据(page, size)
         }
 
         单元格.appendChild(按钮)
@@ -107,22 +107,22 @@ export abstract class 表格组件基类<
 
     let 上一页按钮 = document.createElement('button')
     上一页按钮.textContent = '上一页'
-    上一页按钮.disabled = 当前页码 <= 1
+    上一页按钮.disabled = page <= 1
     上一页按钮.onclick = async (): Promise<void> => {
-      if (当前页码 > 1) {
-        当前页码--
-        await this.加载数据(当前页码, 每页数量)
+      if (page > 1) {
+        page--
+        await this.加载数据(page, size)
       }
     }
     分页区域.appendChild(上一页按钮)
 
     let 下一页按钮 = document.createElement('button')
     下一页按钮.textContent = '下一页'
-    下一页按钮.disabled = 当前页码 >= Math.ceil(total / 每页数量)
+    下一页按钮.disabled = page >= Math.ceil(total / size)
     下一页按钮.onclick = async (): Promise<void> => {
-      if (当前页码 < Math.ceil(total / 每页数量)) {
-        当前页码++
-        await this.加载数据(当前页码, 每页数量)
+      if (page < Math.ceil(total / size)) {
+        page++
+        await this.加载数据(page, size)
       }
     }
     分页区域.appendChild(下一页按钮)
@@ -133,7 +133,7 @@ export abstract class 表格组件基类<
       按钮.textContent = 自定义操作[0]
       按钮.onclick = async (): Promise<void> => {
         await 自定义操作[1]()
-        await this.加载数据(当前页码, 每页数量)
+        await this.加载数据(page, size)
       }
       分页区域.appendChild(按钮)
     }

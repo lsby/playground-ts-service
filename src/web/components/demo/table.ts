@@ -21,12 +21,8 @@ export class 表格组件 extends 表格组件基类<接口定义, 属性类型,
         return '值'
     }
   }
-  protected override async 请求数据(当前页码: number, 每页数量: number): Promise<{ data: 数据项[]; total: number }> {
-    let { data, total } = await this.请求接口并处理错误('/api/base/get-list', {
-      page: 当前页码,
-      size: 每页数量,
-    })
-    return { data, total }
+  protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
+    return await this.请求接口并处理错误('/api/base/get-list', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {
