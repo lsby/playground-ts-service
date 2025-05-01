@@ -1,5 +1,5 @@
 import { 不安全的扩展WebPost } from '@lsby/ts-post-extend'
-import { 获得对象属性, 通过路径获得接口定义 } from '../global/types'
+import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
 import { 组件基类 } from './base'
 
 type 接口定义项形状 = {
@@ -40,24 +40,28 @@ export abstract class API组件基类<
 
   protected async 请求接口<接口路径 extends 接口定义[number]['path']>(
     接口路径: 接口路径,
-    参数: 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'input'>,
-    ws信息回调?: (data: 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'webSocketData'>) => Promise<void>,
+    参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'input'>,
+    ws信息回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'webSocketData'>,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
-    | 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'errorOutput'>
-    | 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'successOutput'>
+    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'errorOutput'>
+    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'successOutput'>
   > {
     return 不安全的扩展WebPost(接口路径, 参数, { authorization: this.token }, ws信息回调, ws关闭回调, ws错误回调)
   }
 
   protected async 请求接口并处理错误<接口路径 extends 接口定义[number]['path']>(
     接口路径: 接口路径,
-    参数: 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'input'>,
-    ws信息回调?: (data: 获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'webSocketData'>) => Promise<void>,
+    参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'input'>,
+    ws信息回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'webSocketData'>,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
-  ): Promise<获得对象属性<获得对象属性<通过路径获得接口定义<接口路径, 接口定义>, 'successOutput'>, 'data'>> {
+  ): Promise<获得对象属性<获得对象属性<不安全的通过路径获得接口定义<接口路径, 接口定义>, 'successOutput'>, 'data'>> {
     let 请求结果 = await this.请求接口(接口路径, 参数, ws信息回调, ws关闭回调, ws错误回调)
     if (请求结果.status === 'fail') {
       let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
