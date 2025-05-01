@@ -2,7 +2,7 @@ import { 不安全的扩展WebPost } from '@lsby/ts-post-extend'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
 import { 组件基类 } from './base'
 
-type 接口定义项形状 = {
+export type 接口定义项形状 = {
   path: string
   method: 'post'
   input: Record<string, any>
@@ -10,7 +10,7 @@ type 接口定义项形状 = {
   successOutput: { status: 'success'; data: Record<string, any> }
   webSocketData?: Record<string, any>
 }
-type 接口定义形状 = 接口定义项形状[]
+export type 接口定义形状 = 接口定义项形状[]
 
 export abstract class API组件基类<
   接口定义 extends 接口定义形状,
