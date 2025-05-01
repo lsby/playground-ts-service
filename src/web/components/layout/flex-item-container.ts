@@ -1,20 +1,20 @@
-import { 组件基类 } from '../base/base'
-import { 联合转元组 } from '../global/types'
+import { 组件基类 } from '../../base/base'
+import { 联合转元组 } from '../../global/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 /**
- * 一个容器:
+ * 一个容器, 用于flex布局的项目元素:
  *
  * - 内部元素横纵都居中
  * - 占据所在位置的剩余空间
  */
-export class LsbyContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyFlexItemContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-container', this)
+    this.注册组件('lsby-flex-item-container', this)
   }
 
   constructor(属性: 属性类型) {
@@ -31,6 +31,9 @@ export class LsbyContainer extends 组件基类<属性类型, 发出事件类型
     style.width = '100%' // 容器宽度占满父元素
     style.height = '100%' // 容器高度占满父元素
     style.overflow = 'hidden' // 防止内容溢出
+    style.flexGrow = '1' // 放大比例
+    style.flexShrink = '1' // 缩小比例
+    style.flexBasis = 'auto' // 占据主轴大小
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
 

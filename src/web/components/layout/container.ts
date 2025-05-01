@@ -1,17 +1,20 @@
-import { 组件基类 } from '../base/base'
-import { 联合转元组 } from '../global/types'
+import { 组件基类 } from '../../base/base'
+import { 联合转元组 } from '../../global/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 /**
- * 元素将纵向排列
+ * 一个容器:
+ *
+ * - 内部元素横纵都居中
+ * - 占据所在位置的剩余空间
  */
-export class LsbyColumn extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-column', this)
+    this.注册组件('lsby-container', this)
   }
 
   constructor(属性: 属性类型) {
@@ -22,12 +25,12 @@ export class LsbyColumn extends 组件基类<属性类型, 发出事件类型, �
     let style = this.获得宿主样式()
 
     style.display = 'flex' // 启用 Flexbox 布局
-    style.flexDirection = 'column' // 纵向排列
-    style.justifyContent = 'space-around' // 垂直方向均匀分布
+    style.flexDirection = 'column' // 默认纵向排列
+    style.justifyContent = 'center' // 居中对齐
     style.alignItems = 'center' // 水平方向居中
-    style.gap = '10px' // 设置元素间距
     style.width = '100%' // 容器宽度占满父元素
     style.height = '100%' // 容器高度占满父元素
+    style.overflow = 'hidden' // 防止内容溢出
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
 

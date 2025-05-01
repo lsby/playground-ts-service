@@ -1,6 +1,6 @@
 import { API组件基类 } from '../../base/base-api'
 import { 通过路径获得接口定义 } from '../../global/types'
-import { LsbyContainer } from '../../layout/container'
+import { LsbyContainer } from '../layout/container'
 
 type 接口定义 = [通过路径获得接口定义<'/api/base/add'>]
 type 属性类型 = { a: string; b: string }

@@ -37,13 +37,12 @@ nodeWatch(
 
       if (name.includes('src/interface/interface-list.ts')) 忽略 = true
       if (name.includes('src\\interface\\interface-list.ts')) 忽略 = true
+
       if (name.includes('src/types/interface-type.ts')) 忽略 = true
       if (name.includes('src\\types\\interface-type.ts')) 忽略 = true
 
-      if (name.includes('src/interface-table/interface-table-list.ts')) 忽略 = true
-      if (name.includes('src\\interface-table\\interface-table-list.ts')) 忽略 = true
-      if (name.includes('src/types/interface-table-type.ts')) 忽略 = true
-      if (name.includes('src\\types\\interface-table-type.ts')) 忽略 = true
+      if (name.includes('src/web/components/index.ts')) 忽略 = true
+      if (name.includes('src\\web\\components\\index.ts')) 忽略 = true
 
       if (忽略) {
         console.log('忽略')

@@ -1,5 +1,5 @@
-import { 路由事件监听对象, 路由事件监听类型 } from '../../abstract/route'
 import { API组件基类 } from '../../base/base-api'
+import { 路由事件监听对象, 路由事件监听类型 } from '../mechanics/route'
 import { ping事件 } from './ping'
 
 type 接口定义 = []
