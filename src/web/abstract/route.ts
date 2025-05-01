@@ -1,4 +1,4 @@
-import { 组件基类 } from '../../base/base'
+import { 组件基类 } from '../base/base'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
   `LsbyRoute-发出`,
