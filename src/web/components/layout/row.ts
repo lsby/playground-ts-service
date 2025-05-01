@@ -6,7 +6,8 @@ type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 /**
- * 元素将横向排列
+ * 横向容器
+ * 需要排版一整行时使用
  */
 export class LsbyRow extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
@@ -27,7 +28,6 @@ export class LsbyRow extends 组件基类<属性类型, 发出事件类型, 监�
     style.alignItems = 'center' // 垂直方向居中
     style.gap = '10px' // 设置元素间距
     style.width = '100%' // 容器宽度占满父元素
-    style.height = '100%' // 容器高度占满父元素
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
 

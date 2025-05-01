@@ -6,10 +6,8 @@ type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 /**
- * 一个容器:
- *
- * - 内部元素横纵都居中
- * - 占据所在位置的剩余空间
+ * 容器
+ * 需要一个占满横纵的空间时使用
  */
 export class LsbyContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
@@ -28,9 +26,9 @@ export class LsbyContainer extends 组件基类<属性类型, 发出事件类型
     style.flexDirection = 'column' // 默认纵向排列
     style.justifyContent = 'center' // 居中对齐
     style.alignItems = 'center' // 水平方向居中
+    style.overflow = 'hidden' // 防止内容溢出
     style.width = '100%' // 容器宽度占满父元素
     style.height = '100%' // 容器高度占满父元素
-    style.overflow = 'hidden' // 防止内容溢出
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
 

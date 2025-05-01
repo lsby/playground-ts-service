@@ -10,28 +10,29 @@
     <lsby-set-debug></lsby-set-debug>
     <lsby-set-html-full></lsby-set-html-full>
     <lsby-login-check></lsby-login-check>
-    <lsby-container>
-      <lsby-row>
-        <lsby-container>
-          todo测试
-          <lsby-todo-list></lsby-todo-list>
-        </lsby-container>
-        <lsby-container>
-          表格测试
-          <lsby-table></lsby-table>
-        </lsby-container>
-      </lsby-row>
-      <lsby-flex-item-container>
+
+    <lsby-tabs>
+      <lsby-container 标签="主要" style="justify-content: space-around">
         <lsby-row>
-          <lsby-container>
+          <lsby-flex-item-container>
+            todo测试
+            <lsby-todo-list></lsby-todo-list>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
+            表格测试
+            <lsby-table></lsby-table>
+          </lsby-flex-item-container>
+        </lsby-row>
+        <lsby-row>
+          <lsby-flex-item-container>
             加法测试
             <lsby-add a="1" b="2"></lsby-add>
-          </lsby-container>
-          <lsby-container>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
             ws测试
             <lsby-ws-test></lsby-ws-test>
-          </lsby-container>
-          <lsby-container>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
             路由测试
             <lsby-route>
               <lsby-container>
@@ -39,9 +40,11 @@
                 <lsby-pong></lsby-pong>
               </lsby-container>
             </lsby-route>
-          </lsby-container>
+          </lsby-flex-item-container>
         </lsby-row>
-      </lsby-flex-item-container>
-    </lsby-container>
+      </lsby-container>
+      <div 标签="详情">这是第二个页面内容</div>
+      <div 标签="评论">这是第三个页面内容</div>
+    </lsby-tabs>
   </body>
 </html>
