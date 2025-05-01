@@ -2,17 +2,17 @@ import { 组件基类 } from '../../base/base'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
   `LsbyRoute-发出`,
-  路由事件派发<事件名称, 事件数据>
+  路由事件派发对象<事件名称, 事件数据>
 >
 type 取事件名称<A> = A extends 路由事件派发类型<infer X, any> ? X : never
 type 取事件数据<A> = A extends 路由事件派发类型<any, infer X> ? X : never
 
 export type 路由事件监听类型<发出类型 extends 路由事件派发类型<any, any>> = Record<
   `LsbyRoute-监听`,
-  路由事件监听<取事件名称<发出类型>, 取事件数据<发出类型>>
+  路由事件监听对象<取事件名称<发出类型>, 取事件数据<发出类型>>
 >
 
-export class 路由事件派发<事件名称 extends string, 事件数据> {
+export class 路由事件派发对象<事件名称 extends string, 事件数据> {
   constructor(
     private 事件名称: 事件名称,
     private 事件数据: 事件数据,
@@ -25,7 +25,7 @@ export class 路由事件派发<事件名称 extends string, 事件数据> {
     return this.事件数据
   }
 }
-export class 路由事件监听<事件名称 extends string, 事件数据> {
+export class 路由事件监听对象<事件名称 extends string, 事件数据> {
   constructor(
     private 事件名称: 事件名称,
     private 回调函数: (a: 事件数据) => Promise<void>,
