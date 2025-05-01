@@ -8,20 +8,7 @@ export type 联合转元组<T, Last = LastUnion<T>> = [T] extends [never] ? [] :
 export type 获得对象属性<A, p extends string> = A extends infer X ? (p extends keyof X ? X[p] : never) : never
 
 export type 所有接口路径 = InterfaceType[number]['path']
-
-// export type 通过路径获得接口定义<P extends 所有接口路径, A = InterfaceType> = A extends []
-//   ? never
-//   : A extends [infer x, ...infer xs]
-//     ? 'path' extends keyof x
-//       ? P extends x['path']
-//         ? x
-//         : 通过路径获得接口定义<P, xs>
-//       : never
-//     : never
-export type 通过路径获得接口定义<P extends 所有接口路径, A = InterfaceType, Result = never> = A extends [
-  infer First,
-  ...infer Rest,
-]
+export type 通过路径获得接口定义<P, A = InterfaceType, Result = never> = A extends [infer First, ...infer Rest]
   ? First extends { path: infer Path }
     ? P extends Path
       ? 通过路径获得接口定义<P, Rest, First>

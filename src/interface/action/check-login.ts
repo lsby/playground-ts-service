@@ -1,6 +1,6 @@
 import { 去除只读, 合并插件结果, 接口逻辑 } from '@lsby/net-core'
 import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
-import { Global } from '../../../global/global'
+import { Global } from '../../global/global'
 
 let 插件 = [
   new Task(async () => {

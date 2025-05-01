@@ -7,7 +7,6 @@
     <!-- 逻辑 -->
     <script src="../process/set-debug.ts" type="module"></script>
     <script src="../process/set-html-full.ts" type="module"></script>
-    <script src="../process/set-login-check.ts" type="module"></script>
 
     <!-- 布局 -->
     <script src="../layout/row.ts" type="module"></script>
@@ -15,30 +14,46 @@
     <script src="../layout/container.ts" type="module"></script>
     <script src="../layout/flex-item-container.ts" type="module"></script>
 
+    <!-- 检查器 -->
+    <script src="../components/check/login-check.ts" type="module"></script>
+
     <!-- 组件 -->
-    <script src="../components/check/login-blocker.ts" type="module"></script>
-    <script src="../components/demo/button.ts" type="module"></script>
     <script src="../components/demo/add.ts" type="module"></script>
     <script src="../components/demo/ws-test.ts" type="module"></script>
+    <script src="../components/demo/todo-list.ts" type="module"></script>
+    <script src="../components/demo/ping.ts" type="module"></script>
+    <script src="../components/demo/pong.ts" type="module"></script>
   </head>
 
   <body>
-    <lsby-login-blocker></lsby-login-blocker>
+    <lsby-login-check></lsby-login-check>
     <lsby-container>
-      <lsby-flex-item-container style="height: 20%">
-        <lsby-row>
-          <lsby-column>
-            <lsby-button 文本="按钮1" 回调="alert('这是按钮1')"></lsby-button>
-          </lsby-column>
-          <lsby-column>
-            <lsby-button 文本="按钮2" 回调="alert('这是按钮2')"></lsby-button>
-          </lsby-column>
-        </lsby-row>
-      </lsby-flex-item-container>
+      <lsby-row>
+        <lsby-container>
+          todo测试
+          <lsby-todo-list></lsby-todo-list>
+        </lsby-container>
+        <lsby-container>
+          加法测试
+          <lsby-add a="1" b="2"></lsby-add>
+        </lsby-container>
+      </lsby-row>
+
       <lsby-flex-item-container>
         <lsby-row>
-          <lsby-add a="1" b="2"></lsby-add>
-          <lsby-ws-test></lsby-ws-test>
+          <lsby-container>
+            ws测试
+            <lsby-ws-test></lsby-ws-test>
+          </lsby-container>
+          <lsby-container>
+            路由测试
+            <lsby-route>
+              <lsby-container>
+                <lsby-ping></lsby-ping>
+                <lsby-pong></lsby-pong>
+              </lsby-container>
+            </lsby-route>
+          </lsby-container>
         </lsby-row>
       </lsby-flex-item-container>
     </lsby-container>

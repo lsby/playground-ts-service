@@ -1,14 +1,7 @@
 import { API组件基类 } from '../../base/base-api'
+import { 通过路径获得接口定义 } from '../../global/types'
 
-type 接口定义 = [
-  {
-    path: '/api/base/add'
-    method: 'post'
-    input: { a: number; b: number }
-    errorOutput: { status: 'fail'; data: never }
-    successOutput: { status: 'success'; data: { res: number } }
-  },
-]
+type 接口定义 = [通过路径获得接口定义<'/api/base/add'>]
 type 属性类型 = { a: string; b: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
@@ -24,9 +17,9 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
   private 输入框2 = document.createElement('input')
 
   protected override async 当加载时(): Promise<void> {
-    this.shadow.append(this.结果)
     this.shadow.append(this.输入框1)
     this.shadow.append(this.输入框2)
+    this.shadow.append(this.结果)
 
     this.结果.textContent = '计算中...'
     this.输入框1.oninput = (): void => this.设置属性('a', this.输入框1.value)

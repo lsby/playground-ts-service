@@ -3,7 +3,7 @@ import { 通过路径获得接口定义 } from '../global/types'
 
 type 接口定义 = [通过路径获得接口定义<'/api/user/login'>]
 type 属性类型 = { username: string; password: string }
-type 发出事件类型 = { 登录成功: null }
+type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 export class LsbyLogin extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
@@ -40,6 +40,6 @@ export class LsbyLogin extends API组件基类<接口定义, 属性类型, 发�
       userPassword: this.获得属性('password'),
     })
     this.设置token(调用结果.token)
-    this.派发事件('登录成功', null)
+    window.location.assign('/')
   }
 }
