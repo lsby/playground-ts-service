@@ -13,7 +13,7 @@ import { z } from 'zod'
 import { Global } from '../../../global/global'
 import { 登录检查器, 登录检查器正确类型 } from '../../action/check-login'
 
-let 接口路径 = '/api/base/upload-file' as const
+let 接口路径 = '/api/demo/upload-file' as const
 let 接口方法 = 'post' as const
 
 let 插件 = [

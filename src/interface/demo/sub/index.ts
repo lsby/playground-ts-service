@@ -12,7 +12,7 @@ import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { 登录检查器, 登录检查器正确类型 } from '../../action/check-login'
 
-let 接口路径 = '/api/base/sub' as const
+let 接口路径 = '/api/demo/sub' as const
 let 接口方法 = 'post' as const
 
 let 插件 = [

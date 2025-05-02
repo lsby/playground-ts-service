@@ -11,7 +11,7 @@ import {
 import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
-let 接口路径 = '/api/base/add' as const
+let 接口路径 = '/api/demo/add' as const
 let 接口方法 = 'post' as const
 
 let 插件 = [
