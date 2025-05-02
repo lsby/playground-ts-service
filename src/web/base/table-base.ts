@@ -61,37 +61,49 @@ export abstract class 表格组件基类<
     表格元素.appendChild(表头)
 
     let 表体 = document.createElement('tbody')
-    for (let 数据项 of data) {
-      let 行 = document.createElement('tr')
+    if (data.length === 0) {
+      let 空行 = document.createElement('tr')
+      let 空单元格 = document.createElement('td')
+      空单元格.colSpan = 原始列名.length + Object.keys(await this.获得自定义项操作()).length
+      空单元格.textContent = '无数据'
+      空单元格.style.textAlign = 'center'
+      空单元格.style.padding = '12px'
+      空单元格.style.border = '1px solid #ccc'
+      空行.appendChild(空单元格)
+      表体.appendChild(空行)
+    } else {
+      for (let 数据项 of data) {
+        let 行 = document.createElement('tr')
 
-      for (let 字段 of 原始列名) {
-        let 数据 = 数据项[字段]
-        if (数据 === void 0) throw new Error(`无法访问数据项中的字段: ${String(字段)}`)
-        let td = document.createElement('td')
-        td.textContent = 数据.toString()
-        td.style.padding = '8px'
-        td.style.border = '1px solid #ccc'
-        行.appendChild(td)
-      }
-
-      let 自定义项操作们 = await this.获得自定义项操作()
-      for (let 自定义项操作 of Object.entries(自定义项操作们)) {
-        let 单元格 = document.createElement('td')
-        单元格.style.padding = '8px'
-        单元格.style.border = '1px solid #ccc'
-
-        let 按钮 = document.createElement('button')
-        按钮.textContent = 自定义项操作[0]
-        按钮.onclick = async (): Promise<void> => {
-          await 自定义项操作[1](数据项)
-          await this.加载数据(page, size)
+        for (let 字段 of 原始列名) {
+          let 数据 = 数据项[字段]
+          if (数据 === void 0) throw new Error(`无法访问数据项中的字段: ${String(字段)}`)
+          let td = document.createElement('td')
+          td.textContent = 数据.toString()
+          td.style.padding = '8px'
+          td.style.border = '1px solid #ccc'
+          行.appendChild(td)
         }
 
-        单元格.appendChild(按钮)
-        行.appendChild(单元格)
-      }
+        let 自定义项操作们 = await this.获得自定义项操作()
+        for (let 自定义项操作 of Object.entries(自定义项操作们)) {
+          let 单元格 = document.createElement('td')
+          单元格.style.padding = '8px'
+          单元格.style.border = '1px solid #ccc'
 
-      表体.appendChild(行)
+          let 按钮 = document.createElement('button')
+          按钮.textContent = 自定义项操作[0]
+          按钮.onclick = async (): Promise<void> => {
+            await 自定义项操作[1](数据项)
+            await this.加载数据(page, size)
+          }
+
+          单元格.appendChild(按钮)
+          行.appendChild(单元格)
+        }
+
+        表体.appendChild(行)
+      }
     }
 
     表格元素.appendChild(表体)
