@@ -24,8 +24,8 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
   protected override async 当加载时(): Promise<void> {
     let style = this.获得宿主样式()
 
-    style.display = 'flex'
-    style.flexDirection = 'column'
+    style.display = 'flex' // 启用 Flexbox 布局
+    style.flexDirection = 'column' // 元素按列排列
     style.width = '100%' // 容器宽度占满父元素
     style.height = '100%' // 容器高度占满父元素
 

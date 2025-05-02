@@ -7,7 +7,7 @@ type 监听事件类型 = {}
 
 /**
  * 容器项
- * 需要在容器中控制多个项的比例时使用
+ * 需要在容器中插入可控项时使用
  */
 export class LsbyFlexItemContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: 联合转元组<keyof 属性类型> = []
