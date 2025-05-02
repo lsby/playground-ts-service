@@ -13,7 +13,7 @@ export class LsbyTable extends 表格组件基类<接口定义, 属性类型, �
     this.注册组件('lsby-table', this)
   }
 
-  protected override 映射显示字段名称(数据字段: keyof 数据项): string {
+  protected override 映射显示字段名称(数据字段: keyof 数据项): string | null {
     switch (数据字段) {
       case 'id':
         return 'id'

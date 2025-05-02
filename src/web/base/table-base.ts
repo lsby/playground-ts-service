@@ -10,7 +10,7 @@ export abstract class 表格组件基类<
   监听事件类型 extends Record<string, any>,
   数据项 extends { [key: string]: string | number | boolean },
 > extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
-  protected abstract 映射显示字段名称(数据字段: keyof 数据项): string
+  protected abstract 映射显示字段名称(数据字段: keyof 数据项): string | null
   protected abstract 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>
   protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
@@ -39,8 +39,10 @@ export abstract class 表格组件基类<
     let 表头行 = document.createElement('tr')
 
     for (let 字段 of 原始列名) {
+      let 列名 = this.映射显示字段名称(字段)
+      if (列名 === null) continue
       let th = document.createElement('th')
-      th.textContent = this.映射显示字段名称(字段)
+      th.textContent = 列名
       th.style.border = '1px solid #ccc'
       th.style.padding = '8px'
       th.style.textAlign = 'left'
