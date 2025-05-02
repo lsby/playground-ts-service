@@ -5,6 +5,7 @@ WORKDIR /opt/app
 
 RUN corepack enable && \
     pnpm i && \
+    export PARCEL_WORKER_BACKEND=process && \
     echo "\n" | npm run db:push:prod
 
 CMD npm run _build:all && npm run run:service:prod
