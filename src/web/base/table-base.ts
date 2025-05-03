@@ -78,8 +78,12 @@ export abstract class 表格组件基类<
         let 行 = document.createElement('tr')
 
         for (let 字段 of 原始列名) {
+          let 列名 = this.映射显示字段名称(字段)
+          if (列名 === null) continue
+
           let 数据 = 数据项[字段]
           if (数据 === void 0) throw new Error(`无法访问数据项中的字段: ${String(字段)}`)
+
           let td = document.createElement('td')
           td.textContent = 数据.toString()
           td.style.padding = '8px'
