@@ -10,6 +10,7 @@ import {
 } from '@lsby/net-core'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
+import { Global } from '../../../global/global'
 
 let 接口路径 = '/api/demo/ws-test' as const
 let 接口方法 = 'post' as const
@@ -34,6 +35,8 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
   }
 
   override async 实现(参数: 参数类型, _附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
+    let _log = (await Global.getItem('log')).extend(接口路径)
+
     let 数据 = ['你', '好', '世', '界']
     let 当前索引 = 0
 

@@ -33,7 +33,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
   }
 
   override async 实现(参数: 参数类型, 附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
-    let log = (await Global.getItem('log')).extend('upload-file')
+    let log = (await Global.getItem('log')).extend(接口路径)
     await log.debug('userId为%o的用户, 上传的文件信息: %j', 附加参数.userId, 参数.files)
     return new Right({})
   }

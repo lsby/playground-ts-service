@@ -49,16 +49,6 @@ export abstract class 表格组件基类<
       表头行.appendChild(th)
     }
 
-    let 自定义项操作们 = await this.获得自定义项操作()
-    for (let 自定义项操作 of Object.entries(自定义项操作们)) {
-      let 操作th = document.createElement('th')
-      操作th.textContent = 自定义项操作[0]
-      操作th.style.border = '1px solid #ccc'
-      操作th.style.padding = '8px'
-      操作th.style.textAlign = 'left'
-      表头行.appendChild(操作th)
-    }
-
     表头.appendChild(表头行)
     表格元素.appendChild(表头)
 
@@ -74,6 +64,16 @@ export abstract class 表格组件基类<
       空行.appendChild(空单元格)
       表体.appendChild(空行)
     } else {
+      let 自定义项操作们 = await this.获得自定义项操作()
+      for (let 自定义项操作 of Object.entries(自定义项操作们)) {
+        let 操作th = document.createElement('th')
+        操作th.textContent = 自定义项操作[0]
+        操作th.style.border = '1px solid #ccc'
+        操作th.style.padding = '8px'
+        操作th.style.textAlign = 'left'
+        表头行.appendChild(操作th)
+      }
+
       for (let 数据项 of data) {
         let 行 = document.createElement('tr')
 
