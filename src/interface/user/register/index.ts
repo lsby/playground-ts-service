@@ -17,11 +17,7 @@ import { 检查密码, 检查密码正确类型 } from '../../action/check-user-
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
 
-let 插件 = [
-  new Task(async () => {
-    return await Global.getItem('kysely-plugin')
-  }),
-] as const
+let 插件 = [new Task(async () => await Global.getItem('kysely-plugin'))] as const
 
 let 逻辑错误类型Zod = z.enum([
   '用户名已存在',

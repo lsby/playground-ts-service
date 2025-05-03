@@ -7,9 +7,7 @@ let 插件 = [
     let jwt = await Global.getItem('jwt-plugin')
     return jwt.解析器
   }),
-  new Task(async () => {
-    return await Global.getItem('kysely-plugin')
-  }),
+  new Task(async () => await Global.getItem('kysely-plugin')),
 ] as const
 type 插件类型 = 去除只读<typeof 插件>
 

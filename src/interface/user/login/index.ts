@@ -22,9 +22,7 @@ let 插件 = [
     let jwt = await Global.getItem('jwt-plugin')
     return jwt.签名器
   }),
-  new Task(async () => {
-    return await Global.getItem('kysely-plugin')
-  }),
+  new Task(async () => await Global.getItem('kysely-plugin')),
 ] as const
 
 let 逻辑错误类型Zod = z.enum([
