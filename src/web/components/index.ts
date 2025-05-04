@@ -1,5 +1,4 @@
 // 该文件由脚本自动生成, 请勿修改.
-export * from './check/login-check'
 export * from './demo/add'
 export * from './demo/ping'
 export * from './demo/pong'
@@ -12,6 +11,7 @@ export * from './layout/flex-item-container'
 export * from './layout/row'
 export * from './layout/tabs'
 export * from './mechanics/route'
+export * from './process/login-check'
 export * from './process/set-debug'
 export * from './process/set-html-full'
 export * from './project/login'
