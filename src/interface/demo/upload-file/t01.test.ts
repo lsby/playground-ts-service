@@ -35,8 +35,8 @@ export default new 接口测试(
     let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
     let login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${'/api/user/login'}`, {
-      name,
-      pwd,
+      userName: name,
+      userPassword: pwd,
     })) as { data: { data: { [key: string]: string } } }
     let token = login.data.data['token']
 

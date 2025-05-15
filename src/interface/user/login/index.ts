@@ -50,6 +50,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
     let _log = (await Global.getItem('log')).extend(接口路径)
 
     let 用户存在 = await 参数.kysely
+      .获得句柄()
       .selectFrom('user')
       .select('id')
       .where('name', '=', 附加参数.userName)

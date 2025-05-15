@@ -18,8 +18,8 @@ importers:
         specifier: ^0.1.7
         version: 0.1.7(@lsby/net-core@0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/net-core-kysely':
-        specifier: 0.0.7
-        version: 0.0.7(@lsby/net-core@0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
+        specifier: 1.0.0-beta.1
+        version: 1.0.0-beta.1(@lsby/net-core@0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-cron':
         specifier: ^0.0.6
         version: 0.0.6(@types/node@22.13.14)(lightningcss@1.29.3)
@@ -39,8 +39,8 @@ importers:
         specifier: ^0.1.2
         version: 0.1.2(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-post-extend':
-        specifier: ^0.0.11
-        version: 0.0.11(@types/node@22.13.14)(lightningcss@1.29.3)
+        specifier: ^0.0.16
+        version: 0.0.16(@types/node@22.13.14)(lightningcss@1.29.3)
       axios:
         specifier: ^1.7.7
         version: 1.8.4
@@ -767,8 +767,8 @@ packages:
       '@lsby/net-core': ^0.6.0
       '@lsby/ts-fp-data': ^0.2.4
 
-  '@lsby/net-core-kysely@0.0.7':
-    resolution: {integrity: sha512-8HE80mxKrAxAzXw5FyT4HG27H5c04Bw5i9vHEDt4PIQoHW6mFNNmSbCXoUtU6bIiuVN8jikeCht5MdCZr3kgkw==}
+  '@lsby/net-core-kysely@1.0.0-beta.1':
+    resolution: {integrity: sha512-Zs2YSsC9HoG+/M/dqerpP3XoSjt+Tzxw4uW5Mi60ttVDStWh5DNTdQcuKAZjhhgIogK/KAtMhLI29aXnJWmJ5A==}
     peerDependencies:
       '@lsby/net-core': ^0.6.0
       '@lsby/ts-fp-data': ^0.2.4
@@ -809,8 +809,8 @@ packages:
     resolution: {integrity: sha512-uaw/L56XqE95gA0MElZHcLlQ9vQ0OpmZ71O4ARb4NljMRbsEHlouv8ZT4qpdZysPNaenV3ivFPog/qXXAsSzDA==}
     hasBin: true
 
-  '@lsby/ts-post-extend@0.0.11':
-    resolution: {integrity: sha512-C/9FZHgnAdeGQ46ny0YjUs3wS8Aygk5wnmpG41TYymLbVeV8jgu7iPFW3yhlrNTOFfma9mbyE/MTjsndvpytjQ==}
+  '@lsby/ts-post-extend@0.0.16':
+    resolution: {integrity: sha512-K1V8A/aR9qkVlVWxMiBQBs/DrNIzrWLz/LGUh4CLX92faA/4zAIYFhQmo3tRpGrSqLOIAJ9qwr/Cy5Uk9hHoJA==}
 
   '@mischnic/json-sourcemap@0.1.1':
     resolution: {integrity: sha512-iA7+tyVqfrATAIsIRWQG+a7ZLLD0VaOCKV2Wd/v4mqIU3J9c4jx9p7S0nw1XH3gJCKNBOOwACOPYYSUu9pgT+w==}
@@ -5205,10 +5205,11 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@0.0.7(@lsby/net-core@0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/net-core-kysely@1.0.0-beta.1(@lsby/net-core@0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3))(@lsby/ts-fp-data@0.2.5)(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
       '@lsby/net-core': 0.6.5(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.21)(@types/node@22.13.14)(lightningcss@1.29.3)
       '@lsby/ts-fp-data': 0.2.5
+      '@lsby/ts-kysely': 0.1.0
       kysely: 0.27.6
       vitest: 2.1.9(@types/node@22.13.14)(lightningcss@1.29.3)
       zod: 3.24.2
@@ -5416,7 +5417,7 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/ts-post-extend@0.0.11(@types/node@22.13.14)(lightningcss@1.29.3)':
+  '@lsby/ts-post-extend@0.0.16(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
       '@lsby/ts-log': 0.1.2(@types/node@22.13.14)(lightningcss@1.29.3)
       uuid: 11.1.0

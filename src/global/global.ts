@@ -59,12 +59,7 @@ export let Global = new GlobalService([
     let e = await env.获得环境变量()
     return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), e.JWT_SECRET, e.JWT_EXPIRES_IN)
   }),
-  new GlobalAsyncItem('kysely-plugin', async () => {
-    return new Kysely插件(
-      'kysely',
-      new Kysely管理器<DB>(await 创建sqlite数据库适配器()).获得句柄(),
-      // new Kysely管理器<DB>(await 创建pg数据库适配器()).获得句柄(),
-      // new Kysely管理器<DB>(await 创建mysql数据库适配器()).获得句柄(),
-    )
+  new GlobalAsyncItem('kysely-plugin', async (): Promise<Kysely插件<'kysely', DB>> => {
+    return new Kysely插件('kysely', await Global.getItem('kysely'))
   }),
 ])

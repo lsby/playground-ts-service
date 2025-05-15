@@ -26,7 +26,12 @@ export class 登录检查器 extends 接口逻辑<插件类型, 附加参数类�
   ): Promise<Either<登录检查器错误类型, 登录检查器正确类型>> {
     let userId = 参数.userId ?? null
     if (userId === null) return new Left('未登录')
-    let 存在确认 = await 参数.kysely.selectFrom('user').select('id').where('id', '=', userId).executeTakeFirst()
+    let 存在确认 = await 参数.kysely
+      .获得句柄()
+      .selectFrom('user')
+      .select('id')
+      .where('id', '=', userId)
+      .executeTakeFirst()
     if (存在确认 === void 0) return new Left('未登录')
     return new Right({ userId: userId })
   }

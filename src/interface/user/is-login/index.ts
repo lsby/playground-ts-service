@@ -39,6 +39,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
     let userId = 参数.userId
     if (userId === void 0) return new Right({ isLogin: false })
     let 用户存在确认 = await 参数.kysely
+      .获得句柄()
       .selectFrom('user')
       .select('id')
       .where('user.id', '=', userId)
