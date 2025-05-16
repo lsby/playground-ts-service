@@ -51,9 +51,9 @@ export let Global = new GlobalService([
     return new Log(e.DEBUG_NAME)
   }),
   new GlobalAsyncItem('kysely', async () => {
-    return new Kysely管理器<DB>(await 创建sqlite数据库适配器())
-    // return new Kysely管理器<DB>(await 创建pg数据库适配器())
-    // return new Kysely管理器<DB>(await 创建mysql数据库适配器())
+    return Kysely管理器.从适配器创建<DB>(await 创建sqlite数据库适配器())
+    // return Kysely管理器.从适配器创建<DB>(await 创建pg数据库适配器())
+    // return Kysely管理器.从适配器创建<DB>(await 创建mysql数据库适配器())
   }),
   new GlobalAsyncItem('jwt-plugin', async () => {
     let e = await env.获得环境变量()
