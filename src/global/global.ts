@@ -20,6 +20,8 @@ export let env = new Env({
     DEBUG_NAME: z.string(),
     // DB START
     DB_TYPE: z.enum(['sqlite', 'pg', 'mysql']),
+    // sqlite
+    DATABASE_PATH: z.string(),
     // pg/mysql
     // DB_USER: z.string(),
     // DB_PWD: z.string(),
@@ -27,8 +29,6 @@ export let env = new Env({
     // DB_PORT: z.coerce.number(),
     // DB_NAME: z.string(),
     // SHADOW_DB_NAME: z.string(),
-    // sqlite
-    DATABASE_PATH: z.string(),
     // DB END
     APP_PORT: z.coerce.number(),
     SYSTEM_USER: z.string(),
