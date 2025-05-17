@@ -1,10 +1,10 @@
 import SQLite from 'better-sqlite3'
-// import mysql2 from 'mysql2'
 // import pg from 'pg'
+// import mysql2 from 'mysql2'
 
 import { SqliteDialect } from 'kysely'
+// import { PostgresDialect } from 'kysely'
 // import { MysqlDialect } from 'kysely'
-// import { PostgresDialect } from 'kysely']
 
 import { env } from './global'
 
