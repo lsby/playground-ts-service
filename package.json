@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "@lsby-playground-ts-service": "dist/src/server.js"
+    "lsby-playground-ts-service": "dist/src/server.js"
   },
   "files": [
     "dist"
