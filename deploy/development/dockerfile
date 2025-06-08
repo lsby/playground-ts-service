@@ -8,4 +8,4 @@ RUN corepack enable && \
     export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
-CMD echo "\n" | npm run db:push:prod && npm run run:service:dev
+CMD echo "\n" | npm run db:push:dev && npm run run:service:dev
