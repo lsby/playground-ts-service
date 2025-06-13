@@ -1,23 +1,13 @@
-import {
-  去除只读,
-  合并插件结果,
-  常用形式转换器,
-  接口,
-  接口逻辑,
-  获得接口逻辑正确类型,
-  获得接口逻辑错误类型,
-} from '@lsby/net-core'
-import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
-import { createHash, randomUUID } from 'crypto'
+import { 常用形式转换器, 接口, 接口逻辑, 获得接口逻辑正确类型, 获得接口逻辑错误类型 } from '@lsby/net-core'
+import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查用户名, 检查用户名正确类型 } from '../../action/check-user-name'
-import { 检查密码, 检查密码正确类型 } from '../../action/check-user-pwd'
+import { 注册接口组件 } from '../../../interface-components/register'
+import { 检查用户名 } from '../../action/check-user-name'
+import { 检查密码 } from '../../action/check-user-pwd'
 
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
-
-let 插件 = [new Task(async () => await Global.getItem('kysely-plugin'))] as const
 
 let 逻辑错误类型Zod = z.enum([
   '用户名已存在',
@@ -32,42 +22,9 @@ let 逻辑错误类型Zod = z.enum([
 ])
 let 逻辑正确类型Zod = z.object({})
 
-type 附加参数类型 = 检查用户名正确类型 & 检查密码正确类型
-class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑错误类型, 逻辑正确类型> {
-  override 获得插件们(): 插件类型 {
-    return [...插件]
-  }
+let 逻辑实现 = new 注册接口组件([new Task(async () => await Global.getItem('kysely-plugin'))])
+let 接口实现 = 接口逻辑.混合([new 检查用户名(), new 检查密码(), 逻辑实现])
 
-  override async 实现(参数: 参数类型, 附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
-    let _log = (await Global.getItem('log')).extend(接口路径)
-
-    let 用户存在 = await 参数.kysely
-      .获得句柄()
-      .selectFrom('user')
-      .select('id')
-      .where('name', '=', 附加参数.userName)
-      .executeTakeFirst()
-    if (用户存在 !== void 0) return new Left('用户名已存在')
-
-    await 参数.kysely
-      .获得句柄()
-      .insertInto('user')
-      .values({
-        id: randomUUID(),
-        name: 附加参数.userName,
-        pwd: createHash('md5').update(附加参数.userPassword).digest('hex'),
-      })
-      .execute()
-
-    return new Right({})
-  }
-}
-let 接口实现 = 接口逻辑.混合([new 检查用户名(), new 检查密码(), new 逻辑实现()])
-
-type 插件类型 = 去除只读<typeof 插件>
-type 参数类型 = 合并插件结果<插件类型>
-type 逻辑错误类型 = z.infer<typeof 逻辑错误类型Zod>
-type 逻辑正确类型 = z.infer<typeof 逻辑正确类型Zod>
 let 接口错误输出形式 = z.object({ status: z.literal('fail'), data: 逻辑错误类型Zod })
 let 接口正确输出形式 = z.object({ status: z.literal('success'), data: 逻辑正确类型Zod })
 let 接口转换器 = new 常用形式转换器<获得接口逻辑错误类型<typeof 接口实现>, 获得接口逻辑正确类型<typeof 接口实现>>()
