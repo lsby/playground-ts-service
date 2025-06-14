@@ -25,6 +25,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
 
   override async 实现(参数: 参数类型, _附加参数: 附加参数类型): Promise<Either<逻辑错误类型, 逻辑正确类型>> {
     let _log = (await Global.getItem('log')).extend(接口路径)
+
     return new Right(() => 参数.sendFile(Buffer.from('aaa')))
   }
 }
