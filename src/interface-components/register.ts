@@ -1,5 +1,5 @@
 import { 合并插件结果, 接口逻辑组件 } from '@lsby/net-core'
-import { Kysely插件 } from '@lsby/net-core-kysely'
+import { Kysely插件 } from '@lsby/net-core-plugin-kysely'
 import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
 import { Generated } from '@lsby/ts-kysely'
 import { createHash, randomUUID } from 'crypto'
