@@ -1,5 +1,5 @@
-import { JWT插件 } from '@lsby/net-core-plugin-jwt'
-import { Kysely插件 } from '@lsby/net-core-plugin-kysely'
+import { JWT插件 } from '@lsby/net-core-jwt'
+import { Kysely插件 } from '@lsby/net-core-kysely'
 import { CronService } from '@lsby/ts-cron'
 import { Env } from '@lsby/ts-env'
 import { GlobalAsyncItem, GlobalItem, GlobalService } from '@lsby/ts-global'

@@ -43,9 +43,9 @@
   },
   "dependencies": {
     "@lsby/net-core": "0.6.7-beta.3",
-    "@lsby/net-core-plugin-file-upload": "^0.1.8",
-    "@lsby/net-core-plugin-jwt": "^0.1.9",
-    "@lsby/net-core-plugin-kysely": "^2.0.2",
+    "@lsby/net-core-file-upload": "^0.1.9",
+    "@lsby/net-core-jwt": "^0.1.10",
+    "@lsby/net-core-kysely": "^2.0.3",
     "@lsby/ts-cron": "^0.0.6",
     "@lsby/ts-env": "^0.0.10",
     "@lsby/ts-fp-data": "^0.2.5",

@@ -7,7 +7,7 @@ import {
   获得接口逻辑正确类型,
   获得接口逻辑错误类型,
 } from '@lsby/net-core'
-import { 文件上传插件 } from '@lsby/net-core-plugin-file-upload'
+import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
