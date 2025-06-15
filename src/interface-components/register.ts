@@ -1,11 +1,8 @@
 import { 合并插件结果, 接口逻辑组件 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
+import { Generated } from '@lsby/ts-kysely'
 import { createHash, randomUUID } from 'crypto'
-import { ColumnType } from 'kysely'
-
-type Generated<T> =
-  T extends ColumnType<infer S, infer I, infer U> ? ColumnType<S, I | undefined, U> : ColumnType<T, T | undefined, T>
 
 type user = {
   id: string
