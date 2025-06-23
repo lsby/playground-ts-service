@@ -10,6 +10,7 @@ import _src_interface_user_login_index_ts from './user/login/index'
 import _src_interface_user_register_index_ts from './user/register/index'
 import _src_interface_demo_get_list_index_ts from './demo/get-list/index'
 import _src_interface_demo_get_file_index_ts from './demo/get-file/index'
+import _src_interface_demo_curd_read_index_ts from './demo/curd/read/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_add_index_ts,
@@ -21,4 +22,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_user_register_index_ts,
   _src_interface_demo_get_list_index_ts,
   _src_interface_demo_get_file_index_ts,
+  _src_interface_demo_curd_read_index_ts,
 ]
