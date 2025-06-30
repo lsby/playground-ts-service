@@ -30,3 +30,13 @@ type 删除重复<T extends any[]> = T extends [infer x, ...infer xs]
 export type 计算函数所有重载<T> = 删除重复<匹配重载<T>>
 
 export type 元组转联合<T> = T extends any[] ? T[number] : never
+
+export type Eq<A, B> = A extends B ? (B extends A ? true : false) : false
+export type 去除只读<T> = T extends readonly [...infer U] ? U : never
+
+export function 构造元组<T extends any[]>(args: [...T]): T {
+  return args
+}
+export function 构造对象<K extends string, V>(key: K, value: V): { [P in K]: V} {
+  return { [key]: value } as any
+}

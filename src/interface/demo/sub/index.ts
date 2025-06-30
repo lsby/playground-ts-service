@@ -2,7 +2,7 @@ import { JSON解析插件, 去除只读, 合并插件结果, 常用形式接口�
 import { Either, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 登录检查器, 登录检查器正确类型 } from '../../action/check-login'
+import { 登录检查器 } from '../../../logic/check/check-login'
 
 let 接口路径 = '/api/demo/sub' as const
 let 接口方法 = 'post' as const
@@ -22,7 +22,7 @@ let 插件 = [
 type 插件类型 = 去除只读<typeof 插件>
 
 type 参数类型 = 合并插件结果<插件类型>
-type 附加参数类型 = 登录检查器正确类型
+type 附加参数类型 = { userId: string }
 
 let 逻辑错误类型Zod = z.enum(['未登录'])
 let 逻辑正确类型Zod = z.object({

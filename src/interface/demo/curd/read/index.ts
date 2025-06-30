@@ -2,8 +2,8 @@ import { 常用形式接口封装, 接口逻辑 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
-import { 表查询组件 } from '../../../../interface-components/curd/read'
-import { 登录检查器 } from '../../../action/check-login'
+import { 登录检查器 } from '../../../../logic/check/check-login'
+import { 表查询组件 } from '../../../../logic/components/curd/read'
 
 let 接口路径 = '/api/demo/curd/read' as const
 let 接口方法 = 'post' as const

@@ -2,9 +2,9 @@ import { 常用形式转换器, 接口, 接口逻辑, 获得接口逻辑正确�
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 注册接口组件 } from '../../../interface-components/register'
-import { 检查用户名 } from '../../action/check-user-name'
-import { 检查密码 } from '../../action/check-user-pwd'
+import { 检查用户名 } from '../../../logic/check/check-user-name'
+import { 检查密码 } from '../../../logic/check/check-user-pwd'
+import { 注册接口组件 } from '../../../logic/components/register'
 
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
@@ -23,7 +23,7 @@ let 逻辑错误类型Zod = z.enum([
 let 逻辑正确类型Zod = z.object({})
 
 let 逻辑实现 = new 注册接口组件([new Task(async () => await Global.getItem('kysely-plugin'))])
-let 接口实现 = 接口逻辑.混合([new 检查用户名(), new 检查密码(), 逻辑实现])
+let 接口实现 = 接口逻辑.混合([new 检查用户名('userName'), new 检查密码('userPassword'), 逻辑实现])
 
 let 接口错误输出形式 = z.object({ status: z.literal('fail'), data: 逻辑错误类型Zod })
 let 接口正确输出形式 = z.object({ status: z.literal('success'), data: 逻辑正确类型Zod })

@@ -11,8 +11,8 @@ import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
 import { createHash } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查用户名, 检查用户名正确类型 } from '../../action/check-user-name'
-import { 检查密码, 检查密码正确类型 } from '../../action/check-user-pwd'
+import { 检查用户名 } from '../../../logic/check/check-user-name'
+import { 检查密码 } from '../../../logic/check/check-user-pwd'
 
 let 接口路径 = '/api/user/login' as const
 let 接口方法 = 'post' as const
@@ -40,7 +40,7 @@ let 逻辑正确类型Zod = z.object({
   token: z.string(),
 })
 
-type 附加参数类型 = 检查用户名正确类型 & 检查密码正确类型
+type 附加参数类型 = { userName: string; userPassword: string }
 class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑错误类型, 逻辑正确类型> {
   override 获得插件们(): 插件类型 {
     return [...插件]
@@ -61,7 +61,7 @@ class 逻辑实现 extends 接口逻辑<插件类型, 附加参数类型, 逻辑
     return new Right({ token: 参数.signJwt({ userId: 用户存在.id }) })
   }
 }
-let 接口实现 = 接口逻辑.混合([new 检查用户名(), new 检查密码(), new 逻辑实现()])
+let 接口实现 = 接口逻辑.混合([new 检查用户名('userName'), new 检查密码('userPassword'), new 逻辑实现()])
 
 type 插件类型 = 去除只读<typeof 插件>
 type 参数类型 = 合并插件结果<插件类型>
