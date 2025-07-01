@@ -2,9 +2,9 @@ import { 常用形式接口封装, 接口逻辑 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查用户名 } from '../../../logic/check/check-user-name'
-import { 检查密码 } from '../../../logic/check/check-user-pwd'
-import { 注册逻辑 } from '../../../logic/components/register'
+import { 检查用户名 } from '../../../interfece-logic/check/check-user-name'
+import { 检查密码 } from '../../../interfece-logic/check/check-user-pwd'
+import { 注册逻辑 } from '../../../interfece-logic/components/register'
 
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const

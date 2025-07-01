@@ -3,8 +3,8 @@ import { Left, Right, Task } from '@lsby/ts-fp-data'
 import { createHash } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查用户名 } from '../../../logic/check/check-user-name'
-import { 检查密码 } from '../../../logic/check/check-user-pwd'
+import { 检查用户名 } from '../../../interfece-logic/check/check-user-name'
+import { 检查密码 } from '../../../interfece-logic/check/check-user-pwd'
 
 let 接口路径 = '/api/user/login' as const
 let 接口方法 = 'post' as const

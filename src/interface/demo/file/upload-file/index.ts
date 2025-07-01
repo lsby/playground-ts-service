@@ -3,7 +3,7 @@ import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
-import { 登录检查器 } from '../../../../logic/check/check-login'
+import { 登录检查器 } from '../../../../interfece-logic/check/check-login'
 
 let 接口路径 = '/api/demo/file/upload-file' as const
 let 接口方法 = 'post' as const

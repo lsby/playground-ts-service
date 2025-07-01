@@ -1,7 +1,7 @@
 import { JSON解析插件, 常用形式接口封装, 接口逻辑, 构造元组, 构造对象 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { 登录检查器 } from '../../../../logic/check/check-login'
+import { 登录检查器 } from '../../../../interfece-logic/check/check-login'
 
 let 接口路径 = '/api/demo/base/sub' as const
 let 接口方法 = 'post' as const
