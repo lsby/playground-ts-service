@@ -1,7 +1,7 @@
 import { 自定义操作, 自定义项操作, 表格组件基类 } from '../../base/table-base'
 import { 通过路径获得接口定义 } from '../../global/types'
 
-type 接口定义 = [通过路径获得接口定义<'/api/demo/get-list'>]
+type 接口定义 = [通过路径获得接口定义<'/api/demo/crud/get-list'>]
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
@@ -22,7 +22,7 @@ export class LsbyTable extends 表格组件基类<接口定义, 属性类型, �
     }
   }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
-    return await this.请求接口并处理错误('/api/demo/get-list', { page, size })
+    return await this.请求接口并处理错误('/api/demo/crud/get-list', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {

@@ -1,0 +1,33 @@
+import { 常用形式接口封装, 接口逻辑, 构造元组 } from '@lsby/net-core'
+import { 文件上传插件 } from '@lsby/net-core-file-upload'
+import { Right, Task } from '@lsby/ts-fp-data'
+import { z } from 'zod'
+import { Global } from '../../../../global/global'
+import { 登录检查器 } from '../../../../logic/check/check-login'
+
+let 接口路径 = '/api/demo/file/upload-file' as const
+let 接口方法 = 'post' as const
+
+let 接口实现 = 接口逻辑
+  .空逻辑()
+  .混合(登录检查器())
+  .混合(
+    接口逻辑.构造(
+      构造元组([
+        new Task(async () => {
+          let env = await (await Global.getItem('env')).获得环境变量()
+          return new 文件上传插件({ 文件最大大小: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 })
+        }),
+      ]),
+      async (参数, 逻辑附加参数, 请求附加参数) => {
+        let log = 请求附加参数.log.extend(接口路径)
+        await log.debug('userId为%o的用户, 上传的文件信息: %j', 逻辑附加参数.userId, 参数.files)
+        return new Right({})
+      },
+    ),
+  )
+
+let 接口错误类型描述 = z.enum(['未登录'])
+let 接口正确类型描述 = z.object({})
+
+export default new 常用形式接口封装(接口路径, 接口方法, 接口实现, 接口错误类型描述, 接口正确类型描述)

@@ -4,21 +4,14 @@ import { Global } from '../../../../global/global'
 import { 请求用例 } from '../../../../tools/request'
 import 接口 from './index'
 
-let name = 'admin'
-let pwd = '123456'
-
 export default new 接口测试(
   async (): Promise<void> => {},
 
   async (): Promise<object> => {
-    return 请求用例(
-      接口,
-      {
-        a: 2,
-        b: 1,
-      },
-      { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
-    )
+    return 请求用例(接口, {
+      a: 1,
+      b: 2,
+    })
   },
 
   async (中置结果: object): Promise<void> => {
@@ -31,6 +24,6 @@ export default new 接口测试(
     }
     if (正确结果.success === false) throw new Error('应该调用成功, 实际调用出错')
     let 结果 = 正确结果.data
-    assert.equal(结果.data.list[0]?.name, 'admin')
+    assert.equal(结果.data.res, 3)
   },
 )

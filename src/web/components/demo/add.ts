@@ -2,7 +2,7 @@ import { API组件基类 } from '../../base/base-api'
 import { 通过路径获得接口定义 } from '../../global/types'
 import { LsbyContainer } from '../layout/container'
 
-type 接口定义 = [通过路径获得接口定义<'/api/demo/add'>]
+type 接口定义 = [通过路径获得接口定义<'/api/demo/base/add'>]
 type 属性类型 = { a: string; b: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
@@ -42,7 +42,7 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
     this.输入框1.value = this.获得属性('a')
     this.输入框2.value = this.获得属性('b')
 
-    let 调用结果 = await this.请求接口并处理错误('/api/demo/add', {
+    let 调用结果 = await this.请求接口并处理错误('/api/demo/base/add', {
       a: this.转换属性为数字('a'),
       b: this.转换属性为数字('b'),
     })
