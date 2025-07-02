@@ -1,4 +1,11 @@
-import { 常用形式接口封装, 接口逻辑, 构造元组 } from '@lsby/net-core'
+import {
+  常用形式接口封装,
+  接口逻辑,
+  构造元组,
+  计算接口逻辑JSON参数,
+  计算接口逻辑正确结果,
+  计算接口逻辑错误结果,
+} from '@lsby/net-core'
 import { Left, Right, Task } from '@lsby/ts-fp-data'
 import { createHash } from 'crypto'
 import { z } from 'zod'
@@ -22,15 +29,14 @@ let 接口实现 = 接口逻辑
         }),
         new Task(async () => await Global.getItem('kysely-plugin')),
       ]),
-      async (参数, 附加参数, 请求附加参数) => {
+      async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
-
         let 用户存在 = await 参数.kysely
           .获得句柄()
           .selectFrom('user')
           .select('id')
-          .where('name', '=', 附加参数.userName)
-          .where('pwd', '=', createHash('md5').update(附加参数.userPassword).digest('hex'))
+          .where('name', '=', 逻辑附加参数.userName)
+          .where('pwd', '=', createHash('md5').update(逻辑附加参数.userPassword).digest('hex'))
           .executeTakeFirst()
 
         if (用户存在 === void 0) return new Left('用户不存在或密码错误')
@@ -38,6 +44,10 @@ let 接口实现 = 接口逻辑
       },
     ),
   )
+
+type _接口JSON参数 = 计算接口逻辑JSON参数<typeof 接口实现>
+type _接口错误返回 = 计算接口逻辑错误结果<typeof 接口实现>
+type _接口正确返回 = 计算接口逻辑正确结果<typeof 接口实现>
 
 let 接口错误类型描述 = z.enum([
   '用户不存在或密码错误',

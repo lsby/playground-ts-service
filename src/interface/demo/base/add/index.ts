@@ -1,4 +1,13 @@
-import { JSON解析插件, 常用形式接口封装, 接口逻辑, 构造元组, 构造对象 } from '@lsby/net-core'
+import {
+  JSON解析插件,
+  常用形式接口封装,
+  接口逻辑,
+  构造元组,
+  构造对象,
+  计算接口逻辑JSON参数,
+  计算接口逻辑正确结果,
+  计算接口逻辑错误结果,
+} from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { 加法逻辑 } from '../../../../interfece-logic/components/add'
@@ -17,6 +26,10 @@ let 接口实现 = 接口逻辑.空逻辑().混合(
     ]),
   ),
 )
+
+type _接口JSON参数 = 计算接口逻辑JSON参数<typeof 接口实现>
+type _接口错误返回 = 计算接口逻辑错误结果<typeof 接口实现>
+type _接口正确返回 = 计算接口逻辑正确结果<typeof 接口实现>
 
 let 接口错误类型描述 = z.never()
 let 接口正确类型描述 = z.object({
