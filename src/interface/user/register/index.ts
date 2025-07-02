@@ -15,15 +15,15 @@ import { 注册逻辑 } from '../../../interfece-logic/components/register'
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
 
-let 接口实现 = 接口逻辑
+let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(检查用户名('userName'))
   .混合(检查密码('userPassword'))
   .混合(注册逻辑('userName', 'userPassword', [new Task(async () => await Global.getItem('kysely-plugin'))]))
 
-type _接口JSON参数 = 计算接口逻辑JSON参数<typeof 接口实现>
-type _接口错误返回 = 计算接口逻辑错误结果<typeof 接口实现>
-type _接口正确返回 = 计算接口逻辑正确结果<typeof 接口实现>
+type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
+type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
+type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
 let 接口错误类型描述 = z.enum([
   '用户名已存在',
@@ -38,4 +38,4 @@ let 接口错误类型描述 = z.enum([
 ])
 let 接口正确类型描述 = z.object({})
 
-export default new 常用形式接口封装(接口路径, 接口方法, 接口实现, 接口错误类型描述, 接口正确类型描述)
+export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)
