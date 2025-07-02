@@ -6,7 +6,7 @@ import { 加法逻辑 } from '../../../../interfece-logic/components/add'
 let 接口路径 = '/api/demo/base/add' as const
 let 接口方法 = 'post' as const
 
-let 接口实现 = 接口逻辑.混合([
+let 接口实现 = 接口逻辑.空逻辑().混合(
   加法逻辑(
     'a',
     'b',
@@ -16,7 +16,7 @@ let 接口实现 = 接口逻辑.混合([
       }),
     ]),
   ),
-])
+)
 
 let 接口错误类型描述 = z.never()
 let 接口正确类型描述 = z.object({
