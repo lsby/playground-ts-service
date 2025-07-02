@@ -2,11 +2,10 @@ import { 接口逻辑, 构造元组 } from '@lsby/net-core'
 import { Left, Right, Task } from '@lsby/ts-fp-data'
 import { Global } from '../../global/global'
 
-type 逻辑附加参数类型 = any
 type 逻辑错误类型 = '未登录'
 type 逻辑正确类型 = { userId: string }
 
-export function 登录检查器(
+export function 登录检查器<逻辑附加参数类型 extends {}>(
   插件 = 构造元组([
     new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
     new Task(async () => await Global.getItem('kysely-plugin')),

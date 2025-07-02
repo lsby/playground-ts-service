@@ -22,7 +22,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
       }),
       new Task(async () => await Global.getItem('kysely-plugin')),
     ]),
-    async (参数, _逻辑附加参数, 请求附加参数) => {
+    async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
 
       let userId = 参数.userId
