@@ -42,7 +42,7 @@
     "watch:gen:web:index": "cross-env DEBUG=@lsby:* tsx script/watch/watch.ts ./src/web/components/ \"npm run _gen:web:index\""
   },
   "dependencies": {
-    "@lsby/net-core": "0.6.7-beta.16",
+    "@lsby/net-core": "0.6.7-beta.19",
     "@lsby/net-core-file-upload": "^0.1.9",
     "@lsby/net-core-jwt": "^0.1.10",
     "@lsby/net-core-kysely": "^2.0.3",
