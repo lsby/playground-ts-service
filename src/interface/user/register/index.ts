@@ -2,7 +2,6 @@ import {
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
-  计算接口逻辑参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
@@ -23,7 +22,6 @@ let 接口逻辑实现 = 接口逻辑
   .混合(注册逻辑('userName', 'userPassword', [new Task(async () => await Global.getItem('kysely-plugin'))]))
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
-type _接口逻辑完整参数 = 计算接口逻辑参数<typeof 接口逻辑实现>
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
