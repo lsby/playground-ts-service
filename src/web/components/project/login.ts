@@ -36,8 +36,8 @@ export class LsbyLogin extends API组件基类<接口定义, 属性类型, 发�
 
   private async 执行登录(): Promise<void> {
     let 调用结果 = await this.请求接口并处理错误('/api/user/login', {
-      userName: this.获得属性('username'),
-      userPassword: this.获得属性('password'),
+      userName: this.获得属性('username') ?? '',
+      userPassword: this.获得属性('password') ?? '',
     })
     this.设置token(调用结果.token)
     window.location.assign('/')

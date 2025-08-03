@@ -37,10 +37,9 @@ export abstract class 组件基类<
     this.log.debugSync('设置属性: %o = %o, 对象: %O', k, v, this)
     this.setAttribute(k.toString(), v)
   }
-  public 获得属性(k: keyof 属性类型): string {
+  public 获得属性(k: keyof 属性类型): string | null {
     let r = this.getAttribute(k.toString())
     this.log.debugSync('获得属性: %o = %o, 对象: %O', k, r, this)
-    if (r === null) throw new Error(`无法找到属性: ${k.toString()}`)
     return r
   }
 
@@ -167,6 +166,8 @@ export abstract class 组件基类<
     k: keyof 属性类型,
     参数名称: [...参数名称类型],
   ): (...a: any[]) => void {
-    return new Function(...参数名称, this.获得属性(k)) as any
+    let fn = this.获得属性(k)
+    if (fn === null) throw new Error(`无法找到函数属性: ${k.toString()}`)
+    return new Function(...参数名称, fn) as any
   }
 }
