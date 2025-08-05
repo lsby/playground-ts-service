@@ -43,8 +43,8 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
     this.输入框2.value = this.获得属性('b') ?? '0'
 
     let 调用结果 = await this.请求接口并处理错误('/api/demo/base/add', {
-      a: this.转换属性为数字('a'),
-      b: this.转换属性为数字('b'),
+      a: parseInt(this.输入框1.value),
+      b: parseInt(this.输入框2.value),
     })
     this.结果.textContent = 调用结果.res.toString()
   }

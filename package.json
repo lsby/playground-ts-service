@@ -53,6 +53,7 @@
     "@lsby/ts-kysely": "^0.2.3",
     "@lsby/ts-log": "^0.1.2",
     "@lsby/ts-post-extend": "^0.0.19",
+    "@lsby/ts-web-component": "^0.0.1",
     "axios": "^1.7.7",
     "better-sqlite3": "^11.9.1",
     "kysely": "^0.27.6",

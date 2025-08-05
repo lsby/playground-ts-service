@@ -41,6 +41,9 @@ importers:
       '@lsby/ts-post-extend':
         specifier: ^0.0.19
         version: 0.0.19(@types/node@22.13.14)(lightningcss@1.29.3)
+      '@lsby/ts-web-component':
+        specifier: ^0.0.1
+        version: 0.0.1(@types/node@22.13.14)(lightningcss@1.29.3)
       axios:
         specifier: ^1.7.7
         version: 1.8.4
@@ -797,6 +800,9 @@ packages:
   '@lsby/ts-global@0.0.7':
     resolution: {integrity: sha512-MNu2Am4WPdndHWgeIyHmqJDbEnJQZI9xir2KT+btrZWJyAXBRnXNP/jlZarG40jvQ/85dvnEinX1NbLbgGJqYw==}
 
+  '@lsby/ts-global@0.0.8':
+    resolution: {integrity: sha512-CcRzXLLFH80erMvy5TbJaCP4pBwBp7HaoFlUKChkfbpS4jIr5Z6XXSxBcPR+dga9eMKWNJdiovC1qEKdtbVNAA==}
+
   '@lsby/ts-jwt@0.0.1':
     resolution: {integrity: sha512-ZBUjEUv/o+jAYGdfkLJvdA3YnZaGXx4YDXQcWZyiB33FcJ+GUdTlSkW2joeOQiAnBuX/bCqLOM2fdVCuxHI0Bw==}
 
@@ -813,6 +819,9 @@ packages:
 
   '@lsby/ts-post-extend@0.0.19':
     resolution: {integrity: sha512-Hi3VOJMSDGXN3Y1cmELZT/hBJ86JtTqZMxm7Oxn8hKDFO+nkwxyX2UmSHWg+S3ol1gCJ285RptTvBZFaJCFZvg==}
+
+  '@lsby/ts-web-component@0.0.1':
+    resolution: {integrity: sha512-nuNy7D9tmQtNBXu+HllwQFCMh8mQZALsPqX3f95HzkVffXAp4wooJsSIE3O0bzfzeDzrZC2YEHHPjWOeZeitDA==}
 
   '@mischnic/json-sourcemap@0.1.1':
     resolution: {integrity: sha512-iA7+tyVqfrATAIsIRWQG+a7ZLLD0VaOCKV2Wd/v4mqIU3J9c4jx9p7S0nw1XH3gJCKNBOOwACOPYYSUu9pgT+w==}
@@ -5297,6 +5306,26 @@ snapshots:
       - supports-color
       - terser
 
+  '@lsby/ts-global@0.0.8(@types/node@22.13.14)(lightningcss@1.29.3)':
+    dependencies:
+      vitest: 2.1.9(@types/node@22.13.14)(lightningcss@1.29.3)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   '@lsby/ts-jwt@0.0.1(@types/node@22.13.14)(lightningcss@1.29.3)':
     dependencies:
       jsonwebtoken: 9.0.2
@@ -5391,6 +5420,27 @@ snapshots:
       - supports-color
       - terser
       - utf-8-validate
+
+  '@lsby/ts-web-component@0.0.1(@types/node@22.13.14)(lightningcss@1.29.3)':
+    dependencies:
+      '@lsby/ts-global': 0.0.8(@types/node@22.13.14)(lightningcss@1.29.3)
+      '@lsby/ts-log': 0.1.2(@types/node@22.13.14)(lightningcss@1.29.3)
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
 
   '@mischnic/json-sourcemap@0.1.1':
     dependencies:

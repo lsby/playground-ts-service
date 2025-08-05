@@ -1,4 +1,4 @@
-import { 组件基类 } from '../../base/base'
+import { 组件基类 } from '@lsby/ts-web-component'
 import { 联合转元组 } from '../../global/types'
 
 type 属性类型 = {}

@@ -1,6 +1,6 @@
 import { 不安全的扩展WebPost } from '@lsby/ts-post-extend'
+import { 组件基类 } from '@lsby/ts-web-component'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
-import { 组件基类 } from './base'
 
 export type 接口定义项形状 = {
   path: string
