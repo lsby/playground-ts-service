@@ -26,6 +26,7 @@
     "capacitor:copy": "cap copy",
     "capacitor:init": "cap init",
     "capacitor:open:android": "cap open android",
+    "capacitor:sync:android": "cap sync android",
     "db:push:dev": "dotenv -e ./.env/.env.development -- prisma migrate dev && npm run _check:lint",
     "db:push:prod": "dotenv -e ./.env/.env.production -- prisma migrate dev && npm run _check:lint",
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev && npm run _check:lint",
