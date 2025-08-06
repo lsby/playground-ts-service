@@ -5,3 +5,4 @@
 /db/*
 !**/.gitkeep
 .parcel-cache
+/android
