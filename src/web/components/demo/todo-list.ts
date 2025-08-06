@@ -47,15 +47,21 @@ export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型,
   }
 
   protected override async 当加载时(): Promise<void> {
-    this.添加按钮.textContent = '添加任务'
-    this.输入框.placeholder = '请输入任务内容'
+    // ===== 布局容器实例化 =====
+    let 主容器 = document.createElement('lsby-container')
+    let 列布局 = document.createElement('lsby-column')
+    let 输入行 = document.createElement('lsby-row')
 
+    // ===== 输入框 =====
+    this.输入框.placeholder = '请输入任务内容'
     this.输入框.style.padding = '0.5em'
     this.输入框.style.fontSize = '1em'
     this.输入框.style.border = '1px solid #ccc'
     this.输入框.style.borderRadius = '4px'
     this.输入框.style.boxSizing = 'border-box'
 
+    // ===== 按钮 =====
+    this.添加按钮.textContent = '添加任务'
     this.添加按钮.style.marginLeft = '0.5em'
     this.添加按钮.style.padding = '0.5em 1em'
     this.添加按钮.style.fontSize = '1em'
@@ -65,12 +71,13 @@ export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型,
     this.添加按钮.style.borderRadius = '4px'
     this.添加按钮.style.cursor = 'pointer'
 
+    // ===== 列表容器样=====
     this.列表容器.style.listStyle = 'none'
     this.列表容器.style.padding = '0'
     this.列表容器.style.marginTop = '1em'
+    this.列表容器.style.width = '100%'
 
-    this.shadow.append(this.输入框, this.添加按钮, this.列表容器)
-
+    // ===== 事件 =====
     this.添加按钮.onclick = (): void => {
       let 内容 = this.输入框.value.trim()
       if (内容 === '') return
@@ -78,6 +85,14 @@ export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型,
       this.输入框.value = ''
       this.刷新列表()
     }
+
+    // ===== 组装 =====
+    输入行.append(this.输入框, this.添加按钮)
+    列布局.append(输入行, this.列表容器)
+    主容器.append(列布局)
+
+    // ===== 挂载 =====
+    this.shadow.append(主容器)
 
     this.刷新列表()
   }
