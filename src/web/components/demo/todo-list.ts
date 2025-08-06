@@ -1,11 +1,10 @@
-import { API组件基类 } from '../../base/base-api'
+import { 组件基类 } from '@lsby/ts-web-component'
 
-type 接口定义 = []
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbyTodoList extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-todo-list', this)

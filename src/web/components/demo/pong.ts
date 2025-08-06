@@ -1,13 +1,11 @@
-import { 路由事件监听对象, 路由事件监听类型 } from '@lsby/ts-web-component'
-import { API组件基类 } from '../../base/base-api'
+import { 组件基类, 路由事件监听对象, 路由事件监听类型 } from '@lsby/ts-web-component'
 import { ping事件 } from './ping'
 
-type 接口定义 = []
 type 属性类型 = {}
 type 发出事件类型 = {} & 路由事件监听类型<ping事件>
 type 监听事件类型 = {}
 
-export class LsbyPong extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyPong extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-pong', this)
