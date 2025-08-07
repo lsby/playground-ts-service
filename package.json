@@ -23,7 +23,6 @@
     "_gen:api:type": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* lsby-net-core-gen-api-type ./tsconfig.json ./src/interface ./src/types/interface-type.ts",
     "_gen:web:index": "tsx script/gen/gen-web-index.ts",
     "capacitor:add:android": "cap add android",
-    "capacitor:copy": "cap copy",
     "capacitor:init": "cap init",
     "capacitor:open:android": "cap open android",
     "capacitor:sync:android": "cap sync android",
