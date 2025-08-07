@@ -50,10 +50,12 @@ export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型,
   }
 
   protected override async 当加载时(): Promise<void> {
-    // ===== 布局容器实例化 =====
+    // ===== 布局容器 =====
     let 主容器 = new LsbyContainer({})
     let 列布局 = new LsbyColumn({})
     let 输入行 = new LsbyRow({})
+
+    列布局.style.justifyContent = 'center'
 
     // ===== 输入框 =====
     this.输入框.placeholder = '请输入任务内容'
