@@ -21,7 +21,7 @@ export abstract class API组件基类<
   private 本地存储名称 = 'lsby-api-component-base-token'
   private token: string | null = null
 
-  constructor(属性: 属性类型) {
+  public constructor(属性: 属性类型) {
     super(属性)
     let storedToken = localStorage.getItem(this.本地存储名称)
     if (storedToken !== null) {

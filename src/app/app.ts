@@ -5,7 +5,7 @@ import { Global } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
 
 export class App {
-  async run(): Promise<void> {
+  public async run(): Promise<void> {
     let log = (await Global.getItem('log')).extend('service')
     let env = await (await Global.getItem('env')).获得环境变量()
 

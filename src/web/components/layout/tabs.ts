@@ -9,7 +9,7 @@ type 发出事件类型 = {
 type 监听事件类型 = {}
 
 export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  static override 观察的属性: 联合转元组<keyof 属性类型> = []
+  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
     this.注册组件('lsby-tabs', this)
   }
@@ -18,7 +18,7 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
   private 标签头容器!: HTMLDivElement
   private 插槽容器!: HTMLSlotElement
 
-  constructor(属性: 属性类型) {
+  public constructor(属性: 属性类型) {
     super(属性)
   }
 

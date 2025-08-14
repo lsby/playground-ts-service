@@ -7,7 +7,7 @@ type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 export class LsbyWsTest extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
-  static override 观察的属性: Array<keyof 属性类型> = []
+  protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-ws-test', this)
   }

@@ -8,7 +8,7 @@ type 监听事件类型 = {}
 type 数据项 = { id: string; value: string }
 
 export class LsbyTable extends 表格组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型, 数据项> {
-  static override 观察的属性: Array<keyof 属性类型> = []
+  protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-table', this)
   }
