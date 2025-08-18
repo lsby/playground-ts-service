@@ -1,5 +1,5 @@
 import { 组件基类 } from '@lsby/ts-web-component'
-import { API管理器 } from '../../global/api'
+import { GlobalWeb } from '../../global/global'
 
 type 属性类型 = { username: string; password: string }
 type 发出事件类型 = {}
@@ -11,7 +11,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.注册组件('lsby-login', this)
   }
 
-  private API管理器 = new API管理器()
+  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   private 结果 = document.createElement('p')
   private 用户名输入框 = document.createElement('input')

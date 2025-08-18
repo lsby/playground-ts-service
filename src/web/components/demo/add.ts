@@ -1,5 +1,5 @@
 import { 组件基类 } from '@lsby/ts-web-component'
-import { API管理器 } from '../../global/api'
+import { GlobalWeb } from '../../global/global'
 import { LsbyContainer } from '../layout/container'
 
 type 属性类型 = { a: string; b: string }
@@ -13,7 +13,7 @@ export class LsbyAdd extends 组件基类<属性类型, 发出事件类型, 监�
     this.注册组件('lsby-add', this)
   }
 
-  private API管理器 = new API管理器()
+  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   private 结果 = document.createElement('p')
   private 输入框1 = document.createElement('input')

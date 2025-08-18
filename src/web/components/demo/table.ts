@@ -1,5 +1,5 @@
 import { 自定义操作, 自定义项操作, 表格组件基类 } from '../../base/table-base'
-import { API管理器 } from '../../global/api'
+import { GlobalWeb } from '../../global/global'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -13,7 +13,7 @@ export class LsbyTable extends 表格组件基类<属性类型, 发出事件类�
     this.注册组件('lsby-table', this)
   }
 
-  private API管理器 = new API管理器()
+  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   protected override 映射显示字段名称(数据字段: keyof 数据项): string | null {
     switch (数据字段) {
