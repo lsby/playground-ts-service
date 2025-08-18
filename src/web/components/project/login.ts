@@ -1,16 +1,17 @@
-import { API组件基类 } from '../../base/base-api'
-import { 通过路径获得接口定义 } from '../../global/types'
+import { 组件基类 } from '@lsby/ts-web-component'
+import { API管理器 } from '../../global/api'
 
-type 接口定义 = [通过路径获得接口定义<'/api/user/login'>]
 type 属性类型 = { username: string; password: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbyLogin extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = ['username', 'password']
   static {
     this.注册组件('lsby-login', this)
   }
+
+  private API管理器 = new API管理器()
 
   private 结果 = document.createElement('p')
   private 用户名输入框 = document.createElement('input')
@@ -35,11 +36,11 @@ export class LsbyLogin extends API组件基类<接口定义, 属性类型, 发�
   }
 
   private async 执行登录(): Promise<void> {
-    let 调用结果 = await this.请求接口并处理错误('/api/user/login', {
+    let 调用结果 = await this.API管理器.请求接口并处理错误('/api/user/login', {
       userName: this.获得属性('username') ?? '',
       userPassword: this.获得属性('password') ?? '',
     })
-    this.设置token(调用结果.token)
+    this.API管理器.设置token(调用结果.token)
     window.location.assign('/')
   }
 }

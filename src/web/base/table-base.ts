@@ -1,15 +1,14 @@
-import { API组件基类, 接口定义形状 } from './base-api'
+import { 组件基类 } from '@lsby/ts-web-component'
 
 export type 自定义操作 = Record<string, () => Promise<void>>
 export type 自定义项操作<数据项> = Record<string, (数据: 数据项) => Promise<void>>
 
 export abstract class 表格组件基类<
-  接口定义 extends 接口定义形状,
   属性类型 extends Record<string, string>,
   发出事件类型 extends Record<string, any>,
   监听事件类型 extends Record<string, any>,
   数据项 extends { [key: string]: string | number | boolean },
-> extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
+> extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string | null
   protected abstract 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>

@@ -1,17 +1,19 @@
-import { API组件基类 } from '../../base/base-api'
-import { 通过路径获得接口定义 } from '../../global/types'
+import { 组件基类 } from '@lsby/ts-web-component'
+import { API管理器 } from '../../global/api'
 import { LsbyContainer } from '../layout/container'
 
-type 接口定义 = [通过路径获得接口定义<'/api/demo/base/add'>]
 type 属性类型 = { a: string; b: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyAdd extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = ['a', 'b']
+
   static {
     this.注册组件('lsby-add', this)
   }
+
+  private API管理器 = new API管理器()
 
   private 结果 = document.createElement('p')
   private 输入框1 = document.createElement('input')
@@ -42,7 +44,7 @@ export class LsbyAdd extends API组件基类<接口定义, 属性类型, 发出�
     this.输入框1.value = this.获得属性('a') ?? '0'
     this.输入框2.value = this.获得属性('b') ?? '0'
 
-    let 调用结果 = await this.请求接口并处理错误('/api/demo/base/add', {
+    let 调用结果 = await this.API管理器.请求接口并处理错误('/api/demo/base/add', {
       a: parseInt(this.输入框1.value),
       b: parseInt(this.输入框2.value),
     })
