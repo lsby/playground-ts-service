@@ -19,7 +19,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
     构造元组([new Task(async () => new 发送文件插件()), new Task(async () => new JSON解析插件(z.object({}), {}))]),
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
-      return new Right(() => 参数.sendFile(Buffer.from('aaa')))
+      return new Right({ fn: (): Buffer => 参数.sendFile(Buffer.from('aaa')) })
     },
   ),
 )
