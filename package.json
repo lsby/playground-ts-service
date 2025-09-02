@@ -62,9 +62,7 @@
     "axios": "^1.7.7",
     "kysely": "^0.28.5",
     "kysely-wasm": "^1.2.1",
-    "mysql2": "^3.14.1",
     "node-sqlite3-wasm": "^0.8.47",
-    "pg": "^8.16.0",
     "zod": "3.23.8"
   },
   "devDependencies": {
@@ -74,7 +72,6 @@
     "@lsby/eslint-plugin": "^0.0.11",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.6.1",
-    "@types/pg": "^8.15.2",
     "@types/stream-to-blob": "^2.0.0",
     "@vitest/coverage-v8": "^2.1.1",
     "bumpp": "^10.1.0",
