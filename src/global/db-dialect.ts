@@ -1,17 +1,27 @@
-import SQLite from 'better-sqlite3'
-// import pg from 'pg'
-// import mysql2 from 'mysql2'
-
-import { SqliteDialect } from 'kysely'
-// import { PostgresDialect } from 'kysely'
-// import { MysqlDialect } from 'kysely'
-
 import { env } from './global'
 
-export let 创建sqlite数据库适配器 = async (): Promise<SqliteDialect> => {
+// ================= better-sqlite3 =================
+// import SQLite from 'better-sqlite3'
+// import { SqliteDialect } from 'kysely'
+
+// export let 创建sqlite数据库适配器 = async (): Promise<SqliteDialect> => {
+//   let e = await env.获得环境变量()
+//   return new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })
+// }
+
+// ================= node-sqlite3-wasm =================
+import { NodeWasmDialect } from 'kysely-wasm'
+import nodeSqlite3Wasm from 'node-sqlite3-wasm'
+
+export let 创建sqlite数据库适配器 = async (): Promise<NodeWasmDialect> => {
   let e = await env.获得环境变量()
-  return new SqliteDialect({ database: new SQLite(e.DATABASE_PATH) })
+  return new NodeWasmDialect({ database: new nodeSqlite3Wasm.Database(e.DATABASE_PATH) })
 }
+
+// ================= pg =================
+// import pg from 'pg'
+// import { PostgresDialect } from 'kysely'
+
 // export let 创建pg数据库适配器 = async (): Promise<PostgresDialect> => {
 //   let e = await env.获得环境变量()
 //   return new PostgresDialect({
@@ -24,6 +34,11 @@ export let 创建sqlite数据库适配器 = async (): Promise<SqliteDialect> => 
 //     }),
 //   })
 // }
+
+// ================= mysql =================
+// import mysql2 from 'mysql2'
+// import { MysqlDialect } from 'kysely'
+
 // export let 创建mysql数据库适配器 = async (): Promise<MysqlDialect> => {
 //   let e = await env.获得环境变量()
 //   return new MysqlDialect({
