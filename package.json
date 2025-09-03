@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",
-    "@lsby/net-core": "0.7.0",
+    "@lsby/net-core": "0.7.1",
     "@lsby/net-core-file-upload": "^0.1.10",
     "@lsby/net-core-jwt": "^0.1.11",
     "@lsby/net-core-kysely": "^2.0.6",
@@ -57,7 +57,7 @@
     "@lsby/ts-global": "^0.0.7",
     "@lsby/ts-kysely": "^0.2.4",
     "@lsby/ts-log": "^0.1.2",
-    "@lsby/ts-post-extend": "^0.0.19",
+    "@lsby/ts-post-extend": "^0.0.21",
     "@lsby/ts-web-component": "^0.1.0",
     "axios": "^1.7.7",
     "kysely": "^0.28.5",
