@@ -6,8 +6,10 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
+import { createHash, randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
+import { 检查唯一性 } from '../../../interfece-logic/check/check-exist'
 import { 检查用户名 } from '../../../interfece-logic/check/check-user-name'
 import { 检查密码 } from '../../../interfece-logic/check/check-user-pwd'
 import { 注册逻辑 } from '../../../interfece-logic/components/register'
@@ -15,11 +17,39 @@ import { 注册逻辑 } from '../../../interfece-logic/components/register'
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
 
+let 用户表 = z.object({
+  id: z.string(),
+  name: z.string(),
+  pwd: z.string(),
+})
+let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
+
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(检查用户名('userName'))
   .混合(检查密码('userPassword'))
-  .混合(注册逻辑('userName', 'userPassword', [new Task(async () => await Global.getItem('kysely-plugin'))]))
+  .混合(
+    检查唯一性({
+      表名: 'user',
+      表结构zod: 用户表,
+      数据库字段名: 'name',
+      参数字段名: 'userName',
+      错误信息: '用户名已存在' as const,
+      kysely插件: kysely插件,
+    }),
+  )
+  .混合(
+    注册逻辑({
+      表名: 'user',
+      表结构zod: 用户表,
+      计算数据: (data) => ({
+        id: randomUUID(),
+        name: data.userName,
+        pwd: createHash('md5').update(data.userPassword).digest('hex'),
+      }),
+      kysely插件: kysely插件,
+    }),
+  )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
