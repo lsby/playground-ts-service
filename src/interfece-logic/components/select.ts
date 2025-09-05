@@ -37,14 +37,12 @@ export function 查询逻辑<
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    let 查询总数 = await kysely
+    let 查询总数 = (await kysely
       .selectFrom(opt.表名)
       .select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
-      .executeTakeFirst()
+      .executeTakeFirst()) as { count: number }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    let rows = (await (参数.kysely.获得句柄() as any)
+    let rows = (await kysely
       .selectFrom(opt.表名)
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
@@ -54,7 +52,7 @@ export function 查询逻辑<
 
     return new Right({
       list: rows,
-      count: parseInt(查询总数.count),
+      count: 查询总数.count,
     })
   })
 }
