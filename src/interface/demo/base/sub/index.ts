@@ -10,14 +10,14 @@ import {
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { 登录检查器 } from '../../../../interfece-logic/check/check-login'
+import { 检查登录 } from '../../../../interfece-logic/check/check-login'
 
 let 接口路径 = '/api/demo/base/sub' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(登录检查器())
+  .混合(检查登录())
   .混合(
     接口逻辑.构造(
       构造元组([

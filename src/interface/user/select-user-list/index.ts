@@ -8,8 +8,8 @@ import {
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { JSON参数检查 } from '../../../interfece-logic/check/check-json-args'
-import { 登录检查器 } from '../../../interfece-logic/check/check-login'
+import { 检查JSON参数 } from '../../../interfece-logic/check/check-json-args'
+import { 检查登录 } from '../../../interfece-logic/check/check-login'
 import { 查询逻辑 } from '../../../interfece-logic/components/select'
 
 let 接口路径 = '/api/user/select-user-list' as const
@@ -24,8 +24,8 @@ let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(登录检查器())
-  .混合(JSON参数检查(z.object({ page: z.number(), size: z.number() })))
+  .混合(检查登录())
+  .混合(检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
     查询逻辑({
       表名: 'user',
