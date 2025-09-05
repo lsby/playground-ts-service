@@ -1,6 +1,8 @@
 import {
+  JSON解析插件,
   常用形式接口封装,
   接口逻辑,
+  构造对象,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
@@ -8,6 +10,7 @@ import {
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
+import { JSON参数检查 } from '../../../interfece-logic/check/check-json-args'
 import { 登录检查器 } from '../../../interfece-logic/check/check-login'
 import { 查询逻辑 } from '../../../interfece-logic/components/select'
 
@@ -25,18 +28,23 @@ let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(登录检查器())
   .混合(
+    JSON参数检查(
+      new Task(async () => {
+        return new JSON解析插件(z.object({ ...构造对象('page', z.number()), ...构造对象('size', z.number()) }), {})
+      }),
+    ),
+  )
+  .混合(
     查询逻辑({
       表名: 'user',
       表结构zod: 用户表,
-      计算参数: () => {
-        return {
-          选择的字段们: ['id', 'name'],
-          当前页: 1,
-          每页数量: 10,
-          排序字段: 'id',
-          排序模式: 'asc',
-        }
-      },
+      计算参数: (data) => ({
+        选择的字段们: ['id', 'name'],
+        当前页: data.page,
+        每页数量: data.size,
+        排序字段: 'id',
+        排序模式: 'asc',
+      }),
       kysely插件: kysely插件,
     }),
   )
