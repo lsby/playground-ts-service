@@ -1,8 +1,6 @@
 import {
-  JSON解析插件,
   常用形式接口封装,
   接口逻辑,
-  构造对象,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
@@ -27,13 +25,7 @@ let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(登录检查器())
-  .混合(
-    JSON参数检查(
-      new Task(async () => {
-        return new JSON解析插件(z.object({ ...构造对象('page', z.number()), ...构造对象('size', z.number()) }), {})
-      }),
-    ),
-  )
+  .混合(JSON参数检查(z.object({ page: z.number(), size: z.number() })))
   .混合(
     查询逻辑({
       表名: 'user',
