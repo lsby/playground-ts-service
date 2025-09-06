@@ -21,7 +21,7 @@ export function 新增逻辑<
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any
-    await kysely.insertInto(opt.表名).values(新增数据).execute()
+    await kysely.insertInto(opt.表名).values(新增数据).executeTakeFirst()
 
     return new Right({})
   })
