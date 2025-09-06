@@ -31,7 +31,7 @@ let 接口逻辑实现 = 接口逻辑
       表名: 'user',
       表结构zod: 用户表,
       计算参数: (data) => ({
-        条件: { id: data.userId },
+        条件们: [{ 字段: 'id', 操作符: '=', 值: data.userId }],
         更新数据: { name: data.newName },
       }),
       kysely插件: kysely插件,

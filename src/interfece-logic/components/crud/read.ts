@@ -1,9 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 接口逻辑, 接口逻辑附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-
-type 逻辑错误类型 = never
+import { 条件 } from './_type'
 
 export function 查询逻辑<
   表名类型 extends string,
@@ -19,13 +19,14 @@ export function 查询逻辑<
     当前页: number
     每页数量: number
     排序字段: keyof z.infer<表结构zod类型>
-    排序模式: 'asc' | 'desc'
+    排序模式?: 'asc' | 'desc'
+    条件们?: 条件<z.infer<表结构zod类型>>[]
   }
   kysely插件: 插件类型
 }): 接口逻辑<
   [插件类型],
   逻辑附加参数类型,
-  逻辑错误类型,
+  never,
   { list: Pick<z.infer<表结构zod类型>, 选择的字段们类型>[]; count: number }
 > {
   return 接口逻辑.构造([opt.kysely插件], async (参数, 附加参数, 请求附加参数) => {
@@ -33,25 +34,51 @@ export function 查询逻辑<
 
     let 参数结果 = opt.计算参数(附加参数)
     if (参数结果.当前页 <= 0) throw new Error('当前页从1开始')
+    参数结果.排序模式 = 参数结果.排序模式 ?? 'asc'
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any
 
-    let 查询总数 = (await kysely
-      .selectFrom(opt.表名)
-      .select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
-      .executeTakeFirst()) as { count: number }
-
-    let rows = (await kysely
+    let builder总数 = kysely.selectFrom(opt.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
+    let builder数据 = kysely
       .selectFrom(opt.表名)
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
       .orderBy(参数结果.排序字段, 参数结果.排序模式)
-      .execute()) as Pick<z.infer<表结构zod类型>, 选择的字段们类型>[]
+
+    if (参数结果.条件们 !== void 0 && 参数结果.条件们.length > 0) {
+      for (let 条件 of 参数结果.条件们) {
+        switch (条件.操作符) {
+          case '=':
+          case '!=':
+          case '>':
+          case '>=':
+          case '<':
+          case '<=':
+            builder总数 = builder总数.where(条件.字段, 条件.操作符, 条件.值)
+            builder数据 = builder数据.where(条件.字段, 条件.操作符, 条件.值)
+            break
+          case 'like':
+            builder总数 = builder总数.where(条件.字段, 'like', 条件.值)
+            builder数据 = builder数据.where(条件.字段, 'like', 条件.值)
+            break
+          case 'in':
+            builder总数 = builder总数.where(条件.字段, 'in', 条件.值)
+            builder数据 = builder数据.where(条件.字段, 'in', 条件.值)
+            break
+          case 'between':
+            builder总数 = builder总数.where(条件.字段, 'between', 条件.值)
+            builder数据 = builder数据.where(条件.字段, 'between', 条件.值)
+            break
+        }
+      }
+    }
+
+    let 查询总数 = (await builder总数.executeTakeFirst()) as { count: number }
+    let 查询数据 = (await builder数据.execute()) as Pick<z.infer<表结构zod类型>, 选择的字段们类型>[]
 
     return new Right({
-      list: rows,
+      list: 查询数据,
       count: 查询总数.count,
     })
   })
