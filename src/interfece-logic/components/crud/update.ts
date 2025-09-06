@@ -30,23 +30,23 @@ export function 更新逻辑<
 
     if (参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {
-        switch (条件.操作符) {
+        switch (条件[1]) {
           case '=':
           case '!=':
           case '>':
           case '>=':
           case '<':
           case '<=':
-            构造 = 构造.where(条件.字段, 条件.操作符, 条件.值)
+            构造 = 构造.where(条件[0], 条件[1], 条件[2])
             break
           case 'like':
-            构造 = 构造.where(条件.字段, 'like', 条件.值)
+            构造 = 构造.where(条件[0], 'like', 条件[2])
             break
           case 'in':
-            构造 = 构造.where(条件.字段, 'in', 条件.值)
+            构造 = 构造.where(条件[0], 'in', 条件[2])
             break
           case 'between':
-            构造 = 构造.where(条件.字段, 'between', 条件.值)
+            构造 = 构造.where(条件[0], 'between', 条件[2])
             break
         }
       }

@@ -48,27 +48,27 @@ export function 查询逻辑<
 
     if (参数结果.条件们 !== void 0 && 参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {
-        switch (条件.操作符) {
+        switch (条件[1]) {
           case '=':
           case '!=':
           case '>':
           case '>=':
           case '<':
           case '<=':
-            builder总数 = builder总数.where(条件.字段, 条件.操作符, 条件.值)
-            builder数据 = builder数据.where(条件.字段, 条件.操作符, 条件.值)
+            builder总数 = builder总数.where(条件[0], 条件[1], 条件[2])
+            builder数据 = builder数据.where(条件[0], 条件[1], 条件[2])
             break
           case 'like':
-            builder总数 = builder总数.where(条件.字段, 'like', 条件.值)
-            builder数据 = builder数据.where(条件.字段, 'like', 条件.值)
+            builder总数 = builder总数.where(条件[0], 'like', 条件[2])
+            builder数据 = builder数据.where(条件[0], 'like', 条件[2])
             break
           case 'in':
-            builder总数 = builder总数.where(条件.字段, 'in', 条件.值)
-            builder数据 = builder数据.where(条件.字段, 'in', 条件.值)
+            builder总数 = builder总数.where(条件[0], 'in', 条件[2])
+            builder数据 = builder数据.where(条件[0], 'in', 条件[2])
             break
           case 'between':
-            builder总数 = builder总数.where(条件.字段, 'between', 条件.值)
-            builder数据 = builder数据.where(条件.字段, 'between', 条件.值)
+            builder总数 = builder总数.where(条件[0], 'between', 条件[2])
+            builder数据 = builder数据.where(条件[0], 'between', 条件[2])
             break
         }
       }
