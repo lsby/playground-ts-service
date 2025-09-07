@@ -2,33 +2,26 @@
 import { 接口逻辑, 接口逻辑附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Right, Task } from '@lsby/ts-fp-data'
-import { z } from 'zod'
-import { 条件 } from './_type'
+import { 从插件类型计算DB, 条件 } from './_type'
 
 export function 查询逻辑<
-  表名类型 extends string,
-  表结构zod类型 extends z.AnyZodObject,
+  表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
-  选择的字段们类型 extends keyof z.infer<表结构zod类型>,
-  插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: z.infer<表结构zod类型> }>>,
+  选择的字段们类型 extends keyof DB[表名类型],
+  插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+  DB = 从插件类型计算DB<插件类型>,
 >(opt: {
   kysely插件: 插件类型
   计算参数: (data: 逻辑附加参数类型) => {
     表名: 表名类型
-    表结构zod: 表结构zod类型
     选择的字段们: 选择的字段们类型[]
     当前页: number
     每页数量: number
-    排序字段: keyof z.infer<表结构zod类型>
+    排序字段: keyof DB[表名类型]
     排序模式?: 'asc' | 'desc'
-    条件们?: 条件<z.infer<表结构zod类型>>[]
+    条件们?: 条件<DB[表名类型]>[]
   }
-}): 接口逻辑<
-  [插件类型],
-  逻辑附加参数类型,
-  never,
-  { list: Pick<z.infer<表结构zod类型>, 选择的字段们类型>[]; count: number }
-> {
+}): 接口逻辑<[插件类型], 逻辑附加参数类型, never, { list: Pick<DB[表名类型], 选择的字段们类型>[]; count: number }> {
   return 接口逻辑.构造([opt.kysely插件], async (参数, 附加参数, 请求附加参数) => {
     let _log = 请求附加参数.log.extend(查询逻辑.name)
 
@@ -75,7 +68,7 @@ export function 查询逻辑<
     }
 
     let 查询总数 = (await builder总数.executeTakeFirst()) as { count: number }
-    let 查询数据 = (await builder数据.execute()) as Pick<z.infer<表结构zod类型>, 选择的字段们类型>[]
+    let 查询数据 = (await builder数据.execute()) as Pick<DB[表名类型], 选择的字段们类型>[]
 
     return new Right({
       list: 查询数据,

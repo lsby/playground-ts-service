@@ -16,23 +16,15 @@ import { 新增逻辑 } from '../../../../interfece-logic/components/crud/create
 let 接口路径 = '/api/user/add-user' as const
 let 接口方法 = 'post' as const
 
-let 用户表 = z.object({
-  id: z.string(),
-  name: z.string(),
-  pwd: z.string(),
-})
-let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
-
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(检查登录())
   .混合(检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
   .混合(
     新增逻辑({
-      kysely插件: kysely插件,
+      kysely插件: new Task(async () => await Global.getItem('kysely-plugin')),
       计算参数: (data) => ({
         表名: 'user',
-        表结构zod: 用户表,
         数据: {
           id: crypto.randomUUID(),
           name: data.name,

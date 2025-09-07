@@ -15,23 +15,15 @@ import { 更新逻辑 } from '../../../../interfece-logic/components/crud/update
 let 接口路径 = '/api/user/update-user' as const
 let 接口方法 = 'post' as const
 
-let 用户表 = z.object({
-  id: z.string(),
-  name: z.string(),
-  pwd: z.string(),
-})
-let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
-
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(检查登录())
   .混合(检查JSON参数(z.object({ userId: z.string(), newName: z.string() })))
   .混合(
     更新逻辑({
-      kysely插件: kysely插件,
+      kysely插件: new Task(async () => await Global.getItem('kysely-plugin')),
       计算参数: (data) => ({
         表名: 'user',
-        表结构zod: 用户表,
         条件们: [['id', '=', data.userId]],
         更新数据: { name: data.newName },
       }),
