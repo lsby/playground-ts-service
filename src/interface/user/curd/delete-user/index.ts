@@ -23,12 +23,12 @@ let 接口逻辑实现 = 接口逻辑
   .混合(检查JSON参数(z.object({ id: z.string() })))
   .混合(
     删除逻辑({
-      表名: 'user',
-      表结构zod: 用户表,
+      kysely插件: kysely插件,
       计算参数: (data) => ({
+        表名: 'user',
+        表结构zod: 用户表,
         条件们: [['id', '=', data.id]],
       }),
-      kysely插件: kysely插件,
     }),
   )
 

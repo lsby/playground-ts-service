@@ -28,13 +28,13 @@ let 接口逻辑实现 = 接口逻辑
   .混合(检查JSON参数(z.object({ userId: z.string(), newName: z.string() })))
   .混合(
     更新逻辑({
-      表名: 'user',
-      表结构zod: 用户表,
+      kysely插件: kysely插件,
       计算参数: (data) => ({
+        表名: 'user',
+        表结构zod: 用户表,
         条件们: [['id', '=', data.userId]],
         更新数据: { name: data.newName },
       }),
-      kysely插件: kysely插件,
     }),
   )
 

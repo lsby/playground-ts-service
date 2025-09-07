@@ -12,9 +12,10 @@ export function 查询逻辑<
   选择的字段们类型 extends keyof z.infer<表结构zod类型>,
   插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: z.infer<表结构zod类型> }>>,
 >(opt: {
-  表名: 表名类型
-  表结构zod: 表结构zod类型
+  kysely插件: 插件类型
   计算参数: (data: 逻辑附加参数类型) => {
+    表名: 表名类型
+    表结构zod: 表结构zod类型
     选择的字段们: 选择的字段们类型[]
     当前页: number
     每页数量: number
@@ -22,7 +23,6 @@ export function 查询逻辑<
     排序模式?: 'asc' | 'desc'
     条件们?: 条件<z.infer<表结构zod类型>>[]
   }
-  kysely插件: 插件类型
 }): 接口逻辑<
   [插件类型],
   逻辑附加参数类型,
@@ -38,9 +38,9 @@ export function 查询逻辑<
 
     let kysely = 参数.kysely.获得句柄() as any
 
-    let builder总数 = kysely.selectFrom(opt.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
+    let builder总数 = kysely.selectFrom(参数结果.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
     let builder数据 = kysely
-      .selectFrom(opt.表名)
+      .selectFrom(参数结果.表名)
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)

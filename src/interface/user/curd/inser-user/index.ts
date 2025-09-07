@@ -29,14 +29,16 @@ let 接口逻辑实现 = 接口逻辑
   .混合(检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
   .混合(
     新增逻辑({
-      表名: 'user',
-      表结构zod: 用户表,
-      生成新增数据: (data) => ({
-        id: crypto.randomUUID(),
-        name: data.name,
-        pwd: createHash('md5').update(data.pwd).digest('hex'),
-      }),
       kysely插件: kysely插件,
+      计算参数: (data) => ({
+        表名: 'user',
+        表结构zod: 用户表,
+        数据: {
+          id: crypto.randomUUID(),
+          name: data.name,
+          pwd: createHash('md5').update(data.pwd).digest('hex'),
+        },
+      }),
     }),
   )
 
