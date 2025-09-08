@@ -24,7 +24,7 @@ export class LsbyTable extends 表格组件基类<属性类型, 发出事件类�
     }
   }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
-    return await this.API管理器.请求接口并处理错误('/api/user/select-user-list', { page, size })
+    return await this.API管理器.请求接口并处理错误('/api/demo/select-user-list', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {
@@ -33,7 +33,7 @@ export class LsbyTable extends 表格组件基类<属性类型, 发出事件类�
         if (name === '' || name === null) return alert('未输入数据')
         let pwd = prompt('请输入密码:')
         if (pwd === '' || pwd === null) return alert('未输入数据')
-        await this.API管理器.请求接口并处理错误('/api/user/add-user', { name: name, pwd: pwd })
+        await this.API管理器.请求接口并处理错误('/api/demo/add-user', { name: name, pwd: pwd })
       },
     }
   }
@@ -41,12 +41,12 @@ export class LsbyTable extends 表格组件基类<属性类型, 发出事件类�
     return {
       删除: async (数据项: 数据项): Promise<void> => {
         if (confirm('你确定要删除这条数据吗？') === false) return
-        await this.API管理器.请求接口并处理错误('/api/user/delete-user', { id: 数据项.id })
+        await this.API管理器.请求接口并处理错误('/api/demo/delete-user', { id: 数据项.id })
       },
       编辑: async (数据项: 数据项): Promise<void> => {
         let name = prompt('请输入新名称:')
         if (name === '' || name === null) return alert('未输入数据')
-        await this.API管理器.请求接口并处理错误('/api/user/update-user', { newName: name, userId: 数据项.id })
+        await this.API管理器.请求接口并处理错误('/api/demo/update-user', { newName: name, userId: 数据项.id })
       },
     }
   }
