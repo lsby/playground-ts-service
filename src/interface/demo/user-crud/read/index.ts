@@ -35,7 +35,7 @@ let 接口逻辑实现 = 接口逻辑
         选择的字段们: ['id', 'name'],
         当前页: data.page,
         每页数量: data.size,
-        排序字段: 'id',
+        排序字段: 'created_at',
         排序模式: 'asc',
       }),
       async (a) => a,
