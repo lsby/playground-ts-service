@@ -24,10 +24,7 @@ let 接口逻辑实现 = 接口逻辑
         new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
         new Task(async () => await Global.getItem('kysely-plugin')),
       ],
-      () => ({
-        表名: 'user',
-        id字段: 'id',
-      }),
+      () => ({ 表名: 'user', id字段: 'id' }),
     ),
   )
   .混合(new 检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
