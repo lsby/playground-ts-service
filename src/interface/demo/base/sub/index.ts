@@ -10,6 +10,7 @@ import {
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
+import { Global } from '../../../../global/global'
 import { 检查登录 } from '../../../../interfece-logic/check/check-login'
 
 let 接口路径 = '/api/demo/base/sub' as const
@@ -17,7 +18,18 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(检查登录())
+  .混合(
+    new 检查登录(
+      [
+        new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
+        new Task(async () => await Global.getItem('kysely-plugin')),
+      ],
+      () => ({
+        表名: 'user',
+        id字段: 'id',
+      }),
+    ),
+  )
   .混合(
     接口逻辑.构造(
       构造元组([

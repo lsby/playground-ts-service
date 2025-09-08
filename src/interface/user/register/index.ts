@@ -22,33 +22,27 @@ let 用户表 = z.object({
   name: z.string(),
   pwd: z.string(),
 })
-let kysely插件 = new Task(async () => await Global.getItem('kysely-plugin'))
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(检查用户名('userName'))
-  .混合(检查密码('userPassword'))
+  .混合(new 检查用户名('userName'))
+  .混合(new 检查密码('userPassword'))
   .混合(
-    检查唯一性({
+    new 检查唯一性({
       表名: 'user',
       表结构zod: 用户表,
       数据库字段名: 'name',
       参数字段名: 'userName',
       错误信息: '用户名已存在' as const,
-      kysely插件: kysely插件,
+      kysely插件: new Task(async () => await Global.getItem('kysely-plugin')),
     }),
   )
   .混合(
-    注册逻辑({
-      表名: 'user',
-      表结构zod: 用户表,
-      计算数据: (data) => ({
-        id: randomUUID(),
-        name: data.userName,
-        pwd: createHash('md5').update(data.userPassword).digest('hex'),
-      }),
-      kysely插件: kysely插件,
-    }),
+    new 注册逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', (data) => ({
+      id: randomUUID(),
+      name: data.userName,
+      pwd: createHash('md5').update(data.userPassword).digest('hex'),
+    })),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>

@@ -1,28 +1,36 @@
-import { 接口逻辑, 接口逻辑附加参数类型 } from '@lsby/net-core'
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
-import { Right, Task } from '@lsby/ts-fp-data'
-import { z } from 'zod'
+import { Either, Right, Task } from '@lsby/ts-fp-data'
+import { undefined加可选, 从插件类型计算DB, 替换ColumnType } from '../types/types'
 
-type 逻辑错误类型 = never
-type 逻辑正确类型 = {}
-
-export function 注册逻辑<
-  表名类型 extends string,
-  表结构zod类型 extends z.AnyZodObject,
+export class 注册逻辑<
+  表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
-  插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: z.infer<表结构zod类型> }>>,
->(opt: {
-  表名: 表名类型
-  表结构zod: 表结构zod类型
-  计算数据: (data: 逻辑附加参数类型) => z.infer<表结构zod类型>
-  kysely插件: 插件类型
-}): 接口逻辑<[插件类型], 逻辑附加参数类型, 逻辑错误类型, 逻辑正确类型> {
-  return 接口逻辑.构造([opt.kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
+  插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+  DB = 从插件类型计算DB<插件类型>,
+> extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, {}> {
+  public constructor(
+    private kysely插件: 插件类型,
+    private 表名: 表名类型,
+    private 计算数据: (data: 逻辑附加参数类型) => undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>,
+  ) {
+    super()
+  }
+
+  public override 获得插件们(): [插件类型] {
+    return [this.kysely插件]
+  }
+  public override async 实现(
+    参数: 合并插件结果<[插件类型]>,
+    逻辑附加参数: 逻辑附加参数类型,
+    请求附加参数: 请求附加参数类型,
+  ): Promise<Either<never, {}>> {
     let _log = 请求附加参数.log.extend(注册逻辑.name)
 
-    let data = opt.计算数据(逻辑附加参数)
-    await 参数.kysely.获得句柄().insertInto(opt.表名).values(data).execute()
+    let kysely = 参数.kysely.获得句柄() as any
+    await kysely.insertInto(this.表名).values(this.计算数据(逻辑附加参数)).execute()
 
     return new Right({})
-  })
+  }
 }

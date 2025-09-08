@@ -18,8 +18,8 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(检查用户名('userName'))
-  .混合(检查密码('userPassword'))
+  .混合(new 检查用户名('userName'))
+  .混合(new 检查密码('userPassword'))
   .混合(
     接口逻辑.构造(
       构造元组([

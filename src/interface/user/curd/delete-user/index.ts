@@ -11,8 +11,19 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(检查登录())
-  .混合(检查JSON参数(z.object({ id: z.string() })))
+  .混合(
+    new 检查登录(
+      [
+        new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
+        new Task(async () => await Global.getItem('kysely-plugin')),
+      ],
+      () => ({
+        表名: 'user',
+        id字段: 'id',
+      }),
+    ),
+  )
+  .混合(new 检查JSON参数(z.object({ id: z.string() })))
   .混合(
     new 删除逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
       表名: 'user',

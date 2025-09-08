@@ -1,7 +1,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
-import { undefined加可选, 从插件类型计算DB, 替换ColumnType } from './_type'
+import { undefined加可选, 从插件类型计算DB, 替换ColumnType } from '../../types/types'
 
 export class 新增逻辑<
   表名类型 extends keyof DB,
