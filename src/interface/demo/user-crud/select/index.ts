@@ -7,12 +7,12 @@ import {
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { Global } from '../../../../../global/global'
-import { 检查JSON参数 } from '../../../../../interface-logic/check/check-json-args'
-import { 检查登录 } from '../../../../../interface-logic/check/check-login-jwt'
-import { 查询逻辑 } from '../../../../../interface-logic/components/crud/read'
+import { Global } from '../../../../global/global'
+import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
+import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
+import { 查询逻辑 } from '../../../../interface-logic/components/crud/read'
 
-let 接口路径 = '/api/demo/user/curd/select' as const
+let 接口路径 = '/api/demo/user-crud/select' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑

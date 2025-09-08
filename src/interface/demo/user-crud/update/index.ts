@@ -6,14 +6,13 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
-import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { Global } from '../../../../../global/global'
-import { 检查JSON参数 } from '../../../../../interface-logic/check/check-json-args'
-import { 检查登录 } from '../../../../../interface-logic/check/check-login-jwt'
-import { 新增逻辑 } from '../../../../../interface-logic/components/crud/create'
+import { Global } from '../../../../global/global'
+import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
+import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
+import { 更新逻辑 } from '../../../../interface-logic/components/crud/update'
 
-let 接口路径 = '/api/demo/user/curd/add' as const
+let 接口路径 = '/api/demo/user-crud/update' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
@@ -30,15 +29,12 @@ let 接口逻辑实现 = 接口逻辑
       }),
     ),
   )
-  .混合(new 检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
+  .混合(new 检查JSON参数(z.object({ userId: z.string(), newName: z.string() })))
   .混合(
-    new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
+    new 更新逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
       表名: 'user',
-      数据: {
-        id: crypto.randomUUID(),
-        name: data.name,
-        pwd: await bcrypt.hash(data.pwd, 10),
-      },
+      条件们: [['id', '=', data.userId]],
+      更新数据: { name: data.newName },
     })),
   )
 
