@@ -10,7 +10,7 @@ import { createHash } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
 import { 检查JSON参数 } from '../../../../interfece-logic/check/check-json-args'
-import { 检查登录 } from '../../../../interfece-logic/check/check-login'
+import { 检查登录 } from '../../../../interfece-logic/check/check-login-jwt'
 import { 新增逻辑 } from '../../../../interfece-logic/components/crud/create'
 
 let 接口路径 = '/api/user/add-user' as const

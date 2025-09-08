@@ -9,7 +9,7 @@ import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
 import { 检查JSON参数 } from '../../../../interfece-logic/check/check-json-args'
-import { 检查登录 } from '../../../../interfece-logic/check/check-login'
+import { 检查登录 } from '../../../../interfece-logic/check/check-login-jwt'
 import { 更新逻辑 } from '../../../../interfece-logic/components/crud/update'
 
 let 接口路径 = '/api/user/update-user' as const
