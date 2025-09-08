@@ -83,12 +83,12 @@ export class 查询逻辑<
       }
     }
 
-    let 查询总数 = (await builder总数.executeTakeFirst()) as { total: number }
+    let 查询总数 = (await builder总数.executeTakeFirst()) as { total: string }
     let 查询数据 = (await builder数据.execute()) as Pick<DB[表名类型], 选择的字段们类型>[]
 
     return new Right({
       data: 查询数据,
-      total: 查询总数.total,
+      total: parseInt(查询总数.total),
     })
   }
 }
