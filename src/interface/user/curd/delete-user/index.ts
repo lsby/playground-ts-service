@@ -14,13 +14,10 @@ let 接口逻辑实现 = 接口逻辑
   .混合(检查登录())
   .混合(检查JSON参数(z.object({ id: z.string() })))
   .混合(
-    删除逻辑({
-      kysely插件: new Task(async () => await Global.getItem('kysely-plugin')),
-      计算参数: (data) => ({
-        表名: 'user',
-        条件们: [['id', '=', data.id]],
-      }),
-    }),
+    new 删除逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
+      表名: 'user',
+      条件们: [['id', '=', data.id]],
+    })),
   )
 
 let 接口错误类型描述 = z.enum(['未登录'])

@@ -20,17 +20,14 @@ let 接口逻辑实现 = 接口逻辑
   .混合(检查登录())
   .混合(检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
-    查询逻辑({
-      kysely插件: new Task(async () => await Global.getItem('kysely-plugin')),
-      计算参数: (data) => ({
-        表名: 'user',
-        选择的字段们: ['id', 'name'],
-        当前页: data.page,
-        每页数量: data.size,
-        排序字段: 'id',
-        排序模式: 'asc',
-      }),
-    }),
+    new 查询逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
+      表名: 'user',
+      选择的字段们: ['id', 'name'],
+      当前页: data.page,
+      每页数量: data.size,
+      排序字段: 'id',
+      排序模式: 'asc',
+    })),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
