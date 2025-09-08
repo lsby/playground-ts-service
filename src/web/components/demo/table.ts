@@ -24,7 +24,7 @@ export class LsbyDemoTable extends 表格组件基类<属性类型, 发出事件
     }
   }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
-    return await this.API管理器.请求接口并处理错误('/api/demo/user-crud/select', { page, size })
+    return await this.API管理器.请求接口并处理错误('/api/demo/user-crud/read', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {
@@ -33,7 +33,7 @@ export class LsbyDemoTable extends 表格组件基类<属性类型, 发出事件
         if (name === '' || name === null) return alert('未输入数据')
         let pwd = prompt('请输入密码:')
         if (pwd === '' || pwd === null) return alert('未输入数据')
-        await this.API管理器.请求接口并处理错误('/api/demo/user-crud/add', { name: name, pwd: pwd })
+        await this.API管理器.请求接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
       },
     }
   }
