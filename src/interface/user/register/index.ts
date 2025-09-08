@@ -6,7 +6,8 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
-import { createHash, randomUUID } from 'crypto'
+import bcrypt from 'bcrypt'
+import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
 import { 检查唯一性 } from '../../../interfece-logic/check/check-exist'
@@ -38,10 +39,10 @@ let 接口逻辑实现 = 接口逻辑
     }),
   )
   .混合(
-    new 注册逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', (data) => ({
+    new 注册逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', async (data) => ({
       id: randomUUID(),
       name: data.userName,
-      pwd: createHash('md5').update(data.userPassword).digest('hex'),
+      pwd: await bcrypt.hash(data.userPassword, 10),
     })),
   )
 

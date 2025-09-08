@@ -31,7 +31,7 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
-    new 查询逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
+    new 查询逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
       表名: 'user',
       选择的字段们: ['id', 'name'],
       当前页: data.page,

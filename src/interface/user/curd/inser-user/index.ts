@@ -6,7 +6,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
-import { createHash } from 'crypto'
+import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
 import { 检查JSON参数 } from '../../../../interfece-logic/check/check-json-args'
@@ -32,12 +32,12 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
   .混合(
-    new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
+    new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
       表名: 'user',
       数据: {
         id: crypto.randomUUID(),
         name: data.name,
-        pwd: createHash('md5').update(data.pwd).digest('hex'),
+        pwd: await bcrypt.hash(data.pwd, 10),
       },
     })),
   )

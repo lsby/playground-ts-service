@@ -13,7 +13,7 @@ export class 注册逻辑<
   public constructor(
     private kysely插件: 插件类型,
     private 表名: 表名类型,
-    private 计算数据: (data: 逻辑附加参数类型) => undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>,
+    private 计算数据: (data: 逻辑附加参数类型) => Promise<undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>>,
   ) {
     super()
   }
@@ -29,7 +29,10 @@ export class 注册逻辑<
     let _log = 请求附加参数.log.extend(注册逻辑.name)
 
     let kysely = 参数.kysely.获得句柄() as any
-    await kysely.insertInto(this.表名).values(this.计算数据(逻辑附加参数)).execute()
+    await kysely
+      .insertInto(this.表名)
+      .values(await this.计算数据(逻辑附加参数))
+      .execute()
 
     return new Right({})
   }

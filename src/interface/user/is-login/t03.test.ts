@@ -1,7 +1,8 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import axios from 'axios'
-import { createHash, randomUUID } from 'crypto'
+import bcrypt from 'bcrypt'
+import { randomUUID } from 'crypto'
 import { clearDB } from '../../../../script/db/clear-db'
 import { Global } from '../../../global/global'
 import 接口 from './index'
@@ -14,7 +15,7 @@ export default new 接口测试(
     await clearDB(db)
     await db
       .insertInto('user')
-      .values({ id: randomUUID(), name: name, pwd: createHash('md5').update(pwd).digest('hex') })
+      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10) })
       .execute()
   },
 

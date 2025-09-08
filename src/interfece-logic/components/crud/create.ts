@@ -11,10 +11,10 @@ export class 新增逻辑<
 > extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, {}> {
   public constructor(
     private kysely插件: 插件类型,
-    private 计算参数: (data: 逻辑附加参数类型) => {
+    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
       表名: 表名类型
       数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>
-    },
+    }>,
   ) {
     super()
   }
@@ -29,7 +29,7 @@ export class 新增逻辑<
   ): Promise<Either<never, {}>> {
     let _log = 请求附加参数.log.extend(新增逻辑.name)
 
-    let 参数结果 = this.计算参数(逻辑附加参数)
+    let 参数结果 = await this.计算参数(逻辑附加参数)
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any

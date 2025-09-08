@@ -25,7 +25,7 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ id: z.string() })))
   .混合(
-    new 删除逻辑(new Task(async () => await Global.getItem('kysely-plugin')), (data) => ({
+    new 删除逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
       表名: 'user',
       条件们: [['id', '=', data.id]],
     })),

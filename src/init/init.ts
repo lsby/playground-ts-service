@@ -1,4 +1,5 @@
-import { createHash, randomUUID } from 'crypto'
+import bcrypt from 'bcrypt'
+import { randomUUID } from 'crypto'
 import { CONST, Global } from '../global/global'
 
 export async function init(): Promise<void> {
@@ -26,7 +27,7 @@ export async function init(): Promise<void> {
     .selectFrom('user')
     .select('id')
     .where('name', '=', env.SYSTEM_USER)
-    .where('pwd', '=', createHash('md5').update(env.SYSTEM_PWD).digest('hex'))
+    .where('pwd', '=', await bcrypt.hash(env.SYSTEM_PWD, 10))
     .executeTakeFirst()
 
   if (用户存在判定 !== void 0) {
@@ -43,7 +44,7 @@ export async function init(): Promise<void> {
       .values({
         id: 初始用户id,
         name: env.SYSTEM_USER,
-        pwd: createHash('md5').update(env.SYSTEM_PWD).digest('hex'),
+        pwd: await bcrypt.hash(env.SYSTEM_PWD, 10),
       })
       .execute()
     await log.debug(`初始化${项目名称}完成`)

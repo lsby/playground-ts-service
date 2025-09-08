@@ -12,11 +12,11 @@ export class 更新逻辑<
 > extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, {}> {
   public constructor(
     private kysely插件: 插件类型,
-    private 计算参数: (data: 逻辑附加参数类型) => {
+    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
       表名: 表名类型
       条件们: 条件<DB[表名类型]>[]
       更新数据: Partial<DB[表名类型]>
-    },
+    }>,
   ) {
     super()
   }
@@ -31,7 +31,7 @@ export class 更新逻辑<
   ): Promise<Either<never, {}>> {
     let _log = 请求附加参数.log.extend(更新逻辑.name)
 
-    let 参数结果 = this.计算参数(逻辑附加参数)
+    let 参数结果 = await this.计算参数(逻辑附加参数)
 
     let kysely = 参数.kysely.获得句柄() as any
     let 构造 = kysely.updateTable(参数结果.表名).set(参数结果.更新数据)

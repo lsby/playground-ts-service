@@ -7,7 +7,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Left, Right, Task } from '@lsby/ts-fp-data'
-import { createHash } from 'crypto'
+import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
 import { 检查用户名 } from '../../../interfece-logic/check/check-user-name'
@@ -31,15 +31,18 @@ let 接口逻辑实现 = 接口逻辑
       ]),
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
+
         let 用户存在 = await 参数.kysely
           .获得句柄()
           .selectFrom('user')
-          .select('id')
+          .select(['id', 'pwd'])
           .where('name', '=', 逻辑附加参数.userName)
-          .where('pwd', '=', createHash('md5').update(逻辑附加参数.userPassword).digest('hex'))
           .executeTakeFirst()
-
         if (用户存在 === void 0) return new Left('用户不存在或密码错误')
+
+        let 验证密码 = await bcrypt.compare(逻辑附加参数.userPassword, 用户存在.pwd)
+        if (验证密码 === false) return new Left('用户不存在或密码错误')
+
         return new Right({ token: 参数.signJwt({ userId: 用户存在.id }) })
       },
     ),

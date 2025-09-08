@@ -18,7 +18,7 @@ export class 查询逻辑<
 > {
   public constructor(
     private kysely插件: 插件类型,
-    private 计算参数: (data: 逻辑附加参数类型) => {
+    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
       表名: 表名类型
       选择的字段们: 选择的字段们类型[]
       当前页: number
@@ -26,7 +26,7 @@ export class 查询逻辑<
       排序字段: keyof DB[表名类型]
       排序模式?: 'asc' | 'desc'
       条件们?: 条件<DB[表名类型]>[]
-    },
+    }>,
   ) {
     super()
   }
@@ -41,7 +41,7 @@ export class 查询逻辑<
   ): Promise<Either<never, { list: Pick<DB[表名类型], 选择的字段们类型>[]; count: number }>> {
     let _log = 请求附加参数.log.extend(查询逻辑.name)
 
-    let 参数结果 = this.计算参数(逻辑附加参数)
+    let 参数结果 = await this.计算参数(逻辑附加参数)
     if (参数结果.当前页 <= 0) throw new Error('当前页从1开始')
     参数结果.排序模式 = 参数结果.排序模式 ?? 'asc'
 
