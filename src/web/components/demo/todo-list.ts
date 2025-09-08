@@ -10,7 +10,7 @@ type 监听事件类型 = {}
 export class LsbyTodoList extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-todo-list', this)
+    this.注册组件('lsby-demo-todo-list', this)
   }
 
   private 输入框 = document.createElement('input')

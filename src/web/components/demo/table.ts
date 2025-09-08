@@ -6,11 +6,11 @@ type 发出事件类型 = {}
 type 监听事件类型 = {}
 type 数据项 = { id: string; name: string }
 
-export class LsbyTable extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 数据项> {
+export class LsbyDemoTable extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 数据项> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
-    this.注册组件('lsby-table', this)
+    this.注册组件('lsby-demo-table', this)
   }
 
   private API管理器 = GlobalWeb.getItemSync('API管理器')

@@ -10,7 +10,7 @@ export class LsbyAdd extends 组件基类<属性类型, 发出事件类型, 监�
   protected static override 观察的属性: Array<keyof 属性类型> = ['a', 'b']
 
   static {
-    this.注册组件('lsby-add', this)
+    this.注册组件('lsby-demo-add', this)
   }
 
   private API管理器 = GlobalWeb.getItemSync('API管理器')
