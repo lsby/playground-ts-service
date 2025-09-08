@@ -32,7 +32,7 @@ export class 注册逻辑<
     await kysely
       .insertInto(this.表名)
       .values(await this.计算数据(逻辑附加参数))
-      .execute()
+      .executeTakeFirst()
 
     return new Right({})
   }
