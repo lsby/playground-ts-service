@@ -14,7 +14,7 @@ export class 查询逻辑<
   [插件类型],
   逻辑附加参数类型,
   never,
-  { list: Pick<DB[表名类型], 选择的字段们类型>[]; count: number }
+  { data: Pick<DB[表名类型], 选择的字段们类型>[]; total: number }
 > {
   public constructor(
     private kysely插件: 插件类型,
@@ -38,7 +38,7 @@ export class 查询逻辑<
     参数: 合并插件结果<[插件类型]>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
-  ): Promise<Either<never, { list: Pick<DB[表名类型], 选择的字段们类型>[]; count: number }>> {
+  ): Promise<Either<never, { data: Pick<DB[表名类型], 选择的字段们类型>[]; total: number }>> {
     let _log = 请求附加参数.log.extend(查询逻辑.name)
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
@@ -47,7 +47,7 @@ export class 查询逻辑<
 
     let kysely = 参数.kysely.获得句柄() as any
 
-    let builder总数 = kysely.selectFrom(参数结果.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('count'))
+    let builder总数 = kysely.selectFrom(参数结果.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('total'))
     let builder数据 = kysely
       .selectFrom(参数结果.表名)
       .select(参数结果.选择的字段们)
@@ -83,12 +83,12 @@ export class 查询逻辑<
       }
     }
 
-    let 查询总数 = (await builder总数.executeTakeFirst()) as { count: number }
+    let 查询总数 = (await builder总数.executeTakeFirst()) as { total: number }
     let 查询数据 = (await builder数据.execute()) as Pick<DB[表名类型], 选择的字段们类型>[]
 
     return new Right({
-      list: 查询数据,
-      count: 查询总数.count,
+      data: 查询数据,
+      total: 查询总数.total,
     })
   }
 }

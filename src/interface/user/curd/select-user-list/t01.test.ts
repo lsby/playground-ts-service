@@ -48,7 +48,7 @@ export default new 接口测试(
       if (预期 === '成功') throw new Error('应该调用成功, 实际调用出错')
     }
 
-    assert.equal(正确结果校验.data?.data.list.length, 1)
-    assert.equal(正确结果校验.data?.data.count, 1)
+    assert.equal(正确结果校验.data?.data.data.length, 1)
+    assert.equal(正确结果校验.data?.data.total, 1)
   },
 )
