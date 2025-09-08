@@ -28,8 +28,7 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ userId: z.string(), newName: z.string() })))
   .混合(
-    new 更新逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
-      表名: 'user',
+    new 更新逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', async (data) => ({
       条件们: [['id', '=', data.userId]],
       更新数据: { name: data.newName },
     })),

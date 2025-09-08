@@ -2,24 +2,20 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
-import { 从插件类型计算DB, 条件 } from '../../types/types'
+import { 从插件类型计算DB, 替换ColumnType, 条件 } from '../../types/types'
 
 export class 查询逻辑<
   表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
   选择的字段们类型 extends keyof DB[表名类型],
   插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+  后置处理返回类型,
   DB = 从插件类型计算DB<插件类型>,
-> extends 接口逻辑<
-  [插件类型],
-  逻辑附加参数类型,
-  never,
-  { data: Pick<DB[表名类型], 选择的字段们类型>[]; total: number }
-> {
+> extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, { data: 后置处理返回类型[]; total: number }> {
   public constructor(
     private kysely插件: 插件类型,
+    private 表名: 表名类型,
     private 计算参数: (data: 逻辑附加参数类型) => Promise<{
-      表名: 表名类型
       选择的字段们: 选择的字段们类型[]
       当前页: number
       每页数量: number
@@ -27,6 +23,9 @@ export class 查询逻辑<
       排序模式?: 'asc' | 'desc'
       条件们?: 条件<DB[表名类型]>[]
     }>,
+    private 后置处理: (
+      data: 替换ColumnType<Pick<DB[表名类型], 选择的字段们类型>, '__select__'>[],
+    ) => Promise<后置处理返回类型[]>,
   ) {
     super()
   }
@@ -38,7 +37,7 @@ export class 查询逻辑<
     参数: 合并插件结果<[插件类型]>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
-  ): Promise<Either<never, { data: Pick<DB[表名类型], 选择的字段们类型>[]; total: number }>> {
+  ): Promise<Either<never, { data: 后置处理返回类型[]; total: number }>> {
     let _log = 请求附加参数.log.extend(查询逻辑.name)
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
@@ -47,9 +46,9 @@ export class 查询逻辑<
 
     let kysely = 参数.kysely.获得句柄() as any
 
-    let builder总数 = kysely.selectFrom(参数结果.表名).select((eb: any) => eb.fn.count(参数结果.排序字段).as('total'))
+    let builder总数 = kysely.selectFrom(this.表名).select((eb: any) => eb.fn.countAll().as('total'))
     let builder数据 = kysely
-      .selectFrom(参数结果.表名)
+      .selectFrom(this.表名)
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
@@ -84,7 +83,8 @@ export class 查询逻辑<
     }
 
     let 查询总数 = (await builder总数.executeTakeFirst()) as { total: string }
-    let 查询数据 = (await builder数据.execute()) as Pick<DB[表名类型], 选择的字段们类型>[]
+    let 查询数据 = (await builder数据.execute()) as any
+    查询数据 = (await this.后置处理(查询数据)) as any
 
     return new Right({
       data: 查询数据,

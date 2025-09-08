@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^7.4.2",
-    "@lsby/net-core": "0.7.4",
+    "@lsby/net-core": "0.7.5",
     "@lsby/net-core-file-upload": "^0.1.10",
     "@lsby/net-core-jwt": "^0.1.11",
     "@lsby/net-core-kysely": "^2.0.6",

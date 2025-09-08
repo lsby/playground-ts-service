@@ -11,8 +11,8 @@ export class 新增逻辑<
 > extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, {}> {
   public constructor(
     private kysely插件: 插件类型,
+    private 表名: 表名类型,
     private 计算参数: (data: 逻辑附加参数类型) => Promise<{
-      表名: 表名类型
       数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>
     }>,
   ) {
@@ -33,7 +33,7 @@ export class 新增逻辑<
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any
-    await kysely.insertInto(参数结果.表名).values(参数结果.数据).executeTakeFirst()
+    await kysely.insertInto(this.表名).values(参数结果.数据).executeTakeFirst()
 
     return new Right({})
   }

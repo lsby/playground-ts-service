@@ -28,14 +28,18 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
-    new 查询逻辑(new Task(async () => await Global.getItem('kysely-plugin')), async (data) => ({
-      表名: 'user',
-      选择的字段们: ['id', 'name'],
-      当前页: data.page,
-      每页数量: data.size,
-      排序字段: 'id',
-      排序模式: 'asc',
-    })),
+    new 查询逻辑(
+      new Task(async () => await Global.getItem('kysely-plugin')),
+      'user',
+      async (data) => ({
+        选择的字段们: ['id', 'name'],
+        当前页: data.page,
+        每页数量: data.size,
+        排序字段: 'id',
+        排序模式: 'asc',
+      }),
+      async (a) => a,
+    ),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>

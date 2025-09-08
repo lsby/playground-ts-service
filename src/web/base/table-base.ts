@@ -7,17 +7,17 @@ export abstract class 表格组件基类<
   属性类型 extends Record<string, string>,
   发出事件类型 extends Record<string, any>,
   监听事件类型 extends Record<string, any>,
-  数据项 extends { [key: string]: string | number | boolean },
+  数据项 extends { [key: string]: string | number | boolean | null },
 > extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string | null
   protected abstract 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>
   protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
+  protected abstract 获得列排序(): Promise<(keyof 数据项)[]>
 
   protected async 加载数据(page: number, size: number): Promise<void> {
     let { data, total } = await this.请求数据(page, size)
-    let 第一条数据 = data[0]
-    let 原始列名 = 第一条数据 === void 0 ? [] : Object.keys(第一条数据)
+    let 原始列名 = await this.获得列排序()
 
     let 容器元素 = document.createElement('div')
     容器元素.style.display = 'flex'
@@ -84,7 +84,7 @@ export abstract class 表格组件基类<
           if (数据 === void 0) throw new Error(`无法访问数据项中的字段: ${String(字段)}`)
 
           let td = document.createElement('td')
-          td.textContent = 数据.toString()
+          td.textContent = 数据?.toString() ?? ''
           td.style.padding = '8px'
           td.style.border = '1px solid #ccc'
           行.appendChild(td)

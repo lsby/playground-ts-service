@@ -6,10 +6,10 @@ import _src_interface_demo_base_add_t01_test_ts from './../src/interface/demo/ba
 import _src_interface_demo_base_sub_t01_test_ts from './../src/interface/demo/base/sub/t01.test'
 import _src_interface_demo_base_sub_t02_test_ts from './../src/interface/demo/base/sub/t02.test'
 import _src_interface_demo_file_upload_file_t01_test_ts from './../src/interface/demo/file/upload-file/t01.test'
-import _src_interface_user_curd_delete_user_t01_test_ts from '../src/interface/demo/user-crud/delete/t01.test'
-import _src_interface_user_curd_inser_user_t01_test_ts from '../src/interface/demo/user-crud/create/t01.test'
-import _src_interface_user_curd_select_user_list_t01_test_ts from '../src/interface/demo/user-crud/read/t01.test'
-import _src_interface_user_curd_update_user_t01_test_ts from '../src/interface/demo/user-crud/update/t01.test'
+import _src_interface_demo_user_crud_create_t01_test_ts from './../src/interface/demo/user-crud/create/t01.test'
+import _src_interface_demo_user_crud_delete_t01_test_ts from './../src/interface/demo/user-crud/delete/t01.test'
+import _src_interface_demo_user_crud_read_t01_test_ts from './../src/interface/demo/user-crud/read/t01.test'
+import _src_interface_demo_user_crud_update_t01_test_ts from './../src/interface/demo/user-crud/update/t01.test'
 import _src_interface_user_is_login_t01_test_ts from './../src/interface/user/is-login/t01.test'
 import _src_interface_user_is_login_t02_test_ts from './../src/interface/user/is-login/t02.test'
 import _src_interface_user_is_login_t03_test_ts from './../src/interface/user/is-login/t03.test'
@@ -23,10 +23,10 @@ test('_src_interface_demo_base_add_t01_test_ts', async () => await _src_interfac
 test('_src_interface_demo_base_sub_t01_test_ts', async () => await _src_interface_demo_base_sub_t01_test_ts.运行())
 test('_src_interface_demo_base_sub_t02_test_ts', async () => await _src_interface_demo_base_sub_t02_test_ts.运行())
 test('_src_interface_demo_file_upload_file_t01_test_ts', async () => await _src_interface_demo_file_upload_file_t01_test_ts.运行())
-test('_src_interface_user_curd_delete_user_t01_test_ts', async () => await _src_interface_user_curd_delete_user_t01_test_ts.运行())
-test('_src_interface_user_curd_inser_user_t01_test_ts', async () => await _src_interface_user_curd_inser_user_t01_test_ts.运行())
-test('_src_interface_user_curd_select_user_list_t01_test_ts', async () => await _src_interface_user_curd_select_user_list_t01_test_ts.运行())
-test('_src_interface_user_curd_update_user_t01_test_ts', async () => await _src_interface_user_curd_update_user_t01_test_ts.运行())
+test('_src_interface_demo_user_crud_create_t01_test_ts', async () => await _src_interface_demo_user_crud_create_t01_test_ts.运行())
+test('_src_interface_demo_user_crud_delete_t01_test_ts', async () => await _src_interface_demo_user_crud_delete_t01_test_ts.运行())
+test('_src_interface_demo_user_crud_read_t01_test_ts', async () => await _src_interface_demo_user_crud_read_t01_test_ts.运行())
+test('_src_interface_demo_user_crud_update_t01_test_ts', async () => await _src_interface_demo_user_crud_update_t01_test_ts.运行())
 test('_src_interface_user_is_login_t01_test_ts', async () => await _src_interface_user_is_login_t01_test_ts.运行())
 test('_src_interface_user_is_login_t02_test_ts', async () => await _src_interface_user_is_login_t02_test_ts.运行())
 test('_src_interface_user_is_login_t03_test_ts', async () => await _src_interface_user_is_login_t03_test_ts.运行())

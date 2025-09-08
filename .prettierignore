@@ -53,4 +53,5 @@ pnpm-lock.yaml
 # 忽略生成的文件
 /src/types/*.ts
 /src/interface/interface-list.ts
+/src/web/components/index.ts
 /test/unit-test.test.ts

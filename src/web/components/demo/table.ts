@@ -15,6 +15,9 @@ export class LsbyDemoTable extends 表格组件基类<属性类型, 发出事件
 
   private API管理器 = GlobalWeb.getItemSync('API管理器')
 
+  protected override async 获得列排序(): Promise<(keyof 数据项)[]> {
+    return ['id', 'name']
+  }
   protected override 映射显示字段名称(数据字段: keyof 数据项): string | null {
     switch (数据字段) {
       case 'id':
