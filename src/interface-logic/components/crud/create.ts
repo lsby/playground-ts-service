@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
@@ -31,7 +32,6 @@ export class 新增逻辑<
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let kysely = 参数.kysely.获得句柄() as any
     await kysely.insertInto(this.表名).values(参数结果.数据).executeTakeFirst()
 
