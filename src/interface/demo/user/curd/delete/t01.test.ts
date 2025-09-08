@@ -1,9 +1,9 @@
 import { 接口测试 } from '@lsby/net-core'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
-import { clearDB } from '../../../../../script/db/clear-db'
-import { Global } from '../../../../global/global'
-import { 请求用例 } from '../../../../tools/request'
+import { clearDB } from '../../../../../../script/db/clear-db'
+import { Global } from '../../../../../global/global'
+import { 请求用例 } from '../../../../../tools/request'
 import 接口 from './index'
 
 let id = randomUUID()
@@ -21,11 +21,7 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    return 请求用例(
-      接口,
-      { userId: id, newName: 'newAdmin' },
-      { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
-    )
+    return 请求用例(接口, { id: id }, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
   },
 
   async (中置结果: object): Promise<void> => {
