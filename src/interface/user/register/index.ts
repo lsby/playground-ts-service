@@ -10,10 +10,10 @@ import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
-import { 检查唯一性 } from '../../../interfece-logic/check/check-exist'
-import { 检查用户名 } from '../../../interfece-logic/check/check-user-name'
-import { 检查密码 } from '../../../interfece-logic/check/check-user-pwd'
-import { 注册逻辑 } from '../../../interfece-logic/components/register'
+import { 检查唯一性 } from '../../../interface-logic/check/check-exist'
+import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
+import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
+import { 注册逻辑 } from '../../../interface-logic/components/register'
 
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const

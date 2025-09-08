@@ -9,9 +9,9 @@ import { Task } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
-import { 检查JSON参数 } from '../../../../interfece-logic/check/check-json-args'
-import { 检查登录 } from '../../../../interfece-logic/check/check-login-jwt'
-import { 新增逻辑 } from '../../../../interfece-logic/components/crud/create'
+import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
+import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
+import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
 let 接口路径 = '/api/user/add-user' as const
 let 接口方法 = 'post' as const
