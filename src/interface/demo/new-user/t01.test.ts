@@ -1,0 +1,45 @@
+import { 接口测试 } from '@lsby/net-core'
+import { clearDB } from '../../../../script/db/clear-db'
+import { Global } from '../../../global/global'
+import { 请求用例 } from '../../../tools/request'
+import 接口 from './index'
+
+let name = 'newUser'
+let pwd = '123456'
+
+export default new 接口测试(
+  async (): Promise<void> => {
+    let db = (await Global.getItem('kysely')).获得句柄()
+    await clearDB(db)
+  },
+
+  async (): Promise<object> => {
+    return 请求用例(接口, { name: name, pwd: pwd })
+  },
+
+  async (中置结果: object): Promise<void> => {
+    console.log('实际结果: %o', 中置结果)
+
+    let 预期: string = '失败'
+
+    let 失败结果校验 = 接口.获得接口错误形式Zod().safeParse(中置结果)
+    let 正确结果校验 = 接口.获得接口正确形式Zod().safeParse(中置结果)
+
+    if (失败结果校验.success === false && 正确结果校验.success === false) {
+      throw new Error('没有通过返回值检查')
+    }
+    if (正确结果校验.success === true) {
+      console.log('预期: %o, 实际: %o', 预期, '调用成功')
+      if (预期 === '失败') throw new Error('应该调用失败, 实际调用成功')
+    }
+    if (失败结果校验.success === true) {
+      console.log('预期: %o, 实际: %o', 预期, '调用失败')
+      if (预期 === '成功') throw new Error('应该调用成功, 实际调用出错')
+    }
+
+    let db = (await Global.getItem('kysely')).获得句柄()
+
+    let userRow = await db.selectFrom('user').select('id').where('name', '=', name).executeTakeFirst()
+    if (userRow !== void 0) throw new Error('不应该插入成功')
+  },
+)

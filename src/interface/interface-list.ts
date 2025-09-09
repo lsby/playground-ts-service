@@ -13,6 +13,7 @@ import _src_interface_demo_user_crud_delete_index_ts from './demo/user-crud/dele
 import _src_interface_demo_user_crud_create_index_ts from './demo/user-crud/create/index'
 import _src_interface_demo_user_crud_read_index_ts from './demo/user-crud/read/index'
 import _src_interface_demo_user_crud_update_index_ts from './demo/user-crud/update/index'
+import _src_interface_demo_new_user_index_ts from './demo/new-user/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_base_add_index_ts,
@@ -27,4 +28,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_user_crud_create_index_ts,
   _src_interface_demo_user_crud_read_index_ts,
   _src_interface_demo_user_crud_update_index_ts,
+  _src_interface_demo_new_user_index_ts,
 ]
