@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
-    "@lsby/net-core": "0.7.10",
+    "@lsby/net-core": "^0.7.11",
     "@lsby/net-core-file-upload": "^0.1.11",
     "@lsby/net-core-jwt": "^0.1.13",
     "@lsby/net-core-kysely": "^2.0.8",
@@ -89,7 +89,7 @@
     "node-watch": "^0.7.4",
     "open-cli": "^8.0.0",
     "parcel": "^2.15.4",
-    "prettier": "3.6.2",
+    "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-packagejson": "^2.5.19",
     "prisma": "^5.19.1",
