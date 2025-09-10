@@ -34,23 +34,37 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
         return 接口逻辑
           .空逻辑()
           .混合(
-            new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', async () => ({
-              数据: {
-                id: userId,
-                name: 参数.name,
-                pwd: await bcrypt.hash(参数.pwd, 10),
+            new 新增逻辑(
+              new Task(async () => await Global.getItem('kysely-plugin')),
+              'user',
+              async () => ({
+                数据: {
+                  id: userId,
+                  name: 参数.name,
+                  pwd: await bcrypt.hash(参数.pwd, 10),
+                },
+              }),
+              async () => {
+                return {}
               },
-            })),
+            ),
           )
           .混合(
-            new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user_config', async () => ({
-              数据: {
-                id: crypto.randomUUID(),
-                key: 'theme',
-                value: 'dark',
-                user_id: userId,
+            new 新增逻辑(
+              new Task(async () => await Global.getItem('kysely-plugin')),
+              'user_config',
+              async () => ({
+                数据: {
+                  id: crypto.randomUUID(),
+                  key: 'theme',
+                  value: 'dark',
+                  user_id: userId,
+                },
+              }),
+              async () => {
+                return {}
               },
-            })),
+            ),
           )
           .混合(
             接口逻辑.构造(构造元组([]), async (参数, 逻辑附加参数, 请求附加参数) => {

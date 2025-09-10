@@ -29,13 +29,20 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(new 检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
   .混合(
-    new 新增逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', async (data) => ({
-      数据: {
-        id: crypto.randomUUID(),
-        name: data.name,
-        pwd: await bcrypt.hash(data.pwd, 10),
+    new 新增逻辑(
+      new Task(async () => await Global.getItem('kysely-plugin')),
+      'user',
+      async (data) => ({
+        数据: {
+          id: crypto.randomUUID(),
+          name: data.name,
+          pwd: await bcrypt.hash(data.pwd, 10),
+        },
+      }),
+      async () => {
+        return {}
       },
-    })),
+    ),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
