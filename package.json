@@ -34,7 +34,7 @@
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev && npm run _check:lint",
     "prepare": "husky",
     "public:docker": "tsx script/docker/make-docker.ts",
-    "public:electron": "npm run _check:all && npm run _clean:all && npm run _build:all && electron-builder",
+    "public:electron": "npm run _check:all && npm run _clean:all && npm run _build:all && electron-builder && tsx script/run/after-electron.ts",
     "public:npm": "npm publish --access public",
     "release": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* npm run _gen:all && npm run _check:all && npm run _build:all && bumpp",
     "run:electron:dev": "chcp 65001 && cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.development nodemon --watch src --ext ts --ignore src/types/**/* --ignore src/interface/interface-list.ts --ignore src/web/**/* --exec \"electron -r tsx src/electron.ts\"",
