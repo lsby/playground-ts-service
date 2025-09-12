@@ -6,3 +6,5 @@
 !**/.gitkeep
 .parcel-cache
 /android
+/OCR-portable-python*
+/package

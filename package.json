@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./dist/src/electron.js",
   "bin": {
     "lsby-playground-ts-service": "dist/src/server.js"
   },
@@ -12,12 +13,14 @@
   "scripts": {
     "_build:all": "npm run _build:web && npm run _build:service",
     "_build:service": "tsc && tsc-alias -f",
-    "_build:web": "npm run _clear:web && parcel build --no-cache --no-source-maps src/web/page/**/*.html --dist-dir dist/web",
+    "_build:web": "npm run _clean:web && parcel build --no-cache --no-source-maps src/web/page/**/*.html --dist-dir dist/web",
     "_check:all": "npm run _check:format && npm run _check:lint && npm run _check:type",
     "_check:format": "prettier --write .",
     "_check:lint": "eslint . --fix",
     "_check:type": "tsc --noEmit",
-    "_clear:web": "tsx script/run/clear-web.ts",
+    "_clean:all": "npm run _clean:web && npm run _clean:electron",
+    "_clean:electron": "tsx script/run/clean-electron.ts",
+    "_clean:web": "tsx script/run/clean-web.ts",
     "_gen:all": "npm run _gen:api:list && npm run _gen:api:type && npm run _gen:web:index",
     "_gen:api:list": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* lsby-net-core-gen-api-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "_gen:api:type": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* lsby-net-core-gen-api-type ./tsconfig.json ./src/interface ./src/types/interface-type.ts",
@@ -31,6 +34,7 @@
     "db:push:test": "dotenv -e ./.env/.env.test -- prisma migrate dev && npm run _check:lint",
     "prepare": "husky",
     "public:docker": "tsx script/docker/make-docker.ts",
+    "public:electron": "npm run _check:all && npm run _clean:all && npm run _build:all && electron-builder",
     "public:npm": "npm publish --access public",
     "release": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* npm run _gen:all && npm run _check:all && npm run _build:all && bumpp",
     "run:electron:dev": "chcp 65001 && cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.development nodemon --watch src --ext ts --ignore src/types/**/* --ignore src/interface/interface-list.ts --ignore src/web/**/* --exec \"electron -r tsx src/electron.ts\"",
@@ -62,7 +66,6 @@
     "@lsby/ts-web-component": "^0.1.2",
     "axios": "^1.12.1",
     "bcrypt": "^6.0.0",
-    "electron": "^38.1.0",
     "kysely": "^0.28.5",
     "kysely-wasm": "^1.2.1",
     "node-sqlite3-wasm": "^0.8.48",
@@ -81,6 +84,8 @@
     "bumpp": "^10.2.3",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
+    "electron": "^38.1.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsdoc": "^50.2.4",
@@ -107,5 +112,27 @@
   "packageManager": "pnpm@9.5.0",
   "@parcel/resolver-default": {
     "packageExports": true
+  },
+  "build": {
+    "appId": "playground.ts.service",
+    "productName": "playground-ts-service",
+    "files": [
+      "dist/**/*"
+    ],
+    "directories": {
+      "output": "package"
+    },
+    "win": {
+      "signAndEditExecutable": false,
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "playground-ts-service.exe"
+    }
+  },
+  "targets": {
+    "main": false
   }
 }

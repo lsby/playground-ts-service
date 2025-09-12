@@ -1,7 +1,9 @@
 import { app, BrowserWindow } from 'electron'
 import { App } from './app/app'
 import { Global } from './global/global'
+import { init } from './init/init'
 
+await init()
 await new App().run()
 
 export let 主窗口: BrowserWindow | null = null
