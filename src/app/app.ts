@@ -6,8 +6,8 @@ import { interfaceApiList } from '../interface/interface-list'
 
 export class App {
   public async run(): Promise<void> {
-    let log = (await Global.getItem('log')).extend('service')
-    let env = await (await Global.getItem('env')).获得环境变量()
+    let log = await Global.getItem('log').then((a) => a.extend('service'))
+    let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
     let cron = await Global.getItem('cron')
     await cron.执行([onTimeAlarm])

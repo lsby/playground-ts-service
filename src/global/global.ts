@@ -31,6 +31,7 @@ export let env = new Env({
     // SHADOW_DB_NAME: z.string(),
     // DB END
     APP_PORT: z.coerce.number(),
+    WEB_PORT: z.coerce.number(),
     SYSTEM_USER: z.string(),
     SYSTEM_PWD: z.string(),
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
