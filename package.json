@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
+    "@capacitor/dialog": "^7.0.2",
     "@lsby/net-core": "^0.7.11",
     "@lsby/net-core-file-upload": "^0.1.11",
     "@lsby/net-core-jwt": "^0.1.13",

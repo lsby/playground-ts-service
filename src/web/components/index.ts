@@ -1,10 +1,11 @@
 // 该文件由脚本自动生成, 请勿修改.
 export * from './demo/add'
+export * from './demo/capacitor'
 export * from './demo/ping'
 export * from './demo/pong'
 export * from './demo/table'
 export * from './demo/todo-list'
-export * from './demo/ws-test'
+export * from './demo/ws'
 export * from './layout/column'
 export * from './layout/container'
 export * from './layout/flex-item-container'

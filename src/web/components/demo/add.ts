@@ -6,7 +6,7 @@ type 属性类型 = { a: string; b: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbyAdd extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 测试加法组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = ['a', 'b']
 
   static {

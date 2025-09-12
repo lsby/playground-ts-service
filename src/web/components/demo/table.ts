@@ -6,7 +6,7 @@ type 发出事件类型 = {}
 type 监听事件类型 = {}
 type 数据项 = { id: string; name: string }
 
-export class LsbyDemoTable extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 数据项> {
+export class 测试表格组件 extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 数据项> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
