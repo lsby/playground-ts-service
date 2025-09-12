@@ -2,7 +2,7 @@ import { CompiledQuery, Kysely } from 'kysely'
 import { Global } from '../../src/global/global'
 import { DB } from '../../src/types/db'
 
-export async function clearDB(db: Kysely<DB>): Promise<void> {
+export async function cleanDB(db: Kysely<DB>): Promise<void> {
   const DB_TYPE = await Global.getItem('DB_TYPE')
 
   switch (DB_TYPE) {
@@ -58,7 +58,7 @@ export async function clearDB(db: Kysely<DB>): Promise<void> {
           await db.executeQuery(CompiledQuery.raw(`TRUNCATE TABLE "${table}" CASCADE`, []))
         }
       } catch (error) {
-        console.error('Error clearing tables:', error)
+        console.error('Error cleaning tables:', error)
       }
 
       break

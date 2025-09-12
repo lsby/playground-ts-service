@@ -2,7 +2,7 @@ import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
-import { clearDB } from '../../../../script/db/clear-db'
+import { cleanDB } from '../../../../script/db/clean-db'
 import { Global } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口 from './index'
@@ -12,7 +12,7 @@ let pwd = '123456'
 export default new 接口测试(
   async (): Promise<void> => {
     let db = (await Global.getItem('kysely')).获得句柄()
-    await clearDB(db)
+    await cleanDB(db)
     await db
       .insertInto('user')
       .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10) })

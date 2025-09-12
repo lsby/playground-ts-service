@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 
 function 启动任务(): void {
-  const 子进程 = spawn('npm', ['run', '_clear:web'], { stdio: 'inherit', shell: true })
+  const 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
 
   子进程.on('close', (代码: number | null) => {
     if (代码 !== 0) {
