@@ -17,19 +17,7 @@ async function 创建主窗口(): Promise<void> {
   主窗口.webContents.openDevTools()
 
   let env = await Global.getItem('env').then((a) => a.获得环境变量())
-  switch (env.NODE_ENV) {
-    case 'development':
-      await 主窗口.loadURL(`http://127.0.0.1:${env.WEB_PORT}/`)
-      break
-    case 'production':
-      await 主窗口.loadURL(`http://127.0.0.1:${env.WEB_PORT}/`)
-      break
-    case 'test':
-      await 主窗口.loadURL(`http://127.0.0.1:${env.WEB_PORT}/`)
-      break
-    default:
-      throw new Error(`意外的环境: ${env.NODE_ENV}`)
-  }
+  await 主窗口.loadURL(`http://127.0.0.1:${env.WEB_PORT}/`)
 
   主窗口.on('closed', () => (主窗口 = null))
 }
