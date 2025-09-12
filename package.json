@@ -37,7 +37,6 @@
     "run:electron:prod": "chcp 65001 && cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.production electron -r tsx dist/src/electron.js",
     "run:service:dev": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.development tsx watch --exclude ./src/types/**/* --exclude ./src/interface/interface-list.ts --inspect ./src/server.ts",
     "run:service:prod": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.production node ./dist/src/server.js",
-    "run:service:test": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test node ./dist/src/server.js",
     "run:web:dev": "tsx script/run/run-web.ts",
     "test:unit": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test.ts",
     "test:unit:coverage": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html",
