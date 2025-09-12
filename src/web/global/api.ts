@@ -1,6 +1,7 @@
 import { 不安全的扩展WebPost } from '@lsby/ts-post-extend'
 import { InterfaceType } from '../../types/interface-type'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
+import { GlobalWeb } from './global'
 
 export class API管理器 {
   private 本地存储名称 = 'lsby-api-component-base-token'
@@ -37,7 +38,7 @@ export class API管理器 {
   > {
     try {
       return await 不安全的扩展WebPost(
-        接口路径,
+        GlobalWeb.getItemSync('API前缀') + 接口路径,
         参数,
         { authorization: this.token },
         ws信息回调,
