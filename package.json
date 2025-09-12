@@ -60,7 +60,7 @@
     "@lsby/ts-log": "^0.1.2",
     "@lsby/ts-post-extend": "^0.0.21",
     "@lsby/ts-web-component": "^0.1.2",
-    "axios": "^1.11.0",
+    "axios": "^1.12.1",
     "bcrypt": "^6.0.0",
     "electron": "^38.1.0",
     "kysely": "^0.28.5",
