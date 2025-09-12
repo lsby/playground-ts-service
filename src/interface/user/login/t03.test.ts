@@ -11,7 +11,7 @@ let name = 'admin'
 let pwd = '123456'
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = (await Global.getItem('kysely')).获得句柄()
+    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
     await cleanDB(db)
     await db
       .insertInto('user')

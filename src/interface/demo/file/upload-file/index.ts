@@ -20,7 +20,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     new 检查登录(
       [
-        new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
+        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
         new Task(async () => await Global.getItem('kysely-plugin')),
       ],
       () => ({ 表名: 'user', id字段: 'id' }),
@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       构造元组([
         new Task(async () => {
-          let env = await (await Global.getItem('env')).获得环境变量()
+          let env = await Global.getItem('env').then((a) => a.获得环境变量())
           return new 文件上传插件({ 文件最大大小: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 })
         }),
       ]),

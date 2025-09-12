@@ -3,9 +3,9 @@ import { randomUUID } from 'crypto'
 import { CONST, Global } from '../global/global'
 
 export async function init(): Promise<void> {
-  let log = (await Global.getItem('log')).extend('init')
-  let env = await (await Global.getItem('env')).获得环境变量()
-  let kysely = (await Global.getItem('kysely')).获得句柄()
+  let log = await Global.getItem('log').then((a) => a.extend('init'))
+  let env = await Global.getItem('env').then((a) => a.获得环境变量())
+  let kysely = await Global.getItem('kysely').then((a) => a.获得句柄())
 
   await log.debug('检索初始化标记...')
   let 初始化标记 = await kysely

@@ -7,7 +7,7 @@ import 接口 from './index'
 
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = (await Global.getItem('kysely')).获得句柄()
+    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
     await cleanDB(db)
   },
 

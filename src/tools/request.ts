@@ -12,7 +12,7 @@ export async function 请求用例<接口类型 extends 任意接口>(
     凭据属性: string
   },
 ): Promise<object> {
-  let env = await (await Global.getItem('env')).获得环境变量()
+  let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
   let token: string | null = null
   if (typeof 登录 !== 'undefined') {

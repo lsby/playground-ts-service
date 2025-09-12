@@ -11,7 +11,7 @@ let name = 'admin'
 let pwd = '123456'
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = (await Global.getItem('kysely')).获得句柄()
+    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
     await cleanDB(db)
     await db
       .insertInto('user')
@@ -20,7 +20,7 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    let env = await (await Global.getItem('env')).获得环境变量()
+    let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`

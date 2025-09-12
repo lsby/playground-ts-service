@@ -20,7 +20,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     new 检查登录(
       [
-        new Task(async () => (await Global.getItem('jwt-plugin')).解析器),
+        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
         new Task(async () => await Global.getItem('kysely-plugin')),
       ],
       () => ({ 表名: 'user', id字段: 'id' }),
