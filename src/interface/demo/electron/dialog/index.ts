@@ -17,7 +17,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(构造元组([]), async (参数, 逻辑附加参数, 请求附加参数) => {
     let _log = 请求附加参数.log.extend(接口路径)
-    new electron.Notification({ title: '提示框', body: '你好世界' }).show()
+    new electron.Notification({ title: '提示', body: '你好世界' }).show()
     return new Right({})
   }),
 )
