@@ -82,7 +82,7 @@
       "group": { "kind": "build", "isDefault": true }
     },
     {
-      "label": "_运行后端",
+      "label": "_运行web后端",
       "type": "npm",
       "script": "run:service:dev",
       "isBackground": true,
@@ -108,7 +108,7 @@
     {
       "label": "运行web开发套件",
       "dependsOrder": "parallel",
-      "dependsOn": ["_持续类型检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行后端", "_运行前端"],
+      "dependsOn": ["_持续类型检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行web后端", "_运行前端"],
       "problemMatcher": []
     },
     {
