@@ -20,7 +20,7 @@ async function 创建主窗口(): Promise<void> {
   })
   if (env.NODE_ENV !== 'production') 主窗口.webContents.openDevTools()
 
-  await 主窗口.loadURL(`http://127.0.0.1:${env.WEB_PORT}/`)
+  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/`)
   主窗口.on('closed', () => (主窗口 = null))
 }
 
