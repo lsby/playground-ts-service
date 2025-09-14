@@ -46,9 +46,13 @@ export class 查询逻辑<
 
     let kysely = 参数.kysely.获得句柄() as any
 
-    let builder总数 = kysely.selectFrom(this.表名).select((eb: any) => eb.fn.countAll().as('total'))
+    let builder总数 = kysely
+      .selectFrom(this.表名)
+      .distinct()
+      .select((eb: any) => eb.fn.countAll().as('total'))
     let builder数据 = kysely
       .selectFrom(this.表名)
+      .distinct()
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
