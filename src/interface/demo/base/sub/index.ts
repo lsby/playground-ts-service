@@ -2,8 +2,6 @@ import {
   JSON解析插件,
   常用形式接口封装,
   接口逻辑,
-  构造元组,
-  构造对象,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
@@ -29,11 +27,11 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(
     接口逻辑.构造(
-      构造元组([
+      [
         new Task(async () => {
-          return new JSON解析插件(z.object({ ...构造对象('a', z.number()), ...构造对象('b', z.number()) }), {})
+          return new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})
         }),
-      ]),
+      ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
         return new Right({ res: 参数.a - 参数.b })

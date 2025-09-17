@@ -1,7 +1,6 @@
 import {
   常用形式接口封装,
   接口逻辑,
-  构造元组,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
@@ -28,12 +27,12 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(
     接口逻辑.构造(
-      构造元组([
+      [
         new Task(async () => {
           let env = await Global.getItem('env').then((a) => a.获得环境变量())
           return new 文件上传插件({ 文件最大大小: env.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 })
         }),
-      ]),
+      ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let log = 请求附加参数.log.extend(接口路径)
         await log.debug('userId为%o的用户, 上传的文件信息: %j', 逻辑附加参数.userId, 参数.files)

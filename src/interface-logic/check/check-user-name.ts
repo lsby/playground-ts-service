@@ -1,4 +1,4 @@
-import { JSON解析插件, 合并插件结果, 接口逻辑, 构造元组, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
+import { JSON解析插件, 合并插件结果, 接口逻辑, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
 import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
@@ -15,7 +15,7 @@ export class 检查用户名<逻辑附加参数类型 extends {}, 字段类型 e
 
   public constructor(private 字段名: 字段类型) {
     super()
-    this.插件 = 构造元组([
+    this.插件 = [
       new Task(
         async () =>
           new JSON解析插件(
@@ -25,7 +25,7 @@ export class 检查用户名<逻辑附加参数类型 extends {}, 字段类型 e
             {},
           ),
       ),
-    ])
+    ]
   }
 
   public override 获得插件们(): [Task<JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>>] {
