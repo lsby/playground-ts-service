@@ -56,3 +56,4 @@ pnpm-lock.yaml
 /src/tools/electron/preload.js
 /src/web/components/index.ts
 /test/unit-test.test.ts
+/src/config/window-state.json
