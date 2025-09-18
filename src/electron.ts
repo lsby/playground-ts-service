@@ -30,7 +30,7 @@ function 读取窗口状态(): Electron.Rectangle {
   } catch (err) {
     log.warnSync('读取窗口状态失败:', err)
   }
-  return { width: 800, height: 600, x: NaN, y: NaN }
+  return { width: 800, height: 600, x: 0, y: 0 }
 }
 function 保存窗口状态(win: BrowserWindow): void {
   try {
