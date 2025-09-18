@@ -74,7 +74,7 @@ async function 创建主窗口(): Promise<void> {
   主窗口 = new BrowserWindow({
     width: 窗口状态.width,
     height: 窗口状态.height,
-    focusable: 开发环境 ? false : true,
+    // focusable: 开发环境 ? false : true,
     webPreferences: {
       preload: 预加载脚本路径,
       nodeIntegration: false,
