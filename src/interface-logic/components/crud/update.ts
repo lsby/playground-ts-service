@@ -2,7 +2,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right, Task } from '@lsby/ts-fp-data'
-import { 从插件类型计算DB, 条件 } from '../../types/types'
+import { 从插件类型计算DB, 替换ColumnType, 条件 } from '../../types/types'
 
 export class 更新逻辑<
   表名类型 extends keyof DB,
@@ -15,7 +15,7 @@ export class 更新逻辑<
     private 表名: 表名类型,
     private 计算参数: (data: 逻辑附加参数类型) => Promise<{
       条件们: 条件<DB[表名类型]>[]
-      更新数据: Partial<DB[表名类型]>
+      更新数据: Partial<替换ColumnType<DB[表名类型], '__update__'>>
     }>,
   ) {
     super()
