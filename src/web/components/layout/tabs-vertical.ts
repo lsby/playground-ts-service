@@ -1,5 +1,4 @@
 import { 组件基类 } from '@lsby/ts-web-component'
-
 import { 联合转元组 } from '../../global/types'
 
 type 属性类型 = {}
@@ -8,10 +7,10 @@ type 发出事件类型 = {
 }
 type 监听事件类型 = {}
 
-export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-tabs', this)
+    this.注册组件('lsby-tabs-vertical', this)
   }
 
   private 当前索引: number = 0
@@ -25,21 +24,25 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
   protected override async 当加载时(): Promise<void> {
     let style = this.获得宿主样式()
     style.display = 'flex'
-    style.flexDirection = 'column'
+    style.flexDirection = 'row'
     style.width = '100%'
     style.height = '100%'
 
     this.标签头容器 = document.createElement('div')
     Object.assign(this.标签头容器.style, {
       display: 'flex',
-      borderBottom: '1px solid #ccc',
+      flexDirection: 'column',
+      borderRight: '1px solid #ccc',
       gap: '10px',
+      minWidth: '100px',
     })
 
     this.插槽容器 = document.createElement('div')
-    this.插槽容器.style.flex = '1'
-    this.插槽容器.style.display = 'flex'
-    this.插槽容器.style.flexDirection = 'column'
+    Object.assign(this.插槽容器.style, {
+      flex: '1',
+      display: 'flex',
+      flexDirection: 'column',
+    })
 
     this.shadow.appendChild(this.标签头容器)
     this.shadow.appendChild(this.插槽容器)
@@ -60,9 +63,10 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
       按钮.textContent = 标签名
       按钮.style.padding = '6px 12px'
       按钮.style.border = 'none'
-      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid #000' : 'none'
+      按钮.style.borderLeft = idx === this.当前索引 ? '2px solid #000' : 'none'
       按钮.style.background = 'none'
       按钮.style.cursor = 'pointer'
+      按钮.style.textAlign = 'left'
 
       按钮.onclick = (): void => this.切换标签(idx)
 
