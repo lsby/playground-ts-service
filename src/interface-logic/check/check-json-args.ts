@@ -10,9 +10,9 @@ export class 检查JSON参数<描述类型 extends z.AnyZodObject> extends 接�
 > {
   private 插件: Task<JSON解析插件<描述类型>>
 
-  public constructor(描述: 描述类型) {
+  public constructor(描述: 描述类型, 参数: ConstructorParameters<typeof JSON解析插件<any>>['1'] = {}) {
     super()
-    this.插件 = new Task(async () => new JSON解析插件(描述, {}))
+    this.插件 = new Task(async () => new JSON解析插件(描述, 参数))
   }
 
   public override 获得插件们(): [Task<JSON解析插件<描述类型>>] {

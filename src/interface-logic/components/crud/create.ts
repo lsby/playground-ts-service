@@ -8,21 +8,15 @@ export class 新增逻辑<
   表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
   插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+  参数类型 extends { 数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>> },
   后置行为返回类型 extends Record<string, unknown>,
   DB = 从插件类型计算DB<插件类型>,
 > extends 接口逻辑<[插件类型], 逻辑附加参数类型, never, 后置行为返回类型> {
   public constructor(
     private kysely插件: 插件类型,
     private 表名: 表名类型,
-    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
-      数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>
-    }>,
-    private 后置行为: (
-      逻辑附加参数: 逻辑附加参数类型,
-      参数结果: {
-        数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>>
-      },
-    ) => Promise<后置行为返回类型>,
+    private 计算参数: (data: 逻辑附加参数类型) => Promise<参数类型>,
+    private 后置行为: (逻辑附加参数: 逻辑附加参数类型, 参数结果: 参数类型) => Promise<后置行为返回类型>,
   ) {
     super()
   }
