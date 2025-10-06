@@ -52,7 +52,7 @@
   "dependencies": {
     "@capacitor/android": "^7.4.3",
     "@capacitor/dialog": "^7.0.2",
-    "@lsby/net-core": "^0.7.11",
+    "@lsby/net-core": "^0.7.19",
     "@lsby/net-core-file-upload": "^0.1.11",
     "@lsby/net-core-jwt": "^0.1.13",
     "@lsby/net-core-kysely": "^2.0.8",
@@ -62,7 +62,7 @@
     "@lsby/ts-global": "^0.0.8",
     "@lsby/ts-kysely": "^0.2.7",
     "@lsby/ts-log": "^0.1.2",
-    "@lsby/ts-post-extend": "^0.0.21",
+    "@lsby/ts-post-extend": "^0.0.22",
     "@lsby/ts-web-component": "^0.1.2",
     "axios": "^1.12.1",
     "bcrypt": "^6.0.0",

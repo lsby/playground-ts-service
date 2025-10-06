@@ -30,13 +30,15 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
         当前索引++
         if (当前数据 === void 0) {
           clearInterval(定时器句柄)
-          await 参数.ws操作?.关闭ws连接()
           return
         }
         await 参数.ws操作?.发送ws信息({ data: 当前数据 }).catch(() => {})
       }, 1000)
 
       return new Right({})
+    },
+    async (参数) => {
+      await 参数.ws操作?.关闭ws连接()
     },
   ),
 )
