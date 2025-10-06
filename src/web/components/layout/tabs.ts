@@ -32,7 +32,7 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
     this.标签头容器 = document.createElement('div')
     Object.assign(this.标签头容器.style, {
       display: 'flex',
-      borderBottom: '1px solid #ccc',
+      borderBottom: '1px solid var(--边框颜色)',
       gap: '10px',
     })
 
@@ -60,7 +60,7 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
       按钮.textContent = 标签名
       按钮.style.padding = '6px 12px'
       按钮.style.border = 'none'
-      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid #000' : 'none'
+      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid var(--文字颜色)' : 'none'
       按钮.style.background = 'none'
       按钮.style.cursor = 'pointer'
 

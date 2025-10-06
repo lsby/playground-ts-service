@@ -28,7 +28,7 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
       li.style.alignItems = 'center'
       li.style.padding = '0.5em'
       li.style.marginBottom = '0.5em'
-      li.style.border = '1px solid #ddd'
+      li.style.border = '1px solid var(--边框颜色)'
       li.style.borderRadius = '4px'
 
       let 删除按钮 = document.createElement('button')
@@ -61,7 +61,7 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
     this.输入框.placeholder = '请输入任务内容'
     this.输入框.style.padding = '0.5em'
     this.输入框.style.fontSize = '1em'
-    this.输入框.style.border = '1px solid #ccc'
+    this.输入框.style.border = '1px solid var(--边框颜色)'
     this.输入框.style.borderRadius = '4px'
     this.输入框.style.boxSizing = 'border-box'
 
@@ -71,8 +71,8 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
     this.添加按钮.style.padding = '0.5em 1em'
     this.添加按钮.style.fontSize = '1em'
     this.添加按钮.style.border = 'none'
-    this.添加按钮.style.backgroundColor = '#007bff'
-    this.添加按钮.style.color = 'white'
+    this.添加按钮.style.backgroundColor = 'var(--按钮背景)'
+    this.添加按钮.style.color = 'var(--按钮文字)'
     this.添加按钮.style.borderRadius = '4px'
     this.添加按钮.style.cursor = 'pointer'
 

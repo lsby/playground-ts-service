@@ -8,7 +8,6 @@ import {
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { 主窗口 } from '../../../../electron'
 
 let 接口路径 = '/api/demo/electron/set-focus' as const
 let 接口方法 = 'post' as const
@@ -22,6 +21,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
     ],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
+      let { 主窗口 } = await import('../../../../electron')
       主窗口?.setFocusable(参数.value)
       return new Right({})
     },

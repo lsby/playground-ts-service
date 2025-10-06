@@ -32,7 +32,7 @@ export abstract class 表格组件基类<
     let 表格元素 = document.createElement('table')
     表格元素.style.width = '100%'
     表格元素.style.borderCollapse = 'collapse'
-    表格元素.style.border = '1px solid #ccc'
+    表格元素.style.border = '1px solid var(--边框颜色)'
 
     let 表头 = document.createElement('thead')
     let 表头行 = document.createElement('tr')
@@ -42,7 +42,7 @@ export abstract class 表格组件基类<
       if (列名 === null) continue
       let th = document.createElement('th')
       th.textContent = 列名
-      th.style.border = '1px solid #ccc'
+      th.style.border = '1px solid var(--边框颜色)'
       th.style.padding = '8px'
       th.style.textAlign = 'left'
       表头行.appendChild(th)
@@ -59,7 +59,7 @@ export abstract class 表格组件基类<
       空单元格.textContent = '无数据'
       空单元格.style.textAlign = 'center'
       空单元格.style.padding = '12px'
-      空单元格.style.border = '1px solid #ccc'
+      空单元格.style.border = '1px solid var(--边框颜色)'
       空行.appendChild(空单元格)
       表体.appendChild(空行)
     } else {
@@ -67,7 +67,7 @@ export abstract class 表格组件基类<
       for (let 自定义项操作 of Object.entries(自定义项操作们)) {
         let 操作th = document.createElement('th')
         操作th.textContent = 自定义项操作[0]
-        操作th.style.border = '1px solid #ccc'
+        操作th.style.border = '1px solid var(--边框颜色)'
         操作th.style.padding = '8px'
         操作th.style.textAlign = 'left'
         表头行.appendChild(操作th)
@@ -86,7 +86,7 @@ export abstract class 表格组件基类<
           let td = document.createElement('td')
           td.textContent = 数据?.toString() ?? ''
           td.style.padding = '8px'
-          td.style.border = '1px solid #ccc'
+          td.style.border = '1px solid var(--边框颜色)'
           行.appendChild(td)
         }
 
@@ -94,7 +94,7 @@ export abstract class 表格组件基类<
         for (let 自定义项操作 of Object.entries(自定义项操作们)) {
           let 单元格 = document.createElement('td')
           单元格.style.padding = '8px'
-          单元格.style.border = '1px solid #ccc'
+          单元格.style.border = '1px solid var(--边框颜色)'
 
           let 按钮 = document.createElement('button')
           按钮.textContent = 自定义项操作[0]
