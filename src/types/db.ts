@@ -8,8 +8,7 @@ export type system_config = {
     id: string;
     created_at: Generated<string>;
     updated_at: Generated<string>;
-    key: string;
-    value: string;
+    is_initialized: Generated<number>;
 };
 export type user = {
     id: string;
@@ -22,8 +21,7 @@ export type user_config = {
     id: string;
     created_at: Generated<string>;
     updated_at: Generated<string>;
-    key: string;
-    value: string;
+    theme: Generated<string>;
     user_id: string;
 };
 export type DB = {

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
-import { CONST, Global } from '../global/global'
+import { Global } from '../global/global'
 
 export async function init(): Promise<void> {
   let log = await Global.getItem('log').then((a) => a.extend('init'))
@@ -8,12 +8,8 @@ export async function init(): Promise<void> {
   let kysely = await Global.getItem('kysely').then((a) => a.获得句柄())
 
   await log.debug('检索初始化标记...')
-  let 初始化标记 = await kysely
-    .selectFrom('system_config')
-    .select('value')
-    .where('key', '=', CONST.INIT_FLAG)
-    .executeTakeFirst()
-  if (初始化标记?.value === 'true') {
+  let 初始化标记 = await kysely.selectFrom('system_config').select('is_initialized').executeTakeFirst()
+  if (初始化标记?.is_initialized === 1) {
     await log.debug('初始化标记已存在, 跳过初始化')
     return
   }
@@ -53,7 +49,7 @@ export async function init(): Promise<void> {
   }
 
   await log.debug('初始化完成, 写入初始化标记...')
-  await kysely.deleteFrom('system_config').where('key', '=', CONST.INIT_FLAG).execute()
-  await kysely.insertInto('system_config').values({ id: randomUUID(), key: CONST.INIT_FLAG, value: 'true' }).execute()
+  await kysely.deleteFrom('system_config').execute()
+  await kysely.insertInto('system_config').values({ id: randomUUID(), is_initialized: 1 }).execute()
   await log.debug('写入初始化标记完成')
 }
