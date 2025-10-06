@@ -32,7 +32,7 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
     Object.assign(this.标签头容器.style, {
       display: 'flex',
       flexDirection: 'column',
-      borderRight: '1px solid #ccc',
+      borderRight: '1px solid var(--边框颜色)',
       gap: '10px',
       minWidth: '100px',
     })
@@ -63,11 +63,12 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
       按钮.textContent = 标签名
       按钮.style.padding = '6px 12px'
       按钮.style.border = 'none'
-      按钮.style.borderLeft = idx === this.当前索引 ? '2px solid #000' : 'none'
+      按钮.style.borderLeft = idx === this.当前索引 ? '2px solid var(--主色调)' : 'none'
       按钮.style.background = 'none'
       按钮.style.cursor = 'pointer'
       按钮.style.textAlign = 'left'
       按钮.style.userSelect = 'none'
+      按钮.style.color = 'var(--文字颜色)'
 
       按钮.onclick = (): void => this.切换标签(idx)
 
