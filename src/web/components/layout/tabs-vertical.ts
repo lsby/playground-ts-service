@@ -67,6 +67,7 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
       按钮.style.background = 'none'
       按钮.style.cursor = 'pointer'
       按钮.style.textAlign = 'left'
+      按钮.style.userSelect = 'none'
 
       按钮.onclick = (): void => this.切换标签(idx)
 
