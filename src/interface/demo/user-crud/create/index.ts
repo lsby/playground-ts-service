@@ -1,4 +1,5 @@
 import {
+  JSON解析插件,
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
@@ -6,10 +7,10 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Task } from '@lsby/ts-fp-data'
+import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
-import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
 import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
 import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
@@ -27,20 +28,48 @@ let 接口逻辑实现 = 接口逻辑
       () => ({ 表名: 'user', id字段: 'id' }),
     ),
   )
-  .混合(new 检查JSON参数(z.object({ name: z.string(), pwd: z.string() })))
   .混合(
-    new 新增逻辑(
-      new Task(async () => await Global.getItem('kysely-plugin')),
-      'user',
-      async (data) => ({
-        数据: {
-          id: crypto.randomUUID(),
-          name: data.name,
-          pwd: await bcrypt.hash(data.pwd, 10),
-        },
-      }),
-      async () => {
-        return {}
+    接口逻辑.构造(
+      [
+        new Task(async () => {
+          return new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {})
+        }),
+        new Task(async () => await Global.getItem('kysely-plugin')),
+      ],
+      async (参数, 逻辑附加参数, 请求附加参数) => {
+        return 参数.kysely.执行事务Either(async (trx) => {
+          let userId = crypto.randomUUID()
+          return 接口逻辑
+            .空逻辑()
+            .混合(
+              new 新增逻辑(
+                new Task(async () => await Global.getItem('kysely-plugin')),
+                'user',
+                async () => ({
+                  数据: {
+                    id: userId,
+                    name: 参数.name,
+                    pwd: await bcrypt.hash(参数.pwd, 10),
+                  },
+                }),
+                async () => ({}),
+              ),
+            )
+            .混合(
+              new 新增逻辑(
+                new Task(async () => await Global.getItem('kysely-plugin')),
+                'user_config',
+                async () => ({
+                  数据: {
+                    id: crypto.randomUUID(),
+                    user_id: userId,
+                  },
+                }),
+                async () => ({}),
+              ),
+            )
+            .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, 请求附加参数)
+        })
       },
     ),
   )

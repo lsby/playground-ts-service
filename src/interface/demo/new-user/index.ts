@@ -54,7 +54,6 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
               async () => ({
                 数据: {
                   id: crypto.randomUUID(),
-                  theme: 'dark',
                   user_id: userId,
                 },
               }),

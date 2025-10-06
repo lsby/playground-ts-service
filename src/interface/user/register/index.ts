@@ -5,7 +5,7 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Task } from '@lsby/ts-fp-data'
+import { Right, Task } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
@@ -13,7 +13,6 @@ import { Global } from '../../../global/global'
 import { 检查唯一性 } from '../../../interface-logic/check/check-exist'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
 import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
-import { 注册逻辑 } from '../../../interface-logic/components/register'
 
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
@@ -39,11 +38,30 @@ let 接口逻辑实现 = 接口逻辑
     }),
   )
   .混合(
-    new 注册逻辑(new Task(async () => await Global.getItem('kysely-plugin')), 'user', async (data) => ({
-      id: randomUUID(),
-      name: data.userName,
-      pwd: await bcrypt.hash(data.userPassword, 10),
-    })),
+    接口逻辑.构造(
+      [new Task(async () => await Global.getItem('kysely-plugin'))],
+      async (参数, 逻辑附加参数, _请求附加参数) => {
+        return 参数.kysely.执行事务Either(async (trx) => {
+          let userId = randomUUID()
+          await trx
+            .insertInto('user')
+            .values({
+              id: userId,
+              name: 逻辑附加参数.userName,
+              pwd: await bcrypt.hash(逻辑附加参数.userPassword, 10),
+            })
+            .execute()
+          await trx
+            .insertInto('user_config')
+            .values({
+              id: randomUUID(),
+              user_id: userId,
+            })
+            .execute()
+          return new Right({})
+        })
+      },
+    ),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>

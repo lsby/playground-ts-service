@@ -21,7 +21,6 @@ export type user_config = {
     id: string;
     created_at: Generated<string>;
     updated_at: Generated<string>;
-    theme: Generated<string>;
     user_id: string;
 };
 export type DB = {
