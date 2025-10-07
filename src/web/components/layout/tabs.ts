@@ -60,7 +60,7 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
       按钮.textContent = 标签名
       按钮.style.padding = '6px 12px'
       按钮.style.border = 'none'
-      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid var(--文字颜色)' : 'none'
+      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid var(--主色调)' : 'none'
       按钮.style.background = 'none'
       按钮.style.cursor = 'pointer'
       按钮.style.userSelect = 'none'
