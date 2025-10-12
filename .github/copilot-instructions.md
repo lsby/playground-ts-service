@@ -5,8 +5,8 @@
 这是一个具有多个部署目标的全栈 TypeScript 应用程序：
 
 - **Web 服务器**：使用 @lsby/net-core 的 Express-like 服务器
-- **Electron 桌面应用**：跨平台桌面应用程序
-- **安卓应用**：安卓APP
+- **桌面应用**：使用 electron 编译的桌面应用
+- **安卓应用**：使用 capacitor 编译的安卓应用
 - **命令行应用**：命令行应用
 
 ## 项目架构
@@ -21,6 +21,7 @@
    - 位于 `src/interface/` 目录
    - 使用 `@lsby/net-core` 框架自动生成API接口列表和类型
    - 所有业务接口位于 `project` 目录，`demo` 目录仅包含示例代码
+   - 可以引用 `src/interface-logic` 提供的通用抽象
 
 3. **Web 前端**
    - 位于 `src/web/` 目录
@@ -40,13 +41,14 @@
 
 1. **API接口定义**
    - 接口定义放在 `src/interface/` 下对应模块目录
-   - 接口示例见 `src/interface/demo/`
+   - 接口示例在 `src/interface/demo/`
+   - 通用的接口抽象在 `src/interface-logic`
    - 自动生成接口列表到 `src/interface/interface-list.ts`
    - 自动生成类型定义到 `src/types/interface-type.ts`
 
 2. **Web组件开发**
    - 组件必须放在 `src/web/components/` 目录下
-   - 示例组件见 `src/web/components/demo/`
+   - 示例组件在 `src/web/components/demo/`
    - 自动生成组件列表到 `src/web/components/index.ts`
 
 ## 重要文件参考
