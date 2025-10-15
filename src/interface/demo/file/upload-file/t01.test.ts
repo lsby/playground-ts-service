@@ -35,14 +35,15 @@ export default new 接口测试(
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 
-    let login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${'/api/user/login'}`, {
-      userName: name,
-      userPassword: pwd,
-    })
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    let login: { data: { data: { [key: string]: string } } } = await axios.post(
+      `http://127.0.0.1:${env.APP_PORT}${'/api/user/login'}`,
+      {
+        userName: name,
+        userPassword: pwd,
+      },
+    )
     let token = login.data.data['token']
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return (await axios.post(url, formData, { headers: { authorization: token } })).data
   },
 
