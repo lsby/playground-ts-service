@@ -9,3 +9,5 @@ services:
     env_file:
       - ../../.env/.env.development
     restart: always
+    volumes:
+      - ../../db:/opt/app/db
