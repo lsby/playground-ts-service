@@ -24,4 +24,19 @@ const folderPath = 'src/web/components'
 const code = getAllTSFiles(folderPath)
   .filter((a) => a !== 'index')
   .map((a) => `export * from './${a}'`)
-fs.writeFileSync('src/web/components/index.ts', [`// 该文件由脚本自动生成, 请勿修改.`, ...code, ''].join('\n'))
+const newContent = [`// 该文件由脚本自动生成, 请勿修改.`, ...code, ''].join('\n')
+
+const targetFile = 'src/web/components/index.ts'
+let existingContent = ''
+try {
+  existingContent = fs.readFileSync(targetFile, 'utf-8')
+} catch (error) {
+  // 文件不存在时，existingContent 为空字符串
+}
+
+if (existingContent !== newContent) {
+  fs.writeFileSync(targetFile, newContent)
+  console.log(`文件 ${targetFile} 已更新。`)
+} else {
+  console.log(`文件 ${targetFile} 内容未变化，跳过写入。`)
+}
