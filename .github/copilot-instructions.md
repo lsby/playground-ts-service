@@ -43,12 +43,14 @@
    - 接口定义放在 `src/interface/` 下对应模块目录
    - 接口示例在 `src/interface/demo/`
    - 通用的接口抽象在 `src/interface-logic`
+   - 接口的输入和返回值不要使用中文
    - 自动生成接口列表到 `src/interface/interface-list.ts`
    - 自动生成类型定义到 `src/types/interface-type.ts`
 
 2. **Web组件开发**
    - 组件必须放在 `src/web/components/` 目录下
    - 示例组件在 `src/web/components/demo/`
+   - 组件的注册名不要使用中文
    - 自动生成组件列表到 `src/web/components/index.ts`
 
 ## 重要文件参考
