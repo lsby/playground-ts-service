@@ -16,10 +16,11 @@ export async function 请求用例<接口类型 extends 任意接口>(
 
   let token: string | null = null
   if (typeof 登录 !== 'undefined') {
-    let login = (await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
+    let login = await axios.post(`http://127.0.0.1:${env.APP_PORT}${登录.接口}`, {
       userName: 登录.用户名,
       userPassword: 登录.密码,
-    })) as { data: { data: { [key: string]: string } } }
+    })
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     token = login.data.data[登录.凭据属性] ?? null
   }
 

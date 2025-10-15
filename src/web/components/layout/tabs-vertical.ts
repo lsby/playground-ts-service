@@ -14,8 +14,8 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
   }
 
   private 当前索引: number = 0
-  private 标签头容器!: HTMLDivElement
-  private 插槽容器!: HTMLDivElement
+  private 标签头容器: HTMLDivElement = document.createElement('div')
+  private 插槽容器: HTMLDivElement = document.createElement('div')
 
   public constructor(属性: 属性类型) {
     super(属性)
@@ -28,21 +28,15 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
     style.width = '100%'
     style.height = '100%'
 
-    this.标签头容器 = document.createElement('div')
-    Object.assign(this.标签头容器.style, {
-      display: 'flex',
-      flexDirection: 'column',
-      borderRight: '1px solid var(--边框颜色)',
-      gap: '10px',
-      minWidth: '100px',
-    })
+    this.标签头容器.style.display = 'flex'
+    this.标签头容器.style.flexDirection = 'column'
+    this.标签头容器.style.borderRight = '1px solid var(--边框颜色)'
+    this.标签头容器.style.gap = '10px'
+    this.标签头容器.style.minWidth = '100px'
 
-    this.插槽容器 = document.createElement('div')
-    Object.assign(this.插槽容器.style, {
-      flex: '1',
-      display: 'flex',
-      flexDirection: 'column',
-    })
+    this.插槽容器.style.flex = '1'
+    this.插槽容器.style.display = 'flex'
+    this.插槽容器.style.flexDirection = 'column'
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
     this.插槽容器.appendChild(插槽)

@@ -87,7 +87,7 @@ export class 查询逻辑<
     }
 
     let 查询总数 = (await builder总数.executeTakeFirst()) as { total: string }
-    let 查询数据 = (await builder数据.execute()) as any
+    let 查询数据 = await builder数据.execute()
     查询数据 = (await this.后置处理(查询数据)) as any
 
     return new Right({
