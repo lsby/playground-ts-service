@@ -40,6 +40,9 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
     this.插槽容器.style.display = 'flex'
     this.插槽容器.style.flexDirection = 'column'
 
+    let 插槽: HTMLSlotElement = document.createElement('slot')
+    this.插槽容器.appendChild(插槽)
+
     this.shadow.appendChild(this.标签头容器)
     this.shadow.appendChild(this.插槽容器)
 
@@ -70,13 +73,14 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
       this.标签头容器.appendChild(按钮)
     })
 
-    this.插槽容器.innerHTML = ''
-    let 当前内容 = 标签元素[this.当前索引]
-    if (当前内容 !== void 0) {
-      let 克隆节点 = 当前内容.cloneNode(true) as HTMLElement
-      克隆节点.style.display = 'flex'
-      this.插槽容器.appendChild(克隆节点)
-    }
+    标签元素.forEach((el, idx) => {
+      if (idx === this.当前索引) {
+        el.style.display = 'flex'
+        el.style.flex = '1'
+      } else {
+        el.style.display = 'none'
+      }
+    })
   }
 
   private 切换标签(index: number): void {
