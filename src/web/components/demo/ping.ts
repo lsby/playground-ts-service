@@ -1,4 +1,5 @@
-import { 组件基类, 路由事件派发对象, 路由事件派发类型 } from '@lsby/ts-web-component'
+import { 组件基类 } from '../../base/base'
+import { 路由事件派发对象, 路由事件派发类型 } from '../mechanics/route'
 
 export type ping事件 = 路由事件派发类型<'ping', number>
 type 属性类型 = {}

@@ -1,5 +1,5 @@
 import { Dialog } from '@capacitor/dialog'
-import { 组件基类 } from '@lsby/ts-web-component'
+import { 组件基类 } from '../../base/base'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

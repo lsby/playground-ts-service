@@ -1,4 +1,5 @@
-import { 组件基类, 路由事件监听对象, 路由事件监听类型 } from '@lsby/ts-web-component'
+import { 组件基类 } from '../../base/base'
+import { 路由事件监听对象, 路由事件监听类型 } from '../mechanics/route'
 import { ping事件 } from './ping'
 
 type 属性类型 = {}

@@ -1,4 +1,4 @@
-import { 组件基类 } from '@lsby/ts-web-component'
+import { 组件基类 } from '../../base/base'
 import { LsbyColumn } from '../layout/column'
 import { LsbyContainer } from '../layout/container'
 import { LsbyRow } from '../layout/row'

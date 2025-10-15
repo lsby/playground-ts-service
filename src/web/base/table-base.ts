@@ -1,4 +1,4 @@
-import { 组件基类 } from '@lsby/ts-web-component'
+import { 组件基类 } from './base'
 
 export type 自定义操作 = Record<string, () => Promise<void>>
 export type 自定义项操作<数据项> = Record<string, (数据: 数据项) => Promise<void>>

@@ -1,4 +1,4 @@
-import { 组件基类 } from '@lsby/ts-web-component'
+import { 组件基类 } from '../../base/base'
 import { GlobalWeb } from '../../global/global'
 import { LsbyContainer } from '../layout/container'
 

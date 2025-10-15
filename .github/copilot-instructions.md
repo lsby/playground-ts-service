@@ -25,7 +25,8 @@
 
 3. **Web 前端**
    - 位于 `src/web/` 目录
-   - 使用自定义Web组件 (`@lsby/ts-web-component`)
+   - 使用自定义Web组件基类 `src/web/base/base.ts`
+   - 兄弟组件通信可使用自定义路由模块 `src/web/components/mechanics/route.ts`
    - 组件自动注册系统 (见 `src/web/components/index.ts`)
    - 所有业务组件位于 `project` 目录，`demo` 目录仅包含示例, `layout` 目录则包含常用布局
 
