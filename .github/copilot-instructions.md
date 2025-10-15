@@ -74,6 +74,7 @@
 - 总是考虑数组通过下标取项时可能出现的越界问题, 并做安全检查 (数组若越界, 则值为void 0)
 - 总是使用严格的条件判断, 不省略判断条件等于真, 空, null的情况
 - 尽可能不要使用简写
-- 尽可能使用style属性赋值, 而不是style的cssText文本或textContent文本, 不要使用Object.assign
+- 尽可能使用style属性赋值, 而不是style的cssText文本或textContent文本
+- 不要使用Object.assign对style批量赋值, 而是使用.style一个一个赋值, 否则会缺少类型检查
 - 不要删除已有的空值断言, 注释等
 - 如果中文变量名或函数名等能表达含义, 就不需要写同样含义的注释了
