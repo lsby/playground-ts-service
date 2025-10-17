@@ -16,6 +16,7 @@ export type user = {
     updated_at: Generated<string>;
     name: string;
     pwd: string;
+    is_admin: number;
 };
 export type user_config = {
     id: string;

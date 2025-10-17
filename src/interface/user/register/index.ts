@@ -49,6 +49,7 @@ let 接口逻辑实现 = 接口逻辑
               id: userId,
               name: 逻辑附加参数.userName,
               pwd: await bcrypt.hash(逻辑附加参数.userPassword, 10),
+              is_admin: 0,
             })
             .execute()
           await trx

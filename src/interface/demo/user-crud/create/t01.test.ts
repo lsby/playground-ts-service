@@ -15,7 +15,7 @@ export default new 接口测试(
     await cleanDB(db)
     await db
       .insertInto('user')
-      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10) })
+      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10), is_admin: 0 })
       .execute()
   },
 

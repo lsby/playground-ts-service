@@ -11,7 +11,7 @@ import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
-import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
+import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
 let 接口路径 = '/api/demo/user-crud/create' as const
@@ -20,12 +20,12 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查登录(
+    new 检查管理员登录(
       [
         new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
         new Task(async () => await Global.getItem('kysely-plugin')),
       ],
-      () => ({ 表名: 'user', id字段: 'id' }),
+      () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' }),
     ),
   )
   .混合(
@@ -50,6 +50,7 @@ let 接口逻辑实现 = 接口逻辑
                     id: userId,
                     name: 参数.name,
                     pwd: await bcrypt.hash(参数.pwd, 10),
+                    is_admin: 0,
                   },
                 }),
                 async () => ({}),
@@ -78,7 +79,7 @@ type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑�
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
-let 接口错误类型描述 = z.enum(['未登录'])
+let 接口错误类型描述 = z.enum(['未登录', '非管理员'])
 let 接口正确类型描述 = z.object({})
 
 export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)

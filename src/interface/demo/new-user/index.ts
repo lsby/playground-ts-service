@@ -40,6 +40,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
                   id: userId,
                   name: 参数.name,
                   pwd: await bcrypt.hash(参数.pwd, 10),
+                  is_admin: 0,
                 },
               }),
               async () => {

@@ -43,8 +43,9 @@ model user {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  name String @unique // 用户名
-  pwd  String // 密码
+  name     String  @unique // 用户名
+  pwd      String // 密码
+  is_admin Boolean // 是管理员
 
   user_config user_config[]
 }
