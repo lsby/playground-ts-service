@@ -31,8 +31,8 @@
 - 所有业务组件位于 `project` 目录，`demo` 目录仅包含示例, `layout` 目录则包含常用布局
 - 使用自定义Web组件基类 `src/web/base/base.ts`
 - 兄弟组件通信可使用自定义路由模块 `src/web/components/mechanics/route.ts`
-- 前端支持黑暗模式, 见 `src/web/page/global.css`
-- 系统会自动注册组件 (见 `src/web/components/index.ts`)
+- 需要支持黑暗模式, 见 `src/web/page/style/global.css`
+- 系统会自动生成组件列表
 
 4. **Electron应用**
 

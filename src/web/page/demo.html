@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style/global.css" />
+    <script src="../components/index.ts" type="module"></script>
+  </head>
+
+  <body>
+    <lsby-set-debug></lsby-set-debug>
+    <lsby-set-html-full></lsby-set-html-full>
+    <lsby-login-check></lsby-login-check>
+
+    <lsby-tabs>
+      <lsby-container 标签="web测试" style="justify-content: space-around">
+        <lsby-row>
+          <lsby-flex-item-container>
+            todo测试
+            <lsby-demo-todo-list></lsby-demo-todo-list>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
+            表格测试
+            <lsby-demo-table></lsby-demo-table>
+          </lsby-flex-item-container>
+        </lsby-row>
+        <lsby-row>
+          <lsby-flex-item-container>
+            加法测试
+            <lsby-demo-add a="1" b="2"></lsby-demo-add>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
+            ws测试
+            <lsby-demo-ws-test></lsby-demo-ws-test>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
+            路由测试
+            <lsby-route>
+              <lsby-container>
+                <lsby-demo-ping></lsby-demo-ping>
+                <lsby-demo-pong></lsby-demo-pong>
+              </lsby-container>
+            </lsby-route>
+          </lsby-flex-item-container>
+        </lsby-row>
+        <lsby-row>
+          <lsby-flex-item-container>
+            <lsby-demo-toast></lsby-demo-toast>
+          </lsby-flex-item-container>
+          <lsby-flex-item-container>
+            <lsby-demo-dialog></lsby-demo-dialog>
+          </lsby-flex-item-container>
+        </lsby-row>
+      </lsby-container>
+      <div 标签="capacitor测试">
+        <lsby-demo-capacitor></lsby-demo-capacitor>
+      </div>
+      <div 标签="electron测试">
+        <lsby-demo-electron></lsby-demo-electron>
+      </div>
+    </lsby-tabs>
+  </body>
+</html>

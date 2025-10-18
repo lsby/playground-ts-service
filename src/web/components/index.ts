@@ -1,6 +1,7 @@
 // 该文件由脚本自动生成, 请勿修改.
 export * from './demo/add'
 export * from './demo/capacitor'
+export * from './demo/dialog-demo'
 export * from './demo/electron'
 export * from './demo/ping'
 export * from './demo/pong'
