@@ -2,6 +2,7 @@ import { 不安全的扩展WebPost, 不安全的扩展WebPost表单 } from '@lsb
 import { InterfaceType } from '../../types/interface-type'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
 import { GlobalWeb } from './global'
+import { 错误提示 } from './toast'
 
 export class API管理器 {
   private 本地存储名称 = 'lsby-api-component-base-token'
@@ -102,7 +103,7 @@ export class API管理器 {
 
     if (请求结果.status === 'fail') {
       let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
-      alert(提示)
+      await 错误提示(提示)
       throw new Error(提示)
     }
     return 请求结果.data as any
@@ -124,7 +125,7 @@ export class API管理器 {
 
     if (请求结果.status === 'fail') {
       let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
-      alert(提示)
+      await 错误提示(提示)
       throw new Error(提示)
     }
     return 请求结果.data as any
