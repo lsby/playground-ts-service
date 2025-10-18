@@ -1,0 +1,26 @@
+{
+    "recommendations": [
+        // 翻译
+        "codeinchinese.englishchinesedictionary",
+        // 中文代码补全
+        "codeinchinese.chineseinputassistant",
+        // .envw文件支持
+        "mikestead.dotenv",
+        // eslint
+        "dbaeumer.vscode-eslint",
+        // 格式化切换开关
+        "tombonnike.vscode-status-bar-format-toggle",
+        // 快速打开多个文件
+        "fabiospampinato.vscode-open-multiple-files",
+        // 格式化
+        "esbenp.prettier-vscode",
+        // 数据库
+        "prisma.prisma",
+        // 测试
+        "humao.rest-client",
+        // sqlite查看
+        "qwtel.sqlite-viewer",
+        // 自动处理模板字符串
+        "meganrogge.template-string-converter",
+    ]
+}
