@@ -4,7 +4,7 @@
 /thunder-tests
 /db/*
 !**/.gitkeep
-.parcel-cache
+/.parcel-cache
 /android
 /OCR-portable-python*
 /package
