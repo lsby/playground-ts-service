@@ -65,6 +65,10 @@
 - 组件的注册名不要使用中文
 - 系统会自动生成组件列表到 `src/web/components/index.ts`
 
+3. **其他**
+
+- 使用pnpm安装依赖
+
 ## 重要文件参考
 
 - `prisma/schema.prisma`: 数据库模型定义
