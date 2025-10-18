@@ -14,46 +14,56 @@
 ### 核心组件
 
 1. **数据库层**
-   - 使用 Prisma + Kysely 管理 SQLite 数据库
-   - Schema 定义在 `prisma/schema.prisma`
+
+- 使用 Prisma + Kysely 管理 SQLite 数据库
+- Schema 定义在 `prisma/schema.prisma`
 
 2. **接口层**
-   - 位于 `src/interface/` 目录
-   - 使用 `@lsby/net-core` 框架自动生成API接口列表和类型
-   - 所有业务接口位于 `project` 目录，`demo` 目录仅包含示例代码
-   - 可以引用 `src/interface-logic` 提供的通用抽象
+
+- 位于 `src/interface/` 目录
+- 所有业务接口位于 `project` 目录，`demo` 目录仅包含示例代码
+- 可以引用 `src/interface-logic` 提供的通用抽象
+- 系统会自动生成API接口列表和类型
 
 3. **Web 前端**
-   - 位于 `src/web/` 目录
-   - 使用自定义Web组件基类 `src/web/base/base.ts`
-   - 兄弟组件通信可使用自定义路由模块 `src/web/components/mechanics/route.ts`
-   - 组件自动注册系统 (见 `src/web/components/index.ts`)
-   - 所有业务组件位于 `project` 目录，`demo` 目录仅包含示例, `layout` 目录则包含常用布局
-   - 前端支持黑暗模式, 见 `src/web/page/global.css`
+
+- 位于 `src/web/` 目录
+- 所有业务组件位于 `project` 目录，`demo` 目录仅包含示例, `layout` 目录则包含常用布局
+- 使用自定义Web组件基类 `src/web/base/base.ts`
+- 兄弟组件通信可使用自定义路由模块 `src/web/components/mechanics/route.ts`
+- 前端支持黑暗模式, 见 `src/web/page/global.css`
+- 系统会自动注册组件 (见 `src/web/components/index.ts`)
 
 4. **Electron应用**
-   - 主进程入口: `src/electron.ts`
+
+- 主进程入口: `src/electron.ts`
 
 5. **CLI应用**
-   - 命令行入口: `src/cli.ts`
+
+- 命令行入口: `src/cli.ts`
 
 ## 开发工作流
 
 ### 项目约定
 
 1. **API接口定义**
-   - 接口定义放在 `src/interface/` 下对应模块目录
-   - 接口示例在 `src/interface/demo/`
-   - 通用的接口抽象在 `src/interface-logic`
-   - 接口的输入和返回值不要使用中文
-   - 自动生成接口列表到 `src/interface/interface-list.ts`
-   - 自动生成类型定义到 `src/types/interface-type.ts`
+
+- 接口定义在 `src/interface/`
+- 接口示例在 `src/interface/demo/`
+- 通用的接口抽象在 `src/interface-logic`
+- 接口的输入和返回值的键不要使用中文
+- 尽可能写post接口而不是get接口
+- 系统会自动生成接口列表到 `src/interface/interface-list.ts`
+- 系统会自动生成类型定义到 `src/types/interface-type.ts`
 
 2. **Web组件开发**
-   - 组件必须放在 `src/web/components/` 目录下
-   - 示例组件在 `src/web/components/demo/`
-   - 组件的注册名不要使用中文
-   - 自动生成组件列表到 `src/web/components/index.ts`
+
+- 组件定义在 `src/web/components/`
+- 组件示例在 `src/web/components/demo/`
+- 组件里, 使用 `src/web/global/api.ts` 来请求后端
+  这是一个包装过的post请求, 第三个参数是一个回调, 可以直接获得后端ws的推送信息
+- 组件的注册名不要使用中文
+- 系统会自动生成组件列表到 `src/web/components/index.ts`
 
 ## 重要文件参考
 
