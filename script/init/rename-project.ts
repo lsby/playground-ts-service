@@ -33,13 +33,12 @@ function 递归读取文件(目录路径: string, 排除目录: string[] = []): 
     let 完整路径 = 路径.join(目录路径, 项)
     let 相对路径 = 路径.relative(获取项目根目录(), 完整路径)
 
-    // 跳过需要排除的目录
-    if (排除目录.some((排除) => 相对路径.startsWith(排除))) {
-      continue
-    }
-
     let 状态 = 文件系统.statSync(完整路径)
     if (状态.isDirectory() === true) {
+      // 跳过需要排除的目录
+      if (排除目录.includes(项)) {
+        continue
+      }
       文件列表 = 文件列表.concat(递归读取文件(完整路径, 排除目录))
     } else {
       文件列表.push(完整路径)
@@ -58,7 +57,6 @@ function 替换文件内容(文件路径: string, 配置: 重命名配置): bool
 
   // 按顺序替换，从最具体的到最一般的
   内容 = 内容.replaceAll(配置.旧项目名_斜杠, 配置.新项目名_斜杠)
-  内容 = 内容.replaceAll(配置.旧项目名_冒号 + ':*', 配置.新项目名_冒号 + ':*')
   内容 = 内容.replaceAll(配置.旧项目名_冒号, 配置.新项目名_冒号)
   内容 = 内容.replaceAll(配置.旧项目名_点分, 配置.新项目名_点分)
   内容 = 内容.replaceAll(配置.旧项目名_短横线, 配置.新项目名_短横线)
@@ -156,7 +154,7 @@ async function 主函数(): Promise<void> {
   console.log(`  ${配置.旧项目名_短横线} → ${配置.新项目名_短横线}\n`)
 
   // 需要排除的目录
-  let 排除目录 = ['node_modules', 'dist', 'coverage', 'db', 'deploy', 'android', '.parcel-cache']
+  let 排除目录 = ['node_modules', 'dist', 'coverage', 'package', 'db', 'deploy', 'android', '.parcel-cache']
 
   // 获取所有需要处理的文件
   let 项目根目录 = 获取项目根目录()
