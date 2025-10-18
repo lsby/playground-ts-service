@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron'
+import { app, BrowserWindow, Menu, screen } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { z } from 'zod'
@@ -6,15 +6,23 @@ import { App } from './app/app'
 import { Global } from './global/global'
 import { init } from './init/init'
 
-let log = await Global.getItem('log').then((a) => a.extend('electron'))
-
-await init()
-await new App().run()
+try {
+  await init()
+  await new App().run()
+} catch (error) {
+  console.error('启动过程中发生错误:', error)
+  app.quit()
+}
 
 export let 主窗口: BrowserWindow | null = null
-let 窗口状态路径 = path.resolve(import.meta.dirname, 'config', 'window-state.json')
 
-function 读取窗口状态(): Electron.Rectangle {
+let 资源目录 = process.resourcesPath
+let 预加载脚本路径 = path.join(资源目录, 'preload.js')
+let 窗口状态路径 = path.join(资源目录, 'window-state.json')
+
+async function 读取窗口状态(): Promise<Electron.Rectangle> {
+  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+
   try {
     if (fs.existsSync(窗口状态路径)) {
       let data = z
@@ -32,7 +40,9 @@ function 读取窗口状态(): Electron.Rectangle {
   }
   return { width: 800, height: 600, x: 0, y: 0 }
 }
-function 保存窗口状态(win: BrowserWindow): void {
+async function 保存窗口状态(win: BrowserWindow): Promise<void> {
+  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+
   try {
     let bounds = win.getBounds()
     if (fs.existsSync(窗口状态路径) === false) fs.mkdirSync(path.dirname(窗口状态路径), { recursive: true })
@@ -57,9 +67,6 @@ async function 创建主窗口(): Promise<void> {
   let env = await Global.getItem('env').then((a) => a.获得环境变量())
   let 开发环境 = env.NODE_ENV === 'development'
 
-  let 预加载脚本路径 = path.resolve(import.meta.dirname, 'tools', 'electron', 'preload.js')
-  let 预加载目录 = path.dirname(预加载脚本路径)
-  if (fs.existsSync(预加载目录) === false) fs.mkdirSync(预加载目录, { recursive: true })
   let 预加载脚本 = [
     '// 该文件由脚本自动生成, 请勿修改.',
     "const { contextBridge, webUtils } = require('electron')",
@@ -70,7 +77,7 @@ async function 创建主窗口(): Promise<void> {
   ].join('\n')
   fs.writeFileSync(预加载脚本路径, 预加载脚本)
 
-  let 窗口状态 = 读取窗口状态()
+  let 窗口状态 = await 读取窗口状态()
   主窗口 = new BrowserWindow({
     width: 窗口状态.width,
     height: 窗口状态.height,
@@ -94,11 +101,34 @@ async function 创建主窗口(): Promise<void> {
     }),
   )
 
-  if (开发环境) 主窗口.webContents.openDevTools({ mode: 'detach', activate: false })
-  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/`)
+  // 创建菜单
+  let 模板 = [
+    {
+      label: '页面',
+      submenu: [
+        {
+          label: '服务器管理',
+          click: (): void => {
+            if (主窗口 !== null) void 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/server-manage.html`)
+          },
+        },
+        {
+          label: 'Docker部署',
+          click: (): void => {
+            if (主窗口 !== null) void 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/deploy-docker.html`)
+          },
+        },
+      ],
+    },
+  ]
+  let 菜单 = Menu.buildFromTemplate(模板)
+  Menu.setApplicationMenu(菜单)
 
-  主窗口.on('close', () => {
-    if (主窗口 !== null) 保存窗口状态(主窗口)
+  if (开发环境) 主窗口.webContents.openDevTools({ mode: 'detach', activate: false })
+  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/server-manage.html`)
+
+  主窗口.on('close', async () => {
+    if (主窗口 !== null) await 保存窗口状态(主窗口)
   })
   主窗口.on('closed', () => (主窗口 = null))
 }
