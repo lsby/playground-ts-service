@@ -25,37 +25,6 @@ export class API管理器 {
     localStorage.removeItem(this.本地存储名称)
   }
 
-  public async 请求表单接口<接口路径 extends InterfaceType[number]['path']>(
-    接口路径: 接口路径,
-    表单数据: FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
-    ) => Promise<void>,
-    ws关闭回调?: (e: CloseEvent) => Promise<void>,
-    ws错误回调?: (e: Event) => Promise<void>,
-  ): Promise<
-    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'errorOutput'>
-    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
-  > {
-    try {
-      let 头: { [key: string]: string } = {}
-      if (this.token !== null) {
-        头['authorization'] = this.token
-      }
-
-      return await 不安全的扩展WebPost表单(
-        GlobalWeb.getItemSync('API前缀') + 接口路径,
-        表单数据,
-        头,
-        ws信息回调,
-        ws关闭回调,
-        ws错误回调,
-      )
-    } catch (e) {
-      return { status: 'fail', data: String(e) } as any
-    }
-  }
-
   public async 请求接口<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
@@ -86,7 +55,6 @@ export class API管理器 {
       return { status: 'fail', data: String(e) } as any
     }
   }
-
   public async 请求接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
@@ -109,6 +77,36 @@ export class API管理器 {
     return 请求结果.data as any
   }
 
+  public async 请求表单接口<接口路径 extends InterfaceType[number]['path']>(
+    接口路径: 接口路径,
+    表单数据: FormData,
+    ws信息回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ) => Promise<void>,
+    ws关闭回调?: (e: CloseEvent) => Promise<void>,
+    ws错误回调?: (e: Event) => Promise<void>,
+  ): Promise<
+    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'errorOutput'>
+    | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
+  > {
+    try {
+      let 头: { [key: string]: string } = {}
+      if (this.token !== null) {
+        头['authorization'] = this.token
+      }
+
+      return await 不安全的扩展WebPost表单(
+        GlobalWeb.getItemSync('API前缀') + 接口路径,
+        表单数据,
+        头,
+        ws信息回调,
+        ws关闭回调,
+        ws错误回调,
+      )
+    } catch (e) {
+      return { status: 'fail', data: String(e) } as any
+    }
+  }
   public async 请求表单接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     表单数据: FormData,
@@ -130,6 +128,7 @@ export class API管理器 {
     }
     return 请求结果.data as any
   }
+
   private 是标准返回格式(
     x: any,
   ): x is { status: 'fail'; data: string } | { status: 'success'; data: Record<string, any> } {

@@ -63,7 +63,7 @@
     "@lsby/ts-global": "^0.0.8",
     "@lsby/ts-kysely": "^0.2.7",
     "@lsby/ts-log": "^0.1.2",
-    "@lsby/ts-post-extend": "^0.0.23",
+    "@lsby/ts-post-extend": "^0.0.25",
     "axios": "^1.12.1",
     "bcrypt": "^6.0.0",
     "kysely": "^0.28.5",
