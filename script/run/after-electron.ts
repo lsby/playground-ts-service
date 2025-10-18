@@ -36,7 +36,7 @@ function 执行后处理(生成目录: string): void {
     'chcp 65001',
     'set DEBUG=*',
     'set ENV_FILE_PATH=.env/.env.production',
-    'playground-ts-service.exe',
+    'lsby-playground-ts-service.exe',
   ].join('\r\n')
 
   const runCmd路径 = path.join(生成目录, 'run.cmd')

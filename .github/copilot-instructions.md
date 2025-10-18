@@ -1,10 +1,10 @@
-# playground-ts-service AI 编码指南
+# lsby-playground-ts-service AI 编码指南
 
 ## 架构概览
 
 这是一个具有多个部署目标的全栈 TypeScript 应用程序：
 
-- **Web 服务器**：使用 @lsby/net-core 的 Express-like 服务器
+- **Web 服务器**：Express-like 服务器
 - **桌面应用**：使用 electron 编译的桌面应用
 - **安卓应用**：使用 capacitor 编译的安卓应用
 - **命令行应用**：命令行应用

@@ -115,8 +115,8 @@
     "packageExports": true
   },
   "build": {
-    "appId": "playground.ts.service",
-    "productName": "playground-ts-service",
+    "appId": "lsby.playground.ts.service",
+    "productName": "lsby-playground-ts-service",
     "files": [
       "dist/**/*"
     ],
@@ -130,7 +130,7 @@
       ]
     },
     "portable": {
-      "artifactName": "playground-ts-service.exe"
+      "artifactName": "lsby-playground-ts-service.exe"
     }
   },
   "targets": {
