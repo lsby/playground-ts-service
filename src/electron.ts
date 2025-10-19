@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, screen } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { z } from 'zod'
@@ -101,31 +101,8 @@ async function 创建主窗口(): Promise<void> {
     }),
   )
 
-  // 创建菜单
-  let 模板 = [
-    {
-      label: '页面',
-      submenu: [
-        {
-          label: '服务器管理',
-          click: (): void => {
-            if (主窗口 !== null) void 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/server-manage.html`)
-          },
-        },
-        {
-          label: 'Docker部署',
-          click: (): void => {
-            if (主窗口 !== null) void 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/deploy-docker.html`)
-          },
-        },
-      ],
-    },
-  ]
-  let 菜单 = Menu.buildFromTemplate(模板)
-  Menu.setApplicationMenu(菜单)
-
   if (开发环境) 主窗口.webContents.openDevTools({ mode: 'detach', activate: false })
-  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/server-manage.html`)
+  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/`)
 
   主窗口.on('close', async () => {
     if (主窗口 !== null) await 保存窗口状态(主窗口)
