@@ -28,6 +28,24 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
     style.width = '100%'
     style.height = '100%'
 
+    let 滚动条样式 = document.createElement('style')
+    滚动条样式.textContent = `
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--背景颜色);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--边框颜色);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--主色调);
+      }
+    `
+    this.shadow.appendChild(滚动条样式)
+
     this.标签头容器.style.display = 'flex'
     this.标签头容器.style.flexDirection = 'column'
     this.标签头容器.style.borderRight = '1px solid var(--边框颜色)'
