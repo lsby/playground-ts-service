@@ -59,7 +59,7 @@
   "dependencies": {
     "@capacitor/android": "^7.4.3",
     "@capacitor/dialog": "^7.0.2",
-    "@lsby/net-core": "^0.7.25",
+    "@lsby/net-core": "^0.7.26",
     "@lsby/net-core-file-upload": "^0.1.13",
     "@lsby/net-core-jwt": "^0.1.13",
     "@lsby/net-core-kysely": "^2.0.8",
@@ -70,11 +70,11 @@
     "@lsby/ts-kysely": "^0.2.7",
     "@lsby/ts-log": "^0.1.2",
     "@lsby/ts-post-extend": "^0.0.25",
-    "axios": "^1.12.1",
+    "axios": "^1.12.2",
     "bcrypt": "^6.0.0",
-    "kysely": "^0.28.5",
+    "kysely": "^0.28.8",
     "kysely-wasm": "^1.2.1",
-    "node-sqlite3-wasm": "^0.8.48",
+    "node-sqlite3-wasm": "^0.8.50",
     "zod": "3.24.2"
   },
   "devDependencies": {

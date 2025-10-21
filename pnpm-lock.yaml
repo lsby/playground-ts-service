@@ -15,17 +15,17 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2(@capacitor/core@7.4.3)
       '@lsby/net-core':
-        specifier: ^0.7.25
-        version: 0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
+        specifier: ^0.7.26
+        version: 0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
       '@lsby/net-core-file-upload':
         specifier: ^0.1.13
-        version: 0.1.13(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(zod@3.24.2)
+        version: 0.1.13(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(zod@3.24.2)
       '@lsby/net-core-jwt':
         specifier: ^0.1.13
-        version: 0.1.13(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@types/node@22.18.2)(lightningcss@1.30.1)(zod@3.24.2)
+        version: 0.1.13(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@types/node@22.18.2)(lightningcss@1.30.1)(zod@3.24.2)
       '@lsby/net-core-kysely':
         specifier: ^2.0.8
-        version: 2.0.8(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@lsby/ts-kysely@0.2.7)(kysely@0.28.5)(zod@3.24.2)
+        version: 2.0.8(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@lsby/ts-kysely@0.2.7)(kysely@0.28.8)(zod@3.24.2)
       '@lsby/ts-cron':
         specifier: ^0.0.7
         version: 0.0.7(@types/node@22.18.2)(lightningcss@1.30.1)
@@ -48,20 +48,20 @@ importers:
         specifier: ^0.0.25
         version: 0.0.25(@types/node@22.18.2)(lightningcss@1.30.1)
       axios:
-        specifier: ^1.12.1
-        version: 1.12.1
+        specifier: ^1.12.2
+        version: 1.12.2
       bcrypt:
         specifier: ^6.0.0
         version: 6.0.0
       kysely:
-        specifier: ^0.28.5
-        version: 0.28.5
+        specifier: ^0.28.8
+        version: 0.28.8
       kysely-wasm:
         specifier: ^1.2.1
-        version: 1.2.1(kysely@0.28.5)
+        version: 1.2.1(kysely@0.28.8)
       node-sqlite3-wasm:
-        specifier: ^0.8.48
-        version: 0.8.48
+        specifier: ^0.8.50
+        version: 0.8.50
       zod:
         specifier: 3.24.2
         version: 3.24.2
@@ -932,8 +932,8 @@ packages:
       kysely: ^0.28.5
       zod: 3.24.2
 
-  '@lsby/net-core@0.7.25':
-    resolution: {integrity: sha512-mktciXbyc3MzcGZG/ylyTBxb/k/btG086higynXXdEriTqnoRnbjLss2Wknet8CIcdIO/koQPem4hxYYq2BIyg==}
+  '@lsby/net-core@0.7.26':
+    resolution: {integrity: sha512-TMMS7ZyYvYvk+mmcyXVrrxe0SWk4DayizijOXziDrf05LWxEmilbs1RQQdN+iVSbHYySG61mGc3Nhor/E1ps5Q==}
     hasBin: true
     peerDependencies:
       '@lsby/ts-fp-data': ^0.2.5
@@ -2039,8 +2039,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@1.12.1:
-    resolution: {integrity: sha512-Kn4kbSXpkFHCGE6rBFNwIv0GQs4AvDT80jlveJDKFxjbTYMUeB4QtsdPCv6H8Cm19Je7IU6VFtRl2zWZI0rudQ==}
+  axios@1.12.2:
+    resolution: {integrity: sha512-vMJzPewAlRyOgxV2dU0Cuz2O8zzzx9VYtbJOaBgXFeLc4IV/Eg50n4LowmehOOR61S8ZMpc2K5Sa7g6A4jfkUw==}
 
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
@@ -3594,8 +3594,8 @@ packages:
     peerDependencies:
       kysely: '>=0.26'
 
-  kysely@0.28.5:
-    resolution: {integrity: sha512-rlB0I/c6FBDWPcQoDtkxi9zIvpmnV5xoIalfCMSMCa7nuA6VGA3F54TW9mEgX4DVf10sXAWCF5fDbamI/5ZpKA==}
+  kysely@0.28.8:
+    resolution: {integrity: sha512-QUOgl5ZrS9IRuhq5FvOKFSsD/3+IA6MLE81/bOOTRA/YQpKDza2sFdN5g6JCB9BOpqMJDGefLCQ9F12hRS13TA==}
     engines: {node: '>=20.0.0'}
 
   lazy-val@1.0.5:
@@ -4051,8 +4051,8 @@ packages:
     resolution: {integrity: sha512-OXdegQq03OmXEjt2hZP33W2YPs/E5BcFQks46+G2gAxs4gHOIVD1u7EqlYLYSKsaIpyKCK9Gbk0ta1/gjRSMRQ==}
     engines: {node: '>=6'}
 
-  node-sqlite3-wasm@0.8.48:
-    resolution: {integrity: sha512-zT7pPsGG4C1qstjrlAXOrrduJkUT3qCwuDuLt5wZMOiPKbEOeI39aK80kIaXaJ0eChizn7oMykcVzKMhe1z6Xw==}
+  node-sqlite3-wasm@0.8.50:
+    resolution: {integrity: sha512-6gZLL2j8LDeh9SgZT0vglfILfyXocHxFTOfAdDTX0vikY59E3ZnL7WB2a5kszumvpVAlVdc5bYVR8hnSgYpXwA==}
 
   node-watch@0.7.4:
     resolution: {integrity: sha512-RinNxoz4W1cep1b928fuFhvAQ5ag/+1UlMDV7rbyGthBIgsiEouS4kvRayvvboxii4m8eolKOIBo3OjDqbc+uQ==}
@@ -6135,16 +6135,16 @@ snapshots:
     dependencies:
       eslint: 8.57.1
 
-  '@lsby/net-core-file-upload@0.1.13(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(zod@3.24.2)':
+  '@lsby/net-core-file-upload@0.1.13(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(zod@3.24.2)':
     dependencies:
-      '@lsby/net-core': 0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
+      '@lsby/net-core': 0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
       '@lsby/ts-fp-data': 0.2.5
       express-fileupload: 1.5.2
       zod: 3.24.2
 
-  '@lsby/net-core-jwt@0.1.13(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@types/node@22.18.2)(lightningcss@1.30.1)(zod@3.24.2)':
+  '@lsby/net-core-jwt@0.1.13(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@types/node@22.18.2)(lightningcss@1.30.1)(zod@3.24.2)':
     dependencies:
-      '@lsby/net-core': 0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
+      '@lsby/net-core': 0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-jwt': 0.0.1(@types/node@22.18.2)(lightningcss@1.30.1)
       zod: 3.24.2
@@ -6165,15 +6165,15 @@ snapshots:
       - supports-color
       - terser
 
-  '@lsby/net-core-kysely@2.0.8(@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@lsby/ts-kysely@0.2.7)(kysely@0.28.5)(zod@3.24.2)':
+  '@lsby/net-core-kysely@2.0.8(@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1))(@lsby/ts-fp-data@0.2.5)(@lsby/ts-kysely@0.2.7)(kysely@0.28.8)(zod@3.24.2)':
     dependencies:
-      '@lsby/net-core': 0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
+      '@lsby/net-core': 0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-kysely': 0.2.7
-      kysely: 0.28.5
+      kysely: 0.28.8
       zod: 3.24.2
 
-  '@lsby/net-core@0.7.25(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)':
+  '@lsby/net-core@0.7.26(@lsby/ts-fp-data@0.2.5)(@types/express@4.17.23)(@types/node@22.18.2)(lightningcss@1.30.1)':
     dependencies:
       '@lsby/ts-fp-data': 0.2.5
       '@lsby/ts-global': 0.0.8(@types/node@22.18.2)(lightningcss@1.30.1)
@@ -6295,7 +6295,7 @@ snapshots:
   '@lsby/ts-kysely@0.2.7':
     dependencies:
       '@lsby/ts-fp-data': 0.2.5
-      kysely: 0.28.5
+      kysely: 0.28.8
 
   '@lsby/ts-log@0.0.3(@types/node@22.18.2)(lightningcss@1.30.1)':
     dependencies:
@@ -7850,7 +7850,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  axios@1.12.1:
+  axios@1.12.2:
     dependencies:
       follow-redirects: 1.15.11
       form-data: 4.0.4
@@ -9742,16 +9742,16 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  kysely-generic-sqlite@1.2.1(kysely@0.28.5):
+  kysely-generic-sqlite@1.2.1(kysely@0.28.8):
     dependencies:
-      kysely: 0.28.5
+      kysely: 0.28.8
 
-  kysely-wasm@1.2.1(kysely@0.28.5):
+  kysely-wasm@1.2.1(kysely@0.28.8):
     dependencies:
-      kysely: 0.28.5
-      kysely-generic-sqlite: 1.2.1(kysely@0.28.5)
+      kysely: 0.28.8
+      kysely-generic-sqlite: 1.2.1(kysely@0.28.8)
 
-  kysely@0.28.5: {}
+  kysely@0.28.8: {}
 
   lazy-val@1.0.5: {}
 
@@ -10172,7 +10172,7 @@ snapshots:
       long-timeout: 0.1.1
       sorted-array-functions: 1.3.0
 
-  node-sqlite3-wasm@0.8.48: {}
+  node-sqlite3-wasm@0.8.50: {}
 
   node-watch@0.7.4: {}
 
