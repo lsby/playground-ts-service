@@ -38,5 +38,5 @@ if (existingContent !== newContent) {
   fs.writeFileSync(targetFile, newContent)
   console.log(`文件 ${targetFile} 已更新。`)
 } else {
-  console.log(`文件 ${targetFile} 内容未变化，跳过写入。`)
+  console.log(`文件 ${targetFile} 内容未变化。`)
 }

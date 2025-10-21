@@ -16,7 +16,7 @@ function 清理Web目录(): void {
         process.exit(1)
       }
     } else {
-      console.log('目录不存在:', 路径)
+      console.log('目录不存在: %o, 跳过对该目录的清理', 路径)
     }
   }
 }
