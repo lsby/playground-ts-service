@@ -20,8 +20,7 @@
 
 2. **接口层**
 
-- 位于 `src/interface/` 目录
-- 所有业务接口位于 `project` 目录，`demo` 目录仅包含示例代码
+- 位于 `src/interface/` 目录, `src/interface/demo` 目录包含示例代码
 - 可以引用 `src/interface-logic` 提供的通用抽象
 - 系统会自动生成API接口列表和类型
 
