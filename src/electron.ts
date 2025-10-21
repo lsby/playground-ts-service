@@ -1,5 +1,6 @@
 import { app, BrowserWindow, screen } from 'electron'
 import fs from 'fs'
+import net from 'net'
 import path from 'path'
 import { z } from 'zod'
 import { App } from './app/app'
@@ -15,6 +16,32 @@ try {
 }
 
 export let 主窗口: BrowserWindow | null = null
+
+async function 检查端口可用(端口: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    let 服务器 = net.createServer()
+    服务器.listen(端口, '127.0.0.1', () => {
+      服务器.close()
+      resolve(true)
+    })
+    服务器.on('error', () => {
+      resolve(false)
+    })
+  })
+}
+
+async function 获取随机可用端口(): Promise<number> {
+  for (let 尝试次数 = 0; 尝试次数 < 10; 尝试次数++) {
+    let 端口 = Math.floor(Math.random() * (65535 - 1024)) + 1024
+    if (await 检查端口可用(端口)) {
+      return 端口
+    }
+  }
+  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+  log.errorSync('尝试10次后仍未找到可用端口，退出应用')
+  app.quit()
+  throw new Error('未找到可用端口')
+}
 
 let 资源目录 = process.resourcesPath
 let 预加载脚本路径 = path.join(资源目录, 'preload.js')
@@ -67,6 +94,11 @@ async function 创建主窗口(): Promise<void> {
   let env = await Global.getItem('env').then((a) => a.获得环境变量())
   let 开发环境 = env.NODE_ENV === 'development'
 
+  let 端口 = env.WEB_PORT
+  if ((await 检查端口可用(端口)) === false) {
+    端口 = await 获取随机可用端口()
+  }
+
   let 预加载脚本 = [
     '// 该文件由脚本自动生成, 请勿修改.',
     "const { contextBridge, webUtils } = require('electron')",
@@ -102,7 +134,7 @@ async function 创建主窗口(): Promise<void> {
   )
 
   if (开发环境) 主窗口.webContents.openDevTools({ mode: 'detach', activate: false })
-  await 主窗口.loadURL(`http://localhost:${env.WEB_PORT}/`)
+  await 主窗口.loadURL(`http://localhost:${端口}/`)
 
   主窗口.on('close', async () => {
     if (主窗口 !== null) await 保存窗口状态(主窗口)
