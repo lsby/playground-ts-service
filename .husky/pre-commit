@@ -1,2 +1,3 @@
 npm run _gen:all
-npm run _check:all
+npm run _check:type
+npx lint-staged

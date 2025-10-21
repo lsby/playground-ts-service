@@ -50,6 +50,12 @@
     "watch:gen:api:type": "cross-env DEBUG=@lsby:* tsx script/watch/watch.ts ./src/interface/ \"npm run _gen:api:type\"",
     "watch:gen:web:index": "cross-env DEBUG=@lsby:* tsx script/watch/watch.ts ./src/web/components/ \"npm run _gen:web:index\""
   },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,html}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
   "dependencies": {
     "@capacitor/android": "^7.4.3",
     "@capacitor/dialog": "^7.0.2",
