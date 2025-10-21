@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style/global.css" />
+    <link rel="stylesheet" href="../global/style/global.css" />
     <script src="../components/index.ts" type="module"></script>
   </head>
 
@@ -43,7 +43,9 @@
             </lsby-route>
           </lsby-flex-item-container>
         </lsby-row>
-        <lsby-row>
+      </lsby-container>
+      <div 标签="提示框测试">
+        <lsby-row style="align-items: flex-start">
           <lsby-flex-item-container>
             <lsby-demo-toast></lsby-demo-toast>
           </lsby-flex-item-container>
@@ -51,12 +53,15 @@
             <lsby-demo-dialog></lsby-demo-dialog>
           </lsby-flex-item-container>
         </lsby-row>
-      </lsby-container>
+      </div>
       <div 标签="capacitor测试">
         <lsby-demo-capacitor></lsby-demo-capacitor>
       </div>
       <div 标签="electron测试">
         <lsby-demo-electron></lsby-demo-electron>
+      </div>
+      <div 标签="关于">
+        <lsby-demo-version></lsby-demo-version>
       </div>
     </lsby-tabs>
   </body>
