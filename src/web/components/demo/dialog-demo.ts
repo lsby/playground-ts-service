@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 显示对话框, 显示确认对话框 } from '../../global/dialog'
+import { 显示对话框, 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 
 type 属性类型 = Record<string, string>
 type 发出事件类型 = Record<string, any>
@@ -63,9 +63,9 @@ export class 对话框演示组件 extends 组件基类<属性类型, 发出事�
     let 确认对话框按钮 = 创建按钮('显示确认对话框', async () => {
       let 结果 = await 显示确认对话框('您确定要执行此操作吗？')
       if (结果 === true) {
-        alert('用户选择了确定')
+        await 显示确认对话框('用户选择了确定')
       } else {
-        alert('用户选择了取消')
+        await 显示确认对话框('用户选择了取消')
       }
     })
 
@@ -74,9 +74,9 @@ export class 对话框演示组件 extends 组件基类<属性类型, 发出事�
         '这是一个很长的确认消息，用来测试确认对话框在处理长文本时的表现是否正常。这是一个很长的确认消息，用来测试确认对话框在处理长文本时的表现是否正常。',
       )
       if (结果 === true) {
-        alert('用户选择了确定')
+        await 显示确认对话框('用户选择了确定')
       } else {
-        alert('用户选择了取消')
+        await 显示确认对话框('用户选择了取消')
       }
     })
 
@@ -90,12 +90,44 @@ export class 对话框演示组件 extends 组件基类<属性类型, 发出事�
       }
     })
 
+    let 输入对话框按钮 = 创建按钮('显示输入对话框', async () => {
+      let 结果 = await 显示输入对话框('请输入您的姓名：')
+      if (结果 !== null) {
+        await 显示对话框(`您输入的姓名是：${结果}`)
+      } else {
+        await 显示对话框('您取消了输入')
+      }
+    })
+
+    let 输入对话框带默认值按钮 = 创建按钮('显示带默认值的输入对话框', async () => {
+      let 结果 = await 显示输入对话框('请输入您的年龄：', '25')
+      if (结果 !== null) {
+        await 显示对话框(`您输入的年龄是：${结果}`)
+      } else {
+        await 显示对话框('您取消了输入')
+      }
+    })
+
+    let 长消息输入对话框按钮 = 创建按钮('显示长消息输入对话框', async () => {
+      let 结果 = await 显示输入对话框(
+        '这是一个很长的提示消息，用来测试输入对话框在处理长文本提示时的表现是否正常。这是一个很长的提示消息，用来测试输入对话框在处理长文本提示时的表现是否正常。',
+      )
+      if (结果 !== null) {
+        await 显示对话框(`您输入的内容是：${结果}`)
+      } else {
+        await 显示对话框('您取消了输入')
+      }
+    })
+
     容器.appendChild(标题)
     容器.appendChild(简单对话框按钮)
     容器.appendChild(长文本对话框按钮)
     容器.appendChild(确认对话框按钮)
     容器.appendChild(确认对话框带长文本按钮)
     容器.appendChild(多个对话框按钮)
+    容器.appendChild(输入对话框按钮)
+    容器.appendChild(输入对话框带默认值按钮)
+    容器.appendChild(长消息输入对话框按钮)
 
     this.shadow.appendChild(容器)
   }
