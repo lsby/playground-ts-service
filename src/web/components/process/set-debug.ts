@@ -40,14 +40,14 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
         }
 
         let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
-        log.debugSync('监听事件: %o <= %O, %O', type, listener, options)
+        log.debug('监听事件: %o <= %O, %O', type, listener, options)
 
         if (typeof listener === 'function') {
           originalAddEventListener.call(
             this,
             type,
             (event) => {
-              log.debugSync('事件触发: %o <= %O, %O', type, listener, options)
+              log.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener.call(listener, event)
             },
             options,
@@ -58,7 +58,7 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
             this,
             type,
             (event) => {
-              log.debugSync('事件触发: %o <= %O, %O', type, listener, options)
+              log.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener?.handleEvent.call(listener, event)
             },
             options,
@@ -75,9 +75,9 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
 
         let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
         if (event instanceof CustomEvent) {
-          log.debugSync('派发自定义事件: %o => %O, %O', event.type, event.detail, event)
+          log.debug('派发自定义事件: %o => %O, %O', event.type, event.detail, event)
         } else {
-          log.debugSync('派发事件: %o => %O', event.type, event)
+          log.debug('派发事件: %o => %O', event.type, event)
         }
         return originalDispatchEvent.call(this, event)
       }

@@ -179,9 +179,9 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.注册按钮.onclick = async (): Promise<void> => this.执行认证()
     this.切换按钮.onclick = (): void => this.切换模式()
 
-    let 处理回车键 = (事件: KeyboardEvent): void => {
+    let 处理回车键 = async (事件: KeyboardEvent): Promise<void> => {
       if (事件.key === 'Enter') {
-        void this.执行认证()
+        await this.执行认证()
       }
     }
     this.用户名输入框.onkeydown = 处理回车键

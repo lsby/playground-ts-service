@@ -76,7 +76,7 @@ export async function 验证并修正窗口(主窗口: BrowserWindow, 保存的�
   let log = await Global.getItem('log').then((a) => a.extend('electron'))
 
   let 创建后的边界 = 主窗口.getBounds()
-  log.infoSync('窗口创建后的实际边界:', 创建后的边界)
+  log.info('窗口创建后的实际边界:', 创建后的边界)
 
   let 窗口中心点 = {
     x: 创建后的边界.x + 创建后的边界.width / 2,
@@ -84,17 +84,17 @@ export async function 验证并修正窗口(主窗口: BrowserWindow, 保存的�
   }
   let 实际所在显示器 = screen.getDisplayNearestPoint(窗口中心点)
 
-  log.infoSync('窗口中心点:', 窗口中心点)
-  log.infoSync('实际所在显示器 ID:', 实际所在显示器.id)
-  log.infoSync('实际所在显示器缩放:', 实际所在显示器.scaleFactor)
+  log.info('窗口中心点:', 窗口中心点)
+  log.info('实际所在显示器 ID:', 实际所在显示器.id)
+  log.info('实际所在显示器缩放:', 实际所在显示器.scaleFactor)
 
   let 尺寸不正确 = 创建后的边界.width !== 保存的状态.width || 创建后的边界.height !== 保存的状态.height
 
   if (实际所在显示器.id === 保存的状态.displayId) {
     if (尺寸不正确 === true) {
-      log.warnSync('⚠ 窗口在正确的显示器上，但大小不正确，需要修正')
-      log.infoSync('期望大小:', { width: 保存的状态.width, height: 保存的状态.height })
-      log.infoSync('实际大小:', { width: 创建后的边界.width, height: 创建后的边界.height })
+      log.warn('⚠ 窗口在正确的显示器上，但大小不正确，需要修正')
+      log.info('期望大小:', { width: 保存的状态.width, height: 保存的状态.height })
+      log.info('实际大小:', { width: 创建后的边界.width, height: 创建后的边界.height })
 
       主窗口.setBounds({
         x: 保存的状态.x,
@@ -104,14 +104,14 @@ export async function 验证并修正窗口(主窗口: BrowserWindow, 保存的�
       })
 
       let 修正后的边界 = 主窗口.getBounds()
-      log.infoSync('修正后的边界:', 修正后的边界)
+      log.info('修正后的边界:', 修正后的边界)
     } else {
-      log.infoSync('✓ 窗口位置和大小完全正确')
+      log.info('✓ 窗口位置和大小完全正确')
     }
   } else {
-    log.warnSync('⚠ 窗口被创建在了错误的显示器上')
-    log.infoSync('期望显示器 ID:', 保存的状态.displayId)
-    log.infoSync('实际显示器 ID:', 实际所在显示器.id)
+    log.warn('⚠ 窗口被创建在了错误的显示器上')
+    log.info('期望显示器 ID:', 保存的状态.displayId)
+    log.info('实际显示器 ID:', 实际所在显示器.id)
 
     主窗口.setBounds({
       x: 保存的状态.x,
@@ -121,6 +121,6 @@ export async function 验证并修正窗口(主窗口: BrowserWindow, 保存的�
     })
 
     let 修正后的边界 = 主窗口.getBounds()
-    log.infoSync('修正后的边界:', 修正后的边界)
+    log.info('修正后的边界:', 修正后的边界)
   }
 }

@@ -34,12 +34,12 @@ export abstract class 组件基类<
   }
 
   public 设置属性<K extends keyof 属性类型>(k: K, v: 属性类型[K]): void {
-    this.log.debugSync('设置属性: %o = %o, 对象: %O', k, v, this)
+    this.log.debug('设置属性: %o = %o, 对象: %O', k, v, this)
     this.setAttribute(k.toString(), v)
   }
   public 获得属性<K extends keyof 属性类型>(k: K): 属性类型[K] | null {
     let r = this.getAttribute(k.toString())
-    this.log.debugSync('获得属性: %o = %o, 对象: %O', k, r, this)
+    this.log.debug('获得属性: %o = %o, 对象: %O', k, r, this)
     return r as any
   }
 
@@ -113,7 +113,7 @@ export abstract class 组件基类<
   protected 当变化时?(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void>
 
   private async connectedCallback(): Promise<void> {
-    this.log.debugSync('connectedCallback, 对象: %O', this)
+    this.log.debug('connectedCallback, 对象: %O', this)
 
     // 备份初始样式
     let 宿主样式 = this.获得宿主样式()
@@ -149,16 +149,16 @@ export abstract class 组件基类<
     }
   }
   private async disconnectedCallback(): Promise<void> {
-    if (this.当卸载时 !== void 0) this.log.debugSync('disconnectedCallback, 对象: %O', this)
+    if (this.当卸载时 !== void 0) this.log.debug('disconnectedCallback, 对象: %O', this)
     await this.当卸载时?.()
   }
   private async adoptedCallback(): Promise<void> {
-    if (this.当转移时 !== void 0) this.log.debugSync('adoptedCallback, 对象: %O', this)
+    if (this.当转移时 !== void 0) this.log.debug('adoptedCallback, 对象: %O', this)
     await this.当转移时?.()
   }
   private async attributeChangedCallback(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void> {
     if (this.当变化时 !== void 0)
-      this.log.debugSync('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
+      this.log.debug('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
     if (this.初始化完毕 === false) {
       this.变化队列.push({ name: name, oldValue, newValue })
     } else {

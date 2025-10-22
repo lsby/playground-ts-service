@@ -191,7 +191,7 @@ async function 主函数(): Promise<void> {
   console.log(`\n🎉 完成！共修改了 ${修改的文件数} 个文件`)
 }
 
-void 主函数().catch((错误) => {
+await 主函数().catch((错误) => {
   console.error('❌ 发生错误:', 错误)
   process.exit(1)
 })
