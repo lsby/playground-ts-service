@@ -22,7 +22,7 @@ export class 测试ws组件 extends 组件基类<属性类型, 发出事件类�
 
     this.按钮.textContent = '开始测试'
     this.按钮.onclick = async (): Promise<void> => {
-      await this.API管理器.请求接口('/api/demo/ws/ws-test', {}, async (data) => {
+      await this.API管理器.请求接口并处理错误('/api/demo/ws/ws-test', {}, async (data) => {
         this.结果.textContent = data.data
       })
     }
