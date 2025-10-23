@@ -7,14 +7,14 @@ export async function init(): Promise<void> {
   let env = await Global.getItem('env').then((a) => a.获得环境变量())
   let kysely = await Global.getItem('kysely')
 
-  await log.debug('检索初始化标记...')
+  log.debug('检索初始化标记...')
   let 初始化标记 = await kysely.获得句柄().selectFrom('system_config').select('is_initialized').executeTakeFirst()
   if (初始化标记?.is_initialized === 1) {
-    await log.debug('初始化标记已存在, 跳过初始化')
+    log.debug('初始化标记已存在, 跳过初始化')
     return
   }
 
-  await log.debug('初始化标记不存在, 开始初始化...')
+  log.debug('初始化标记不存在, 开始初始化...')
 
   let 项目名称: string
   let 初始用户id: string
@@ -35,7 +35,7 @@ export async function init(): Promise<void> {
 
   项目名称 = '用户'
   try {
-    await log.debug(`初始化${项目名称}...`)
+    log.debug(`初始化${项目名称}...`)
     await kysely.执行事务(async (trx) => {
       await trx
         .insertInto('user')
@@ -54,13 +54,13 @@ export async function init(): Promise<void> {
         })
         .execute()
     })
-    await log.debug(`初始化${项目名称}完成`)
+    log.debug(`初始化${项目名称}完成`)
   } catch (e) {
-    await log.debug(`初始化${项目名称}失败: %O`, e)
+    log.debug(`初始化${项目名称}失败: %O`, e)
   }
 
-  await log.debug('初始化完成, 写入初始化标记...')
+  log.debug('初始化完成, 写入初始化标记...')
   await kysely.获得句柄().deleteFrom('system_config').execute()
   await kysely.获得句柄().insertInto('system_config').values({ id: randomUUID(), is_initialized: 1 }).execute()
-  await log.debug('写入初始化标记完成')
+  log.debug('写入初始化标记完成')
 }

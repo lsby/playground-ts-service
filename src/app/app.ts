@@ -16,8 +16,8 @@ export class App {
     let service = new 服务器(interfaceApiList, env.APP_PORT, 静态文件目录)
     let serviceInfo = await service.run()
 
-    await log.debug('已加载的api路径: %O', serviceInfo.api)
-    await log.debug('静态文件目录: %O', 静态文件目录)
-    await log.debug('服务器地址: %O', serviceInfo.ip)
+    log.debug('已加载的api路径: %O', serviceInfo.api)
+    log.debug('静态文件目录: %O', 静态文件目录)
+    log.debug('服务器地址: %O', serviceInfo.ip)
   }
 }
