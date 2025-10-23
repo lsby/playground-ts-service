@@ -1,3 +1,4 @@
+import { version } from '../../../app/version'
 import { 组件基类 } from '../../base/base'
 
 type 属性类型 = {}
@@ -13,8 +14,7 @@ export class 软件版本组件 extends 组件基类<属性类型, 发出事件�
 
   protected override async 当加载时(): Promise<void> {
     let p = document.createElement('p')
-    // 插件会处理'PACKAGE_VERSION'这个立即值, 替换为实际的版本号
-    p.innerText = '软件版本: PACKAGE_VERSION'
+    p.innerText = `软件版本: ${version}`
     this.shadow.append(p)
   }
 }

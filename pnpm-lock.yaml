@@ -69,9 +69,6 @@ importers:
       '@capacitor/cli':
         specifier: ^7.4.3
         version: 7.4.3
-      '@futureportal/parcel-transformer-package-version':
-        specifier: ^1.0.0
-        version: 1.0.0(@parcel/core@2.16.0(@swc/helpers@0.5.17))
       '@ianvs/prettier-plugin-sort-imports':
         specifier: ^4.7.0
         version: 4.7.0(prettier@3.6.2)
@@ -81,9 +78,6 @@ importers:
       '@lsby/eslint-plugin':
         specifier: ^0.0.15
         version: 0.0.15(eslint@8.57.1)
-      '@parcel/config-default':
-        specifier: ^2.16.0
-        version: 2.16.0(@parcel/core@2.16.0(@swc/helpers@0.5.17))(@swc/helpers@0.5.17)
       '@types/bcrypt':
         specifier: ^6.0.0
         version: 6.0.0
@@ -633,10 +627,6 @@ packages:
   '@eslint/js@8.57.1':
     resolution: {integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  '@futureportal/parcel-transformer-package-version@1.0.0':
-    resolution: {integrity: sha512-pB+sG8q/BqKb7DlbpfvAk/Ga7tKwA33eqbmrMJ7QigS79TRQPA1N/opdiHzHGHpWzh05uBgRjvPU/DVQ/tkoDQ==}
-    engines: {node: '>= 16.0.0', parcel: ^2.3.2}
 
   '@gar/promisify@1.1.3':
     resolution: {integrity: sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==}
@@ -5851,13 +5841,6 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.1': {}
-
-  '@futureportal/parcel-transformer-package-version@1.0.0(@parcel/core@2.16.0(@swc/helpers@0.5.17))':
-    dependencies:
-      '@parcel/plugin': 2.16.0(@parcel/core@2.16.0(@swc/helpers@0.5.17))
-    transitivePeerDependencies:
-      - '@parcel/core'
-      - napi-wasm
 
   '@gar/promisify@1.1.3': {}
 
