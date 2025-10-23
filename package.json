@@ -21,7 +21,7 @@
     "_clean:all": "npm run _clean:web && npm run _clean:electron",
     "_clean:electron": "tsx script/run/clean-electron.ts",
     "_clean:web": "tsx script/run/clean-web.ts",
-    "_gen:all": "npm run _gen:api:list && npm run _gen:api:type && npm run _gen:web:index",
+    "_gen:all": "npm run _gen:api:list && npm run _gen:api:type && npm run _gen:web:index && npm run _gen:version",
     "_gen:api:list": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* lsby-net-core-gen-api-list ./tsconfig.json ./src/interface ./src/interface/interface-list.ts",
     "_gen:api:type": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* lsby-net-core-gen-api-type ./tsconfig.json ./src/interface ./src/types/interface-type.ts",
     "_gen:version": "tsx script/gen/write-version.ts",
