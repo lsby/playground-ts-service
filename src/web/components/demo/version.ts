@@ -1,4 +1,4 @@
-import { version } from '../../../app/version'
+import { version } from '../../../app/meta-info'
 import { 组件基类 } from '../../base/base'
 
 type 属性类型 = {}
