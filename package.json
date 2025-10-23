@@ -81,7 +81,7 @@
     "@capacitor/cli": "^7.4.3",
     "@futureportal/parcel-transformer-package-version": "^1.0.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@lsby/eslint-config": "^0.2.30",
+    "@lsby/eslint-config": "^0.2.31",
     "@lsby/eslint-plugin": "^0.0.15",
     "@parcel/config-default": "^2.16.0",
     "@types/bcrypt": "^6.0.0",
