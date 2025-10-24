@@ -4,7 +4,7 @@
         "codeinchinese.englishchinesedictionary",
         // 中文代码补全
         "codeinchinese.chineseinputassistant",
-        // .envw文件支持
+        // .env文件支持
         "mikestead.dotenv",
         // eslint
         "dbaeumer.vscode-eslint",
