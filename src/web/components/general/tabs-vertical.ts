@@ -55,6 +55,7 @@ export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类
     this.插槽容器.style.flex = '1'
     this.插槽容器.style.display = 'flex'
     this.插槽容器.style.flexDirection = 'column'
+    this.插槽容器.style.overflow = 'hidden'
 
     let 插槽: HTMLSlotElement = document.createElement('slot')
     this.插槽容器.appendChild(插槽)
