@@ -19,7 +19,7 @@
         // 测试
         "humao.rest-client",
         // sqlite查看
-        "qwtel.sqlite-viewer",
+        "yy0931.vscode-sqlite3-editor",
         // 自动处理模板字符串
         "meganrogge.template-string-converter",
     ]
