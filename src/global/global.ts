@@ -22,6 +22,7 @@ export let env = new Env({
     DB_TYPE: z.enum(['sqlite', 'pg', 'mysql']),
     // sqlite
     DATABASE_PATH: z.string(),
+    DATABASE_BACKUP_PATH: z.string(),
     // pg/mysql
     // DB_USER: z.string(),
     // DB_PWD: z.string(),
