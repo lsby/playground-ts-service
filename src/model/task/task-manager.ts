@@ -131,7 +131,6 @@ export class 任务管理器 {
       }
 
       // 执行任务逻辑
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 输出数据: 输出类型
       if (任务.获得任务超时时间() > 0) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
