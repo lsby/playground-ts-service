@@ -1,6 +1,8 @@
+import { Global } from '../../global/global'
 import { 任务上下文, 任务抽象类 } from './task'
 
 export class 任务管理器 {
+  private log = Global.getItem('log').then((a) => a.extend('任务管理器'))
   private 任务映射表: Map<string, 任务抽象类<any>> = new Map()
   private 运行中任务集合: Set<string> = new Set()
   private 最大并发数: number
@@ -92,8 +94,9 @@ export class 任务管理器 {
     任务.设置当前状态('等待中')
 
     // 尝试启动任务执行
-    this.尝试执行下一个任务().catch((错误: Error) => {
-      console.error('启动任务执行失败:', 错误)
+    this.尝试执行下一个任务().catch(async (错误: Error) => {
+      let log = await this.log
+      log.debug('启动任务执行失败:', 错误)
     })
 
     return 任务id
@@ -166,8 +169,9 @@ export class 任务管理器 {
         任务.设置结束时间(new Date())
 
         // 重新提交任务
-        this.尝试执行下一个任务().catch((重试错误: Error) => {
-          console.error('重试任务失败:', 重试错误)
+        this.尝试执行下一个任务().catch(async (重试错误: Error) => {
+          let log = await this.log
+          log.debug('重试任务失败:', 重试错误)
         })
       } else {
         任务.设置当前状态('已失败')
@@ -180,8 +184,9 @@ export class 任务管理器 {
       this.运行中任务集合.delete(任务id)
 
       // 尝试执行下一个任务
-      this.尝试执行下一个任务().catch((错误: Error) => {
-        console.error('启动下一个任务失败:', 错误)
+      this.尝试执行下一个任务().catch(async (错误: Error) => {
+        let log = await this.log
+        log.debug('启动下一个任务失败:', 错误)
       })
     }
   }
