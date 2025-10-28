@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { 集线器 } from '../hub/hub'
 
 export type 任务状态 = '等待中' | '运行中' | '已完成' | '已失败' | '已取消'
-export type 任务优先级 = '低' | '普通' | '高' | '紧急'
+export type 任务优先级 = number // 数字越大 优先级越高
 
 export type 通知类型枚举 = { 类型: '取消请求' } | { 类型: '状态刷新' }
 export type 任务上下文 = {
@@ -11,28 +11,26 @@ export type 任务上下文 = {
   通知句柄: 集线器<通知类型枚举>
 }
 
-export type 任务配置<输入类型, 输出类型> = {
-  任务名称: string
-  任务优先级?: 任务优先级
-  任务超时时间?: number
-  最大重试次数?: number
-  任务逻辑: (输入: 输入类型, 上下文: 任务上下文) => Promise<输出类型>
-  执行前钩子?: (输入: 输入类型) => Promise<void>
-  执行成功钩子?: (输出: 输出类型) => Promise<void>
-  执行失败钩子?: (错误: Error) => Promise<void>
-  执行完成钩子?: () => Promise<void>
-  可以重试?: () => boolean
-}
-
-export abstract class 任务抽象类<输入类型, 输出类型> {
-  public static 创建任务<输入类型, 输出类型>(配置: 任务配置<输入类型, 输出类型>): 任务抽象类<输入类型, 输出类型> {
+export abstract class 任务抽象类<输出类型> {
+  public static 创建任务<输出类型>(配置: {
+    任务名称: string
+    任务优先级?: 任务优先级
+    任务超时时间?: number
+    最大重试次数?: number
+    任务逻辑: (上下文: 任务上下文) => Promise<输出类型>
+    执行前钩子?: () => Promise<void>
+    执行成功钩子?: (输出: 输出类型) => Promise<void>
+    执行失败钩子?: (错误: Error) => Promise<void>
+    执行完成钩子?: () => Promise<void>
+    可以重试?: () => boolean
+  }): 任务抽象类<输出类型> {
     let 任务配置 = 配置
-    return new (class extends 任务抽象类<输入类型, 输出类型> {
+    return new (class extends 任务抽象类<输出类型> {
       public 获得任务名称(): string {
         return 任务配置.任务名称
       }
       public 获得任务优先级(): 任务优先级 {
-        return 任务配置.任务优先级 ?? '普通'
+        return 任务配置.任务优先级 ?? 2
       }
       public 获得任务超时时间(): number {
         return 任务配置.任务超时时间 ?? 0
@@ -41,13 +39,13 @@ export abstract class 任务抽象类<输入类型, 输出类型> {
         return 任务配置.最大重试次数 ?? 0
       }
 
-      public async 任务逻辑(输入: 输入类型, 上下文: 任务上下文): Promise<输出类型> {
-        return await 任务配置.任务逻辑(输入, 上下文)
+      public async 任务逻辑(上下文: 任务上下文): Promise<输出类型> {
+        return await 任务配置.任务逻辑(上下文)
       }
 
-      public override async 执行前钩子(输入: 输入类型): Promise<void> {
+      public override async 执行前钩子(): Promise<void> {
         if (任务配置.执行前钩子 !== void 0) {
-          return await 任务配置.执行前钩子(输入)
+          return await 任务配置.执行前钩子()
         }
       }
       public override async 执行成功钩子(输出: 输出类型): Promise<void> {
@@ -76,15 +74,16 @@ export abstract class 任务抽象类<输入类型, 输出类型> {
   private 错误: Error | null = null
   private 重试次数: number = 0
   private 通知句柄: 集线器<通知类型枚举> = new 集线器<通知类型枚举>()
+  private 输出结果: 输出类型 | null = null
 
   public abstract 获得任务名称(): string
   public abstract 获得任务优先级(): 任务优先级
   public abstract 获得任务超时时间(): number
   public abstract 获得最大重试次数(): number
 
-  public abstract 任务逻辑(输入: 输入类型, 上下文: 任务上下文): Promise<输出类型>
+  public abstract 任务逻辑(上下文: 任务上下文): Promise<输出类型>
 
-  public async 执行前钩子(_输入: 输入类型): Promise<void> {}
+  public async 执行前钩子(): Promise<void> {}
   public async 执行成功钩子(_输出: 输出类型): Promise<void> {}
   public async 执行失败钩子(_错误: Error): Promise<void> {}
   public async 执行完成钩子(): Promise<void> {}
@@ -147,5 +146,12 @@ export abstract class 任务抽象类<输入类型, 输出类型> {
   }
   public 取消任务(): void {
     this.通知句柄.广播消息({ 类型: '取消请求' })
+  }
+
+  public 获得输出结果(): 输出类型 | null {
+    return this.输出结果
+  }
+  public 设置输出结果(结果: 输出类型): void {
+    this.输出结果 = 结果
   }
 }
