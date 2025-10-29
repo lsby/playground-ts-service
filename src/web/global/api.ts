@@ -1,4 +1,4 @@
-import { 不安全的扩展WebPost, 不安全的扩展WebPost表单 } from '@lsby/ts-post-extend'
+import { 不安全的扩展WebRequest, 不安全的扩展WebRequest表单 } from '@lsby/ts-http-extend'
 import { InterfaceType } from '../../types/interface-type'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../global/types'
 import { GlobalWeb } from './global'
@@ -44,25 +44,16 @@ export class API管理器 {
         头['authorization'] = this.token
       }
 
-      let 选项: any = {
+      return await 不安全的扩展WebRequest({
         url: GlobalWeb.getItemSync('API前缀') + 接口路径,
+        method: 'POST',
         参数: 参数,
         头: 头,
-      }
-      if (ws信息回调 !== void 0) {
-        选项.ws信息回调 = ws信息回调
-      }
-      if (ws关闭回调 !== void 0) {
-        选项.ws关闭回调 = ws关闭回调
-      }
-      if (ws错误回调 !== void 0) {
-        选项.ws错误回调 = ws错误回调
-      }
-      if (ws连接回调 !== void 0) {
-        选项.ws连接回调 = ws连接回调
-      }
-
-      return await 不安全的扩展WebPost(选项)
+        ...(ws信息回调 !== void 0 ? { ws信息回调: ws信息回调 } : {}),
+        ...(ws关闭回调 !== void 0 ? { ws关闭回调: ws关闭回调 } : {}),
+        ...(ws错误回调 !== void 0 ? { ws错误回调: ws错误回调 } : {}),
+        ...(ws连接回调 !== void 0 ? { ws连接回调: ws连接回调 } : {}),
+      })
     } catch (e) {
       return { status: 'fail', data: String(e) } as any
     }
@@ -109,25 +100,16 @@ export class API管理器 {
         头['authorization'] = this.token
       }
 
-      let 选项: any = {
+      return await 不安全的扩展WebRequest表单({
         url: GlobalWeb.getItemSync('API前缀') + 接口路径,
+        method: 'POST',
         表单数据: 表单数据,
         头: 头,
-      }
-      if (ws信息回调 !== void 0) {
-        选项.ws信息回调 = ws信息回调
-      }
-      if (ws关闭回调 !== void 0) {
-        选项.ws关闭回调 = ws关闭回调
-      }
-      if (ws错误回调 !== void 0) {
-        选项.ws错误回调 = ws错误回调
-      }
-      if (ws连接回调 !== void 0) {
-        选项.ws连接回调 = ws连接回调
-      }
-
-      return await 不安全的扩展WebPost表单(选项)
+        ...(ws信息回调 !== void 0 ? { ws信息回调: ws信息回调 } : {}),
+        ...(ws关闭回调 !== void 0 ? { ws关闭回调: ws关闭回调 } : {}),
+        ...(ws错误回调 !== void 0 ? { ws错误回调: ws错误回调 } : {}),
+        ...(ws连接回调 !== void 0 ? { ws连接回调: ws连接回调 } : {}),
+      })
     } catch (e) {
       return { status: 'fail', data: String(e) } as any
     }

@@ -38,15 +38,15 @@ importers:
       '@lsby/ts-global':
         specifier: ^0.0.8
         version: 0.0.8(@types/node@22.18.2)(lightningcss@1.30.1)
+      '@lsby/ts-http-extend':
+        specifier: ^0.2.0
+        version: 0.2.0(@types/node@22.18.2)(lightningcss@1.30.1)
       '@lsby/ts-kysely':
         specifier: ^0.2.7
         version: 0.2.7
       '@lsby/ts-log':
         specifier: ^0.2.0
         version: 0.2.0(@types/node@22.18.2)(lightningcss@1.30.1)
-      '@lsby/ts-post-extend':
-        specifier: ^0.1.0
-        version: 0.1.0(@types/node@22.18.2)(lightningcss@1.30.1)
       axios:
         specifier: ^1.12.2
         version: 1.12.2
@@ -951,6 +951,9 @@ packages:
   '@lsby/ts-global@0.0.8':
     resolution: {integrity: sha512-CcRzXLLFH80erMvy5TbJaCP4pBwBp7HaoFlUKChkfbpS4jIr5Z6XXSxBcPR+dga9eMKWNJdiovC1qEKdtbVNAA==}
 
+  '@lsby/ts-http-extend@0.2.0':
+    resolution: {integrity: sha512-nQ1JAZWpQYZC2lZkLWjjnWUD+wCTwuaxEqICTi6+G+1kuP1wu8MCpGvrbeyKOKBwXD9raJWudBR9jDa/XaB7Fg==}
+
   '@lsby/ts-jwt@0.0.1':
     resolution: {integrity: sha512-ZBUjEUv/o+jAYGdfkLJvdA3YnZaGXx4YDXQcWZyiB33FcJ+GUdTlSkW2joeOQiAnBuX/bCqLOM2fdVCuxHI0Bw==}
 
@@ -968,9 +971,6 @@ packages:
   '@lsby/ts-log@0.2.0':
     resolution: {integrity: sha512-gbFw6ZblyVbIMxBCCctjaeW1+9yNeqCxseVCekauwZixK3UuBKiJTCIIK2kgLtBNTLmkxrwCvcDvTPRvMBP9xw==}
     hasBin: true
-
-  '@lsby/ts-post-extend@0.1.0':
-    resolution: {integrity: sha512-xzIjw1CCrRB+e5oOjZS/h5RWK8yFjcW0X2ldp+FlfZmdSbeUOdx9Y7m/0lX1XJLnS8CpDaRpECErnpKWu+XXmA==}
 
   '@malept/cross-spawn-promise@2.0.0':
     resolution: {integrity: sha512-1DpKU0Z5ThltBwjNySMC14g0CkbyhCaz9FkhxqNsZI6uAPJXFS8cMXlBKo26FJ8ZuW6S9GCMcR9IO5k2X5/9Fg==}
@@ -6274,6 +6274,31 @@ snapshots:
       - supports-color
       - terser
 
+  '@lsby/ts-http-extend@0.2.0(@types/node@22.18.2)(lightningcss@1.30.1)':
+    dependencies:
+      '@lsby/ts-log': 0.1.2(@types/node@22.18.2)(lightningcss@1.30.1)
+      uuid: 11.1.0
+      ws: 8.18.3
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - '@edge-runtime/vm'
+      - '@types/node'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - bufferutil
+      - happy-dom
+      - jsdom
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - utf-8-validate
+
   '@lsby/ts-jwt@0.0.1(@types/node@22.18.2)(lightningcss@1.30.1)':
     dependencies:
       jsonwebtoken: 9.0.2
@@ -6364,31 +6389,6 @@ snapshots:
       - sugarss
       - supports-color
       - terser
-
-  '@lsby/ts-post-extend@0.1.0(@types/node@22.18.2)(lightningcss@1.30.1)':
-    dependencies:
-      '@lsby/ts-log': 0.1.2(@types/node@22.18.2)(lightningcss@1.30.1)
-      uuid: 11.1.0
-      ws: 8.18.3
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - '@edge-runtime/vm'
-      - '@types/node'
-      - '@vitest/browser'
-      - '@vitest/ui'
-      - bufferutil
-      - happy-dom
-      - jsdom
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - utf-8-validate
 
   '@malept/cross-spawn-promise@2.0.0':
     dependencies:
