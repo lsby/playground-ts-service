@@ -7,6 +7,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
+import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../global/global'
 import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
@@ -54,7 +55,7 @@ let 接口逻辑实现 = 接口逻辑
           最大重试次数: 参数.最大重试次数,
           任务逻辑: async (上下文) => {
             let 状态 = { 已取消: false, 已超时: false }
-            let 监听id = Math.random().toString(36).substring(7)
+            let 监听id = randomUUID()
             上下文.通知句柄.监听消息(监听id, (消息) => {
               switch (消息.类型) {
                 case '取消通知':

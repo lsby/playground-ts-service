@@ -1,4 +1,5 @@
 import { Cron抽象类 } from '@lsby/ts-cron'
+import { randomUUID } from 'crypto'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { Global } from '../global/global'
@@ -13,13 +14,28 @@ export class 数据库备份任务 extends 任务抽象类<void> {
     return 1
   }
   public 获得任务超时时间(): number {
-    return 0
+    return 30 * 60 * 1000
   }
   public 获得最大重试次数(): number {
     return 2
   }
 
   public async 任务逻辑(上下文: 任务上下文): Promise<void> {
+    let 状态 = { 已取消: false, 已超时: false }
+    let 监听id = randomUUID()
+    上下文.通知句柄.监听消息(监听id, (消息) => {
+      switch (消息.类型) {
+        case '取消通知':
+          状态.已取消 = true
+          上下文.输出日志('该任务不支持取消处理')
+          break
+        case '超时通知':
+          状态.已超时 = true
+          上下文.输出日志('该任务不支持超时处理')
+          break
+      }
+    })
+
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
     let kysely = await Global.getItem('kysely')
     let log = await Global.getItem('log').then((a) => a.extend('数据库备份任务'))
