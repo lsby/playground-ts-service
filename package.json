@@ -64,7 +64,6 @@
     "@lsby/net-core-file-upload": "^0.1.13",
     "@lsby/net-core-jwt": "^0.1.13",
     "@lsby/net-core-kysely": "^2.0.8",
-    "@lsby/ts-cron": "^0.0.7",
     "@lsby/ts-env": "^0.0.12",
     "@lsby/ts-fp-data": "^0.2.5",
     "@lsby/ts-global": "^0.0.8",
@@ -75,6 +74,7 @@
     "bcrypt": "^6.0.0",
     "kysely": "^0.28.8",
     "kysely-wasm": "^1.2.1",
+    "node-schedule": "^2.1.1",
     "node-sqlite3-wasm": "^0.8.50",
     "zod": "3.24.2"
   },
@@ -86,6 +86,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/eslint": "^9.6.1",
     "@types/node": "^22.6.1",
+    "@types/node-schedule": "^2.1.8",
     "@types/stream-to-blob": "^2.0.0",
     "@vitest/coverage-v8": "^2.1.1",
     "bumpp": "^10.2.3",

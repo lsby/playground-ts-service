@@ -1,9 +1,9 @@
-import { Cron抽象类 } from '@lsby/ts-cron'
 import { randomUUID } from 'crypto'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { Global } from '../global/global'
 import { 备份数据库 } from '../interface/sqlite-admin/backup-database'
+import { Cron抽象类 } from '../model/cron/cron'
 import { 任务上下文, 任务抽象类 } from '../model/task/task'
 
 export class 数据库备份任务 extends 任务抽象类<void> {

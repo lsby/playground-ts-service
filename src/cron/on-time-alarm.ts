@@ -1,5 +1,5 @@
-import { Cron抽象类 } from '@lsby/ts-cron'
 import { Global } from '../global/global'
+import { Cron抽象类 } from '../model/cron/cron'
 
 class 定时任务实现 extends Cron抽象类 {
   public override getName(): string {
