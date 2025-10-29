@@ -45,7 +45,7 @@ export let env = new Env({
 export let Global = new GlobalService([
   new GlobalItem('env', env),
   new GlobalItem('cron', new CronService()),
-  new GlobalItem('task', new 任务管理器({ 最大并发数: 10, 最大历史记录数量: 100 })),
+  new GlobalItem('task', new 任务管理器({ 最大并发数: 10, 历史记录保留天数: 7 })),
   new GlobalAsyncItem('DB_TYPE', async () => {
     let e = await env.获得环境变量()
     return e.DB_TYPE

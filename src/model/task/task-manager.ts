@@ -6,18 +6,27 @@ export class 任务管理器 {
   private 任务映射表: Map<string, 任务抽象类<any>> = new Map()
   private 运行中任务集合: Set<string> = new Set()
   private 最大并发数: number
-  private 最大历史记录数量: number
+  private 历史记录保留天数: number
+  private 清理定时器: NodeJS.Timeout | null = null
 
-  public constructor(参数: { 最大并发数: number; 最大历史记录数量: number }) {
-    let { 最大并发数, 最大历史记录数量 } = 参数
+  public constructor(参数: { 最大并发数: number; 历史记录保留天数: number }) {
+    let { 最大并发数, 历史记录保留天数 } = 参数
     if (最大并发数 <= 0) {
       throw new Error('最大并发数必须大于0')
     }
-    if (最大历史记录数量 < 0) {
-      throw new Error('最大历史记录数量不能小于0')
+    if (历史记录保留天数 <= 0) {
+      throw new Error('历史记录保留天数必须大于0')
     }
     this.最大并发数 = 最大并发数
-    this.最大历史记录数量 = 最大历史记录数量
+    this.历史记录保留天数 = 历史记录保留天数
+
+    // 设置定时器，每隔保留天数自动清理
+    this.清理定时器 = setInterval(
+      () => {
+        this.清理已完成任务()
+      },
+      this.历史记录保留天数 * 24 * 60 * 60 * 1000,
+    )
   }
 
   private async 尝试执行下一个任务(): Promise<void> {
@@ -74,14 +83,25 @@ export class 任务管理器 {
     this.最大并发数 = 数量
   }
 
-  public 获得最大历史记录数量(): number {
-    return this.最大历史记录数量
+  public 获得历史记录保留天数(): number {
+    return this.历史记录保留天数
   }
-  public 设置最大历史记录数量(数量: number): void {
-    if (数量 < 0) {
-      throw new Error('最大历史记录数量不能小于0')
+  public 设置历史记录保留天数(天数: number): void {
+    if (天数 <= 0) {
+      throw new Error('历史记录保留天数必须大于0')
     }
-    this.最大历史记录数量 = 数量
+    this.历史记录保留天数 = 天数
+
+    // 重新设置定时器
+    if (this.清理定时器 !== null) {
+      clearInterval(this.清理定时器)
+    }
+    this.清理定时器 = setInterval(
+      () => {
+        this.清理已完成任务()
+      },
+      this.历史记录保留天数 * 24 * 60 * 60 * 1000,
+    )
   }
 
   public 提交任务<输出类型>(任务: 任务抽象类<输出类型>): string {
@@ -203,7 +223,7 @@ export class 任务管理器 {
 
     let 当前状态 = 任务.获得当前状态()
 
-    if (当前状态 === '已完成' || 当前状态 === '已失败' || 当前状态 === '已取消') {
+    if (当前状态 === '已完成' || 当前状态 === '已失败' || 当前状态 === '已取消' || 当前状态 === '已超时') {
       return false
     }
 
@@ -240,8 +260,9 @@ export class 任务管理器 {
   public 清理已完成任务(): number {
     let 清理数量 = 0
 
-    // 获取所有已完成的任务
-    let 已完成任务列表: Array<{ 任务id: string; 任务: 任务抽象类<any>; 结束时间: Date }> = []
+    let 当前时间 = new Date()
+    let 阈值时间 = new Date(当前时间.getTime() - this.历史记录保留天数 * 24 * 60 * 60 * 1000)
+
     let 所有任务条目 = Array.from(this.任务映射表.entries())
     for (let i = 0; i < 所有任务条目.length; i = i + 1) {
       let 条目 = 所有任务条目[i]
@@ -251,24 +272,10 @@ export class 任务管理器 {
       let 任务id = 条目[0]
       let 任务 = 条目[1]
       let 状态 = 任务.获得当前状态()
-      if (状态 === '已完成' || 状态 === '已失败' || 状态 === '已取消') {
+      if (状态 === '已完成' || 状态 === '已失败' || 状态 === '已取消' || 状态 === '已超时') {
         let 结束时间 = 任务.获得结束时间()
-        if (结束时间 !== null) {
-          已完成任务列表.push({ 任务id, 任务, 结束时间 })
-        }
-      }
-    }
-
-    // 按结束时间排序，最新的在前
-    已完成任务列表.sort((a, b) => b.结束时间.getTime() - a.结束时间.getTime())
-
-    // 保留最近的历史记录，删除超出数量的旧任务
-    if (已完成任务列表.length > this.最大历史记录数量) {
-      let 需要删除的任务列表 = 已完成任务列表.slice(this.最大历史记录数量)
-      for (let i = 0; i < 需要删除的任务列表.length; i = i + 1) {
-        let 任务信息 = 需要删除的任务列表[i]
-        if (任务信息 !== void 0) {
-          this.任务映射表.delete(任务信息.任务id)
+        if (结束时间 !== null && 结束时间 < 阈值时间) {
+          this.任务映射表.delete(任务id)
           清理数量 = 清理数量 + 1
         }
       }
