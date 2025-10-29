@@ -26,7 +26,7 @@ type 任务数据项 = {
 export class 测试任务组件 extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 任务数据项> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-demo-task', this)
+    this.注册组件('lsby-task-admin', this)
   }
 
   private api管理器 = new API管理器()
