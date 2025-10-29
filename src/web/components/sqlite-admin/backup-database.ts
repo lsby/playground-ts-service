@@ -13,7 +13,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
   }
 
   private API管理器 = GlobalWeb.getItemSync('API管理器')
-  private 描述输入框: HTMLInputElement | null = null
   private 备份按钮: HTMLButtonElement | null = null
   private 结果消息: HTMLDivElement | null = null
 
@@ -34,14 +33,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     标题.style.fontSize = '20px'
     标题.style.fontWeight = 'bold'
     标题.style.margin = '0 0 16px 0'
-
-    this.描述输入框 = document.createElement('input')
-    this.描述输入框.type = 'text'
-    this.描述输入框.placeholder = '输入备份描述...'
-    this.描述输入框.style.width = '100%'
-    this.描述输入框.style.padding = '8px'
-    this.描述输入框.style.fontSize = '14px'
-    this.描述输入框.style.marginBottom = '16px'
 
     this.备份按钮 = document.createElement('button')
     this.备份按钮.textContent = '开始备份'
@@ -64,13 +55,12 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     this.结果消息.style.color = 'var(--主要按钮颜色)'
 
     this.shadow.appendChild(标题)
-    this.shadow.appendChild(this.描述输入框)
     this.shadow.appendChild(this.备份按钮)
     this.shadow.appendChild(this.结果消息)
   }
 
   private async 执行备份(): Promise<void> {
-    if (this.描述输入框 === null || this.备份按钮 === null) return
+    if (this.备份按钮 === null) return
     let 备份按钮 = this.备份按钮
 
     备份按钮.disabled = true
@@ -79,7 +69,7 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     try {
       let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/backup-database', {})
       if (结果.status === 'success') {
-        this.显示结果(`备份成功! 路径: ${结果.data.backupPath}`, true)
+        this.显示结果(`备份成功`, true)
       } else {
         this.显示结果('备份失败', false)
       }

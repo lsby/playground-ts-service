@@ -44,7 +44,7 @@ let 接口逻辑实现 = 接口逻辑
         // 获取备份目录
         let backupDir = env.DATABASE_BACKUP_PATH
 
-        // 生成备份文件名：环境_时间_说明
+        // 生成备份文件名：前缀_环境_时间
         let envName = env.NODE_ENV
         let timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0]
         let backupFileName = `${env.DATABASE_BACKUP_PREFIX}${逻辑附加参数.isAuto ? env.DATABASE_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
@@ -56,10 +56,7 @@ let 接口逻辑实现 = 接口逻辑
         // 使用VACUUM INTO进行备份
         await kysely.executeQuery(CompiledQuery.raw(`VACUUM INTO '${backupPath}';`, []))
 
-        return new Right({
-          success: true,
-          backupPath: backupPath,
-        })
+        return new Right({})
       },
     ),
   )
@@ -69,10 +66,7 @@ type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
 let 接口错误类型描述 = z.enum(['未登录', '非管理员'])
-let 接口正确类型描述 = z.object({
-  success: z.boolean(),
-  backupPath: z.string(),
-})
+let 接口正确类型描述 = z.object({})
 
 export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)
 
