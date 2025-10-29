@@ -176,48 +176,28 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
 
     详情内容.appendChild(日志组件)
 
-    // 先获取历史日志
+    // 直接用一个请求同时获取历史日志并建立WebSocket连接
     this.api管理器
-      .请求接口并处理错误('/api/task-admin/get-info', { 任务id: 任务.id })
-      .then(async (结果) => {
+      .请求接口并处理错误(
+        '/api/task-admin/get-log',
+        { 任务id: 任务.id },
+        async (ws数据) => {
+          // 收到WebSocket消息，实时更新单条新日志
+          更新日志显示(ws数据.新日志)
+        },
+        async (ws) => {
+          // WS连接成功时存储WS对象
+          this.当前任务详情WS = ws
+        },
+      )
+      .then((结果) => {
         // 显示历史日志
         结果.日志列表.forEach((日志) => {
           更新日志显示(日志)
         })
-
-        // 然后连接WebSocket监听新日志
-        await this.api管理器.请求接口(
-          '/api/task-admin/get-info',
-          { 任务id: 任务.id },
-          async (ws数据) => {
-            // 收到WebSocket消息，实时更新单条新日志
-            更新日志显示(ws数据.新日志)
-          },
-          async (ws) => {
-            // WS连接成功时存储WS对象
-            this.当前任务详情WS = ws
-          },
-        )
       })
-      .catch(async (错误) => {
+      .catch((错误) => {
         console.error('获取任务日志失败:', 错误)
-        // 降级处理：直接连接WebSocket（可能获取不到历史日志）
-        await this.api管理器
-          .请求接口(
-            '/api/task-admin/get-info',
-            { 任务id: 任务.id },
-            async (ws数据) => {
-              // 收到WebSocket消息，实时更新单条新日志
-              更新日志显示(ws数据.新日志)
-            },
-            async (ws) => {
-              // WS连接成功时存储WS对象
-              this.当前任务详情WS = ws
-            },
-          )
-          .catch((ws错误) => {
-            console.error('连接任务日志WebSocket失败:', ws错误)
-          })
       })
 
     this.详情模态框.设置内容(详情内容)

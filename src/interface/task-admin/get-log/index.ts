@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { Global } from '../../../global/global'
 import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
 
-let 接口路径 = '/api/task-admin/get-info' as const
+let 接口路径 = '/api/task-admin/get-log' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑

@@ -26,7 +26,7 @@ import _src_interface_sqlite_admin_get_triggers_index_ts from './sqlite-admin/ge
 import _src_interface_task_admin_cancel_index_ts from './task-admin/cancel/index'
 import _src_interface_task_admin_create_fail_test_index_ts from './task-admin/create-fail-test/index'
 import _src_interface_task_admin_create_test_index_ts from './task-admin/create-test/index'
-import _src_interface_task_admin_get_info_index_ts from './task-admin/get-info/index'
+import _src_interface_task_admin_get_log_index_ts from './task-admin/get-log/index'
 import _src_interface_task_admin_list_index_ts from './task-admin/list/index'
 
 export let interfaceApiList: 任意接口[] = [
@@ -55,6 +55,6 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_task_admin_cancel_index_ts,
   _src_interface_task_admin_create_fail_test_index_ts,
   _src_interface_task_admin_create_test_index_ts,
-  _src_interface_task_admin_get_info_index_ts,
+  _src_interface_task_admin_get_log_index_ts,
   _src_interface_task_admin_list_index_ts,
 ]
