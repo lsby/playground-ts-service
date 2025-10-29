@@ -35,12 +35,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     标题.style.fontWeight = 'bold'
     标题.style.margin = '0 0 16px 0'
 
-    let 描述标签 = document.createElement('label')
-    描述标签.textContent = '备份描述:'
-    描述标签.style.display = 'block'
-    描述标签.style.margin = '8px 0 4px 0'
-    描述标签.style.fontSize = '14px'
-
     this.描述输入框 = document.createElement('input')
     this.描述输入框.type = 'text'
     this.描述输入框.placeholder = '输入备份描述...'
@@ -70,7 +64,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     this.结果消息.style.color = 'var(--主要按钮颜色)'
 
     this.shadow.appendChild(标题)
-    this.shadow.appendChild(描述标签)
     this.shadow.appendChild(this.描述输入框)
     this.shadow.appendChild(this.备份按钮)
     this.shadow.appendChild(this.结果消息)
@@ -78,19 +71,13 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
 
   private async 执行备份(): Promise<void> {
     if (this.描述输入框 === null || this.备份按钮 === null) return
-    let 描述输入框 = this.描述输入框
     let 备份按钮 = this.备份按钮
-    let 描述 = 描述输入框.value.trim()
-    if (描述 === '') {
-      this.显示结果('请输入备份描述', false)
-      return
-    }
 
     备份按钮.disabled = true
     备份按钮.textContent = '备份中...'
 
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/backup-database', { description: 描述 })
+      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/backup-database', {})
       if (结果.status === 'success') {
         this.显示结果(`备份成功! 路径: ${结果.data.backupPath}`, true)
       } else {

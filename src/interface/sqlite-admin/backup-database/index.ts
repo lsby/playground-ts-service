@@ -1,5 +1,4 @@
 import {
-  JSON解析插件,
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
@@ -29,13 +28,13 @@ let 接口逻辑实现 = 接口逻辑
     ),
   )
   .混合(
+    接口逻辑.构造([], async (_参数, _逻辑附加参数, _请求附加参数) => {
+      return new Right({ isAuto: false })
+    }),
+  )
+  .混合(
     接口逻辑.构造(
-      [
-        new Task(async () => {
-          return new JSON解析插件(z.object({ description: z.string() }), {})
-        }),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
+      [new Task(async () => await Global.getItem('kysely-plugin'))],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
 
@@ -48,7 +47,7 @@ let 接口逻辑实现 = 接口逻辑
         // 生成备份文件名：环境_时间_说明
         let envName = env.NODE_ENV
         let timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0]
-        let backupFileName = `${envName}_${timestamp}_${参数.description}.db`
+        let backupFileName = `${env.DATABASE_BACKUP_PREFIX}${逻辑附加参数.isAuto ? env.DATABASE_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
         let backupPath = path.join(backupDir, backupFileName)
 
         // 确保备份目录存在
@@ -76,3 +75,5 @@ let 接口正确类型描述 = z.object({
 })
 
 export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)
+
+export let 备份数据库 = 接口逻辑实现.获得最后接口()

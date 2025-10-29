@@ -1,5 +1,6 @@
 import { 服务器 } from '@lsby/net-core'
 import { resolve } from 'path'
+import { databaseBackupCron } from '../cron/database-backup'
 import { onTimeAlarm } from '../cron/on-time-alarm'
 import { Global } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
@@ -10,7 +11,7 @@ export class App {
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
     let cron = await Global.getItem('cron')
-    await cron.执行([onTimeAlarm])
+    await cron.执行([onTimeAlarm, databaseBackupCron])
 
     let 静态文件目录 = resolve(import.meta.dirname, '../../web')
     let service = new 服务器(interfaceApiList, env.APP_PORT, 静态文件目录)
