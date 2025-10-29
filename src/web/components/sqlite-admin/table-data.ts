@@ -164,7 +164,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     if (表名 === void 0 || 表名 === null) return
 
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         this.主键列 = 结果.data.columns.filter((列: any) => 列.pk === 1).map((列: any) => 列.name)
@@ -205,7 +205,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     try {
       // 先查询总条数
       let 总条数SQL = 'SELECT COUNT(*) as count FROM `' + 表名 + '`'
-      let 总条数结果 = await this.API管理器.请求接口('/api/sqlite-admin/execute-query', {
+      let 总条数结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
         sql: 总条数SQL,
         parameters: [],
       })
@@ -236,7 +236,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       // 查询当前页数据
       let 偏移 = (this.当前页 - 1) * this.每页条数
       let 数据SQL = 'SELECT * FROM `' + 表名 + '` LIMIT ? OFFSET ?'
-      let 数据结果 = await this.API管理器.请求接口('/api/sqlite-admin/execute-query', {
+      let 数据结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
         sql: 数据SQL,
         parameters: [this.每页条数, 偏移],
       })

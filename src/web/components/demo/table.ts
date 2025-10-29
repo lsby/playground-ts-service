@@ -29,7 +29,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
     }
   }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
-    return await this.API管理器.请求接口并处理错误('/api/demo/user-crud/read', { page, size })
+    return await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/read', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {
@@ -44,7 +44,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
           await 警告提示('未输入数据')
           return
         }
-        await this.API管理器.请求接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
+        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
       },
     }
   }
@@ -53,7 +53,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
       删除: async (数据项: 数据项): Promise<void> => {
         let 确认结果 = await 显示确认对话框('你确定要删除这条数据吗？')
         if (确认结果 === false) return
-        await this.API管理器.请求接口并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
+        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
       },
       编辑: async (数据项: 数据项): Promise<void> => {
         let name = prompt('请输入新名称:')
@@ -61,7 +61,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
           await 警告提示('未输入数据')
           return
         }
-        await this.API管理器.请求接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
+        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
       },
     }
   }

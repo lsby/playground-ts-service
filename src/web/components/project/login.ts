@@ -229,7 +229,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         this.结果.textContent = '密码和确认密码不匹配'
         return
       }
-      await this.API管理器.请求接口并处理错误('/api/user/register', {
+      await this.API管理器.请求post接口并处理错误('/api/user/register', {
         userName: 用户名,
         userPassword: 密码,
       })
@@ -237,7 +237,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
       this.设置属性('mode', 'login')
       this.更新UI()
     } else {
-      let 调用结果 = await this.API管理器.请求接口并处理错误('/api/user/login', {
+      let 调用结果 = await this.API管理器.请求post接口并处理错误('/api/user/login', {
         userName: 用户名,
         userPassword: 密码,
       })

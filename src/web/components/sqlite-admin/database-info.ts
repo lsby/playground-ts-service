@@ -59,7 +59,7 @@ export class LsbyDatabaseInfo extends 组件基类<属性类型, 发出事件类
     if (this.版本标签 === null) return
     let 版本标签 = this.版本标签
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/get-database-info', {})
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-database-info', {})
       if (结果.status === 'success') {
         版本标签.textContent = `SQLite版本: ${结果.data.version}`
       } else {

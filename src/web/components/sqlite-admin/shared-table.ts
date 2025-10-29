@@ -432,7 +432,7 @@ export class 共享表格管理器 {
         let 条件部分 = 条件部分列表.join(' AND ')
         let 更新SQL = 'UPDATE `' + this.选项.表名 + '` SET `' + 列名 + '` = ? WHERE ' + 条件部分
 
-        let 更新结果 = await this.API管理器.请求接口('/api/sqlite-admin/execute-query', {
+        let 更新结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
           sql: 更新SQL,
           parameters: 参数列表,
         })
@@ -509,7 +509,7 @@ export class 共享表格管理器 {
         let 条件部分 = 条件部分列表.join(' AND ')
         let 删除SQL = 'DELETE FROM `' + this.选项.表名 + '` WHERE ' + 条件部分
 
-        let 删除结果 = await this.API管理器.请求接口('/api/sqlite-admin/execute-query', {
+        let 删除结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
           sql: 删除SQL,
           parameters: 参数列表,
         })

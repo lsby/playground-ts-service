@@ -14,7 +14,7 @@ export class LsbyLoginCheck extends 组件基类<属性类型, 发出事件类�
   private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   protected override async 当加载时(): Promise<void> {
-    let 结果 = await this.API管理器.请求接口并处理错误('/api/user/is-login', {})
+    let 结果 = await this.API管理器.请求post接口并处理错误('/api/user/is-login', {})
     if (结果.isLogin === true) return
     this.API管理器.清除token()
     window.location.assign('/login.html')

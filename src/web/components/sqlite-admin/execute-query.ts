@@ -273,7 +273,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     }
 
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/execute-query', { sql, parameters: [] })
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', { sql, parameters: [] })
       if (结果.status === 'success') {
         选项卡.结果数据 = 结果.data
         this.显示查询结果(内容, 结果.data)

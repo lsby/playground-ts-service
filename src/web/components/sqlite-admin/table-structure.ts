@@ -52,7 +52,7 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     }
 
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
         this.渲染表结构(结果.data.columns)
       } else {

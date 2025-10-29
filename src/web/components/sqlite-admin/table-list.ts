@@ -44,7 +44,7 @@ export class LsbyTableList extends 组件基类<属性类型, 发出事件类型
     if (this.表列表容器 === void 0) return
     let 表列表容器 = this.表列表容器
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/get-tables', {})
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-tables', {})
       if (结果.status === 'success') {
         this.渲染表列表(结果.data.tables)
       } else {

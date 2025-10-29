@@ -67,7 +67,7 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     备份按钮.textContent = '备份中...'
 
     try {
-      let 结果 = await this.API管理器.请求接口('/api/sqlite-admin/backup-database', {})
+      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/backup-database', {})
       if (结果.status === 'success') {
         this.显示结果(`备份成功`, true)
       } else {
