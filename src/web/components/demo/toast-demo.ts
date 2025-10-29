@@ -1,9 +1,9 @@
 import { 组件基类 } from '../../base/base'
 import { 信息提示, 成功提示, 警告提示, 错误提示 } from '../../global/toast'
 
-type 属性类型 = Record<string, string>
-type 发出事件类型 = Record<string, any>
-type 监听事件类型 = Record<string, any>
+type 属性类型 = {}
+type 发出事件类型 = {}
+type 监听事件类型 = {}
 
 export class 吐司演示组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []

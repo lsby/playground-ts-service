@@ -1,17 +1,20 @@
 import { randomUUID } from 'node:crypto'
 import { 集线器 } from '../hub/hub'
 
-export type 任务状态 = '等待中' | '运行中' | '已完成' | '已失败' | '已取消'
+export type 任务状态 = '等待中' | '运行中' | '已完成' | '已失败' | '已取消' | '已超时'
 export type 任务优先级 = number // 数字越大 优先级越高
 
-export type 通知类型枚举 = { 类型: '取消请求' } | { 类型: '状态刷新' }
+export type 通知类型枚举 = { 类型: '取消通知' } | { 类型: '超时通知' }
+export type 日志监听器 = (日志: { 时间: Date; 消息: string }) => void | Promise<void>
 export type 任务上下文 = {
   任务id: string
   开始时间: Date
   通知句柄: 集线器<通知类型枚举>
+  输出日志: (消息: string) => void
 }
 
 export abstract class 任务抽象类<输出类型> {
+  private static readonly 最大日志数量 = 1000 // 限制日志最大数量，避免内存溢出
   public static 创建任务<输出类型>(配置: {
     任务名称: string
     任务优先级?: 任务优先级
@@ -75,6 +78,8 @@ export abstract class 任务抽象类<输出类型> {
   private 重试次数: number = 0
   private 通知句柄: 集线器<通知类型枚举> = new 集线器<通知类型枚举>()
   private 输出结果: 输出类型 | null = null
+  private 日志列表: Array<{ 时间: Date; 消息: string }> = []
+  private 日志监听器: 日志监听器 | null = null
 
   public abstract 获得任务名称(): string
   public abstract 获得任务优先级(): 任务优先级
@@ -145,7 +150,7 @@ export abstract class 任务抽象类<输出类型> {
     return this.通知句柄
   }
   public 取消任务(): void {
-    this.通知句柄.广播消息({ 类型: '取消请求' })
+    this.通知句柄.广播消息({ 类型: '取消通知' })
   }
 
   public 获得输出结果(): 输出类型 | null {
@@ -153,5 +158,26 @@ export abstract class 任务抽象类<输出类型> {
   }
   public 设置输出结果(结果: 输出类型): void {
     this.输出结果 = 结果
+  }
+
+  public 获得日志列表(): Array<{ 时间: Date; 消息: string }> {
+    return [...this.日志列表]
+  }
+
+  public 设置日志监听器(监听器: 日志监听器 | null): void {
+    this.日志监听器 = 监听器
+  }
+
+  public async 记录日志(消息: string): Promise<void> {
+    let 新日志 = { 时间: new Date(), 消息 }
+    this.日志列表.push(新日志)
+    // 限制日志数量，避免内存溢出
+    while (this.日志列表.length > 任务抽象类.最大日志数量) {
+      this.日志列表.shift() // 删除最旧的日志
+    }
+    // 触发日志监听器
+    if (this.日志监听器 !== null) {
+      await this.日志监听器(新日志)
+    }
   }
 }

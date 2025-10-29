@@ -1,8 +1,8 @@
-import { Global } from '../../global/global'
+import { Log } from '@lsby/ts-log'
 import { 任务上下文, 任务抽象类 } from './task'
 
 export class 任务管理器 {
-  private log = Global.getItem('log').then((a) => a.extend('任务管理器'))
+  private log = new Log('任务管理器')
   private 任务映射表: Map<string, 任务抽象类<any>> = new Map()
   private 运行中任务集合: Set<string> = new Set()
   private 最大并发数: number
@@ -95,7 +95,7 @@ export class 任务管理器 {
 
     // 尝试启动任务执行
     this.尝试执行下一个任务().catch(async (错误: Error) => {
-      let log = await this.log
+      let log = this.log
       log.debug('启动任务执行失败:', 错误)
     })
 
@@ -128,6 +128,9 @@ export class 任务管理器 {
         任务id: 任务.获得id(),
         开始时间: 任务.获得开始时间() ?? new Date(),
         通知句柄: 任务.获得通知集线器(),
+        输出日志: async (消息: string) => {
+          await 任务.记录日志(消息)
+        },
       }
 
       // 执行任务逻辑
@@ -136,9 +139,10 @@ export class 任务管理器 {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         输出数据 = await Promise.race([
           任务.任务逻辑(上下文),
-          new Promise<输出类型>((_resolve, reject) => {
+          new Promise<输出类型>((_resolve, _reject) => {
             setTimeout(() => {
-              reject(new Error(`任务执行超时: ${任务.获得任务超时时间()}ms`))
+              任务.获得通知集线器().广播消息({ 类型: '超时通知' })
+              任务.设置当前状态('已超时')
             }, 任务.获得任务超时时间())
           }),
         ])
@@ -147,12 +151,14 @@ export class 任务管理器 {
         输出数据 = await 任务.任务逻辑(上下文)
       }
 
-      // 执行成功钩子
-      await 任务.执行成功钩子(输出数据)
+      if (任务.获得当前状态() === '运行中') {
+        // 执行成功钩子
+        await 任务.执行成功钩子(输出数据)
 
-      任务.设置当前状态('已完成')
-      任务.设置结束时间(new Date())
-      任务.设置输出结果(输出数据)
+        任务.设置当前状态('已完成')
+        任务.设置结束时间(new Date())
+        任务.设置输出结果(输出数据)
+      }
     } catch (错误) {
       let 错误对象 = 错误 instanceof Error ? 错误 : new Error(String(错误))
       任务.设置错误信息(错误对象)
@@ -169,7 +175,7 @@ export class 任务管理器 {
 
         // 重新提交任务
         this.尝试执行下一个任务().catch(async (重试错误: Error) => {
-          let log = await this.log
+          let log = this.log
           log.debug('重试任务失败:', 重试错误)
         })
       } else {
@@ -184,7 +190,7 @@ export class 任务管理器 {
 
       // 尝试执行下一个任务
       this.尝试执行下一个任务().catch(async (错误: Error) => {
-        let log = await this.log
+        let log = this.log
         log.debug('启动下一个任务失败:', 错误)
       })
     }

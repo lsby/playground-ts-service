@@ -1,9 +1,9 @@
 import { 组件基类 } from '../../base/base'
 import { 显示对话框, 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 
-type 属性类型 = Record<string, string>
-type 发出事件类型 = Record<string, any>
-type 监听事件类型 = Record<string, any>
+type 属性类型 = {}
+type 发出事件类型 = {}
+type 监听事件类型 = {}
 
 export class 对话框演示组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []

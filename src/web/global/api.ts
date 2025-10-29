@@ -31,6 +31,7 @@ export class API管理器 {
     ws信息回调?: (
       data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
     ) => Promise<void>,
+    ws连接回调?: (ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -43,14 +44,25 @@ export class API管理器 {
         头['authorization'] = this.token
       }
 
-      return await 不安全的扩展WebPost(
-        GlobalWeb.getItemSync('API前缀') + 接口路径,
-        参数,
-        头,
-        ws信息回调,
-        ws关闭回调,
-        ws错误回调,
-      )
+      let 选项: any = {
+        url: GlobalWeb.getItemSync('API前缀') + 接口路径,
+        参数: 参数,
+        头: 头,
+      }
+      if (ws信息回调 !== void 0) {
+        选项.ws信息回调 = ws信息回调
+      }
+      if (ws关闭回调 !== void 0) {
+        选项.ws关闭回调 = ws关闭回调
+      }
+      if (ws错误回调 !== void 0) {
+        选项.ws错误回调 = ws错误回调
+      }
+      if (ws连接回调 !== void 0) {
+        选项.ws连接回调 = ws连接回调
+      }
+
+      return await 不安全的扩展WebPost(选项)
     } catch (e) {
       return { status: 'fail', data: String(e) } as any
     }
@@ -61,12 +73,13 @@ export class API管理器 {
     ws信息回调?: (
       data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
     ) => Promise<void>,
+    ws连接回调?: (ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
     获得对象属性<获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>, 'data'>
   > {
-    let 请求结果 = await this.请求接口(接口路径, 参数, ws信息回调, ws关闭回调, ws错误回调)
+    let 请求结果 = await this.请求接口(接口路径, 参数, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
     if (this.是标准返回格式(请求结果) === false) return 请求结果
 
     if (请求结果.status === 'fail') {
@@ -83,6 +96,7 @@ export class API管理器 {
     ws信息回调?: (
       data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
     ) => Promise<void>,
+    ws连接回调?: (ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -95,14 +109,25 @@ export class API管理器 {
         头['authorization'] = this.token
       }
 
-      return await 不安全的扩展WebPost表单(
-        GlobalWeb.getItemSync('API前缀') + 接口路径,
-        表单数据,
-        头,
-        ws信息回调,
-        ws关闭回调,
-        ws错误回调,
-      )
+      let 选项: any = {
+        url: GlobalWeb.getItemSync('API前缀') + 接口路径,
+        表单数据: 表单数据,
+        头: 头,
+      }
+      if (ws信息回调 !== void 0) {
+        选项.ws信息回调 = ws信息回调
+      }
+      if (ws关闭回调 !== void 0) {
+        选项.ws关闭回调 = ws关闭回调
+      }
+      if (ws错误回调 !== void 0) {
+        选项.ws错误回调 = ws错误回调
+      }
+      if (ws连接回调 !== void 0) {
+        选项.ws连接回调 = ws连接回调
+      }
+
+      return await 不安全的扩展WebPost表单(选项)
     } catch (e) {
       return { status: 'fail', data: String(e) } as any
     }
@@ -113,12 +138,13 @@ export class API管理器 {
     ws信息回调?: (
       data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
     ) => Promise<void>,
+    ws连接回调?: (ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
     获得对象属性<获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>, 'data'>
   > {
-    let 请求结果 = await this.请求表单接口(接口路径, 表单数据, ws信息回调, ws关闭回调, ws错误回调)
+    let 请求结果 = await this.请求表单接口(接口路径, 表单数据, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
     if (this.是标准返回格式(请求结果) === false) return 请求结果
 
     if (请求结果.status === 'fail') {
