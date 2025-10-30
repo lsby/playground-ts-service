@@ -33,7 +33,8 @@ export class 共享表格管理器 {
 
     // 点击表格容器空白处取消选择
     this.表格容器.addEventListener('click', (事件) => {
-      let 目标 = 事件.target as Element
+      let 目标 = 事件.target
+      if (目标 instanceof Element === false) throw new Error('意外的元素类型')
       if (目标 === this.表格容器 || 目标.tagName === 'TABLE') {
         this.选中的行.clear()
         this.最后点击的单元格 = null

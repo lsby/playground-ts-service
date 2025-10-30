@@ -6,7 +6,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
-import { promises as fs } from 'fs'
+import fs from 'fs'
 import { CompiledQuery } from 'kysely'
 import path from 'path'
 import { z } from 'zod'
@@ -51,7 +51,7 @@ let 接口逻辑实现 = 接口逻辑
         let backupPath = path.join(backupDir, backupFileName)
 
         // 确保备份目录存在
-        await fs.mkdir(backupDir, { recursive: true })
+        await fs.promises.mkdir(backupDir, { recursive: true })
 
         // 使用VACUUM INTO进行备份
         await kysely.executeQuery(CompiledQuery.raw(`VACUUM INTO '${backupPath}';`, []))

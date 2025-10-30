@@ -65,7 +65,7 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
   }
 
   private 更新UI(): void {
-    let 子元素 = Array.from(this.children) as HTMLElement[]
+    let 子元素 = Array.from(this.children).filter((子): 子 is HTMLElement => 子 instanceof HTMLElement)
     let 标签元素 = 子元素.filter((el) => el.hasAttribute('标签'))
 
     this.标签头容器.innerHTML = ''

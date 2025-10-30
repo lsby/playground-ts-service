@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs'
+import fs from 'fs'
 import path from 'path'
 import { Global } from '../../global/global'
 import { 备份数据库 } from '../../interface/sqlite-admin/backup-database'
@@ -59,7 +59,7 @@ class 定时任务实现 extends 定时任务抽象类 {
   }
 
   private async 清理旧备份(备份目录: string, 保留天数: number, 上下文: 定时任务上下文): Promise<number> {
-    let 文件列表 = await fs.readdir(备份目录)
+    let 文件列表 = await fs.promises.readdir(备份目录)
     let 备份文件列表: Array<{ 名称: string; 修改时间: Date }> = []
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
@@ -71,7 +71,7 @@ class 定时任务实现 extends 定时任务抽象类 {
         文件名.endsWith('.db')
       ) {
         let 文件路径 = path.join(备份目录, 文件名)
-        let 状态 = await fs.stat(文件路径)
+        let 状态 = await fs.promises.stat(文件路径)
         备份文件列表.push({ 名称: 文件名, 修改时间: 状态.mtime })
       }
     }
@@ -88,7 +88,7 @@ class 定时任务实现 extends 定时任务抽象类 {
     for (let 备份文件 of 备份文件列表) {
       if (备份文件.修改时间 < 保留时间阈值) {
         let 文件路径 = path.join(备份目录, 备份文件.名称)
-        await fs.unlink(文件路径)
+        await fs.promises.unlink(文件路径)
         删除数量 = 删除数量 + 1
         上下文.输出日志(`删除旧备份文件：${备份文件.名称}`)
       } else {

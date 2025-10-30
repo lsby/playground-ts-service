@@ -78,7 +78,7 @@
 - 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 CSS 变量
 - 使用路由机制进行兄弟组件通信: `src/web/components/mechanics/route.ts`
 - 使用 `src/web/global/api.ts` 来请求后端
-  这是一个包装过的post请求, 第三个参数是一个回调, 可以直接获得后端ws的推送信息
+  这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端ws的推送信息
 
 3. **其他**
 
