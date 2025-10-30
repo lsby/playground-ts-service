@@ -8,10 +8,10 @@ import {
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { Global } from '../../../global/global'
-import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
+import { Global } from '../../../../global/global'
+import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 
-let 接口路径 = '/api/task-admin/cancel' as const
+let 接口路径 = '/api/job-admin/instant-job-admin/cancel' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
@@ -34,7 +34,7 @@ let 接口逻辑实现 = 接口逻辑
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
-        let 任务管理器 = await Global.getItem('task')
+        let 任务管理器 = await Global.getItem('instant-job')
 
         let 成功 = 任务管理器.取消任务(参数.任务id)
 

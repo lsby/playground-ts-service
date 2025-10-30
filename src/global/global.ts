@@ -5,8 +5,8 @@ import { GlobalAsyncItem, GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import { Log } from '@lsby/ts-log'
 import { z } from 'zod'
-import { Cron管理器 } from '../model/cron/cron-manager'
-import { 任务管理器 } from '../model/task/task-manager'
+import { 即时任务管理器 } from '../model/instant-job/instant-job-manager'
+import { 定时任务管理器 } from '../model/scheduled-job/scheduled-job-manager'
 import { DB } from '../types/db'
 import { 创建sqlite数据库适配器 } from './db-dialect'
 
@@ -47,8 +47,8 @@ export let env = new Env({
 
 export let Global = new GlobalService([
   new GlobalItem('env', env),
-  new GlobalItem('cron', new Cron管理器()),
-  new GlobalItem('task', new 任务管理器({ 最大并发数: 10, 历史记录保留天数: 7 })),
+  new GlobalItem('scheduled-job', new 定时任务管理器()),
+  new GlobalItem('instant-job', new 即时任务管理器({ 最大并发数: 10, 历史记录保留天数: 7 })),
   new GlobalAsyncItem('DB_TYPE', async () => {
     let e = await env.获得环境变量()
     return e.DB_TYPE

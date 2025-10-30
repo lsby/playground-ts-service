@@ -9,11 +9,11 @@ import {
 import { Right, Task } from '@lsby/ts-fp-data'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
-import { Global } from '../../../global/global'
-import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
-import { 任务抽象类 } from '../../../model/task/task'
+import { Global } from '../../../../global/global'
+import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
+import { 即时任务抽象类 } from '../../../../model/instant-job/instant-job'
 
-let 接口路径 = '/api/task-admin/create-test' as const
+let 接口路径 = '/api/job-admin/instant-job-admin/create-fail-test' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
@@ -33,12 +33,12 @@ let 接口逻辑实现 = 接口逻辑
         new Task(async () => {
           return new JSON解析插件(
             z.object({
-              测试任务名称: z.string(),
+              失败任务名称: z.string(),
               任务优先级: z.number().optional(),
               任务超时时间: z.number().optional(),
-              最大重试次数: z.number().optional(),
-              测试任务消息: z.string(),
-              测试任务持续时间: z.number(),
+              最大重试次数: z.number(),
+              失败消息: z.string(),
+              失败延迟时间: z.number().optional(), // 延迟多少毫秒后失败
             }),
             {},
           )
@@ -46,13 +46,13 @@ let 接口逻辑实现 = 接口逻辑
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
-        let 任务管理器 = await Global.getItem('task')
+        let 任务管理器 = await Global.getItem('instant-job')
 
-        let 任务 = 任务抽象类.创建任务<string>({
-          任务名称: 参数.测试任务名称,
+        let 任务 = 即时任务抽象类.创建任务<string>({
+          任务名称: 参数.失败任务名称,
           ...(参数.任务优先级 !== void 0 ? { 任务优先级: 参数.任务优先级 } : {}),
           ...(参数.任务超时时间 !== void 0 ? { 任务超时时间: 参数.任务超时时间 } : {}),
-          ...(参数.最大重试次数 !== void 0 ? { 最大重试次数: 参数.最大重试次数 } : {}),
+          最大重试次数: 参数.最大重试次数,
           任务逻辑: async (上下文) => {
             let 状态 = { 已取消: false, 已超时: false }
             let 监听id = randomUUID()
@@ -67,44 +67,33 @@ let 接口逻辑实现 = 接口逻辑
               }
             })
 
-            // 测试任务逻辑：每秒打印消息，持续指定时间
-            let 消息内容 = 参数.测试任务消息
-            let 持续时间秒 = 参数.测试任务持续时间
-            let 开始时间 = Date.now()
-            let 打印次数 = 0
+            上下文.输出日志(`开始失败测试任务: ${参数.失败任务名称}`)
+            上下文.输出日志(`失败消息: ${参数.失败消息}`)
+            上下文.输出日志(`最大重试次数: ${参数.最大重试次数}`)
 
-            上下文.输出日志(`开始测试任务: ${参数.测试任务名称}`)
-            上下文.输出日志(`消息内容: ${消息内容}`)
-            上下文.输出日志(`持续时间: ${持续时间秒}秒`)
-
-            let 当前时间戳 = Date.now()
-            let 结束时间戳 = 开始时间 + 持续时间秒 * 1000
-
-            while (当前时间戳 < 结束时间戳 && 状态.已取消 === false) {
-              let 当前时间 = new Date().toLocaleTimeString()
-              上下文.输出日志(`[${当前时间}] ${消息内容} (第${打印次数 + 1}次)`)
-              打印次数 = 打印次数 + 1
-
+            // 如果设置了延迟时间，先等待
+            if (参数.失败延迟时间 !== void 0 && 参数.失败延迟时间 > 0) {
+              上下文.输出日志(`等待 ${参数.失败延迟时间} 毫秒后失败`)
               await new Promise<void>((resolve) => {
-                setTimeout(() => resolve(), 1000)
+                setTimeout(() => resolve(), 参数.失败延迟时间)
               })
+            }
 
-              if ((状态.已取消 as boolean) === true) {
-                上下文.输出日志('任务被用户取消')
-                break
-              }
-              if (状态.已超时 === true) {
-                上下文.输出日志('任务超时')
-                break
-              }
-
-              当前时间戳 = Date.now()
+            // 检查是否被取消或超时
+            if (状态.已取消 === true) {
+              上下文.输出日志('任务被用户取消')
+              throw new Error('任务被取消')
+            }
+            if (状态.已超时 === true) {
+              上下文.输出日志('任务超时')
+              throw new Error('任务超时')
             }
 
             上下文.通知句柄.断开监听(监听id)
 
-            上下文.输出日志(`测试任务完成，共打印${打印次数}次消息`)
-            return `测试任务完成: 共打印${打印次数}次消息`
+            // 必然失败，抛出错误
+            上下文.输出日志(`任务执行失败: ${参数.失败消息}`)
+            throw new Error(参数.失败消息)
           },
         })
 

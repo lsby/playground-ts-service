@@ -1,69 +1,64 @@
-import { randomUUID } from 'crypto'
 import { promises as fs } from 'fs'
 import path from 'path'
 import { Global } from '../global/global'
 import { 备份数据库 } from '../interface/sqlite-admin/backup-database'
-import { Cron抽象类 } from '../model/cron/cron'
-import { 任务上下文, 任务抽象类 } from '../model/task/task'
+import { 定时任务上下文, 定时任务抽象类 } from '../model/scheduled-job/scheduled-job'
 
-export class 数据库备份任务 extends 任务抽象类<void> {
-  public 获得任务名称(): string {
-    return '数据库定时备份'
+class 定时任务实现 extends 定时任务抽象类 {
+  public override 获得名称(): string {
+    return '数据库备份'
   }
-  public 获得任务优先级(): number {
-    return 1
+  public override async 获得cron表达式(): Promise<`${string} ${string} ${string} ${string} ${string} ${string}`> {
+    return '0 0 0 * * *' // 每天0点执行
   }
-  public 获得任务超时时间(): number {
-    return 30 * 60 * 1000
-  }
-  public 获得最大重试次数(): number {
-    return 2
-  }
-
-  public async 任务逻辑(上下文: 任务上下文): Promise<void> {
-    let 状态 = { 已取消: false, 已超时: false }
-    let 监听id = randomUUID()
-    上下文.通知句柄.监听消息(监听id, (消息) => {
-      switch (消息.类型) {
-        case '取消通知':
-          状态.已取消 = true
-          上下文.输出日志('该任务不支持取消处理')
-          break
-        case '超时通知':
-          状态.已超时 = true
-          上下文.输出日志('该任务不支持超时处理')
-          break
-      }
-    })
-
+  public override async 任务逻辑(上下文: 定时任务上下文): Promise<void> {
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
-    let kysely = await Global.getItem('kysely')
-    let log = await Global.getItem('log').then((a) => a.extend('数据库备份任务'))
 
-    let 管理员用户 = await kysely
-      .获得句柄()
-      .selectFrom('user')
-      .select('id')
-      .where('is_admin', '=', 1)
-      .executeTakeFirst()
-    if (管理员用户 === void 0) {
-      throw new Error('没有管理员用户')
+    上下文.输出日志('数据库备份定时任务开始执行')
+
+    // 只有当DB_TYPE为sqlite时才执行备份
+    if (env.DB_TYPE !== 'sqlite') {
+      上下文.输出日志(`当前数据库类型为${env.DB_TYPE}，跳过备份`)
+      return
     }
 
-    上下文.输出日志(`找到管理员用户ID：${管理员用户.id}`)
-    上下文.输出日志(`备份路径：${env.DATABASE_BACKUP_PATH}`)
+    try {
+      上下文.输出日志('开始执行数据库备份')
 
-    上下文.输出日志('备份开始')
+      let kysely = await Global.getItem('kysely')
 
-    await 备份数据库.实现({ kysely: kysely }, { isAuto: true, userId: 管理员用户.id }, { log })
+      let 管理员用户 = await kysely
+        .获得句柄()
+        .selectFrom('user')
+        .select('id')
+        .where('is_admin', '=', 1)
+        .executeTakeFirst()
+      if (管理员用户 === void 0) {
+        throw new Error('没有管理员用户')
+      }
 
-    上下文.输出日志('备份结束')
+      上下文.输出日志(`找到管理员用户ID：${管理员用户.id}`)
+      上下文.输出日志(`备份路径：${env.DATABASE_BACKUP_PATH}`)
 
-    let 删除数量 = await this.清理旧备份(env.DATABASE_BACKUP_PATH, env.DATABASE_BACKUP_RETENTION_DAYS, 上下文)
-    上下文.输出日志(`清理完成，共删除 ${删除数量} 个旧备份文件`)
+      上下文.输出日志('开始备份数据库')
+      await 备份数据库.实现(
+        { kysely: kysely },
+        { isAuto: true, userId: 管理员用户.id },
+        { log: await Global.getItem('log').then((a) => a.extend('数据库备份')) },
+      )
+      上下文.输出日志('数据库备份完成')
+
+      let 删除数量 = await this.清理旧备份(env.DATABASE_BACKUP_PATH, env.DATABASE_BACKUP_RETENTION_DAYS, 上下文)
+      上下文.输出日志(`清理完成，共删除 ${删除数量} 个旧备份文件`)
+
+      上下文.输出日志('数据库备份定时任务执行完成')
+    } catch (错误) {
+      上下文.输出日志(`数据库备份失败：${String(错误)}`)
+      throw 错误
+    }
   }
 
-  private async 清理旧备份(备份目录: string, 保留天数: number, 上下文: 任务上下文): Promise<number> {
+  private async 清理旧备份(备份目录: string, 保留天数: number, 上下文: 定时任务上下文): Promise<number> {
     let 文件列表 = await fs.readdir(备份目录)
     let 备份文件列表: Array<{ 名称: string; 修改时间: Date }> = []
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
@@ -103,41 +98,6 @@ export class 数据库备份任务 extends 任务抽象类<void> {
     }
 
     return 删除数量
-  }
-}
-
-class 定时任务实现 extends Cron抽象类 {
-  public override getName(): string {
-    return '数据库备份'
-  }
-  public override async getCron(): Promise<`${string} ${string} ${string} ${string} ${string} ${string}`> {
-    return '0 0 0 * * *' // 每天0点执行
-  }
-  public override async run(): Promise<void> {
-    let log = await Global.getItem('log').then((a) => a.extend('数据库备份'))
-    let env = await Global.getItem('env').then((a) => a.获得环境变量())
-
-    log.debug('数据库备份定时任务开始执行')
-
-    // 只有当DB_TYPE为sqlite时才执行备份
-    if (env.DB_TYPE !== 'sqlite') {
-      log.debug('当前数据库类型为%o，跳过备份', env.DB_TYPE)
-      return
-    }
-
-    try {
-      log.debug('提交数据库备份任务')
-
-      let 任务管理器 = await Global.getItem('task')
-      let 备份任务 = new 数据库备份任务()
-      let 任务id = 任务管理器.提交任务(备份任务)
-
-      log.debug('数据库备份任务已提交，任务ID：%o', 任务id)
-    } catch (错误) {
-      log.error('提交数据库备份任务失败：%o', 错误)
-    }
-
-    log.debug('数据库备份定时任务执行完成')
   }
 }
 

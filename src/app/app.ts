@@ -10,7 +10,7 @@ export class App {
     let log = await Global.getItem('log').then((a) => a.extend('service'))
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
-    let cron = await Global.getItem('cron')
+    let cron = await Global.getItem('scheduled-job')
     await cron.执行([onTimeAlarm, databaseBackupCron])
 
     let 静态文件目录 = resolve(import.meta.dirname, '../../web')

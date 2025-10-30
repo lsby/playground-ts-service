@@ -26,7 +26,7 @@ type 任务数据项 = {
 export class 测试任务组件 extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 任务数据项> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-task-admin', this)
+    this.注册组件('lsby-job-admin', this)
   }
 
   private api管理器 = new API管理器()
@@ -123,7 +123,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       取消: async (任务: 任务数据项): Promise<void> => {
         if (任务.状态 === '等待中' || 任务.状态 === '运行中') {
           try {
-            await this.api管理器.请求post接口并处理错误('/api/task-admin/cancel', { 任务id: 任务.id })
+            await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/cancel', { 任务id: 任务.id })
             await this.刷新任务列表()
           } catch (错误) {
             console.error('取消任务失败:', 错误)
@@ -135,7 +135,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
 
   private async 刷新任务列表(): Promise<void> {
     try {
-      let 结果 = await this.api管理器.请求post接口并处理错误('/api/task-admin/list', {})
+      let 结果 = await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/list', {})
       this.所有任务数据 = 结果.任务列表.map((任务) => ({
         id: 任务.id,
         名称: 任务.名称,
@@ -169,7 +169,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     日志组件.style.width = '100%'
 
     // 更新日志显示的函数
-    let 更新日志显示 = (日志: { 时间: Date; 消息: string }): void => {
+    let 更新日志显示 = (日志: { 时间: number; 消息: string }): void => {
       let 日志消息 = `[${new Date(日志.时间).toLocaleString()}] ${日志.消息}`
       日志组件.添加日志(日志消息)
     }
@@ -179,7 +179,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     // 直接用一个请求同时获取历史日志并建立WebSocket连接
     this.api管理器
       .请求post接口并处理错误(
-        '/api/task-admin/get-log',
+        '/api/job-admin/instant-job-admin/get-log',
         { 任务id: 任务.id },
         async (ws数据) => {
           // 收到WebSocket消息，实时更新单条新日志
@@ -320,7 +320,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       }
 
       try {
-        await this.api管理器.请求post接口并处理错误('/api/task-admin/create-test', {
+        await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-test', {
           ...(超时时间 !== '' ? { 任务超时时间: parseInt(超时时间) * 1000 } : {}),
           测试任务名称: 任务名称,
           测试任务消息: 消息内容,
@@ -502,7 +502,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       }
 
       try {
-        await this.api管理器.请求post接口并处理错误('/api/task-admin/create-fail-test', {
+        await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-fail-test', {
           失败任务名称: 任务名称,
           失败消息: 失败消息,
           最大重试次数: 最大重试次数,
