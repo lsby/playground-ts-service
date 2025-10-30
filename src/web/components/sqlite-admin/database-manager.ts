@@ -112,14 +112,14 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     this.shadow.appendChild(this.右侧容器)
   }
 
-  private 当选择表(表名: string): void {
+  private async 当选择表(表名: string): Promise<void> {
     if (this.表结构组件 === null || this.表数据组件 === null || this.右侧容器 === null) return
     let 表结构组件 = this.表结构组件
     let 表数据组件 = this.表数据组件
     let 右侧容器 = this.右侧容器
     this.当前表名 = 表名
-    表结构组件.设置属性('表名', 表名)
-    表数据组件.设置属性('表名', 表名)
+    await 表结构组件.设置属性('表名', 表名)
+    await 表数据组件.设置属性('表名', 表名)
 
     // 更新标题显示
     let 表名显示 = 右侧容器.querySelector('span')

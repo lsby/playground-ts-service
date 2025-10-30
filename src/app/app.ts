@@ -18,9 +18,9 @@ export class App {
     let service = new 服务器(interfaceApiList, env.APP_PORT, 静态文件目录)
     let serviceInfo = await service.run()
 
-    log.debug('已加载的api路径: %O', serviceInfo.api)
-    log.debug('静态文件目录: %O', 静态文件目录)
-    log.debug('服务器地址: %O', serviceInfo.ip)
+    await log.debug('已加载的api路径: %O', serviceInfo.api)
+    await log.debug('静态文件目录: %O', 静态文件目录)
+    await log.debug('服务器地址: %O', serviceInfo.ip)
 
     let 即时任务管理器 = await Global.getItem('instant-job')
     即时任务管理器.提交任务(报告系统情况任务)

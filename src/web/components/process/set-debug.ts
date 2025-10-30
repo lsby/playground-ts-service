@@ -26,7 +26,7 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
     } else {
       localStorage['debug'] = '*'
 
-      let 排除事件属性 = this.获得属性('排除事件')
+      let 排除事件属性 = await this.获得属性('排除事件')
       let 排除事件: string[] = []
       if (排除事件属性 !== null && 排除事件属性 !== void 0) {
         排除事件 = 排除事件属性.split(',')
@@ -34,20 +34,20 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
 
       // 劫持 addEventListener
       let originalAddEventListener = EventTarget.prototype.addEventListener
-      EventTarget.prototype.addEventListener = function (type, listener, options): void {
+      EventTarget.prototype.addEventListener = async function (type, listener, options): Promise<void> {
         if (排除事件.includes(type)) {
           return originalAddEventListener.call(this, type, listener, options)
         }
 
         let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
-        log.debug('监听事件: %o <= %O, %O', type, listener, options)
+        await log.debug('监听事件: %o <= %O, %O', type, listener, options)
 
         if (typeof listener === 'function') {
           originalAddEventListener.call(
             this,
             type,
-            (event) => {
-              log.debug('事件触发: %o <= %O, %O', type, listener, options)
+            async (event) => {
+              await log.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener.call(listener, event)
             },
             options,
@@ -57,8 +57,8 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
           originalAddEventListener.call(
             this,
             type,
-            (event) => {
-              log.debug('事件触发: %o <= %O, %O', type, listener, options)
+            async (event) => {
+              await log.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener?.handleEvent.call(listener, event)
             },
             options,
@@ -75,9 +75,15 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
 
         let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
         if (event instanceof CustomEvent) {
-          log.debug('派发自定义事件: %o => %O, %O', event.type, event.detail, event)
+          log
+            .debug('派发自定义事件: %o => %O, %O', event.type, event.detail, event)
+            .catch(
+              (a) => `日志输出错误: ${a}: 日志内容: ${'派发自定义事件: ${event.type} => ${event.detail}, ${event}'}`,
+            )
         } else {
-          log.debug('派发事件: %o => %O', event.type, event)
+          log
+            .debug('派发事件: %o => %O', event.type, event)
+            .catch((a) => `日志输出错误: ${a}: 派发事件: ${event.type} => ${event}}`)
         }
         return originalDispatchEvent.call(this, event)
       }

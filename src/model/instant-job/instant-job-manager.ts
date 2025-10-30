@@ -116,7 +116,7 @@ export class 即时任务管理器 {
     // 尝试启动任务执行
     this.尝试执行下一个任务().catch(async (错误: Error) => {
       let log = this.log
-      log.debug('启动任务执行失败:', 错误)
+      await log.debug('启动任务执行失败:', 错误)
     })
 
     return 任务id
@@ -147,8 +147,8 @@ export class 即时任务管理器 {
       let 上下文: 即时任务上下文 = {
         任务id: 任务.获得id(),
         开始时间: 任务.获得开始时间() ?? new Date(),
-        输出日志: async (消息: string) => {
-          await 任务.记录日志(消息)
+        输出日志: (...args: any[]): void => {
+          任务.记录日志(...args)
         },
       }
 
@@ -179,7 +179,7 @@ export class 即时任务管理器 {
         // 重新提交任务
         this.尝试执行下一个任务().catch(async (重试错误: Error) => {
           let log = this.log
-          log.debug('重试任务失败:', 重试错误)
+          await log.debug('重试任务失败:', 重试错误)
         })
       } else {
         任务.设置当前状态('已失败')
@@ -194,7 +194,7 @@ export class 即时任务管理器 {
       // 尝试执行下一个任务
       this.尝试执行下一个任务().catch(async (错误: Error) => {
         let log = this.log
-        log.debug('启动下一个任务失败:', 错误)
+        await log.debug('启动下一个任务失败:', 错误)
       })
     }
   }

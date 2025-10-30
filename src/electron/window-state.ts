@@ -51,7 +51,7 @@ export async function 读取窗口状态(窗口状态路径: string): Promise<�
       displayId: data.displayId ?? screen.getPrimaryDisplay().id,
     }
   } catch (err) {
-    log.warn('读取窗口状态失败:', err)
+    await log.warn('读取窗口状态失败:', err)
     return null
   }
 }
@@ -63,13 +63,13 @@ export async function 保存窗口状态(win: BrowserWindow, 窗口状态路径:
     let 边界 = win.getNormalBounds()
     let 当前显示器 = screen.getDisplayNearestPoint({ x: 边界.x, y: 边界.y })
 
-    log.info('=== 保存窗口状态 ===')
-    log.info('窗口边界:', 边界)
-    log.info('当前显示器 ID:', 当前显示器.id)
-    log.info('当前显示器缩放:', 当前显示器.scaleFactor)
-    log.info('当前显示器工作区:', 当前显示器.workArea)
-    log.info('窗口是否最大化:', win.isMaximized())
-    log.info('窗口是否全屏:', win.isFullScreen())
+    await log.info('=== 保存窗口状态 ===')
+    await log.info('窗口边界:', 边界)
+    await log.info('当前显示器 ID:', 当前显示器.id)
+    await log.info('当前显示器缩放:', 当前显示器.scaleFactor)
+    await log.info('当前显示器工作区:', 当前显示器.workArea)
+    await log.info('窗口是否最大化:', win.isMaximized())
+    await log.info('窗口是否全屏:', win.isFullScreen())
 
     let 状态数据: 窗口状态数据 = {
       isMaximized: win.isMaximized(),
@@ -87,9 +87,9 @@ export async function 保存窗口状态(win: BrowserWindow, 窗口状态路径:
     }
 
     fs.writeFileSync(窗口状态路径, JSON.stringify(状态数据, null, 2))
-    log.info('窗口状态已保存')
+    await log.info('窗口状态已保存')
   } catch (err) {
-    log.warn('保存窗口状态失败:', err)
+    await log.warn('保存窗口状态失败:', err)
   }
 }
 

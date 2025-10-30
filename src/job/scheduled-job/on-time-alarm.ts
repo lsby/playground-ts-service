@@ -9,9 +9,10 @@ class 定时任务实现 extends 定时任务抽象类 {
     return '0 0 * * * *'
   }
   public override async 任务逻辑(上下文: 定时任务上下文): Promise<void> {
-    let log = await Global.getItem('log').then((a) => a.extend('整点报时'))
-    log.debug('我的天啊你看看都%o点了', new Date().getHours())
-    上下文.输出日志(`我的天啊你看看都${new Date().getHours()}点了`)
+    let log = await Global.getItem('log')
+      .then((a) => a.extend('整点报时'))
+      .then((a) => a.pipe(async (level, namespace, content) => 上下文.输出日志(`[${level}] [${namespace}] ${content}`)))
+    await log.debug('我的天啊你看看都%o点了', new Date().getHours())
   }
 }
 

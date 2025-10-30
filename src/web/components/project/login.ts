@@ -172,12 +172,12 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.注册按钮.textContent = '注册'
     this.切换按钮.textContent = '还没有账号？立即注册'
 
-    this.用户名输入框.oninput = (): void => this.设置属性('username', this.用户名输入框.value)
-    this.密码输入框.oninput = (): void => this.设置属性('password', this.密码输入框.value)
-    this.确认密码输入框.oninput = (): void => this.设置属性('confirmPassword', this.确认密码输入框.value)
+    this.用户名输入框.oninput = async (): Promise<void> => this.设置属性('username', this.用户名输入框.value)
+    this.密码输入框.oninput = async (): Promise<void> => this.设置属性('password', this.密码输入框.value)
+    this.确认密码输入框.oninput = async (): Promise<void> => this.设置属性('confirmPassword', this.确认密码输入框.value)
     this.登录按钮.onclick = async (): Promise<void> => this.执行认证()
     this.注册按钮.onclick = async (): Promise<void> => this.执行认证()
-    this.切换按钮.onclick = (): void => this.切换模式()
+    this.切换按钮.onclick = async (): Promise<void> => this.切换模式()
 
     let 处理回车键 = async (事件: KeyboardEvent): Promise<void> => {
       if (事件.key === 'Enter') {
@@ -188,11 +188,11 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.密码输入框.onkeydown = 处理回车键
     this.确认密码输入框.onkeydown = 处理回车键
 
-    this.更新UI()
+    await this.更新UI()
   }
 
-  private 更新UI(): void {
-    let 模式 = this.获得属性('mode') ?? 'login'
+  private async 更新UI(): Promise<void> {
+    let 模式 = (await this.获得属性('mode')) ?? 'login'
     let 确认密码父容器 = this.确认密码输入框.parentElement
     if (确认密码父容器 === null) {
       return
@@ -212,19 +212,19 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     }
   }
 
-  private 切换模式(): void {
-    let 当前模式 = this.获得属性('mode') ?? 'login'
+  private async 切换模式(): Promise<void> {
+    let 当前模式 = (await this.获得属性('mode')) ?? 'login'
     let 新模式: 'login' | 'register' = 当前模式 === 'login' ? 'register' : 'login'
-    this.设置属性('mode', 新模式)
-    this.更新UI()
+    await this.设置属性('mode', 新模式)
+    void this.更新UI()
   }
 
   private async 执行认证(): Promise<void> {
-    let 模式 = this.获得属性('mode') ?? 'login'
-    let 用户名 = this.获得属性('username') ?? ''
-    let 密码 = this.获得属性('password') ?? ''
+    let 模式 = (await this.获得属性('mode')) ?? 'login'
+    let 用户名 = (await this.获得属性('username')) ?? ''
+    let 密码 = (await this.获得属性('password')) ?? ''
     if (模式 === 'register') {
-      let 确认密码 = this.获得属性('confirmPassword') ?? ''
+      let 确认密码 = (await this.获得属性('confirmPassword')) ?? ''
       if (密码 !== 确认密码) {
         this.结果.textContent = '密码和确认密码不匹配'
         return
@@ -234,8 +234,8 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         userPassword: 密码,
       })
       this.结果.textContent = '注册成功，请登录'
-      this.设置属性('mode', 'login')
-      this.更新UI()
+      await this.设置属性('mode', 'login')
+      await this.更新UI()
     } else {
       let 调用结果 = await this.API管理器.请求post接口并处理错误('/api/user/login', {
         userName: 用户名,

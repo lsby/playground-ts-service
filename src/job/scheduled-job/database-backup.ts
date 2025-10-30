@@ -1,3 +1,4 @@
+import { Log } from '@lsby/ts-log'
 import fs from 'fs'
 import path from 'path'
 import { Global } from '../../global/global'
@@ -12,18 +13,21 @@ class 定时任务实现 extends 定时任务抽象类 {
     return '0 0 0 * * *' // 每天0点执行
   }
   public override async 任务逻辑(上下文: 定时任务上下文): Promise<void> {
+    let log = await Global.getItem('log')
+      .then((a) => a.extend('数据库自动备份'))
+      .then((a) => a.pipe(async (level, namespace, content) => 上下文.输出日志(`[${level}] [${namespace}] ${content}`)))
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
-    上下文.输出日志('数据库备份定时任务开始执行')
+    await log.info('数据库备份定时任务开始执行')
 
     // 只有当DB_TYPE为sqlite时才执行备份
     if (env.DB_TYPE !== 'sqlite') {
-      上下文.输出日志(`当前数据库类型为${env.DB_TYPE}，跳过备份`)
+      await log.info(`当前数据库类型为${env.DB_TYPE}，跳过备份`)
       return
     }
 
     try {
-      上下文.输出日志('开始执行数据库备份')
+      await log.info('开始执行数据库备份')
 
       let kysely = await Global.getItem('kysely')
 
@@ -37,33 +41,29 @@ class 定时任务实现 extends 定时任务抽象类 {
         throw new Error('没有管理员用户')
       }
 
-      上下文.输出日志(`找到管理员用户ID：${管理员用户.id}`)
-      上下文.输出日志(`备份路径：${env.DATABASE_BACKUP_PATH}`)
+      await log.info(`找到管理员用户ID：${管理员用户.id}`)
+      await log.info(`备份路径：${env.DATABASE_BACKUP_PATH}`)
 
-      上下文.输出日志('开始备份数据库')
-      await 备份数据库.实现(
-        { kysely: kysely },
-        { isAuto: true, userId: 管理员用户.id },
-        { log: await Global.getItem('log').then((a) => a.extend('数据库备份')) },
-      )
-      上下文.输出日志('数据库备份完成')
+      await log.info('开始备份数据库')
+      await 备份数据库.实现({ kysely: kysely }, { isAuto: true, userId: 管理员用户.id }, { log: log })
+      await log.info('数据库备份完成')
 
-      let 删除数量 = await this.清理旧备份(env.DATABASE_BACKUP_PATH, env.DATABASE_BACKUP_RETENTION_DAYS, 上下文)
-      上下文.输出日志(`清理完成，共删除 ${删除数量} 个旧备份文件`)
+      let 删除数量 = await this.清理旧备份(env.DATABASE_BACKUP_PATH, env.DATABASE_BACKUP_RETENTION_DAYS, log)
+      await log.info(`清理完成，共删除 ${删除数量} 个旧备份文件`)
 
-      上下文.输出日志('数据库备份定时任务执行完成')
+      await log.info('数据库备份定时任务执行完成')
     } catch (错误) {
-      上下文.输出日志(`数据库备份失败：${String(错误)}`)
+      await log.error(`数据库备份失败：${String(错误)}`)
       throw 错误
     }
   }
 
-  private async 清理旧备份(备份目录: string, 保留天数: number, 上下文: 定时任务上下文): Promise<number> {
+  private async 清理旧备份(备份目录: string, 保留天数: number, log: Log): Promise<number> {
     let 文件列表 = await fs.promises.readdir(备份目录)
     let 备份文件列表: Array<{ 名称: string; 修改时间: Date }> = []
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
-    上下文.输出日志(`开始清理旧备份，保留天数：${保留天数}，备份目录：${备份目录}`)
+    await log.info(`开始清理旧备份，保留天数：${保留天数}，备份目录：${备份目录}`)
 
     for (let 文件名 of 文件列表) {
       if (
@@ -76,7 +76,7 @@ class 定时任务实现 extends 定时任务抽象类 {
       }
     }
 
-    上下文.输出日志(`找到 ${备份文件列表.length} 个备份文件`)
+    await log.info(`找到 ${备份文件列表.length} 个备份文件`)
 
     // 按修改时间排序，最旧的在前
     备份文件列表.sort((a, b) => a.修改时间.getTime() - b.修改时间.getTime())
@@ -90,7 +90,7 @@ class 定时任务实现 extends 定时任务抽象类 {
         let 文件路径 = path.join(备份目录, 备份文件.名称)
         await fs.promises.unlink(文件路径)
         删除数量 = 删除数量 + 1
-        上下文.输出日志(`删除旧备份文件：${备份文件.名称}`)
+        await log.info(`删除旧备份文件：${备份文件.名称}`)
       } else {
         // 由于已排序，后面的文件都比这个新，停止检查
         break

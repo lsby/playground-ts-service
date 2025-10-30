@@ -160,7 +160,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
   }
 
   private async 获取表结构(): Promise<void> {
-    let 表名 = this.获得属性('表名')
+    let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
     try {
@@ -179,7 +179,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
   }
 
   private async 加载表数据(): Promise<void> {
-    let 表名 = this.获得属性('表名')
+    let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) {
       if (this.数据容器 !== null) {
         this.数据容器.style.display = 'none'

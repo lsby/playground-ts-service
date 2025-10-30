@@ -37,12 +37,12 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
     this.shadow.append(结果容器)
 
     this.结果.textContent = '计算中...'
-    this.输入框1.oninput = (): void => this.设置属性('a', this.输入框1.value)
-    this.输入框2.oninput = (): void => this.设置属性('b', this.输入框2.value)
+    this.输入框1.oninput = async (): Promise<void> => this.设置属性('a', this.输入框1.value)
+    this.输入框2.oninput = async (): Promise<void> => this.设置属性('b', this.输入框2.value)
   }
   protected override async 当变化时(_name: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
-    this.输入框1.value = this.获得属性('a') ?? '0'
-    this.输入框2.value = this.获得属性('b') ?? '0'
+    this.输入框1.value = (await this.获得属性('a')) ?? '0'
+    this.输入框2.value = (await this.获得属性('b')) ?? '0'
 
     let 调用结果 = await this.API管理器.请求post接口并处理错误('/api/demo/base/add', {
       a: parseInt(this.输入框1.value),

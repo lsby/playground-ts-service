@@ -36,10 +36,10 @@ export class 模态框组件 extends 组件基类<属性类型, 模态框发出�
   }
 
   protected override async 当加载时(): Promise<void> {
-    document.addEventListener('keydown', (e): void => {
+    document.addEventListener('keydown', async (e): Promise<void> => {
       if (e.key === 'Escape' && this.遮罩.style.display !== 'none') {
         this.派发事件('关闭', void 0)
-        this.设置属性('显示', '否')
+        await this.设置属性('显示', '否')
       }
     })
 
@@ -83,7 +83,7 @@ export class 模态框组件 extends 组件基类<属性类型, 模态框发出�
     this.头部.style.justifyContent = 'space-between'
 
     let 标题 = document.createElement('span')
-    let 标题值 = this.获得属性('标题')
+    let 标题值 = await this.获得属性('标题')
     if (标题值 !== null) {
       标题.textContent = 标题值
     } else {
@@ -99,9 +99,9 @@ export class 模态框组件 extends 组件基类<属性类型, 模态框发出�
     关闭按钮.style.fontSize = '16px'
     关闭按钮.style.color = 'red'
     关闭按钮.style.fontWeight = 'bold'
-    关闭按钮.onclick = (): void => {
+    关闭按钮.onclick = async (): Promise<void> => {
       this.派发事件('关闭', void 0)
-      this.设置属性('显示', '否')
+      await this.设置属性('显示', '否')
     }
     this.头部.appendChild(关闭按钮)
 

@@ -108,10 +108,10 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
         await this.刷新任务列表()
       },
       创建测试任务: async (): Promise<void> => {
-        this.创建测试任务模态框.设置属性('显示', '是')
+        await this.创建测试任务模态框.设置属性('显示', '是')
       },
       创建失败测试任务: async (): Promise<void> => {
-        this.创建失败测试任务模态框.设置属性('显示', '是')
+        await this.创建失败测试任务模态框.设置属性('显示', '是')
       },
     }
   }
@@ -119,7 +119,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
   protected override async 获得自定义项操作(): Promise<自定义项操作<任务数据项>> {
     return {
       详情: async (任务: 任务数据项): Promise<void> => {
-        this.显示任务详情(任务)
+        await this.显示任务详情(任务)
       },
     }
   }
@@ -149,7 +149,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     }
   }
 
-  private 显示任务详情(任务: 任务数据项): void {
+  private async 显示任务详情(任务: 任务数据项): Promise<void> {
     // 创建详情内容容器
     let 详情内容 = document.createElement('div')
     详情内容.style.padding = '1em'
@@ -192,7 +192,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       })
 
     this.详情模态框.设置内容(详情内容)
-    this.详情模态框.设置属性('显示', '是')
+    await this.详情模态框.设置属性('显示', '是')
   }
 
   private 设置创建测试任务模态框内容(): void {
@@ -272,8 +272,8 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     按钮容器.append(取消按钮, 确认按钮)
 
     // 事件绑定
-    取消按钮.onclick = (): void => {
-      this.创建测试任务模态框.设置属性('显示', '否')
+    取消按钮.onclick = async (): Promise<void> => {
+      await this.创建测试任务模态框.设置属性('显示', '否')
     }
 
     确认按钮.onclick = async (): Promise<void> => {
@@ -302,7 +302,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
           任务优先级: 1,
         })
 
-        this.创建测试任务模态框.设置属性('显示', '否')
+        await this.创建测试任务模态框.设置属性('显示', '否')
 
         // 清空表单
         this.测试任务名称输入框.value = '测试任务_' + new Date().toLocaleTimeString()
@@ -428,8 +428,8 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     按钮容器.append(取消按钮, 确认按钮)
 
     // 事件绑定
-    取消按钮.onclick = (): void => {
-      this.创建失败测试任务模态框.设置属性('显示', '否')
+    取消按钮.onclick = async (): Promise<void> => {
+      await this.创建失败测试任务模态框.设置属性('显示', '否')
     }
 
     确认按钮.onclick = async (): Promise<void> => {
@@ -467,7 +467,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
           ...(失败延迟时间 !== '' ? { 失败延迟时间: parseInt(失败延迟时间) } : {}),
         })
 
-        this.创建失败测试任务模态框.设置属性('显示', '否')
+        await this.创建失败测试任务模态框.设置属性('显示', '否')
 
         // 清空表单
         this.失败任务名称输入框.value = '失败测试任务_' + new Date().toLocaleTimeString()

@@ -51,15 +51,15 @@ async function 创建主窗口(): Promise<void> {
   ].join('\n')
   fs.writeFileSync(预加载脚本路径, 预加载脚本)
 
-  log.info('=== 创建主窗口 ===')
+  await log.info('=== 创建主窗口 ===')
   let 所有显示器 = screen.getAllDisplays()
-  log.info('所有显示器信息:')
+  await log.info('所有显示器信息:')
   for (let 显示器 of 所有显示器) {
-    log.info(`  显示器 ID: ${显示器.id}, 缩放: ${显示器.scaleFactor}, 工作区:`, 显示器.workArea)
+    await log.info(`  显示器 ID: ${显示器.id}, 缩放: ${显示器.scaleFactor}, 工作区:`, 显示器.workArea)
   }
 
   let 保存的状态 = await 读取窗口状态(窗口状态路径)
-  log.info('读取的保存状态:', 保存的状态)
+  await log.info('读取的保存状态:', 保存的状态)
 
   let 窗口配置: Electron.BrowserWindowConstructorOptions = {
     show: false,
@@ -79,16 +79,16 @@ async function 创建主窗口(): Promise<void> {
       width: 保存的状态.width,
       height: 保存的状态.height,
     })
-    log.info('保存的位置是否有效:', 位置有效)
+    await log.info('保存的位置是否有效:', 位置有效)
 
     if (位置有效 === true) {
       let 保存时的显示器 = 所有显示器.find((显示器) => 显示器.id === 保存的状态.displayId)
-      log.info('保存时的显示器:', 保存时的显示器 !== void 0 ? `ID ${保存时的显示器.id}` : '未找到')
+      await log.info('保存时的显示器:', 保存时的显示器 !== void 0 ? `ID ${保存时的显示器.id}` : '未找到')
 
       if (保存时的显示器 !== void 0) {
         let 补偿后的配置 = 计算补偿后的窗口配置(保存的状态)
 
-        log.info('使用保存的位置和补偿后的大小:', {
+        await log.info('使用保存的位置和补偿后的大小:', {
           ...补偿后的配置,
           原始宽度: 保存的状态.width,
           原始高度: 保存的状态.height,
@@ -105,14 +105,14 @@ async function 创建主窗口(): Promise<void> {
 
   if (使用保存的位置 === false) {
     let 默认位置 = 获取默认窗口位置()
-    log.info('使用默认位置和大小:', 默认位置)
+    await log.info('使用默认位置和大小:', 默认位置)
     窗口配置.x = 默认位置.x
     窗口配置.y = 默认位置.y
     窗口配置.width = 默认位置.width
     窗口配置.height = 默认位置.height
   }
 
-  log.info('最终窗口配置:', { x: 窗口配置.x, y: 窗口配置.y, width: 窗口配置.width, height: 窗口配置.height })
+  await log.info('最终窗口配置:', { x: 窗口配置.x, y: 窗口配置.y, width: 窗口配置.width, height: 窗口配置.height })
 
   主窗口 = new BrowserWindow(窗口配置)
 
@@ -122,19 +122,19 @@ async function 创建主窗口(): Promise<void> {
 
   if (保存的状态 !== null && 使用保存的位置 === true) {
     if (保存的状态.isMaximized === true) {
-      log.info('恢复最大化状态')
+      await log.info('恢复最大化状态')
       主窗口.maximize()
     }
     if (保存的状态.isFullScreen === true) {
-      log.info('恢复全屏状态')
+      await log.info('恢复全屏状态')
       主窗口.setFullScreen(true)
     }
   }
 
-  主窗口.once('ready-to-show', () => {
+  主窗口.once('ready-to-show', async () => {
     if (主窗口 !== null) {
       let 显示前的边界 = 主窗口.getBounds()
-      log.info('窗口显示前的边界:', 显示前的边界)
+      await log.info('窗口显示前的边界:', 显示前的边界)
       主窗口.show()
     }
   })

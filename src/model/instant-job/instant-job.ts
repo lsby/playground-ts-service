@@ -1,13 +1,14 @@
 import { randomUUID } from 'node:crypto'
+import { format } from 'node:util'
 
 export type 即时任务状态 = '等待中' | '运行中' | '已完成' | '已失败'
 export type 即时任务优先级 = number // 数字越大 优先级越高
 
-export type 即时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void | Promise<void>
+export type 即时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void
 export type 即时任务上下文 = {
   任务id: string
   开始时间: Date
-  输出日志: (消息: string) => void
+  输出日志: (...args: any[]) => void
 }
 
 export abstract class 即时任务抽象类<输出类型> {
@@ -152,7 +153,8 @@ export abstract class 即时任务抽象类<输出类型> {
     this.即时任务日志监听器 = 监听器
   }
 
-  public async 记录日志(消息: string): Promise<void> {
+  public 记录日志(...args: any[]): void {
+    let 消息 = format(...args)
     let 新日志 = { 时间: new Date(), 消息 }
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
@@ -161,7 +163,7 @@ export abstract class 即时任务抽象类<输出类型> {
     }
     // 触发即时任务日志监听器
     if (this.即时任务日志监听器 !== null) {
-      await this.即时任务日志监听器(新日志)
+      this.即时任务日志监听器(新日志)
     }
   }
 }

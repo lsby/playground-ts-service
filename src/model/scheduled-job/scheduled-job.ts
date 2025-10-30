@@ -1,8 +1,10 @@
-export type 定时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void | Promise<void>
+import { format } from 'node:util'
+
+export type 定时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void
 export type 定时任务上下文 = {
   任务名称: string
   执行时间: Date
-  输出日志: (消息: string) => void
+  输出日志: (...args: any[]) => void
 }
 
 export abstract class 定时任务抽象类 {
@@ -43,7 +45,8 @@ export abstract class 定时任务抽象类 {
     this.定时任务日志监听器 = 监听器
   }
 
-  public async 记录日志(消息: string): Promise<void> {
+  public 记录日志(...args: any[]): void {
+    let 消息 = format(...args)
     let 新日志 = { 时间: new Date(), 消息 }
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
@@ -52,7 +55,7 @@ export abstract class 定时任务抽象类 {
     }
     // 触发定时任务日志监听器
     if (this.定时任务日志监听器 !== null) {
-      await this.定时任务日志监听器(新日志)
+      this.定时任务日志监听器(新日志)
     }
   }
 }

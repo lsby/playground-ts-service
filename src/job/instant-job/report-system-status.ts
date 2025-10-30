@@ -40,6 +40,6 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
   },
   执行失败钩子: async (错误) => {
     let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
-    log.error('系统情况报告任务执行失败', 错误)
+    await log.error('系统情况报告任务执行失败', 错误)
   },
 })
