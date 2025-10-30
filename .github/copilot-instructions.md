@@ -25,7 +25,18 @@
 - 系统会自动生成接口列表: `src/interface/interface-list.ts`
 - 系统会自动生成接口类型: `src/types/interface-type.ts`
 
-3. **Web 前端**
+3. **任务系统**
+
+- 即时任务: `src/job/instant-job/`
+  - 抽象类: `src/model/instant-job/instant-job.ts`
+  - 管理器: `src/model/instant-job/instant-job-manager.ts`
+  - 支持优先级、重试机制和并发控制
+- 定时任务: `src/job/scheduled-job/`
+  - 抽象类: `src/model/scheduled-job/scheduled-job.ts`
+  - 管理器: `src/model/scheduled-job/scheduled-job-manager.ts`
+  - 使用cron表达式进行调度
+
+4. **Web 前端**
 
 - 前端代码: `src/web/`
 - 前端使用自封装的 Web Components 框架: `src/web/base/base.ts`
