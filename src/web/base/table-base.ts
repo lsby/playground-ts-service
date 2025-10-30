@@ -10,6 +10,7 @@ export abstract class 表格组件基类<
   数据项 extends { [key: string]: string | number | boolean | null },
 > extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected abstract 映射显示字段名称(数据字段: keyof 数据项): string | null
+  protected abstract 映射显示字段值(数据字段: keyof 数据项, 值: 数据项[keyof 数据项]): string
   protected abstract 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }>
   protected abstract 获得自定义操作(): Promise<自定义操作>
   protected abstract 获得自定义项操作(): Promise<自定义项操作<数据项>>
@@ -84,7 +85,7 @@ export abstract class 表格组件基类<
           if (数据 === void 0) throw new Error(`无法访问数据项中的字段: ${String(字段)}`)
 
           let td = document.createElement('td')
-          td.textContent = 数据?.toString() ?? ''
+          td.textContent = this.映射显示字段值(字段, 数据)
           td.style.padding = '8px'
           td.style.border = '1px solid var(--边框颜色)'
           行.appendChild(td)

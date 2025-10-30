@@ -28,6 +28,9 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
         return '名称'
     }
   }
+  protected override 映射显示字段值(数据字段: keyof 数据项, 值: 数据项[keyof 数据项]): string {
+    return String(值)
+  }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
     return await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/read', { page, size })
   }

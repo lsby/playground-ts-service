@@ -67,6 +67,9 @@ export class 定时任务组件 extends 表格组件基类<属性类型, 发出�
         return null
     }
   }
+  protected override 映射显示字段值(数据字段: keyof 定时任务数据项, 值: 定时任务数据项[keyof 定时任务数据项]): string {
+    return String(值)
+  }
 
   protected override async 请求数据(page: number, size: number): Promise<{ data: 定时任务数据项[]; total: number }> {
     this.当前页码 = page
