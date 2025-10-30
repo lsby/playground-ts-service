@@ -10,16 +10,13 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
     上下文.输出日志('开始报告系统情况...')
 
     let env = await Global.getItem('env').then((a) => a.获得环境变量())
-    let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
 
-    // 报告环境信息（不包含敏感信息）
+    // 报告环境信息
     上下文.输出日志(`环境: ${env.NODE_ENV}`)
     上下文.输出日志(`调试名称: ${env.DEBUG_NAME}`)
     上下文.输出日志(`数据库类型: ${env.DB_TYPE}`)
     上下文.输出日志(`应用端口: ${env.APP_PORT}`)
     上下文.输出日志(`Web端口: ${env.WEB_PORT}`)
-    上下文.输出日志(`系统用户: ${env.SYSTEM_USER}`)
-    上下文.输出日志(`上传最大文件大小: ${env.UPLOAD_MAX_FILE_SIZE} bytes`)
 
     // 报告数据库状态
     try {
@@ -33,23 +30,13 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
     // 报告任务管理器状态
     let 即时任务管理器 = await Global.getItem('instant-job')
     上下文.输出日志(`即时任务管理器最大并发数: ${即时任务管理器.获得最大并发数()}`)
-    上下文.输出日志(`定时任务管理器状态: 运行中`)
 
     // 报告系统时间
     上下文.输出日志(`系统启动时间: ${new Date().toISOString()}`)
 
-    log.info('系统情况报告完成')
     上下文.输出日志('系统情况报告完成')
 
     return { 状态: '成功' }
-  },
-  执行前钩子: async () => {
-    let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
-    log.info('准备执行系统情况报告任务')
-  },
-  执行成功钩子: async (输出) => {
-    let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
-    log.info('系统情况报告任务执行成功', 输出)
   },
   执行失败钩子: async (错误) => {
     let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
