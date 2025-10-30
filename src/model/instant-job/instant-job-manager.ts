@@ -147,38 +147,21 @@ export class 即时任务管理器 {
       let 上下文: 即时任务上下文 = {
         任务id: 任务.获得id(),
         开始时间: 任务.获得开始时间() ?? new Date(),
-        通知句柄: 任务.获得通知集线器(),
         输出日志: async (消息: string) => {
           await 任务.记录日志(消息)
         },
       }
 
       // 执行任务逻辑
-      let 输出数据: 输出类型
-      if (任务.获得任务超时时间() > 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        输出数据 = await Promise.race([
-          任务.任务逻辑(上下文),
-          new Promise<输出类型>((_resolve, _reject) => {
-            setTimeout(() => {
-              任务.获得通知集线器().广播消息({ 类型: '超时通知' })
-              任务.设置当前状态('已超时')
-            }, 任务.获得任务超时时间())
-          }),
-        ])
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        输出数据 = await 任务.任务逻辑(上下文)
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      let 输出数据: 输出类型 = await 任务.任务逻辑(上下文)
 
-      if (任务.获得当前状态() === '运行中') {
-        // 执行成功钩子
-        await 任务.执行成功钩子(输出数据)
+      // 执行成功钩子
+      await 任务.执行成功钩子(输出数据)
 
-        任务.设置当前状态('已完成')
-        任务.设置结束时间(new Date())
-        任务.设置输出结果(输出数据)
-      }
+      任务.设置当前状态('已完成')
+      任务.设置结束时间(new Date())
+      任务.设置输出结果(输出数据)
     } catch (错误) {
       let 错误对象 = 错误 instanceof Error ? 错误 : new Error(String(错误))
       任务.设置错误信息(错误对象)
@@ -214,24 +197,6 @@ export class 即时任务管理器 {
         log.debug('启动下一个任务失败:', 错误)
       })
     }
-  }
-  public 取消任务(任务id: string): boolean {
-    let 任务 = this.任务映射表.get(任务id)
-    if (任务 === void 0) {
-      return false
-    }
-
-    let 当前状态 = 任务.获得当前状态()
-
-    if (当前状态 === '已完成' || 当前状态 === '已失败' || 当前状态 === '已取消' || 当前状态 === '已超时') {
-      return false
-    }
-
-    任务.取消任务()
-    任务.设置当前状态('已取消')
-    任务.设置结束时间(new Date())
-
-    return true
   }
 
   public 获得所有任务列表(): Array<即时任务抽象类<any>> {
@@ -272,7 +237,7 @@ export class 即时任务管理器 {
       let 任务id = 条目[0]
       let 任务 = 条目[1]
       let 状态 = 任务.获得当前状态()
-      if (状态 === '已完成' || 状态 === '已失败' || 状态 === '已取消' || 状态 === '已超时') {
+      if (状态 === '已完成' || 状态 === '已失败') {
         let 结束时间 = 任务.获得结束时间()
         if (结束时间 !== null && 结束时间 < 阈值时间) {
           this.任务映射表.delete(任务id)
@@ -284,20 +249,6 @@ export class 即时任务管理器 {
     return 清理数量
   }
   public 清理所有任务(): void {
-    // 取消所有运行中的任务
-    let 所有任务条目 = Array.from(this.任务映射表.entries())
-    for (let i = 0; i < 所有任务条目.length; i = i + 1) {
-      let 条目 = 所有任务条目[i]
-      if (条目 === void 0) {
-        continue
-      }
-      let 任务id = 条目[0]
-      let 任务 = 条目[1]
-      if (任务.获得当前状态() === '运行中' || 任务.获得当前状态() === '等待中') {
-        this.取消任务(任务id)
-      }
-    }
-
     this.任务映射表.clear()
     this.运行中任务集合.clear()
   }

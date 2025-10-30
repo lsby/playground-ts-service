@@ -7,7 +7,6 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
-import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
@@ -35,7 +34,6 @@ let 接口逻辑实现 = 接口逻辑
             z.object({
               失败任务名称: z.string(),
               任务优先级: z.number().optional(),
-              任务超时时间: z.number().optional(),
               最大重试次数: z.number(),
               失败消息: z.string(),
               失败延迟时间: z.number().optional(), // 延迟多少毫秒后失败
@@ -50,23 +48,9 @@ let 接口逻辑实现 = 接口逻辑
 
         let 任务 = 即时任务抽象类.创建任务<string>({
           任务名称: 参数.失败任务名称,
-          ...(参数.任务优先级 !== void 0 ? { 任务优先级: 参数.任务优先级 } : {}),
-          ...(参数.任务超时时间 !== void 0 ? { 任务超时时间: 参数.任务超时时间 } : {}),
+          ...(参数.任务优先级 !== void 0 ? { 即时任务优先级: 参数.任务优先级 } : {}),
           最大重试次数: 参数.最大重试次数,
           任务逻辑: async (上下文) => {
-            let 状态 = { 已取消: false, 已超时: false }
-            let 监听id = randomUUID()
-            上下文.通知句柄.监听消息(监听id, (消息) => {
-              switch (消息.类型) {
-                case '取消通知':
-                  状态.已取消 = true
-                  break
-                case '超时通知':
-                  状态.已超时 = true
-                  break
-              }
-            })
-
             上下文.输出日志(`开始失败测试任务: ${参数.失败任务名称}`)
             上下文.输出日志(`失败消息: ${参数.失败消息}`)
             上下文.输出日志(`最大重试次数: ${参数.最大重试次数}`)
@@ -78,18 +62,6 @@ let 接口逻辑实现 = 接口逻辑
                 setTimeout(() => resolve(), 参数.失败延迟时间)
               })
             }
-
-            // 检查是否被取消或超时
-            if (状态.已取消 === true) {
-              上下文.输出日志('任务被用户取消')
-              throw new Error('任务被取消')
-            }
-            if (状态.已超时 === true) {
-              上下文.输出日志('任务超时')
-              throw new Error('任务超时')
-            }
-
-            上下文.通知句柄.断开监听(监听id)
 
             // 必然失败，抛出错误
             上下文.输出日志(`任务执行失败: ${参数.失败消息}`)

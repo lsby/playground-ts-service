@@ -1,9 +1,10 @@
 import { 服务器 } from '@lsby/net-core'
 import { resolve } from 'path'
-import { databaseBackupCron } from '../cron/database-backup'
-import { onTimeAlarm } from '../cron/on-time-alarm'
 import { Global } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
+import { 报告系统情况任务 } from '../job/instant-job/report-system-status'
+import { databaseBackupCron } from '../job/scheduled-job/database-backup'
+import { onTimeAlarm } from '../job/scheduled-job/on-time-alarm'
 
 export class App {
   public async run(): Promise<void> {
@@ -20,5 +21,8 @@ export class App {
     log.debug('已加载的api路径: %O', serviceInfo.api)
     log.debug('静态文件目录: %O', 静态文件目录)
     log.debug('服务器地址: %O', serviceInfo.ip)
+
+    let 即时任务管理器 = await Global.getItem('instant-job')
+    即时任务管理器.提交任务(报告系统情况任务)
   }
 }

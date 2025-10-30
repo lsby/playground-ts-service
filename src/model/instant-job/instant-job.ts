@@ -1,15 +1,12 @@
 import { randomUUID } from 'node:crypto'
-import { 集线器 } from '../hub/hub'
 
-export type 即时任务状态 = '等待中' | '运行中' | '已完成' | '已失败' | '已取消' | '已超时'
+export type 即时任务状态 = '等待中' | '运行中' | '已完成' | '已失败'
 export type 即时任务优先级 = number // 数字越大 优先级越高
 
-export type 即时任务通知类型枚举 = { 类型: '取消通知' } | { 类型: '超时通知' }
 export type 即时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void | Promise<void>
 export type 即时任务上下文 = {
   任务id: string
   开始时间: Date
-  通知句柄: 集线器<即时任务通知类型枚举>
   输出日志: (消息: string) => void
 }
 
@@ -18,7 +15,6 @@ export abstract class 即时任务抽象类<输出类型> {
   public static 创建任务<输出类型>(配置: {
     任务名称: string
     即时任务优先级?: 即时任务优先级
-    任务超时时间?: number
     最大重试次数?: number
     任务逻辑: (上下文: 即时任务上下文) => Promise<输出类型>
     执行前钩子?: () => Promise<void>
@@ -34,9 +30,6 @@ export abstract class 即时任务抽象类<输出类型> {
       }
       public 获得即时任务优先级(): 即时任务优先级 {
         return 任务配置.即时任务优先级 ?? 2
-      }
-      public 获得任务超时时间(): number {
-        return 任务配置.任务超时时间 ?? 0
       }
       public 获得最大重试次数(): number {
         return 任务配置.最大重试次数 ?? 0
@@ -76,14 +69,12 @@ export abstract class 即时任务抽象类<输出类型> {
   private 结束时间: Date | null = null
   private 错误: Error | null = null
   private 重试次数: number = 0
-  private 通知句柄: 集线器<即时任务通知类型枚举> = new 集线器<即时任务通知类型枚举>()
   private 输出结果: 输出类型 | null = null
   private 日志列表: Array<{ 时间: Date; 消息: string }> = []
   private 即时任务日志监听器: 即时任务日志监听器 | null = null
 
   public abstract 获得任务名称(): string
   public abstract 获得即时任务优先级(): 即时任务优先级
-  public abstract 获得任务超时时间(): number
   public abstract 获得最大重试次数(): number
 
   public abstract 任务逻辑(上下文: 即时任务上下文): Promise<输出类型>
@@ -144,13 +135,6 @@ export abstract class 即时任务抽象类<输出类型> {
   }
   public 增加重试次数(): void {
     this.重试次数 = this.重试次数 + 1
-  }
-
-  public 获得通知集线器(): 集线器<即时任务通知类型枚举> {
-    return this.通知句柄
-  }
-  public 取消任务(): void {
-    this.通知句柄.广播消息({ 类型: '取消通知' })
   }
 
   public 获得输出结果(): 输出类型 | null {

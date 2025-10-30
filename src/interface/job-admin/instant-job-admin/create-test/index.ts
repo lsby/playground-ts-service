@@ -7,7 +7,6 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right, Task } from '@lsby/ts-fp-data'
-import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { Global } from '../../../../global/global'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
@@ -35,7 +34,6 @@ let 接口逻辑实现 = 接口逻辑
             z.object({
               测试任务名称: z.string(),
               任务优先级: z.number().optional(),
-              任务超时时间: z.number().optional(),
               最大重试次数: z.number().optional(),
               测试任务消息: z.string(),
               测试任务持续时间: z.number(),
@@ -50,23 +48,9 @@ let 接口逻辑实现 = 接口逻辑
 
         let 任务 = 即时任务抽象类.创建任务<string>({
           任务名称: 参数.测试任务名称,
-          ...(参数.任务优先级 !== void 0 ? { 任务优先级: 参数.任务优先级 } : {}),
-          ...(参数.任务超时时间 !== void 0 ? { 任务超时时间: 参数.任务超时时间 } : {}),
+          ...(参数.任务优先级 !== void 0 ? { 即时任务优先级: 参数.任务优先级 } : {}),
           ...(参数.最大重试次数 !== void 0 ? { 最大重试次数: 参数.最大重试次数 } : {}),
           任务逻辑: async (上下文) => {
-            let 状态 = { 已取消: false, 已超时: false }
-            let 监听id = randomUUID()
-            上下文.通知句柄.监听消息(监听id, (消息) => {
-              switch (消息.类型) {
-                case '取消通知':
-                  状态.已取消 = true
-                  break
-                case '超时通知':
-                  状态.已超时 = true
-                  break
-              }
-            })
-
             // 测试任务逻辑：每秒打印消息，持续指定时间
             let 消息内容 = 参数.测试任务消息
             let 持续时间秒 = 参数.测试任务持续时间
@@ -80,7 +64,7 @@ let 接口逻辑实现 = 接口逻辑
             let 当前时间戳 = Date.now()
             let 结束时间戳 = 开始时间 + 持续时间秒 * 1000
 
-            while (当前时间戳 < 结束时间戳 && 状态.已取消 === false) {
+            while (当前时间戳 < 结束时间戳) {
               let 当前时间 = new Date().toLocaleTimeString()
               上下文.输出日志(`[${当前时间}] ${消息内容} (第${打印次数 + 1}次)`)
               打印次数 = 打印次数 + 1
@@ -89,19 +73,8 @@ let 接口逻辑实现 = 接口逻辑
                 setTimeout(() => resolve(), 1000)
               })
 
-              if ((状态.已取消 as boolean) === true) {
-                上下文.输出日志('任务被用户取消')
-                break
-              }
-              if (状态.已超时 === true) {
-                上下文.输出日志('任务超时')
-                break
-              }
-
               当前时间戳 = Date.now()
             }
-
-            上下文.通知句柄.断开监听(监听id)
 
             上下文.输出日志(`测试任务完成，共打印${打印次数}次消息`)
             return `测试任务完成: 共打印${打印次数}次消息`
