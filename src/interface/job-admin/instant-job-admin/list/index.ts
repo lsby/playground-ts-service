@@ -7,7 +7,8 @@ import {
 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { instantJob, jwtPlugin, kyselyPlugin } from '../../../../global/global'
+import { 即时任务管理器 } from '../../../../global/global'
+import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 
 let 接口路径 = '/api/job-admin/instant-job-admin/list' as const
@@ -16,7 +17,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+    new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({
       表名: 'user',
       id字段: 'id',
       标识字段: 'is_admin',
@@ -25,7 +26,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     接口逻辑.构造([], async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
-      let 任务管理器 = instantJob
+      let 任务管理器 = 即时任务管理器
 
       let 任务列表 = 任务管理器.获得所有任务列表().map((任务) => ({
         id: 任务.获得id(),

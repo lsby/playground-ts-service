@@ -10,7 +10,8 @@ import fs from 'fs'
 import { CompiledQuery } from 'kysely'
 import path from 'path'
 import { z } from 'zod'
-import { env, jwtPlugin, kyselyPlugin } from '../../../global/global'
+import { 环境变量 } from '../../../global/env'
+import { jwt插件, kysely插件 } from '../../../global/plugin'
 import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
 
 let 接口路径 = '/api/sqlite-admin/backup-database' as const
@@ -19,7 +20,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+    new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({
       表名: 'user',
       id字段: 'id',
       标识字段: 'is_admin',
@@ -31,18 +32,18 @@ let 接口逻辑实现 = 接口逻辑
     }),
   )
   .混合(
-    接口逻辑.构造([kyselyPlugin], async (参数, 逻辑附加参数, 请求附加参数) => {
+    接口逻辑.构造([kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
 
       let kysely = 参数.kysely.获得句柄()
 
       // 获取备份目录
-      let backupDir = env.DATABASE_BACKUP_PATH
+      let backupDir = 环境变量.DATABASE_BACKUP_PATH
 
       // 生成备份文件名：前缀_环境_时间
-      let envName = env.NODE_ENV
+      let envName = 环境变量.NODE_ENV
       let timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0]
-      let backupFileName = `${env.DATABASE_BACKUP_PREFIX}${逻辑附加参数.isAuto ? env.DATABASE_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
+      let backupFileName = `${环境变量.DATABASE_BACKUP_PREFIX}${逻辑附加参数.isAuto ? 环境变量.DATABASE_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
       let backupPath = path.join(backupDir, backupFileName)
 
       // 确保备份目录存在

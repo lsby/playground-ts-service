@@ -8,7 +8,7 @@ import {
 import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { jwtPlugin, kyselyPlugin } from '../../../global/global'
+import { jwt插件, kysely插件 } from '../../../global/plugin'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
 import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
 
@@ -20,7 +20,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查用户名('userName'))
   .混合(new 检查密码('userPassword'))
   .混合(
-    接口逻辑.构造([jwtPlugin.签名器, kyselyPlugin], async (参数, 逻辑附加参数, 请求附加参数) => {
+    接口逻辑.构造([jwt插件.签名器, kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
 
       let 用户存在 = await 参数.kysely

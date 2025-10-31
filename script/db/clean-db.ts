@@ -1,9 +1,9 @@
 import { CompiledQuery, Kysely } from 'kysely'
-import { env } from '../../src/global/global'
+import { 环境变量 } from '../../src/global/env'
 import { DB } from '../../src/types/db'
 
 export async function cleanDB(db: Kysely<DB>): Promise<void> {
-  const DB_TYPE = env.DB_TYPE
+  const DB_TYPE = 环境变量.DB_TYPE
 
   switch (DB_TYPE) {
     case 'sqlite': {

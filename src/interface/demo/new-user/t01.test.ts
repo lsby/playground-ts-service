@@ -1,6 +1,6 @@
 import { 接口测试 } from '@lsby/net-core'
 import { cleanDB } from '../../../../script/db/clean-db'
-import { kysely } from '../../../global/global'
+import { kysely管理器 } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口 from './index'
 
@@ -9,7 +9,7 @@ let pwd = '123456'
 
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = kysely.获得句柄()
+    let db = kysely管理器.获得句柄()
     await cleanDB(db)
   },
 
@@ -37,7 +37,7 @@ export default new 接口测试(
       if (预期 === '成功') throw new Error('应该调用成功, 实际调用出错')
     }
 
-    let db = kysely.获得句柄()
+    let db = kysely管理器.获得句柄()
 
     let userRow = await db.selectFrom('user').select('id').where('name', '=', name).executeTakeFirst()
     if (userRow !== void 0) throw new Error('不应该插入成功')

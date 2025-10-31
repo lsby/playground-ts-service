@@ -12,7 +12,7 @@ export type 定时任务信息 = {
   执行次数: number
 }
 
-export class 定时任务管理器 {
+export class 定时任务管理器类 {
   private 运行中 = false
   private 调度任务列表: Array<{ 任务: 定时任务抽象类; job: schedule.Job; 信息: 定时任务信息 }> = []
 

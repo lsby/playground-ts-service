@@ -1,7 +1,8 @@
 import { Log } from '@lsby/ts-log'
 import fs from 'fs'
 import path from 'path'
-import { env, globalLog, kysely } from '../../global/global'
+import { 环境变量 } from '../../global/env'
+import { globalLog, kysely管理器 } from '../../global/global'
 import { 备份数据库 } from '../../interface/sqlite-admin/backup-database'
 import { 定时任务上下文, 定时任务抽象类 } from '../../model/scheduled-job/scheduled-job'
 
@@ -20,15 +21,15 @@ class 定时任务实现 extends 定时任务抽象类 {
     await log.info('数据库备份定时任务开始执行')
 
     // 只有当DB_TYPE为sqlite时才执行备份
-    if (env.DB_TYPE !== 'sqlite') {
-      await log.info(`当前数据库类型为${env.DB_TYPE}，跳过备份`)
+    if (环境变量.DB_TYPE !== 'sqlite') {
+      await log.info(`当前数据库类型为${环境变量.DB_TYPE}，跳过备份`)
       return
     }
 
     try {
       await log.info('开始执行数据库备份')
 
-      let 管理员用户 = await kysely
+      let 管理员用户 = await kysely管理器
         .获得句柄()
         .selectFrom('user')
         .select('id')
@@ -39,13 +40,13 @@ class 定时任务实现 extends 定时任务抽象类 {
       }
 
       await log.info(`找到管理员用户ID：${管理员用户.id}`)
-      await log.info(`备份路径：${env.DATABASE_BACKUP_PATH}`)
+      await log.info(`备份路径：${环境变量.DATABASE_BACKUP_PATH}`)
 
       await log.info('开始备份数据库')
-      await 备份数据库.实现({ kysely: kysely }, { isAuto: true, userId: 管理员用户.id }, { log: log })
+      await 备份数据库.实现({ kysely: kysely管理器 }, { isAuto: true, userId: 管理员用户.id }, { log: log })
       await log.info('数据库备份完成')
 
-      let 删除数量 = await this.清理旧备份(env.DATABASE_BACKUP_PATH, env.DATABASE_BACKUP_RETENTION_DAYS, log)
+      let 删除数量 = await this.清理旧备份(环境变量.DATABASE_BACKUP_PATH, 环境变量.DATABASE_BACKUP_RETENTION_DAYS, log)
       await log.info(`清理完成，共删除 ${删除数量} 个旧备份文件`)
 
       await log.info('数据库备份定时任务执行完成')
@@ -63,7 +64,7 @@ class 定时任务实现 extends 定时任务抽象类 {
 
     for (let 文件名 of 文件列表) {
       if (
-        文件名.startsWith(`${env.DATABASE_BACKUP_PREFIX}${env.DATABASE_BACKUP_AUTO_PREFIX}`) &&
+        文件名.startsWith(`${环境变量.DATABASE_BACKUP_PREFIX}${环境变量.DATABASE_BACKUP_AUTO_PREFIX}`) &&
         文件名.endsWith('.db')
       ) {
         let 文件路径 = path.join(备份目录, 文件名)

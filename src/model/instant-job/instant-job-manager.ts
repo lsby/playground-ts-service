@@ -1,7 +1,7 @@
 import { Log } from '@lsby/ts-log'
 import { 即时任务上下文, 即时任务抽象类 } from './instant-job'
 
-export class 即时任务管理器 {
+export class 即时任务管理器类 {
   private log = new Log('即时任务管理器')
   private 任务映射表: Map<string, 即时任务抽象类<any>> = new Map()
   private 运行中任务集合: Set<string> = new Set()

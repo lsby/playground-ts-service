@@ -3,7 +3,7 @@ import assert from 'assert'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../../script/db/clean-db'
-import { kysely } from '../../../../global/global'
+import { kysely管理器 } from '../../../../global/global'
 import { 请求用例 } from '../../../../tools/request'
 import 接口 from './index'
 
@@ -12,7 +12,7 @@ let pwd = '123456'
 
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = kysely.获得句柄()
+    let db = kysely管理器.获得句柄()
     await cleanDB(db)
     await db
       .insertInto('user')

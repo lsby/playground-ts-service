@@ -1,6 +1,6 @@
 import { 任意接口, 合并JSON插件结果, 获得接口逻辑插件类型, 获得接口逻辑类型 } from '@lsby/net-core'
 import axios from 'axios'
-import { env } from '../global/global'
+import { 环境变量 } from '../global/env'
 
 export async function 请求用例<接口类型 extends 任意接口>(
   接口类型描述: 接口类型,
@@ -15,7 +15,7 @@ export async function 请求用例<接口类型 extends 任意接口>(
   let token: string | null = null
   if (typeof 登录 !== 'undefined') {
     let login: { data: { data: { [key: string]: string } } } = await axios.post(
-      `http://127.0.0.1:${env.APP_PORT}${登录.接口}`,
+      `http://127.0.0.1:${环境变量.APP_PORT}${登录.接口}`,
       {
         userName: 登录.用户名,
         userPassword: 登录.密码,
@@ -26,7 +26,7 @@ export async function 请求用例<接口类型 extends 任意接口>(
 
   let method = 接口类型描述.获得方法() as string
   let urlPath = 接口类型描述.获得路径() as string
-  let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
+  let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
 
   if (method === 'get') return (await axios.get(url, { ...参数, headers: { authorization: token } })).data
   if (method === 'post') return (await axios.post(url, 参数, { headers: { authorization: token } })).data

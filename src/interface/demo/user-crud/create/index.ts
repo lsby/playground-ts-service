@@ -9,7 +9,7 @@ import {
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { jwtPlugin, kyselyPlugin } from '../../../../global/global'
+import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
@@ -19,7 +19,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+    new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({
       表名: 'user',
       id字段: 'id',
       标识字段: 'is_admin',
@@ -27,7 +27,7 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(
     接口逻辑.构造(
-      [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kyselyPlugin],
+      [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         return 参数.kysely.执行事务Either(async (trx) => {
           let userId = crypto.randomUUID()
@@ -35,7 +35,7 @@ let 接口逻辑实现 = 接口逻辑
             .空逻辑()
             .混合(
               new 新增逻辑(
-                kyselyPlugin,
+                kysely插件,
                 'user',
                 async () => ({
                   数据: {
@@ -50,7 +50,7 @@ let 接口逻辑实现 = 接口逻辑
             )
             .混合(
               new 新增逻辑(
-                kyselyPlugin,
+                kysely插件,
                 'user_config',
                 async () => ({
                   数据: {

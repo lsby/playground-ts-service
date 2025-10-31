@@ -1,12 +1,13 @@
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
-import { env, globalLog, kysely } from '../global/global'
+import { 环境变量 } from '../global/env'
+import { globalLog, kysely管理器 } from '../global/global'
 
 export async function init(): Promise<void> {
   let log = globalLog.extend('init')
 
   await log.debug('检索初始化标记...')
-  let 初始化标记 = await kysely.获得句柄().selectFrom('system_config').select('is_initialized').executeTakeFirst()
+  let 初始化标记 = await kysely管理器.获得句柄().selectFrom('system_config').select('is_initialized').executeTakeFirst()
   if (初始化标记?.is_initialized === 1) {
     await log.debug('初始化标记已存在, 跳过初始化')
     return
@@ -17,12 +18,12 @@ export async function init(): Promise<void> {
   let 项目名称: string
   let 初始用户id: string
 
-  let 用户存在判定 = await kysely
+  let 用户存在判定 = await kysely管理器
     .获得句柄()
     .selectFrom('user')
     .select('id')
-    .where('name', '=', env.SYSTEM_USER)
-    .where('pwd', '=', await bcrypt.hash(env.SYSTEM_PWD, 10))
+    .where('name', '=', 环境变量.SYSTEM_USER)
+    .where('pwd', '=', await bcrypt.hash(环境变量.SYSTEM_PWD, 10))
     .executeTakeFirst()
 
   if (用户存在判定 !== void 0) {
@@ -34,13 +35,13 @@ export async function init(): Promise<void> {
   项目名称 = '用户'
   try {
     await log.debug(`初始化${项目名称}...`)
-    await kysely.执行事务(async (trx) => {
+    await kysely管理器.执行事务(async (trx) => {
       await trx
         .insertInto('user')
         .values({
           id: 初始用户id,
-          name: env.SYSTEM_USER,
-          pwd: await bcrypt.hash(env.SYSTEM_PWD, 10),
+          name: 环境变量.SYSTEM_USER,
+          pwd: await bcrypt.hash(环境变量.SYSTEM_PWD, 10),
           is_admin: 1,
         })
         .execute()
@@ -58,7 +59,7 @@ export async function init(): Promise<void> {
   }
 
   await log.debug('初始化完成, 写入初始化标记...')
-  await kysely.获得句柄().deleteFrom('system_config').execute()
-  await kysely.获得句柄().insertInto('system_config').values({ id: randomUUID(), is_initialized: 1 }).execute()
+  await kysely管理器.获得句柄().deleteFrom('system_config').execute()
+  await kysely管理器.获得句柄().insertInto('system_config').values({ id: randomUUID(), is_initialized: 1 }).execute()
   await log.debug('写入初始化标记完成')
 }

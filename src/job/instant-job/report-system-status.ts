@@ -1,5 +1,6 @@
 import { CompiledQuery } from 'kysely'
-import { env, globalLog, instantJob, kysely } from '../../global/global'
+import { 环境变量 } from '../../global/env'
+import { globalLog, kysely管理器, 即时任务管理器 } from '../../global/global'
 import { 即时任务抽象类 } from '../../model/instant-job/instant-job'
 
 export let 报告系统情况任务 = 即时任务抽象类.创建任务({
@@ -10,22 +11,21 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
     上下文.输出日志('开始报告系统情况...')
 
     // 报告环境信息
-    上下文.输出日志(`环境: ${env.NODE_ENV}`)
-    上下文.输出日志(`调试名称: ${env.DEBUG_NAME}`)
-    上下文.输出日志(`数据库类型: ${env.DB_TYPE}`)
-    上下文.输出日志(`应用端口: ${env.APP_PORT}`)
-    上下文.输出日志(`Web端口: ${env.WEB_PORT}`)
+    上下文.输出日志(`环境: ${环境变量.NODE_ENV}`)
+    上下文.输出日志(`调试名称: ${环境变量.DEBUG_NAME}`)
+    上下文.输出日志(`数据库类型: ${环境变量.DB_TYPE}`)
+    上下文.输出日志(`应用端口: ${环境变量.APP_PORT}`)
+    上下文.输出日志(`Web端口: ${环境变量.WEB_PORT}`)
 
     // 报告数据库状态
     try {
-      await kysely.获得句柄().executeQuery(CompiledQuery.raw('SELECT 1 as test', []))
+      await kysely管理器.获得句柄().executeQuery(CompiledQuery.raw('SELECT 1 as test', []))
       上下文.输出日志('数据库连接正常')
     } catch (错误) {
       上下文.输出日志(`数据库检查失败: ${String(错误)}`)
     }
 
     // 报告任务管理器状态
-    let 即时任务管理器 = instantJob
     上下文.输出日志(`即时任务管理器最大并发数: ${即时任务管理器.获得最大并发数()}`)
 
     // 报告系统时间

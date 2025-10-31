@@ -6,7 +6,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { z } from 'zod'
-import { jwtPlugin, kyselyPlugin } from '../../../../global/global'
+import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 查询逻辑 } from '../../../../interface-logic/components/crud/read'
@@ -17,7 +17,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+    new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({
       表名: 'user',
       id字段: 'id',
       标识字段: 'is_admin',
@@ -26,7 +26,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
     new 查询逻辑(
-      kyselyPlugin,
+      kysely插件,
       'user',
       async (data) => ({
         选择的字段们: ['id', 'name'],

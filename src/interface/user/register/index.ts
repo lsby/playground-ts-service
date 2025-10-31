@@ -9,7 +9,7 @@ import { Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
-import { kyselyPlugin } from '../../../global/global'
+import { kysely插件 } from '../../../global/plugin'
 import { 检查唯一性 } from '../../../interface-logic/check/check-exist'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
 import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
@@ -34,11 +34,11 @@ let 接口逻辑实现 = 接口逻辑
       数据库字段名: 'name',
       参数字段名: 'userName',
       错误信息: '用户名已存在' as const,
-      kysely插件: kyselyPlugin,
+      kysely插件: kysely插件,
     }),
   )
   .混合(
-    接口逻辑.构造([kyselyPlugin], async (参数, 逻辑附加参数, _请求附加参数) => {
+    接口逻辑.构造([kysely插件], async (参数, 逻辑附加参数, _请求附加参数) => {
       return 参数.kysely.执行事务Either(async (trx) => {
         let userId = randomUUID()
         await trx

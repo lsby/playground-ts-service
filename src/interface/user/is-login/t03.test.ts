@@ -4,14 +4,15 @@ import axios from 'axios'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
-import { env, kysely } from '../../../global/global'
+import { 环境变量 } from '../../../global/env'
+import { kysely管理器 } from '../../../global/global'
 import 接口 from './index'
 
 let name = 'admin'
 let pwd = '123456'
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = kysely.获得句柄()
+    let db = kysely管理器.获得句柄()
     await cleanDB(db)
     await db
       .insertInto('user')
@@ -21,7 +22,7 @@ export default new 接口测试(
 
   async (): Promise<object> => {
     let urlPath = 接口.获得路径()
-    let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
+    let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
 
     return (await axios.post(url, {}, { headers: { authorization: '' } })).data
   },

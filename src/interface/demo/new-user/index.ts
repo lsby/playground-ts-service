@@ -10,7 +10,7 @@ import { Left } from '@lsby/ts-fp-data'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { kyselyPlugin } from '../../../global/global'
+import { kysely插件 } from '../../../global/plugin'
 import { 新增逻辑 } from '../../../interface-logic/components/crud/create'
 
 let 接口路径 = '/api/demo/new-user' as const
@@ -18,7 +18,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(
-    [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kyselyPlugin],
+    [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
 
@@ -28,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
           .空逻辑()
           .混合(
             new 新增逻辑(
-              kyselyPlugin,
+              kysely插件,
               'user',
               async () => ({
                 数据: {
@@ -45,7 +45,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
           )
           .混合(
             new 新增逻辑(
-              kyselyPlugin,
+              kysely插件,
               'user_config',
               async () => ({
                 数据: {

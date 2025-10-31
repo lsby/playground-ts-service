@@ -8,7 +8,7 @@ import {
 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { jwtPlugin, kyselyPlugin } from '../../../../global/global'
+import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
 
 let 接口路径 = '/api/demo/base/sub' as const
@@ -17,7 +17,7 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+    new 检查登录([jwt插件.解析器, kysely插件], () => ({
       表名: 'user',
       id字段: 'id',
     })),
