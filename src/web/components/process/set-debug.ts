@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base.js'
-import { log } from '../../global/log.js'
+import { globalWebLog } from '../../global/log.js'
 
 type 属性类型 = {
   排除事件?: string
@@ -39,7 +39,7 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
           return originalAddEventListener.call(this, type, listener, options)
         }
 
-        let 组件日志 = log.extend(this.constructor.name)
+        let 组件日志 = globalWebLog.extend(this.constructor.name)
         await 组件日志.debug('监听事件: %o <= %O, %O', type, listener, options)
 
         if (typeof listener === 'function') {
@@ -73,7 +73,7 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
           return originalDispatchEvent.call(this, event)
         }
 
-        let 组件日志 = log.extend(this.constructor.name)
+        let 组件日志 = globalWebLog.extend(this.constructor.name)
         if (event instanceof CustomEvent) {
           组件日志
             .debug('派发自定义事件: %o => %O, %O', event.type, event.detail, event)

@@ -1,3 +1,1 @@
-export let CONST = {
-  INIT_FLAG: 'INIT_FLAG',
-}
+export let 全局常量 = {}

@@ -29,13 +29,5 @@ export let 环境变量 = await new Env({
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
-    //
-    QBITTORRENT_HOST: z.string(),
-    QBITTORRENT_USER: z.string(),
-    QBITTORRENT_PWD: z.string(),
-    QBITTORRENT_DOWNLOAD_ANIME_PATH: z.string(),
-    QBITTORRENT_DOWNLOAD_MOVIE_PATH: z.string(),
-    QBITTORRENT_TAG: z.string(),
-    PROXY: z.string(),
   }),
 }).获得环境变量()
