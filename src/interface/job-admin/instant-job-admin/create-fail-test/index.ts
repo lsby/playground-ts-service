@@ -6,9 +6,9 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Right, Task } from '@lsby/ts-fp-data'
+import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { Global } from '../../../../global/global'
+import { instantJob, jwtPlugin, kyselyPlugin } from '../../../../global/global'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 即时任务抽象类 } from '../../../../model/instant-job/instant-job'
 
@@ -18,33 +18,29 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录(
-      [
-        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
-      () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' }),
-    ),
+    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+      表名: 'user',
+      id字段: 'id',
+      标识字段: 'is_admin',
+    })),
   )
   .混合(
     接口逻辑.构造(
       [
-        new Task(async () => {
-          return new JSON解析插件(
-            z.object({
-              失败任务名称: z.string(),
-              任务优先级: z.number().optional(),
-              最大重试次数: z.number(),
-              失败消息: z.string(),
-              失败延迟时间: z.number().optional(), // 延迟多少毫秒后失败
-            }),
-            {},
-          )
-        }),
+        new JSON解析插件(
+          z.object({
+            失败任务名称: z.string(),
+            任务优先级: z.number().optional(),
+            最大重试次数: z.number(),
+            失败消息: z.string(),
+            失败延迟时间: z.number().optional(), // 延迟多少毫秒后失败
+          }),
+          {},
+        ),
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
-        let 任务管理器 = await Global.getItem('instant-job')
+        let 任务管理器 = instantJob
 
         let 任务 = 即时任务抽象类.创建任务<string>({
           任务名称: 参数.失败任务名称,

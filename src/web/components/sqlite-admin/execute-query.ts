@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
-import { 联合转元组 } from '../../global/types'
+import { API管理器 } from '../../global/api-manager'
+import { 联合转元组 } from '../../global/types/types'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {}
@@ -20,7 +20,6 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     this.注册组件('lsby-execute-query', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 选项卡列表: 选项卡数据[] = []
   private 当前选项卡索引: number = 0
   private 选项卡头容器: HTMLDivElement = document.createElement('div')
@@ -273,7 +272,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     }
 
     try {
-      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', { sql, parameters: [] })
+      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', { sql, parameters: [] })
       if (结果.status === 'success') {
         选项卡.结果数据 = 结果.data
         this.显示查询结果(内容, 结果.data)

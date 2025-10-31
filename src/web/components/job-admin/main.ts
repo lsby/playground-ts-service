@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 联合转元组 } from '../../global/types'
+import { 联合转元组 } from '../../global/types/types'
 import { 测试任务组件 } from './instant-job'
 import { 定时任务组件 } from './scheduled-job'
 
@@ -67,6 +67,13 @@ export class 任务管理主组件 extends 组件基类<属性类型, 发出事�
 
     this.shadow.appendChild(this.标签按钮容器)
     this.shadow.appendChild(this.内容容器)
+
+    // 检查 URL 参数，如果有 type，切换到对应标签
+    let urlParams = new URLSearchParams(window.location.search)
+    let type = urlParams.get('type')
+    if (type === 'scheduled') {
+      this.切换标签('定时任务')
+    }
   }
 
   private 切换标签(标签: string): void {
@@ -75,6 +82,10 @@ export class 任务管理主组件 extends 组件基类<属性类型, 发出事�
     }
 
     this.当前标签 = 标签
+
+    // 更新 URL
+    let type = 标签 === '即时任务' ? 'instant' : 'scheduled'
+    window.history.replaceState(null, '', `?type=${type}`)
 
     // 更新按钮样式
     let 按钮们 = this.标签按钮容器.querySelectorAll('button')

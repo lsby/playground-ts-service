@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 联合转元组 } from '../../global/types'
+import { 联合转元组 } from '../../global/types/types'
 import { LsbyBackupDatabase } from './backup-database'
 import { LsbyDatabaseInfo } from './database-info'
 import { LsbyDatabaseManager } from './database-manager'

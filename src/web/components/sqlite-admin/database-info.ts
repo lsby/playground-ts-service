@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
-import { 联合转元组 } from '../../global/types'
+import { API管理器 } from '../../global/api-manager'
+import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -12,7 +12,6 @@ export class LsbyDatabaseInfo extends 组件基类<属性类型, 发出事件类
     this.注册组件('lsby-database-info', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 版本标签: HTMLDivElement | null = null
 
   public constructor(属性: 属性类型) {
@@ -59,7 +58,7 @@ export class LsbyDatabaseInfo extends 组件基类<属性类型, 发出事件类
     if (this.版本标签 === null) return
     let 版本标签 = this.版本标签
     try {
-      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-database-info', {})
+      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-database-info', {})
       if (结果.status === 'success') {
         版本标签.textContent = `SQLite版本: ${结果.data.version}`
       } else {

@@ -1,4 +1,4 @@
-import { GlobalWeb } from '../global/global'
+import { log } from '../global/log'
 
 export abstract class 组件基类<
   属性类型 extends Record<string, string>,
@@ -15,7 +15,7 @@ export abstract class 组件基类<
     else console.warn(`组件名称 ${组件名称} 重复`)
   }
 
-  protected log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
+  protected log = log.extend(this.constructor.name)
   protected shadow = this.attachShadow({ mode: 'open' })
 
   private 初始化完毕 = false

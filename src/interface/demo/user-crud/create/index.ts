@@ -6,11 +6,10 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Task } from '@lsby/ts-fp-data'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { Global } from '../../../../global/global'
+import { jwtPlugin, kyselyPlugin } from '../../../../global/global'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
@@ -20,22 +19,15 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录(
-      [
-        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
-      () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' }),
-    ),
+    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+      表名: 'user',
+      id字段: 'id',
+      标识字段: 'is_admin',
+    })),
   )
   .混合(
     接口逻辑.构造(
-      [
-        new Task(async () => {
-          return new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {})
-        }),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
+      [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kyselyPlugin],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         return 参数.kysely.执行事务Either(async (trx) => {
           let userId = crypto.randomUUID()
@@ -43,7 +35,7 @@ let 接口逻辑实现 = 接口逻辑
             .空逻辑()
             .混合(
               new 新增逻辑(
-                new Task(async () => await Global.getItem('kysely-plugin')),
+                kyselyPlugin,
                 'user',
                 async () => ({
                   数据: {
@@ -58,7 +50,7 @@ let 接口逻辑实现 = 接口逻辑
             )
             .混合(
               new 新增逻辑(
-                new Task(async () => await Global.getItem('kysely-plugin')),
+                kyselyPlugin,
                 'user_config',
                 async () => ({
                   数据: {

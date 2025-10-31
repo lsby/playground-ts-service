@@ -2,7 +2,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { JWT插件 } from '@lsby/net-core-jwt'
 import { Kysely插件 } from '@lsby/net-core-kysely'
-import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
+import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { ZodObject, ZodString, ZodUndefined, ZodUnion } from 'zod'
 import { 从插件类型计算DB } from '../types/types'
 
@@ -12,8 +12,8 @@ export class 检查管理员登录<
   表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
   插件类型 extends [
-    Task<JWT插件<ZodObject<{ userId: ZodUnion<[ZodString, ZodUndefined]> }>>['解析器']>,
-    Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+    JWT插件<ZodObject<{ userId: ZodUnion<[ZodString, ZodUndefined]> }>>['解析器'],
+    Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>,
   ],
   DB = 从插件类型计算DB<插件类型[1]>,
 > extends 接口逻辑<插件类型, 逻辑附加参数类型, 逻辑错误类型, { userId: string }> {

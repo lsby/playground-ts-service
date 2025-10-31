@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
-import { Either, Right, Task } from '@lsby/ts-fp-data'
+import { Either, Right } from '@lsby/ts-fp-data'
 import { undefined加可选, 从插件类型计算DB, 替换ColumnType } from '../../types/types'
 
 export class 新增逻辑<
   表名类型 extends keyof DB,
   逻辑附加参数类型 extends 接口逻辑附加参数类型,
-  插件类型 extends Task<Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>>,
+  插件类型 extends Kysely插件<'kysely', { [k in 表名类型]: DB[表名类型] }>,
   参数类型 extends { 数据: undefined加可选<替换ColumnType<DB[表名类型], '__insert__'>> },
   后置行为返回类型 extends Record<string, unknown>,
   DB = 从插件类型计算DB<插件类型>,

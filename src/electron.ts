@@ -5,7 +5,7 @@ import { App } from './app/app'
 import { 计算补偿后的窗口配置, 验证并修正窗口 } from './electron/multi-display'
 import { 检查端口可用, 获取随机可用端口 } from './electron/port-utils'
 import { 保存窗口状态, 检查窗口是否在可见区域内, 获取默认窗口位置, 读取窗口状态 } from './electron/window-state'
-import { Global } from './global/global'
+import { env, globalLog } from './global/global'
 import { init } from './init/init'
 
 try {
@@ -32,8 +32,7 @@ let 窗口状态路径 = path.join(资源目录, 'window-state.json')
  * - 加载应用页面
  */
 async function 创建主窗口(): Promise<void> {
-  let log = await Global.getItem('log').then((a) => a.extend('electron'))
-  let env = await Global.getItem('env').then((a) => a.获得环境变量())
+  let log = globalLog.extend('electron')
   let 开发环境 = env.NODE_ENV === 'development'
 
   let 端口 = env.WEB_PORT

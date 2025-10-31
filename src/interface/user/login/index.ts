@@ -5,10 +5,10 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Left, Right, Task } from '@lsby/ts-fp-data'
+import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { Global } from '../../../global/global'
+import { jwtPlugin, kyselyPlugin } from '../../../global/global'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
 import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
 
@@ -20,31 +20,22 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查用户名('userName'))
   .混合(new 检查密码('userPassword'))
   .混合(
-    接口逻辑.构造(
-      [
-        new Task(async () => {
-          let jwt = await Global.getItem('jwt-plugin')
-          return jwt.签名器
-        }),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
-      async (参数, 逻辑附加参数, 请求附加参数) => {
-        let _log = 请求附加参数.log.extend(接口路径)
+    接口逻辑.构造([jwtPlugin.签名器, kyselyPlugin], async (参数, 逻辑附加参数, 请求附加参数) => {
+      let _log = 请求附加参数.log.extend(接口路径)
 
-        let 用户存在 = await 参数.kysely
-          .获得句柄()
-          .selectFrom('user')
-          .select(['id', 'pwd'])
-          .where('name', '=', 逻辑附加参数.userName)
-          .executeTakeFirst()
-        if (用户存在 === void 0) return new Left('用户不存在或密码错误')
+      let 用户存在 = await 参数.kysely
+        .获得句柄()
+        .selectFrom('user')
+        .select(['id', 'pwd'])
+        .where('name', '=', 逻辑附加参数.userName)
+        .executeTakeFirst()
+      if (用户存在 === void 0) return new Left('用户不存在或密码错误' as const)
 
-        let 验证密码 = await bcrypt.compare(逻辑附加参数.userPassword, 用户存在.pwd)
-        if (验证密码 === false) return new Left('用户不存在或密码错误')
+      let 验证密码 = await bcrypt.compare(逻辑附加参数.userPassword, 用户存在.pwd)
+      if (验证密码 === false) return new Left('用户不存在或密码错误' as const)
 
-        return new Right({ token: 参数.signJwt({ userId: 用户存在.id }) })
-      },
-    ),
+      return new Right({ token: 参数.signJwt({ userId: 用户存在.id }) })
+    }),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>

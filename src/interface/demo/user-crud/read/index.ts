@@ -5,9 +5,8 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Task } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { Global } from '../../../../global/global'
+import { jwtPlugin, kyselyPlugin } from '../../../../global/global'
 import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 查询逻辑 } from '../../../../interface-logic/components/crud/read'
@@ -18,18 +17,16 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录(
-      [
-        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
-      () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' }),
-    ),
+    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+      表名: 'user',
+      id字段: 'id',
+      标识字段: 'is_admin',
+    })),
   )
   .混合(new 检查JSON参数(z.object({ page: z.number(), size: z.number() })))
   .混合(
     new 查询逻辑(
-      new Task(async () => await Global.getItem('kysely-plugin')),
+      kyselyPlugin,
       'user',
       async (data) => ({
         选择的字段们: ['id', 'name'],

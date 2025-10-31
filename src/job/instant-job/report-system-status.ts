@@ -1,5 +1,5 @@
 import { CompiledQuery } from 'kysely'
-import { Global } from '../../global/global'
+import { env, globalLog, instantJob, kysely } from '../../global/global'
 import { 即时任务抽象类 } from '../../model/instant-job/instant-job'
 
 export let 报告系统情况任务 = 即时任务抽象类.创建任务({
@@ -8,8 +8,6 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
   最大重试次数: 0,
   任务逻辑: async (上下文) => {
     上下文.输出日志('开始报告系统情况...')
-
-    let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
     // 报告环境信息
     上下文.输出日志(`环境: ${env.NODE_ENV}`)
@@ -20,7 +18,6 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
 
     // 报告数据库状态
     try {
-      let kysely = await Global.getItem('kysely')
       await kysely.获得句柄().executeQuery(CompiledQuery.raw('SELECT 1 as test', []))
       上下文.输出日志('数据库连接正常')
     } catch (错误) {
@@ -28,7 +25,7 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
     }
 
     // 报告任务管理器状态
-    let 即时任务管理器 = await Global.getItem('instant-job')
+    let 即时任务管理器 = instantJob
     上下文.输出日志(`即时任务管理器最大并发数: ${即时任务管理器.获得最大并发数()}`)
 
     // 报告系统时间
@@ -39,7 +36,7 @@ export let 报告系统情况任务 = 即时任务抽象类.创建任务({
     return { 状态: '成功' }
   },
   执行失败钩子: async (错误) => {
-    let log = await Global.getItem('log').then((a) => a.extend('系统报告'))
+    let log = globalLog.extend('系统报告')
     await log.error('系统情况报告任务执行失败', 错误)
   },
 })

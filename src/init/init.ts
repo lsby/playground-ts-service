@@ -1,11 +1,9 @@
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
-import { Global } from '../global/global'
+import { env, globalLog, kysely } from '../global/global'
 
 export async function init(): Promise<void> {
-  let log = await Global.getItem('log').then((a) => a.extend('init'))
-  let env = await Global.getItem('env').then((a) => a.获得环境变量())
-  let kysely = await Global.getItem('kysely')
+  let log = globalLog.extend('init')
 
   await log.debug('检索初始化标记...')
   let 初始化标记 = await kysely.获得句柄().selectFrom('system_config').select('is_initialized').executeTakeFirst()

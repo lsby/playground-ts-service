@@ -2,7 +2,7 @@ import { BrowserWindow, screen } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { z } from 'zod'
-import { Global } from '../global/global'
+import { globalLog } from '../global/global'
 
 /**
  * 窗口状态数据结构
@@ -21,7 +21,7 @@ export interface 窗口状态数据 {
 }
 
 export async function 读取窗口状态(窗口状态路径: string): Promise<窗口状态数据 | null> {
-  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+  let log = globalLog.extend('electron')
 
   try {
     if (fs.existsSync(窗口状态路径) === false) {
@@ -57,7 +57,7 @@ export async function 读取窗口状态(窗口状态路径: string): Promise<�
 }
 
 export async function 保存窗口状态(win: BrowserWindow, 窗口状态路径: string): Promise<void> {
-  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+  let log = globalLog.extend('electron')
 
   try {
     let 边界 = win.getNormalBounds()

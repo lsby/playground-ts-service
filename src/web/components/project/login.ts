@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
+import { API管理器 } from '../../global/api-manager'
 
 type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}
@@ -10,8 +10,6 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
   static {
     this.注册组件('lsby-login', this)
   }
-
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   private 结果 = document.createElement('p')
   private 用户名输入框 = document.createElement('input')
@@ -229,7 +227,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         this.结果.textContent = '密码和确认密码不匹配'
         return
       }
-      await this.API管理器.请求post接口并处理错误('/api/user/register', {
+      await API管理器.请求post接口并处理错误('/api/user/register', {
         userName: 用户名,
         userPassword: 密码,
       })
@@ -237,11 +235,11 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
       await this.设置属性('mode', 'login')
       await this.更新UI()
     } else {
-      let 调用结果 = await this.API管理器.请求post接口并处理错误('/api/user/login', {
+      let 调用结果 = await API管理器.请求post接口并处理错误('/api/user/login', {
         userName: 用户名,
         userPassword: 密码,
       })
-      this.API管理器.设置token(调用结果.token)
+      API管理器.设置token(调用结果.token)
       window.location.assign('/')
     }
   }

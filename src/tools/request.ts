@@ -1,6 +1,6 @@
 import { 任意接口, 合并JSON插件结果, 获得接口逻辑插件类型, 获得接口逻辑类型 } from '@lsby/net-core'
 import axios from 'axios'
-import { Global } from '../global/global'
+import { env } from '../global/global'
 
 export async function 请求用例<接口类型 extends 任意接口>(
   接口类型描述: 接口类型,
@@ -12,8 +12,6 @@ export async function 请求用例<接口类型 extends 任意接口>(
     凭据属性: string
   },
 ): Promise<object> {
-  let env = await Global.getItem('env').then((a) => a.获得环境变量())
-
   let token: string | null = null
   if (typeof 登录 !== 'undefined') {
     let login: { data: { data: { [key: string]: string } } } = await axios.post(

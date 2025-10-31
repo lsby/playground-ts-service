@@ -1,5 +1,4 @@
 import { Kysely插件 } from '@lsby/net-core-kysely'
-import { Task } from '@lsby/ts-fp-data'
 import { ColumnType } from 'kysely'
 
 type 等值操作符 = '=' | '!=' | '>' | '>=' | '<' | '<='
@@ -14,7 +13,7 @@ type Between条件<表结构> = [字段: keyof 表结构, 操作符: 'between', 
 
 export type 条件<表结构> = 等值条件<表结构> | Like条件<表结构> | In条件<表结构> | Between条件<表结构>
 
-export type 从插件类型计算DB<插件类型> = 插件类型 extends Task<Kysely插件<'kysely', infer x>> ? x : never
+export type 从插件类型计算DB<插件类型> = 插件类型 extends Kysely插件<'kysely', infer x> ? x : never
 
 type 展开ColumnType<T, Mode extends '__select__' | '__insert__' | '__update__'> =
   T extends ColumnType<any, any, any> ? T[Mode] : T

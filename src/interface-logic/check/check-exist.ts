@@ -1,6 +1,6 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
-import { Either, Left, Right, Task } from '@lsby/ts-fp-data'
+import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
 export class 检查唯一性<
@@ -10,7 +10,7 @@ export class 检查唯一性<
   错误信息类型 extends string,
   数据库字段名类型 extends keyof z.infer<表结构zod类型>,
   参数字段名类型 extends keyof 逻辑附加参数类型,
-  插件类型 extends Task<Kysely插件<'kysely', { [K in 表名类型]: z.infer<表结构zod类型> }>>,
+  插件类型 extends Kysely插件<'kysely', { [K in 表名类型]: z.infer<表结构zod类型> }>,
 > extends 接口逻辑<[插件类型], 逻辑附加参数类型, 错误信息类型, {}> {
   public constructor(
     private opt: {

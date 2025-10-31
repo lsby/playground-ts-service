@@ -6,11 +6,11 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Left, Task } from '@lsby/ts-fp-data'
+import { Left } from '@lsby/ts-fp-data'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { Global } from '../../../global/global'
+import { kyselyPlugin } from '../../../global/global'
 import { 新增逻辑 } from '../../../interface-logic/components/crud/create'
 
 let 接口路径 = '/api/demo/new-user' as const
@@ -18,12 +18,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(
-    [
-      new Task(async () => {
-        return new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {})
-      }),
-      new Task(async () => await Global.getItem('kysely-plugin')),
-    ],
+    [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kyselyPlugin],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
 
@@ -33,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
           .空逻辑()
           .混合(
             new 新增逻辑(
-              new Task(async () => await Global.getItem('kysely-plugin')),
+              kyselyPlugin,
               'user',
               async () => ({
                 数据: {
@@ -50,7 +45,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
           )
           .混合(
             new 新增逻辑(
-              new Task(async () => await Global.getItem('kysely-plugin')),
+              kyselyPlugin,
               'user_config',
               async () => ({
                 数据: {
@@ -66,7 +61,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
           .混合(
             接口逻辑.构造([], async (参数, 逻辑附加参数, 请求附加参数) => {
               let _log = 请求附加参数.log.extend(接口路径)
-              return new Left('就要失败')
+              return new Left('就要失败' as const)
             }),
           )
           .实现({ kysely: Kysely管理器.从句柄创建(trx) }, 逻辑附加参数, 请求附加参数)

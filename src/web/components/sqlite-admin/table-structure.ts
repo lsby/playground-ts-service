@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
-import { 联合转元组 } from '../../global/types'
+import { API管理器 } from '../../global/api-manager'
+import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {
   表名?: string
@@ -14,7 +14,6 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     this.注册组件('lsby-table-structure', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 结构容器: HTMLDivElement = document.createElement('div')
 
   public constructor(属性?: 属性类型) {
@@ -52,7 +51,7 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     }
 
     try {
-      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
+      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
         this.渲染表结构(结果.data.columns)
       } else {

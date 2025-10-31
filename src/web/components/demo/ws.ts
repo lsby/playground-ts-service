@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
+import { API管理器 } from '../../global/api-manager'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -11,8 +11,6 @@ export class 测试ws组件 extends 组件基类<属性类型, 发出事件类�
     this.注册组件('lsby-demo-ws-test', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
-
   private 按钮 = document.createElement('button')
   private 结果 = document.createElement('p')
 
@@ -22,7 +20,7 @@ export class 测试ws组件 extends 组件基类<属性类型, 发出事件类�
 
     this.按钮.textContent = '开始测试'
     this.按钮.onclick = async (): Promise<void> => {
-      await this.API管理器.请求post接口并处理错误('/api/demo/ws/ws-test', {}, async (data) => {
+      await API管理器.请求post接口并处理错误('/api/demo/ws/ws-test', {}, async (data) => {
         this.结果.textContent = data.data
       })
     }

@@ -1,7 +1,6 @@
 import { JWT插件 } from '@lsby/net-core-jwt'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Env } from '@lsby/ts-env'
-import { GlobalAsyncItem, GlobalItem, GlobalService } from '@lsby/ts-global'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import { Log } from '@lsby/ts-log'
 import { z } from 'zod'
@@ -14,7 +13,7 @@ export let CONST = {
   INIT_FLAG: 'INIT_FLAG',
 }
 
-export let env = new Env({
+export let env = await new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
     NODE_ENV: z.enum(['development', 'production', 'test']),
@@ -43,40 +42,29 @@ export let env = new Env({
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
   }),
-})
+}).获得环境变量()
 
-export let Global = new GlobalService([
-  new GlobalItem('env', env),
-  new GlobalItem('scheduled-job', new 定时任务管理器()),
-  new GlobalItem('instant-job', new 即时任务管理器({ 最大并发数: 10, 历史记录保留天数: 7 })),
-  new GlobalAsyncItem('DB_TYPE', async () => {
-    let e = await env.获得环境变量()
-    return e.DB_TYPE
-  }),
-  new GlobalAsyncItem('log', async () => {
-    let e = await env.获得环境变量()
-    return new Log(e.DEBUG_NAME)
-  }),
-  new GlobalAsyncItem('kysely', async () => {
-    let e = await env.获得环境变量()
-    return Kysely管理器.从适配器创建<DB>(
-      await 创建sqlite数据库适配器(),
-      e.NODE_ENV === 'production' ? [] : ['query', 'error'],
-    )
-    // return Kysely管理器.从适配器创建<DB>(
-    //   await 创建pg数据库适配器(),
-    //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
-    // )
-    // return Kysely管理器.从适配器创建<DB>(
-    //   await 创建mysql数据库适配器(),
-    //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
-    // )
-  }),
-  new GlobalAsyncItem('jwt-plugin', async () => {
-    let e = await env.获得环境变量()
-    return new JWT插件(z.object({ userId: z.string().or(z.undefined()) }), e.JWT_SECRET, e.JWT_EXPIRES_IN)
-  }),
-  new GlobalAsyncItem('kysely-plugin', async (): Promise<Kysely插件<'kysely', DB>> => {
-    return new Kysely插件('kysely', await Global.getItem('kysely'))
-  }),
-])
+export let scheduledJob = new 定时任务管理器()
+export let instantJob = new 即时任务管理器({ 最大并发数: 10, 历史记录保留天数: 7 })
+export let globalLog = new Log(env.DEBUG_NAME)
+export let kysely = await (async function (): Promise<Kysely管理器<DB>> {
+  return Kysely管理器.从适配器创建<DB>(
+    await 创建sqlite数据库适配器(),
+    env.NODE_ENV === 'production' ? [] : ['query', 'error'],
+  )
+  // return Kysely管理器.从适配器创建<DB>(
+  //   await 创建pg数据库适配器(),
+  //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
+  // )
+  // return Kysely管理器.从适配器创建<DB>(
+  //   await 创建mysql数据库适配器(),
+  //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
+  // )
+})()
+
+export let jwtPlugin = new JWT插件(
+  z.object({ userId: z.string().or(z.undefined()) }),
+  env.JWT_SECRET,
+  env.JWT_EXPIRES_IN,
+)
+export let kyselyPlugin = new Kysely插件('kysely', kysely)

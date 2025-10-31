@@ -1,7 +1,7 @@
 import { Log } from '@lsby/ts-log'
 import fs from 'fs'
 import path from 'path'
-import { Global } from '../../global/global'
+import { env, globalLog, kysely } from '../../global/global'
 import { 备份数据库 } from '../../interface/sqlite-admin/backup-database'
 import { 定时任务上下文, 定时任务抽象类 } from '../../model/scheduled-job/scheduled-job'
 
@@ -13,10 +13,9 @@ class 定时任务实现 extends 定时任务抽象类 {
     return '0 0 0 * * *' // 每天0点执行
   }
   public override async 任务逻辑(上下文: 定时任务上下文): Promise<void> {
-    let log = await Global.getItem('log')
-      .then((a) => a.extend('数据库自动备份'))
-      .then((a) => a.pipe(async (level, namespace, content) => 上下文.输出日志(`[${level}] [${namespace}] ${content}`)))
-    let env = await Global.getItem('env').then((a) => a.获得环境变量())
+    let log = globalLog
+      .extend('数据库自动备份')
+      .pipe(async (level, namespace, content) => 上下文.输出日志(`[${level}] [${namespace}] ${content}`))
 
     await log.info('数据库备份定时任务开始执行')
 
@@ -28,8 +27,6 @@ class 定时任务实现 extends 定时任务抽象类 {
 
     try {
       await log.info('开始执行数据库备份')
-
-      let kysely = await Global.getItem('kysely')
 
       let 管理员用户 = await kysely
         .获得句柄()
@@ -61,7 +58,6 @@ class 定时任务实现 extends 定时任务抽象类 {
   private async 清理旧备份(备份目录: string, 保留天数: number, log: Log): Promise<number> {
     let 文件列表 = await fs.promises.readdir(备份目录)
     let 备份文件列表: Array<{ 名称: string; 修改时间: Date }> = []
-    let env = await Global.getItem('env').then((a) => a.获得环境变量())
 
     await log.info(`开始清理旧备份，保留天数：${保留天数}，备份目录：${备份目录}`)
 

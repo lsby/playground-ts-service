@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
-import { 联合转元组 } from '../../global/types'
+import { API管理器 } from '../../global/api-manager'
+import { 联合转元组 } from '../../global/types/types'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -15,7 +15,6 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     this.注册组件('lsby-table-data', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 数据容器: HTMLDivElement | null = null
   private 每页条数选择: HTMLSelectElement | null = null
   private 上一页按钮: HTMLButtonElement | null = null
@@ -164,7 +163,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     if (表名 === void 0 || 表名 === null) return
 
     try {
-      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
+      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         this.主键列 = 结果.data.columns.filter((列: any) => 列.pk === 1).map((列: any) => 列.name)
@@ -205,7 +204,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     try {
       // 先查询总条数
       let 总条数SQL = 'SELECT COUNT(*) as count FROM `' + 表名 + '`'
-      let 总条数结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
+      let 总条数结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', {
         sql: 总条数SQL,
         parameters: [],
       })
@@ -236,7 +235,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       // 查询当前页数据
       let 偏移 = (this.当前页 - 1) * this.每页条数
       let 数据SQL = 'SELECT * FROM `' + 表名 + '` LIMIT ? OFFSET ?'
-      let 数据结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
+      let 数据结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', {
         sql: 数据SQL,
         parameters: [this.每页条数, 偏移],
       })

@@ -6,7 +6,7 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Right, Task } from '@lsby/ts-fp-data'
+import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
 let 接口路径 = '/api/demo/base/add' as const
@@ -14,11 +14,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(
-    [
-      new Task(async () => {
-        return new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})
-      }),
-    ],
+    [new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
       return new Right({ res: 参数.a + 参数.b })

@@ -1,6 +1,6 @@
 import { 自定义操作, 自定义项操作, 表格组件基类 } from '../../base/table-base'
+import { API管理器 } from '../../global/api-manager'
 import { 显示确认对话框 } from '../../global/dialog'
-import { GlobalWeb } from '../../global/global'
 import { 警告提示 } from '../../global/toast'
 
 type 属性类型 = {}
@@ -14,8 +14,6 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
   static {
     this.注册组件('lsby-demo-table', this)
   }
-
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   protected override async 获得列排序(): Promise<(keyof 数据项)[]> {
     return ['id', 'name']
@@ -32,7 +30,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
     return String(值)
   }
   protected override async 请求数据(page: number, size: number): Promise<{ data: 数据项[]; total: number }> {
-    return await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/read', { page, size })
+    return await API管理器.请求post接口并处理错误('/api/demo/user-crud/read', { page, size })
   }
   protected override async 获得自定义操作(): Promise<自定义操作> {
     return {
@@ -47,7 +45,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
           await 警告提示('未输入数据')
           return
         }
-        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
+        await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
       },
     }
   }
@@ -56,7 +54,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
       删除: async (数据项: 数据项): Promise<void> => {
         let 确认结果 = await 显示确认对话框('你确定要删除这条数据吗？')
         if (确认结果 === false) return
-        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
+        await API管理器.请求post接口并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
       },
       编辑: async (数据项: 数据项): Promise<void> => {
         let name = prompt('请输入新名称:')
@@ -64,7 +62,7 @@ export class 测试表格组件 extends 表格组件基类<属性类型, 发出�
           await 警告提示('未输入数据')
           return
         }
-        await this.API管理器.请求post接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
+        await API管理器.请求post接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
       },
     }
   }

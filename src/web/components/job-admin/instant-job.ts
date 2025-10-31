@@ -1,7 +1,8 @@
 import { 自定义操作, 自定义项操作, 表格组件基类 } from '../../base/table-base'
-import { API管理器 } from '../../global/api'
+import { API管理器 } from '../../global/api-manager'
+import { API管理器类 } from '../../global/class/api'
+import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { LsbyLog } from '../general/log'
-import { 模态框组件 } from '../general/modal'
 import { LsbyContainer } from '../layout/container'
 import { LsbyRow } from '../layout/row'
 
@@ -29,16 +30,13 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     this.注册组件('lsby-job-admin', this)
   }
 
-  private api管理器 = new API管理器()
+  private api管理器 = new API管理器类()
   private 所有任务数据: 任务数据项[] = []
   private 筛选后的任务数据: 任务数据项[] = []
   private 当前页码 = 1
   private 每页数量 = 10
   private 名称筛选输入框 = document.createElement('input')
   private 创建时间筛选输入框 = document.createElement('input')
-  private 详情模态框 = new 模态框组件({ 显示: '否', 标题: '任务详情' })
-  private 创建测试任务模态框 = new 模态框组件({ 显示: '否', 标题: '创建测试任务' })
-  private 创建失败测试任务模态框 = new 模态框组件({ 显示: '否', 标题: '创建失败测试任务' })
   private 测试任务名称输入框 = document.createElement('input')
   private 测试任务消息输入框 = document.createElement('input')
   private 测试任务持续时间输入框 = document.createElement('input')
@@ -108,10 +106,10 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
         await this.刷新任务列表()
       },
       创建测试任务: async (): Promise<void> => {
-        await this.创建测试任务模态框.设置属性('显示', '是')
+        await this.显示创建测试任务模态框()
       },
       创建失败测试任务: async (): Promise<void> => {
-        await this.创建失败测试任务模态框.设置属性('显示', '是')
+        await this.显示创建失败测试任务模态框()
       },
     }
   }
@@ -126,7 +124,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
 
   private async 刷新任务列表(): Promise<void> {
     try {
-      let 结果 = await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/list', {})
+      let 结果 = await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/list', {})
       this.所有任务数据 = 结果.任务列表.map((任务) => ({
         id: 任务.id,
         名称: 任务.名称,
@@ -150,6 +148,9 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
   }
 
   private async 显示任务详情(任务: 任务数据项): Promise<void> {
+    // 更新 URL
+    window.history.pushState(null, '', `?type=instant&id=${任务.id}`)
+
     // 创建详情内容容器
     let 详情内容 = document.createElement('div')
     详情内容.style.padding = '1em'
@@ -191,11 +192,27 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
         console.error('获取任务日志失败:', 错误)
       })
 
-    this.详情模态框.设置内容(详情内容)
-    await this.详情模态框.设置属性('显示', '是')
+    await 显示模态框(
+      {
+        标题: '任务详情',
+        最大化: true,
+        关闭回调: async () => {
+          // 清除 URL 中的 id 参数
+          let url = new URL(window.location.href)
+          url.searchParams.delete('id')
+          window.history.replaceState(null, '', url.pathname + url.search)
+
+          if (this.当前任务详情WS !== null) {
+            this.当前任务详情WS.close()
+            this.当前任务详情WS = null
+          }
+        },
+      },
+      详情内容,
+    )
   }
 
-  private 设置创建测试任务模态框内容(): void {
+  private async 显示创建测试任务模态框(): Promise<void> {
     let 内容容器 = document.createElement('div')
     内容容器.style.padding = '1em'
     内容容器.style.display = 'flex'
@@ -273,7 +290,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
 
     // 事件绑定
     取消按钮.onclick = async (): Promise<void> => {
-      await this.创建测试任务模态框.设置属性('显示', '否')
+      await 关闭模态框()
     }
 
     确认按钮.onclick = async (): Promise<void> => {
@@ -295,14 +312,14 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       }
 
       try {
-        await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-test', {
+        await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-test', {
           测试任务名称: 任务名称,
           测试任务消息: 消息内容,
           测试任务持续时间: 持续时间,
           任务优先级: 1,
         })
 
-        await this.创建测试任务模态框.设置属性('显示', '否')
+        await 关闭模态框()
 
         // 清空表单
         this.测试任务名称输入框.value = '测试任务_' + new Date().toLocaleTimeString()
@@ -318,10 +335,10 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     }
 
     内容容器.append(名称容器, 消息容器, 时间容器, 按钮容器)
-    this.创建测试任务模态框.设置内容(内容容器)
+    await 显示模态框({ 标题: '创建测试任务' }, 内容容器)
   }
 
-  private 设置创建失败测试任务模态框内容(): void {
+  private async 显示创建失败测试任务模态框(): Promise<void> {
     let 内容容器 = document.createElement('div')
     内容容器.style.padding = '1em'
     内容容器.style.display = 'flex'
@@ -429,7 +446,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
 
     // 事件绑定
     取消按钮.onclick = async (): Promise<void> => {
-      await this.创建失败测试任务模态框.设置属性('显示', '否')
+      await 关闭模态框()
     }
 
     确认按钮.onclick = async (): Promise<void> => {
@@ -459,7 +476,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       }
 
       try {
-        await this.api管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-fail-test', {
+        await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-fail-test', {
           失败任务名称: 任务名称,
           失败消息: 失败消息,
           最大重试次数: 最大重试次数,
@@ -467,7 +484,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
           ...(失败延迟时间 !== '' ? { 失败延迟时间: parseInt(失败延迟时间) } : {}),
         })
 
-        await this.创建失败测试任务模态框.设置属性('显示', '否')
+        await 关闭模态框()
 
         // 清空表单
         this.失败任务名称输入框.value = '失败测试任务_' + new Date().toLocaleTimeString()
@@ -485,7 +502,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
     }
 
     内容容器.append(名称容器, 消息容器, 重试容器, 延迟容器, 优先级容器, 按钮容器)
-    this.创建失败测试任务模态框.设置内容(内容容器)
+    await 显示模态框({ 标题: '创建失败测试任务' }, 内容容器)
   }
 
   protected override async 当加载时(): Promise<void> {
@@ -562,26 +579,18 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
       this.加载数据(1, this.每页数量).catch(console.error)
     }
 
-    // 添加模态框到页面
-    document.body.appendChild(this.详情模态框)
-    document.body.appendChild(this.创建测试任务模态框)
-    document.body.appendChild(this.创建失败测试任务模态框)
-
-    // 设置创建测试任务模态框内容
-    this.设置创建测试任务模态框内容()
-
-    // 设置创建失败测试任务模态框内容
-    this.设置创建失败测试任务模态框内容()
-
-    // 监听详情模态框关闭事件
-    this.详情模态框.addEventListener('关闭', () => {
-      if (this.当前任务详情WS !== null) {
-        this.当前任务详情WS.close()
-        this.当前任务详情WS = null
-      }
-    })
-
     // 初始加载数据
     await this.刷新任务列表()
+
+    // 检查 URL 参数，如果有 type=instant 和 id，自动显示详情
+    let urlParams = new URLSearchParams(window.location.search)
+    let type = urlParams.get('type')
+    let id = urlParams.get('id')
+    if (type === 'instant' && id !== null) {
+      let 任务 = this.所有任务数据.find((任务) => 任务.id === id)
+      if (任务 !== void 0) {
+        await this.显示任务详情(任务)
+      }
+    }
   }
 }

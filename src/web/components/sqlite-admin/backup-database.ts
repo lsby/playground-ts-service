@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
-import { 联合转元组 } from '../../global/types'
+import { API管理器 } from '../../global/api-manager'
+import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -12,7 +12,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     this.注册组件('lsby-backup-database', this)
   }
 
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 备份按钮: HTMLButtonElement | null = null
   private 结果消息: HTMLDivElement | null = null
 
@@ -67,7 +66,7 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     备份按钮.textContent = '备份中...'
 
     try {
-      let 结果 = await this.API管理器.请求post接口('/api/sqlite-admin/backup-database', {})
+      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/backup-database', {})
       if (结果.status === 'success') {
         this.显示结果(`备份成功`, true)
       } else {

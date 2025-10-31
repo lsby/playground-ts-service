@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base.js'
-import { GlobalWeb } from '../../global/global.js'
+import { log } from '../../global/log.js'
 
 type 属性类型 = {
   排除事件?: string
@@ -39,15 +39,15 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
           return originalAddEventListener.call(this, type, listener, options)
         }
 
-        let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
-        await log.debug('监听事件: %o <= %O, %O', type, listener, options)
+        let 组件日志 = log.extend(this.constructor.name)
+        await 组件日志.debug('监听事件: %o <= %O, %O', type, listener, options)
 
         if (typeof listener === 'function') {
           originalAddEventListener.call(
             this,
             type,
             async (event) => {
-              await log.debug('事件触发: %o <= %O, %O', type, listener, options)
+              await 组件日志.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener.call(listener, event)
             },
             options,
@@ -58,7 +58,7 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
             this,
             type,
             async (event) => {
-              await log.debug('事件触发: %o <= %O, %O', type, listener, options)
+              await 组件日志.debug('事件触发: %o <= %O, %O', type, listener, options)
               return listener?.handleEvent.call(listener, event)
             },
             options,
@@ -73,15 +73,15 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
           return originalDispatchEvent.call(this, event)
         }
 
-        let log = GlobalWeb.getItemSync('log').extend(this.constructor.name)
+        let 组件日志 = log.extend(this.constructor.name)
         if (event instanceof CustomEvent) {
-          log
+          组件日志
             .debug('派发自定义事件: %o => %O, %O', event.type, event.detail, event)
             .catch(
               (a) => `日志输出错误: ${a}: 日志内容: ${'派发自定义事件: ${event.type} => ${event.detail}, ${event}'}`,
             )
         } else {
-          log
+          组件日志
             .debug('派发事件: %o => %O', event.type, event)
             .catch((a) => `日志输出错误: ${a}: 派发事件: ${event.type} => ${event}}`)
         }

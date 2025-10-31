@@ -1,13 +1,13 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import { cleanDB } from '../../../../script/db/clean-db'
-import { Global } from '../../../global/global'
+import { kysely } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口 from './index'
 
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
+    let db = kysely.获得句柄()
     await cleanDB(db)
   },
 
@@ -35,7 +35,7 @@ export default new 接口测试(
       if (预期 === '成功') throw new Error('应该调用成功, 实际调用出错')
     }
 
-    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
+    let db = kysely.获得句柄()
 
     let r = await db.selectFrom('user').select('id').execute()
     assert.equal(r.length, 1, '应该有一个用户')

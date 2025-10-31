@@ -5,10 +5,10 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Right, Task } from '@lsby/ts-fp-data'
+import { Right } from '@lsby/ts-fp-data'
 import { CompiledQuery } from 'kysely'
 import { z } from 'zod'
-import { Global } from '../../../global/global'
+import { jwtPlugin, kyselyPlugin } from '../../../global/global'
 import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
 
 let 接口路径 = '/api/sqlite-admin/get-triggers' as const
@@ -17,41 +17,36 @@ let 接口方法 = 'post' as const
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
   .混合(
-    new 检查管理员登录(
-      [
-        new Task(async () => await Global.getItem('jwt-plugin').then((a) => a.解析器)),
-        new Task(async () => await Global.getItem('kysely-plugin')),
-      ],
-      () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' }),
-    ),
+    new 检查管理员登录([jwtPlugin.解析器, kyselyPlugin], () => ({
+      表名: 'user',
+      id字段: 'id',
+      标识字段: 'is_admin',
+    })),
   )
   .混合(
-    接口逻辑.构造(
-      [new Task(async () => await Global.getItem('kysely-plugin'))],
-      async (参数, 逻辑附加参数, 请求附加参数) => {
-        let _log = 请求附加参数.log.extend(接口路径)
+    接口逻辑.构造([kyselyPlugin], async (参数, 逻辑附加参数, 请求附加参数) => {
+      let _log = 请求附加参数.log.extend(接口路径)
 
-        let kysely = 参数.kysely.获得句柄()
+      let kysely = 参数.kysely.获得句柄()
 
-        let 结果 = await kysely.executeQuery(
-          CompiledQuery.raw(
-            [`SELECT name, tbl_name, sql`, `FROM sqlite_master`, `WHERE type = 'trigger';`].join('\n'),
-            [],
-          ),
-        )
+      let 结果 = await kysely.executeQuery(
+        CompiledQuery.raw(
+          [`SELECT name, tbl_name, sql`, `FROM sqlite_master`, `WHERE type = 'trigger';`].join('\n'),
+          [],
+        ),
+      )
 
-        return new Right({
-          triggers: 结果.rows.map((row: any) => ({
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            name: row.name,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            table: row.tbl_name,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            sql: row.sql,
-          })),
-        })
-      },
-    ),
+      return new Right({
+        triggers: 结果.rows.map((row: any) => ({
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          name: row.name,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          table: row.tbl_name,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          sql: row.sql,
+        })),
+      })
+    }),
   )
 
 type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>

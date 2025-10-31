@@ -1,5 +1,5 @@
 import net from 'net'
-import { Global } from '../global/global'
+import { globalLog } from '../global/global'
 
 /**
  * 检查指定端口是否可用
@@ -29,7 +29,7 @@ export async function 获取随机可用端口(): Promise<number> {
     }
   }
 
-  let log = await Global.getItem('log').then((a) => a.extend('electron'))
+  let log = globalLog.extend('electron')
   await log.error('尝试10次后仍未找到可用端口，退出应用')
 
   throw new Error('未找到可用端口')

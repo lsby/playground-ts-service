@@ -4,14 +4,14 @@ import axios from 'axios'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
-import { Global } from '../../../global/global'
+import { env, kysely } from '../../../global/global'
 import 接口 from './index'
 
 let name = 'admin'
 let pwd = '123456'
 export default new 接口测试(
   async (): Promise<void> => {
-    let db = await Global.getItem('kysely').then((a) => a.获得句柄())
+    let db = kysely.获得句柄()
     await cleanDB(db)
     await db
       .insertInto('user')
@@ -20,8 +20,6 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    let env = await Global.getItem('env').then((a) => a.获得环境变量())
-
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${env.APP_PORT}${urlPath}`
 

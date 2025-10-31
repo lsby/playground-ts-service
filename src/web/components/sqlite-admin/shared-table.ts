@@ -1,4 +1,4 @@
-import { GlobalWeb } from '../../global/global'
+import { API管理器 } from '../../global/api-manager'
 
 type 表格选项 = {
   可编辑?: boolean
@@ -8,7 +8,6 @@ type 表格选项 = {
 }
 
 export class 共享表格管理器 {
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
   private 表格容器: HTMLDivElement
   private 右键菜单: HTMLDivElement
   private 根容器: HTMLElement
@@ -433,7 +432,7 @@ export class 共享表格管理器 {
         let 条件部分 = 条件部分列表.join(' AND ')
         let 更新SQL = 'UPDATE `' + this.选项.表名 + '` SET `' + 列名 + '` = ? WHERE ' + 条件部分
 
-        let 更新结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
+        let 更新结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', {
           sql: 更新SQL,
           parameters: 参数列表,
         })
@@ -510,7 +509,7 @@ export class 共享表格管理器 {
         let 条件部分 = 条件部分列表.join(' AND ')
         let 删除SQL = 'DELETE FROM `' + this.选项.表名 + '` WHERE ' + 条件部分
 
-        let 删除结果 = await this.API管理器.请求post接口('/api/sqlite-admin/execute-query', {
+        let 删除结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', {
           sql: 删除SQL,
           parameters: 参数列表,
         })

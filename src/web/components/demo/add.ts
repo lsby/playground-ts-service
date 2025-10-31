@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { GlobalWeb } from '../../global/global'
+import { API管理器 } from '../../global/api-manager'
 import { LsbyContainer } from '../layout/container'
 
 type 属性类型 = { a: string; b: string }
@@ -12,8 +12,6 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
   static {
     this.注册组件('lsby-demo-add', this)
   }
-
-  private API管理器 = GlobalWeb.getItemSync('API管理器')
 
   private 结果 = document.createElement('p')
   private 输入框1 = document.createElement('input')
@@ -44,7 +42,7 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
     this.输入框1.value = (await this.获得属性('a')) ?? '0'
     this.输入框2.value = (await this.获得属性('b')) ?? '0'
 
-    let 调用结果 = await this.API管理器.请求post接口并处理错误('/api/demo/base/add', {
+    let 调用结果 = await API管理器.请求post接口并处理错误('/api/demo/base/add', {
       a: parseInt(this.输入框1.value),
       b: parseInt(this.输入框2.value),
     })
