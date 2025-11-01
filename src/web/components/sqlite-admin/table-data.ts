@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 联合转元组 } from '../../global/types/types'
+import { LsbyPagination } from '../general/pagination'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -17,9 +18,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
 
   private 数据容器: HTMLDivElement | null = null
   private 每页条数选择: HTMLSelectElement | null = null
-  private 上一页按钮: HTMLButtonElement | null = null
-  private 下一页按钮: HTMLButtonElement | null = null
-  private 页码显示: HTMLSpanElement | null = null
+  private 分页组件: LsbyPagination | null = null
   private 消息容器: HTMLDivElement | null = null
 
   private 当前页: number = 1
@@ -39,31 +38,42 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     style.flexDirection = 'column'
     style.width = '100%'
     style.height = '100%'
+    style.minWidth = '0'
+    style.overflow = 'hidden'
 
-    // 分页控制面板
-    let 分页面板 = document.createElement('div')
-    分页面板.style.display = 'flex'
-    分页面板.style.gap = '10px'
-    分页面板.style.padding = '10px'
-    分页面板.style.borderBottom = '1px solid var(--边框颜色)'
-    分页面板.style.alignItems = 'center'
-    分页面板.style.justifyContent = 'space-between'
-
-    // 左侧：每页条数选择
-    let 左侧容器 = document.createElement('div')
-    左侧容器.style.display = 'flex'
-    左侧容器.style.alignItems = 'center'
-    左侧容器.style.gap = '10px'
+    // 每页条数选择容器
+    let 每页条数容器 = document.createElement('div')
+    每页条数容器.style.display = 'flex'
+    每页条数容器.style.alignItems = 'center'
+    每页条数容器.style.gap = '10px'
+    每页条数容器.style.padding = '10px'
+    每页条数容器.style.borderBottom = '1px solid var(--边框颜色)'
 
     let 每页条数标签 = document.createElement('label')
     每页条数标签.textContent = '每页条数:'
     this.每页条数选择 = document.createElement('select')
-    this.每页条数选择.innerHTML = `
-      <option value="50">50</option>
-      <option value="100" selected>100</option>
-      <option value="200">200</option>
-      <option value="500">500</option>
-    `
+
+    let 选项50 = document.createElement('option')
+    选项50.value = '50'
+    选项50.textContent = '50'
+    this.每页条数选择.appendChild(选项50)
+
+    let 选项100 = document.createElement('option')
+    选项100.value = '100'
+    选项100.textContent = '100'
+    选项100.selected = true
+    this.每页条数选择.appendChild(选项100)
+
+    let 选项200 = document.createElement('option')
+    选项200.value = '200'
+    选项200.textContent = '200'
+    this.每页条数选择.appendChild(选项200)
+
+    let 选项500 = document.createElement('option')
+    选项500.value = '500'
+    选项500.textContent = '500'
+    this.每页条数选择.appendChild(选项500)
+
     this.每页条数选择.style.padding = '4px'
     this.每页条数选择.style.cursor = 'pointer'
     this.每页条数选择.addEventListener('change', () => {
@@ -74,64 +84,33 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
     })
 
-    左侧容器.appendChild(每页条数标签)
-    左侧容器.appendChild(this.每页条数选择)
-
-    // 右侧：分页按钮和页码显示
-    let 右侧容器 = document.createElement('div')
-    右侧容器.style.display = 'flex'
-    右侧容器.style.alignItems = 'center'
-    右侧容器.style.gap = '10px'
-
-    this.上一页按钮 = document.createElement('button')
-    this.上一页按钮.textContent = '上一页'
-    this.上一页按钮.style.padding = '6px 12px'
-    this.上一页按钮.style.cursor = 'pointer'
-    this.上一页按钮.addEventListener('click', () => {
-      if (this.当前页 > 1) {
-        this.当前页--
-        void this.加载表数据()
-      }
-    })
-
-    this.页码显示 = document.createElement('span')
-    this.页码显示.textContent = '第 1 页 / 共 1 页'
-    this.页码显示.style.padding = '6px 12px'
-    this.页码显示.style.minWidth = '120px'
-    this.页码显示.style.textAlign = 'center'
-
-    this.下一页按钮 = document.createElement('button')
-    this.下一页按钮.textContent = '下一页'
-    this.下一页按钮.style.padding = '6px 12px'
-    this.下一页按钮.style.cursor = 'pointer'
-    this.下一页按钮.addEventListener('click', () => {
-      let 总页数 = Math.ceil(this.总条数 / this.每页条数)
-      if (this.当前页 < 总页数) {
-        this.当前页++
-        void this.加载表数据()
-      }
-    })
-
-    右侧容器.appendChild(this.上一页按钮)
-    右侧容器.appendChild(this.页码显示)
-    右侧容器.appendChild(this.下一页按钮)
-
-    分页面板.appendChild(左侧容器)
-    分页面板.appendChild(右侧容器)
+    每页条数容器.appendChild(每页条数标签)
+    每页条数容器.appendChild(this.每页条数选择)
 
     this.数据容器 = document.createElement('div')
     this.数据容器.style.flex = '1'
-    this.数据容器.style.overflow = 'auto'
+    this.数据容器.style.overflow = 'hidden'
     this.数据容器.style.display = 'flex'
     this.数据容器.style.flexDirection = 'column'
     this.数据容器.style.position = 'relative'
+    this.数据容器.style.minWidth = '0'
+    this.数据容器.style.minHeight = '0'
 
     // 初始化表格管理器
     this.表格管理器 = new 共享表格管理器(this.数据容器, {
       可编辑: true,
       数据更新回调: async (): Promise<void> => {
-        await this.加载表数据()
+        // 单元格编辑后不需要重新加载整个表数据
+        // 数据已经在 shared-table.ts 中更新了
+        // 如果需要刷新特定内容,可以在这里添加
       },
+    })
+
+    // 创建分页组件
+    this.分页组件 = document.createElement('lsby-pagination') as LsbyPagination
+    this.分页组件.设置页码变化回调(async (页码: number): Promise<void> => {
+      this.当前页 = 页码
+      await this.加载表数据()
     })
 
     // 创建消息容器
@@ -144,9 +123,10 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     this.消息容器.style.color = 'var(--文本颜色)'
     this.消息容器.textContent = '请选择表'
 
+    this.shadow.appendChild(每页条数容器)
     this.shadow.appendChild(this.数据容器)
     this.shadow.appendChild(this.消息容器)
-    this.shadow.appendChild(分页面板)
+    this.shadow.appendChild(this.分页组件)
 
     await this.加载表数据()
   }
@@ -218,18 +198,13 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       let 解析后的总条数 = parseInt(总条数字符串)
       this.总条数 = isNaN(解析后的总条数) === false ? 解析后的总条数 : 0
 
-      // 计算总页数并更新页码显示
-      let 总页数 = Math.ceil(this.总条数 / this.每页条数)
-      if (this.页码显示 !== null) {
-        this.页码显示.textContent = `第 ${this.当前页} 页 / 共 ${总页数} 页`
-      }
-
-      // 更新按钮状态
-      if (this.上一页按钮 !== null) {
-        this.上一页按钮.disabled = this.当前页 <= 1
-      }
-      if (this.下一页按钮 !== null) {
-        this.下一页按钮.disabled = this.当前页 >= 总页数
+      // 更新分页组件配置
+      if (this.分页组件 !== null) {
+        this.分页组件.设置配置({
+          当前页码: this.当前页,
+          每页数量: this.每页条数,
+          总数量: this.总条数,
+        })
       }
 
       // 查询当前页数据

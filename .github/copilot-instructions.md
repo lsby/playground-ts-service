@@ -75,6 +75,9 @@
 2. **Web组件开发**
 
 - 组件的注册名不要使用中文
+- 尽可能复用通用组件: `src/web/components/general`
+- 尽可能复用常用布局: `src/web/components/layout`
+- 尽可能使用工厂函数创建元素: `src/web/global/create-element.ts`
 - 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 CSS 变量
 - 使用路由机制进行兄弟组件通信: `src/web/components/mechanics/route.ts`
 - 使用 `src/web/global/api-manager.ts` 来请求后端

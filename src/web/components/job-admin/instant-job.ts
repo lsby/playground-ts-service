@@ -1,10 +1,10 @@
-import { 自定义操作, 自定义项操作, 表格组件基类 } from '../../base/table-base'
+import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { API管理器类 } from '../../global/class/api'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { LsbyLog } from '../general/log'
-import { LsbyContainer } from '../layout/container'
-import { LsbyRow } from '../layout/row'
+import { LsbyPagination } from '../general/pagination'
+import { LsbyTableView } from '../general/table-view'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -24,19 +24,16 @@ type 任务数据项 = {
   日志列表长度: number
 }
 
-export class 测试任务组件 extends 表格组件基类<属性类型, 发出事件类型, 监听事件类型, 任务数据项> {
+export class 测试任务组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-job-admin', this)
   }
 
   private api管理器 = new API管理器类()
+  private 表格组件 = new LsbyTableView()
+  private 分页组件 = new LsbyPagination()
   private 所有任务数据: 任务数据项[] = []
-  private 筛选后的任务数据: 任务数据项[] = []
-  private 当前页码 = 1
-  private 每页数量 = 10
-  private 名称筛选输入框 = document.createElement('input')
-  private 创建时间筛选输入框 = document.createElement('input')
   private 测试任务名称输入框 = document.createElement('input')
   private 测试任务消息输入框 = document.createElement('input')
   private 测试任务持续时间输入框 = document.createElement('input')
@@ -47,79 +44,36 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
   private 失败任务优先级输入框 = document.createElement('input')
   private 当前任务详情WS: WebSocket | null = null
 
-  private 应用筛选(): void {
-    let 名称筛选 = this.名称筛选输入框.value.trim().toLowerCase()
-    let 创建时间筛选 = this.创建时间筛选输入框.value.trim()
+  private async 加载数据(页码: number, 每页数量: number): Promise<void> {
+    let 开始索引 = (页码 - 1) * 每页数量
+    let 结束索引 = 开始索引 + 每页数量
+    let 分页数据 = this.所有任务数据.slice(开始索引, 结束索引)
 
-    this.筛选后的任务数据 = this.所有任务数据.filter((任务) => {
-      let 名称匹配 = 名称筛选 === '' || 任务.名称.toLowerCase().includes(名称筛选)
-      let 时间匹配 = 创建时间筛选 === '' || 任务.创建时间.includes(创建时间筛选)
-      return 名称匹配 && 时间匹配
+    this.表格组件.设置数据({
+      列配置: [
+        { 字段名: '名称', 显示名: '任务名称' },
+        { 字段名: '状态', 显示名: '状态' },
+        { 字段名: '优先级', 显示名: '优先级' },
+        { 字段名: '创建时间', 显示名: '创建时间' },
+        { 字段名: '执行时长', 显示名: '执行时长(ms)' },
+        { 字段名: '重试次数', 显示名: '重试次数' },
+      ],
+      数据列表: 分页数据,
+      操作列表: [
+        {
+          名称: '详情',
+          回调: async (任务: 任务数据项): Promise<void> => {
+            await this.显示任务详情(任务)
+          },
+        },
+      ],
     })
-  }
 
-  protected override async 获得列排序(): Promise<(keyof 任务数据项)[]> {
-    return ['名称', '状态', '优先级', '创建时间', '执行时长', '重试次数']
-  }
-
-  protected override 映射显示字段名称(数据字段: keyof 任务数据项): string | null {
-    switch (数据字段) {
-      case '名称':
-        return '任务名称'
-      case '状态':
-        return '状态'
-      case '优先级':
-        return '优先级'
-      case '创建时间':
-        return '创建时间'
-      case '执行时长':
-        return '执行时长(ms)'
-      case '重试次数':
-        return '重试次数'
-      default:
-        return null
-    }
-  }
-  protected override 映射显示字段值(数据字段: keyof 任务数据项, 值: 任务数据项[keyof 任务数据项]): string {
-    return String(值)
-  }
-
-  protected override async 请求数据(page: number, size: number): Promise<{ data: 任务数据项[]; total: number }> {
-    this.当前页码 = page
-    this.每页数量 = size
-
-    this.应用筛选()
-
-    let 开始索引 = (page - 1) * size
-    let 结束索引 = 开始索引 + size
-    let 分页数据 = this.筛选后的任务数据.slice(开始索引, 结束索引)
-
-    return {
-      data: 分页数据,
-      total: this.筛选后的任务数据.length,
-    }
-  }
-
-  protected override async 获得自定义操作(): Promise<自定义操作> {
-    return {
-      刷新: async (): Promise<void> => {
-        await this.刷新任务列表()
-      },
-      创建测试任务: async (): Promise<void> => {
-        await this.显示创建测试任务模态框()
-      },
-      创建失败测试任务: async (): Promise<void> => {
-        await this.显示创建失败测试任务模态框()
-      },
-    }
-  }
-
-  protected override async 获得自定义项操作(): Promise<自定义项操作<任务数据项>> {
-    return {
-      详情: async (任务: 任务数据项): Promise<void> => {
-        await this.显示任务详情(任务)
-      },
-    }
+    this.分页组件.设置配置({
+      当前页码: 页码,
+      每页数量: 每页数量,
+      总数量: this.所有任务数据.length,
+    })
   }
 
   private async 刷新任务列表(): Promise<void> {
@@ -140,8 +94,7 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
         日志列表长度: 任务.日志列表.length,
       }))
 
-      this.应用筛选()
-      await this.加载数据(this.当前页码, this.每页数量)
+      await this.加载数据(this.分页组件.获得当前页码(), this.分页组件.获得每页数量())
     } catch (错误) {
       console.error('获取任务列表失败:', 错误)
     }
@@ -508,76 +461,53 @@ export class 测试任务组件 extends 表格组件基类<属性类型, 发出�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    // 创建筛选区域
-    let 筛选容器 = new LsbyContainer({})
-    筛选容器.style.border = '1px solid var(--边框颜色)'
-    筛选容器.style.borderRadius = '8px'
-    筛选容器.style.padding = '1em'
-    筛选容器.style.marginBottom = '1em'
-
-    let 筛选标题 = document.createElement('h4')
-    筛选标题.textContent = '筛选条件'
-    筛选标题.style.marginTop = '0'
-
-    // 名称筛选
-    let 名称筛选行 = new LsbyRow({})
-    let 名称筛选标签 = document.createElement('label')
-    名称筛选标签.textContent = '任务名称:'
-    名称筛选标签.style.minWidth = '100px'
-    this.名称筛选输入框.placeholder = '输入任务名称关键词'
-    this.名称筛选输入框.style.flex = '1'
-    this.名称筛选输入框.style.padding = '0.5em'
-    this.名称筛选输入框.style.border = '1px solid var(--边框颜色)'
-    this.名称筛选输入框.style.borderRadius = '4px'
-    名称筛选行.append(名称筛选标签, this.名称筛选输入框)
-
-    // 创建时间筛选
-    let 时间筛选行 = new LsbyRow({})
-    let 时间筛选标签 = document.createElement('label')
-    时间筛选标签.textContent = '创建时间:'
-    时间筛选标签.style.minWidth = '100px'
-    this.创建时间筛选输入框.placeholder = '输入创建时间关键词 (如: 2024)'
-    this.创建时间筛选输入框.style.flex = '1'
-    this.创建时间筛选输入框.style.padding = '0.5em'
-    this.创建时间筛选输入框.style.border = '1px solid var(--边框颜色)'
-    this.创建时间筛选输入框.style.borderRadius = '4px'
-    时间筛选行.append(时间筛选标签, this.创建时间筛选输入框)
-
-    // 筛选按钮
-    let 筛选按钮行 = new LsbyRow({})
-    let 筛选按钮 = document.createElement('button')
-    筛选按钮.textContent = '应用筛选'
-    筛选按钮.style.padding = '0.5em 1em'
-    筛选按钮.style.border = 'none'
-    筛选按钮.style.borderRadius = '4px'
-    筛选按钮.style.backgroundColor = 'var(--按钮背景)'
-    筛选按钮.style.color = 'var(--按钮文字)'
-    筛选按钮.style.cursor = 'pointer'
-    筛选按钮.onclick = (): void => {
-      this.应用筛选()
-      this.加载数据(1, this.每页数量).catch(console.error)
-    }
-    筛选按钮行.append(筛选按钮)
-
-    筛选容器.append(筛选标题, 名称筛选行, 时间筛选行, 筛选按钮行)
-
-    // 主容器
     let 主容器 = document.createElement('div')
     主容器.style.display = 'flex'
     主容器.style.flexDirection = 'column'
-    主容器.style.gap = '1em'
+    主容器.style.padding = '16px'
+    主容器.style.gap = '16px'
 
-    主容器.appendChild(筛选容器)
+    // 顶部操作区
+    let 操作区 = document.createElement('div')
+    操作区.style.display = 'flex'
+    操作区.style.justifyContent = 'flex-end'
+    操作区.style.gap = '8px'
 
-    // 绑定筛选事件
-    this.名称筛选输入框.oninput = (): void => {
-      this.应用筛选()
-      this.加载数据(1, this.每页数量).catch(console.error)
+    let 刷新按钮 = document.createElement('button')
+    刷新按钮.textContent = '刷新'
+    刷新按钮.style.padding = '6px 16px'
+    刷新按钮.onclick = async (): Promise<void> => {
+      await this.刷新任务列表()
     }
-    this.创建时间筛选输入框.oninput = (): void => {
-      this.应用筛选()
-      this.加载数据(1, this.每页数量).catch(console.error)
+
+    let 创建测试任务按钮 = document.createElement('button')
+    创建测试任务按钮.textContent = '创建测试任务'
+    创建测试任务按钮.style.padding = '6px 16px'
+    创建测试任务按钮.onclick = async (): Promise<void> => {
+      await this.显示创建测试任务模态框()
     }
+
+    let 创建失败测试任务按钮 = document.createElement('button')
+    创建失败测试任务按钮.textContent = '创建失败测试任务'
+    创建失败测试任务按钮.style.padding = '6px 16px'
+    创建失败测试任务按钮.onclick = async (): Promise<void> => {
+      await this.显示创建失败测试任务模态框()
+    }
+
+    操作区.appendChild(刷新按钮)
+    操作区.appendChild(创建测试任务按钮)
+    操作区.appendChild(创建失败测试任务按钮)
+
+    // 分页监听
+    this.分页组件.设置页码变化回调(async (页码): Promise<void> => {
+      await this.加载数据(页码, this.分页组件.获得每页数量())
+    })
+
+    主容器.appendChild(操作区)
+    主容器.appendChild(this.表格组件)
+    主容器.appendChild(this.分页组件)
+
+    this.shadow.appendChild(主容器)
 
     // 初始加载数据
     await this.刷新任务列表()

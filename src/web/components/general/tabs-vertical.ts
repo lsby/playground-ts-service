@@ -2,12 +2,12 @@ import { 组件基类 } from '../../base/base'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
-type 发出事件类型 = {
+export type tabVertical发出事件类型 = {
   切换: { 当前索引: number }
 }
 type 监听事件类型 = {}
 
-export class LsbyTabsVertical extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
     this.注册组件('lsby-tabs-vertical', this)

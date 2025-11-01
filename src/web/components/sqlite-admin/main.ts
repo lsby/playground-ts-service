@@ -28,7 +28,7 @@ export class LsbySqliteAdminMain extends 组件基类<属性类型, 发出事件
     style.width = '100%'
     style.height = '100%'
 
-    this.标签页容器 = document.createElement('lsby-tabs')
+    this.标签页容器 = document.createElement('lsby-tabs-horizontal')
 
     // 数据库信息标签页
     let 数据库信息容器 = document.createElement('div')

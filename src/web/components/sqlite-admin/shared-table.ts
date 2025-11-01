@@ -16,10 +16,13 @@ export class 共享表格管理器 {
   private 最后点击的单元格: { 行: number; 列: number } | null = null
   private 多选模式: boolean = false
   private 最后点击的行: number = -1
+  private shift选择起点: number = -1
   private 当前数据: Record<string, any>[] = []
   private 当前列名: string[] = []
   private 编辑中: boolean = false
   private 选项: 表格选项 = {}
+  private 表格行元素映射: Map<number, HTMLTableRowElement> = new Map()
+  private 表格单元格元素映射: Map<string, HTMLTableCellElement> = new Map()
 
   public constructor(根容器: HTMLElement, 选项: 表格选项 = {}) {
     this.根容器 = 根容器
@@ -29,6 +32,7 @@ export class 共享表格管理器 {
     this.表格容器.style.flex = '1'
     this.表格容器.style.overflow = 'auto'
     this.表格容器.style.minWidth = '0'
+    this.表格容器.style.minHeight = '0'
 
     // 点击表格容器空白处取消选择
     this.表格容器.addEventListener('click', (事件) => {
@@ -39,7 +43,8 @@ export class 共享表格管理器 {
         this.最后点击的单元格 = null
         this.多选模式 = false
         this.最后点击的行 = -1
-        this.重新渲染表格()
+        this.shift选择起点 = -1
+        this.更新选中状态()
       }
     })
 
@@ -71,6 +76,7 @@ export class 共享表格管理器 {
     this.最后点击的单元格 = null
     this.多选模式 = false
     this.最后点击的行 = -1
+    this.shift选择起点 = -1
     this.编辑中 = false
 
     this.当前数据 = 数据
@@ -83,6 +89,8 @@ export class 共享表格管理器 {
 
   private 渲染表数据(行列表: Record<string, any>[]): void {
     this.表格容器.innerHTML = ''
+    this.表格行元素映射.clear()
+    this.表格单元格元素映射.clear()
 
     if (行列表.length === 0) {
       this.显示消息('无数据')
@@ -121,6 +129,10 @@ export class 共享表格管理器 {
       if (行 === void 0) continue
       let 数据行 = document.createElement('tr')
       let 行选中 = this.选中的行.has(行索引)
+
+      // 保存行元素引用
+      this.表格行元素映射.set(行索引, 数据行)
+
       if (行选中 === true) {
         数据行.style.backgroundColor = 'var(--选中背景颜色)'
       }
@@ -136,6 +148,11 @@ export class 共享表格管理器 {
         let 列 = 列名[列索引]
         if (列 === void 0) continue
         let 数据单元格 = document.createElement('td')
+
+        // 保存单元格元素引用
+        let 单元格键 = `${行索引}-${列索引}`
+        this.表格单元格元素映射.set(单元格键, 数据单元格)
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         let 值 = 行[列]
         数据单元格.textContent = 值 === null ? 'NULL' : String(值)
@@ -150,7 +167,8 @@ export class 共享表格管理器 {
         if (
           this.最后点击的单元格 !== null &&
           this.最后点击的单元格.行 === 行索引 &&
-          this.最后点击的单元格.列 === 列索引
+          this.最后点击的单元格.列 === 列索引 &&
+          this.多选模式 === false
         ) {
           数据单元格.style.backgroundColor = 'var(--强调背景颜色)'
           数据单元格.style.border = '2px solid var(--强调颜色)'
@@ -248,9 +266,15 @@ export class 共享表格管理器 {
       } else {
         this.选中的行.add(行索引)
       }
+      // Ctrl 选择时重置 Shift 选择起点
+      this.shift选择起点 = -1
     } else if (shift键 === true) {
-      let 开始行 = Math.min(this.最后点击的行, 行索引)
-      let 结束行 = Math.max(this.最后点击的行, 行索引)
+      // 如果还没有 Shift 选择起点，设置为最后点击的行
+      if (this.shift选择起点 === -1) {
+        this.shift选择起点 = this.最后点击的行
+      }
+      let 开始行 = Math.min(this.shift选择起点, 行索引)
+      let 结束行 = Math.max(this.shift选择起点, 行索引)
       this.选中的行.clear()
       for (let i = 开始行; i <= 结束行; i++) {
         this.选中的行.add(i)
@@ -258,10 +282,12 @@ export class 共享表格管理器 {
     } else {
       this.选中的行.clear()
       this.选中的行.add(行索引)
+      // 普通点击时重置 Shift 选择起点
+      this.shift选择起点 = -1
     }
     this.最后点击的行 = 行索引
     this.多选模式 = this.选中的行.size > 1
-    this.重新渲染表格()
+    this.更新选中状态()
   }
 
   private 处理单元格点击(行索引: number, 列索引: number, ctrl键: boolean, shift键: boolean): void {
@@ -314,6 +340,46 @@ export class 共享表格管理器 {
     this.渲染表数据(this.当前数据)
   }
 
+  private 更新选中状态(): void {
+    // 使用 requestAnimationFrame 来确保在浏览器下一次重绘前更新,避免滚动条跳动
+    requestAnimationFrame(() => {
+      // 保存当前滚动位置
+      let 滚动位置 = this.表格容器.scrollTop
+
+      // 高效更新选中状态,不重新渲染整个表格
+      for (let [行索引, 行元素] of this.表格行元素映射) {
+        if (this.选中的行.has(行索引) === true) {
+          行元素.style.backgroundColor = 'var(--选中背景颜色)'
+        } else {
+          行元素.style.backgroundColor = ''
+        }
+      }
+
+      // 更新单元格选中状态
+      for (let [键, 单元格元素] of this.表格单元格元素映射) {
+        let [行索引字符串, 列索引字符串] = 键.split('-')
+        let 行索引 = parseInt(行索引字符串 !== void 0 ? 行索引字符串 : '')
+        let 列索引 = parseInt(列索引字符串 !== void 0 ? 列索引字符串 : '')
+
+        if (
+          this.最后点击的单元格 !== null &&
+          this.最后点击的单元格.行 === 行索引 &&
+          this.最后点击的单元格.列 === 列索引 &&
+          this.多选模式 === false
+        ) {
+          单元格元素.style.backgroundColor = 'var(--强调背景颜色)'
+          单元格元素.style.border = '2px solid var(--强调颜色)'
+        } else {
+          单元格元素.style.backgroundColor = ''
+          单元格元素.style.border = '1px solid var(--边框颜色)'
+        }
+      }
+
+      // 恢复滚动位置
+      this.表格容器.scrollTop = 滚动位置
+    })
+  }
+
   private 复制选中内容(): void {
     let 内容 = ''
     if (this.选中的行.size === 1 && this.最后点击的单元格 !== null) {
@@ -362,6 +428,13 @@ export class 共享表格管理器 {
     let 当前值 = 行[列名]
     let 值字符串 = 当前值 === null ? '' : String(当前值)
 
+    // 直接从缓存的映射中获取单元格元素,避免 querySelector
+    let 单元格键 = `${行索引}-${列索引}`
+    let 单元格 = this.表格单元格元素映射.get(单元格键)
+    if (单元格 === void 0) return
+
+    this.编辑中 = true
+
     // 创建编辑输入框
     let 输入框 = document.createElement('input')
     输入框.type = 'text'
@@ -372,16 +445,7 @@ export class 共享表格管理器 {
     输入框.style.borderRadius = '2px'
     输入框.style.backgroundColor = 'var(--主要背景颜色)'
     输入框.style.color = 'var(--文字颜色)'
-
-    // 找到对应的单元格
-    let 表 = this.表格容器.querySelector('table')
-    if (表 === null) return
-    let 行元素 = 表.rows[行索引 + 1]
-    if (行元素 === void 0) return
-    let 单元格 = 行元素.cells[列索引]
-    if (单元格 === void 0) return
-
-    this.编辑中 = true
+    输入框.style.boxSizing = 'border-box'
 
     // 替换单元格内容
     单元格.innerHTML = ''
@@ -437,7 +501,11 @@ export class 共享表格管理器 {
           parameters: 参数列表,
         })
         if (更新结果.status === 'success') {
-          // 调用回调
+          // 更新本地数据,避免重新渲染
+          行[列名] = 新值 === '' ? null : 新值
+          单元格.textContent = 新值 === '' ? 'NULL' : 新值
+
+          // 调用回调(如果需要刷新其他数据)
           if (this.选项.数据更新回调 !== void 0) {
             await this.选项.数据更新回调(行索引, 列名, 新值)
           }
@@ -538,6 +606,7 @@ export class 共享表格管理器 {
     this.最后点击的单元格 = null
     this.多选模式 = false
     this.最后点击的行 = -1
+    this.shift选择起点 = -1
 
     // 重新渲染
     this.重新渲染表格()

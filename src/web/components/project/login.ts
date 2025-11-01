@@ -240,7 +240,14 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         userPassword: 密码,
       })
       API管理器.设置token(调用结果.token)
-      window.location.assign('/')
+      // 检查 URL 参数中是否有重定向路径
+      let urlParams = new URLSearchParams(window.location.search)
+      let 重定向路径 = urlParams.get('redirect')
+      if (重定向路径 !== null) {
+        window.location.assign(decodeURIComponent(重定向路径))
+      } else {
+        window.location.assign('/')
+      }
     }
   }
 }

@@ -26,10 +26,13 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     style.flexDirection = 'column'
     style.width = '100%'
     style.height = '100%'
+    style.minWidth = '0'
+    style.overflow = 'hidden'
 
     this.结构容器.style.flex = '1'
     this.结构容器.style.overflow = 'auto'
     this.结构容器.style.padding = '10px'
+    this.结构容器.style.minWidth = '0'
 
     this.shadow.appendChild(this.结构容器)
 
@@ -69,7 +72,7 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     this.结构容器.innerHTML = ''
 
     let 标题 = document.createElement('h3')
-    标题.textContent = `表结构 - ${this.获得属性('表名')}`
+    标题.textContent = '表结构'
     标题.style.margin = '0 0 10px 0'
     标题.style.fontSize = '18px'
     this.结构容器.appendChild(标题)

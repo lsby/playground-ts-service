@@ -54,11 +54,13 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     this.左侧容器.appendChild(左侧标题)
     this.左侧容器.appendChild(this.表列表组件)
 
-    // 右侧：表详细信息
+    // 右侧:表详细信息
     this.右侧容器 = document.createElement('div')
     this.右侧容器.style.flex = '1'
     this.右侧容器.style.display = 'flex'
     this.右侧容器.style.flexDirection = 'column'
+    this.右侧容器.style.minWidth = '0'
+    this.右侧容器.style.overflow = 'hidden'
 
     let 右侧标题容器 = document.createElement('div')
     右侧标题容器.style.padding = '10px'
@@ -85,8 +87,10 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     内容容器.style.flex = '1'
     内容容器.style.display = 'flex'
     内容容器.style.flexDirection = 'column'
+    内容容器.style.minHeight = '0'
+    内容容器.style.overflow = 'hidden'
 
-    let tabs容器 = document.createElement('lsby-tabs')
+    let tabs容器 = document.createElement('lsby-tabs-horizontal')
 
     // 数据tab
     let 数据容器 = document.createElement('div')

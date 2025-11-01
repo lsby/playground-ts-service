@@ -2,15 +2,15 @@ import { 组件基类 } from '../../base/base'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
-type 发出事件类型 = {
+export type tabHorizontal发出事件类型 = {
   切换: { 当前索引: number }
 }
 type 监听事件类型 = {}
 
-export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-tabs', this)
+    this.注册组件('lsby-tabs-horizontal', this)
   }
 
   private 当前索引: number = 0
@@ -92,6 +92,10 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
       if (idx === this.当前索引) {
         el.style.display = 'flex'
         el.style.flex = '1'
+        el.style.flexDirection = 'column'
+        el.style.minHeight = '0'
+        el.style.minWidth = '0'
+        el.style.overflow = 'hidden'
       } else {
         el.style.display = 'none'
       }
@@ -102,5 +106,10 @@ export class LsbyTabs extends 组件基类<属性类型, 发出事件类型, 监
     if (this.当前索引 === index) return
     this.当前索引 = index
     this.更新UI()
+    this.派发事件('切换', { 当前索引: index })
+  }
+
+  public 设置当前索引(index: number): void {
+    this.切换标签(index)
   }
 }
