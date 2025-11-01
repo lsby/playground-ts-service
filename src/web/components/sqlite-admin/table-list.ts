@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -27,12 +28,15 @@ export class LsbyTableList extends 组件基类<属性类型, 发出事件类型
     style.width = '100%'
     style.height = '100%'
 
-    this.表列表容器 = document.createElement('div')
-    this.表列表容器.style.display = 'flex'
-    this.表列表容器.style.flexDirection = 'column'
-    this.表列表容器.style.gap = '2px'
-    this.表列表容器.style.overflowY = 'auto'
-    this.表列表容器.style.flex = '1'
+    this.表列表容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2px',
+        overflowY: 'auto',
+        flex: '1',
+      },
+    })
 
     this.shadow.appendChild(this.表列表容器)
 
@@ -48,15 +52,17 @@ export class LsbyTableList extends 组件基类<属性类型, 发出事件类型
         this.渲染表列表(结果.data.tables)
       } else {
         表列表容器.innerHTML = ''
-        let 错误消息 = document.createElement('div')
-        错误消息.textContent = '获取表列表失败'
+        let 错误消息 = 创建元素('div', {
+          textContent: '获取表列表失败',
+        })
         表列表容器.appendChild(错误消息)
       }
     } catch (错误) {
       console.error('获取表列表失败:', 错误)
       表列表容器.innerHTML = ''
-      let 错误消息 = document.createElement('div')
-      错误消息.textContent = '获取表列表失败'
+      let 错误消息 = 创建元素('div', {
+        textContent: '获取表列表失败',
+      })
       表列表容器.appendChild(错误消息)
     }
   }
@@ -66,20 +72,24 @@ export class LsbyTableList extends 组件基类<属性类型, 发出事件类型
     let 表列表容器 = this.表列表容器
     表列表容器.innerHTML = ''
     if (表列表.length === 0) {
-      let 无表消息 = document.createElement('div')
-      无表消息.textContent = '没有找到表'
+      let 无表消息 = 创建元素('div', {
+        textContent: '没有找到表',
+      })
       表列表容器.appendChild(无表消息)
       return
     }
     for (let 表名 of 表列表) {
-      let 表项 = document.createElement('div')
-      表项.textContent = 表名
-      表项.style.padding = '8px 12px'
-      表项.style.border = '1px solid var(--边框颜色)'
-      表项.style.cursor = 'pointer'
-      表项.style.backgroundColor = 'var(--背景颜色)'
-      表项.style.borderRadius = '4px'
-      表项.style.fontSize = '14px'
+      let 表项 = 创建元素('div', {
+        textContent: 表名,
+        style: {
+          padding: '8px 12px',
+          border: '1px solid var(--边框颜色)',
+          cursor: 'pointer',
+          backgroundColor: 'var(--背景颜色)',
+          borderRadius: '4px',
+          fontSize: '14px',
+        },
+      })
       表项.addEventListener('click', () => this.选择表(表名))
       表列表容器.appendChild(表项)
     }

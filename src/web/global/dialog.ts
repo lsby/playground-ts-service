@@ -1,49 +1,66 @@
+import { 创建元素 } from './create-element'
+
 export function 显示对话框(消息: string): Promise<void> {
   return new Promise((resolve) => {
-    let 遮罩层 = document.createElement('div')
-    遮罩层.style.position = 'fixed'
-    遮罩层.style.top = '0'
-    遮罩层.style.left = '0'
-    遮罩层.style.width = '100%'
-    遮罩层.style.height = '100%'
-    遮罩层.style.backgroundColor = 'var(--遮罩颜色)'
-    遮罩层.style.display = 'flex'
-    遮罩层.style.justifyContent = 'center'
-    遮罩层.style.alignItems = 'center'
-    遮罩层.style.zIndex = '10000'
+    let 遮罩层 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'var(--遮罩颜色)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: '10000',
+      },
+    })
 
-    let 对话框 = document.createElement('div')
-    对话框.style.backgroundColor = 'var(--卡片背景颜色)'
-    对话框.style.padding = '20px'
-    对话框.style.borderRadius = '8px'
-    对话框.style.boxShadow = '0 4px 12px var(--深阴影颜色)'
-    对话框.style.minWidth = '300px'
-    对话框.style.maxWidth = '500px'
-    对话框.style.display = 'flex'
-    对话框.style.flexDirection = 'column'
-    对话框.style.gap = '16px'
-    对话框.style.border = '1px solid var(--边框颜色)'
+    let 对话框 = 创建元素('div', {
+      style: {
+        backgroundColor: 'var(--卡片背景颜色)',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        minWidth: '300px',
+        maxWidth: '500px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        border: '1px solid var(--边框颜色)',
+      },
+    })
 
-    let 消息元素 = document.createElement('div')
-    消息元素.textContent = 消息
-    消息元素.style.fontSize = '14px'
-    消息元素.style.lineHeight = '1.5'
-    消息元素.style.color = 'var(--文字颜色)'
-    消息元素.style.whiteSpace = 'pre-wrap'
+    let 消息元素 = 创建元素('div', {
+      textContent: 消息,
+      style: {
+        fontSize: '14px',
+        lineHeight: '1.5',
+        color: 'var(--文字颜色)',
+        whiteSpace: 'pre-wrap',
+      },
+    })
 
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.justifyContent = 'flex-end'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+      },
+    })
 
-    let 确定按钮 = document.createElement('button')
-    确定按钮.textContent = '确定'
-    确定按钮.style.padding = '8px 24px'
-    确定按钮.style.backgroundColor = 'var(--主色调)'
-    确定按钮.style.color = 'var(--卡片背景颜色)'
-    确定按钮.style.border = 'none'
-    确定按钮.style.borderRadius = '4px'
-    确定按钮.style.cursor = 'pointer'
-    确定按钮.style.fontSize = '14px'
+    let 确定按钮 = 创建元素('button', {
+      textContent: '确定',
+      style: {
+        padding: '8px 24px',
+        backgroundColor: 'var(--主色调)',
+        color: 'var(--卡片背景颜色)',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+      },
+    })
 
     确定按钮.addEventListener('mouseenter', () => {
       确定按钮.style.opacity = '0.8'
@@ -88,67 +105,85 @@ export function 显示对话框(消息: string): Promise<void> {
 
 export function 显示确认对话框(消息: string): Promise<boolean> {
   return new Promise((resolve) => {
-    let 遮罩层 = document.createElement('div')
-    遮罩层.style.position = 'fixed'
-    遮罩层.style.top = '0'
-    遮罩层.style.left = '0'
-    遮罩层.style.width = '100%'
-    遮罩层.style.height = '100%'
-    遮罩层.style.backgroundColor = 'var(--遮罩颜色)'
-    遮罩层.style.display = 'flex'
-    遮罩层.style.justifyContent = 'center'
-    遮罩层.style.alignItems = 'center'
-    遮罩层.style.zIndex = '10000'
+    let 遮罩层 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'var(--遮罩颜色)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: '10000',
+      },
+    })
 
-    let 对话框 = document.createElement('div')
-    对话框.style.backgroundColor = 'var(--卡片背景颜色)'
-    对话框.style.padding = '20px'
-    对话框.style.borderRadius = '8px'
-    对话框.style.boxShadow = '0 4px 12px var(--深阴影颜色)'
-    对话框.style.minWidth = '300px'
-    对话框.style.maxWidth = '500px'
-    对话框.style.display = 'flex'
-    对话框.style.flexDirection = 'column'
-    对话框.style.gap = '16px'
-    对话框.style.border = '1px solid var(--边框颜色)'
+    let 对话框 = 创建元素('div', {
+      style: {
+        backgroundColor: 'var(--卡片背景颜色)',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        minWidth: '300px',
+        maxWidth: '500px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        border: '1px solid var(--边框颜色)',
+      },
+    })
 
-    let 消息元素 = document.createElement('div')
-    消息元素.textContent = 消息
-    消息元素.style.fontSize = '14px'
-    消息元素.style.lineHeight = '1.5'
-    消息元素.style.color = 'var(--文字颜色)'
-    消息元素.style.whiteSpace = 'pre-wrap'
+    let 消息元素 = 创建元素('div', {
+      textContent: 消息,
+      style: {
+        fontSize: '14px',
+        lineHeight: '1.5',
+        color: 'var(--文字颜色)',
+        whiteSpace: 'pre-wrap',
+      },
+    })
 
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.justifyContent = 'flex-end'
-    按钮容器.style.gap = '8px'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px',
+      },
+    })
 
-    let 取消按钮 = document.createElement('button')
-    取消按钮.textContent = '取消'
-    取消按钮.style.padding = '8px 24px'
-    取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    取消按钮.style.color = 'var(--按钮文字)'
-    取消按钮.style.border = '1px solid var(--边框颜色)'
-    取消按钮.style.borderRadius = '4px'
-    取消按钮.style.cursor = 'pointer'
-    取消按钮.style.fontSize = '14px'
-
-    let 确定按钮 = document.createElement('button')
-    确定按钮.textContent = '确定'
-    确定按钮.style.padding = '8px 24px'
-    确定按钮.style.backgroundColor = 'var(--主色调)'
-    确定按钮.style.color = 'var(--卡片背景颜色)'
-    确定按钮.style.border = 'none'
-    确定按钮.style.borderRadius = '4px'
-    确定按钮.style.cursor = 'pointer'
-    确定按钮.style.fontSize = '14px'
+    let 取消按钮 = 创建元素('button', {
+      textContent: '取消',
+      style: {
+        padding: '8px 24px',
+        backgroundColor: 'var(--按钮背景)',
+        color: 'var(--按钮文字)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+      },
+    })
 
     取消按钮.addEventListener('mouseenter', () => {
       取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
     })
     取消按钮.addEventListener('mouseleave', () => {
       取消按钮.style.backgroundColor = 'var(--按钮背景)'
+    })
+
+    let 确定按钮 = 创建元素('button', {
+      textContent: '确定',
+      style: {
+        padding: '8px 24px',
+        backgroundColor: 'var(--主色调)',
+        color: 'var(--卡片背景颜色)',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+      },
     })
 
     确定按钮.addEventListener('mouseenter', () => {
@@ -200,48 +235,60 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
 
 export function 显示输入对话框(消息: string, 默认值?: string): Promise<string | null> {
   return new Promise((resolve) => {
-    let 遮罩层 = document.createElement('div')
-    遮罩层.style.position = 'fixed'
-    遮罩层.style.top = '0'
-    遮罩层.style.left = '0'
-    遮罩层.style.width = '100%'
-    遮罩层.style.height = '100%'
-    遮罩层.style.backgroundColor = 'var(--遮罩颜色)'
-    遮罩层.style.display = 'flex'
-    遮罩层.style.justifyContent = 'center'
-    遮罩层.style.alignItems = 'center'
-    遮罩层.style.zIndex = '10000'
+    let 遮罩层 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'var(--遮罩颜色)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: '10000',
+      },
+    })
 
-    let 对话框 = document.createElement('div')
-    对话框.style.backgroundColor = 'var(--卡片背景颜色)'
-    对话框.style.padding = '20px'
-    对话框.style.borderRadius = '8px'
-    对话框.style.boxShadow = '0 4px 12px var(--深阴影颜色)'
-    对话框.style.minWidth = '300px'
-    对话框.style.maxWidth = '500px'
-    对话框.style.display = 'flex'
-    对话框.style.flexDirection = 'column'
-    对话框.style.gap = '16px'
-    对话框.style.border = '1px solid var(--边框颜色)'
+    let 对话框 = 创建元素('div', {
+      style: {
+        backgroundColor: 'var(--卡片背景颜色)',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        minWidth: '300px',
+        maxWidth: '500px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        border: '1px solid var(--边框颜色)',
+      },
+    })
 
-    let 消息元素 = document.createElement('div')
-    消息元素.textContent = 消息
-    消息元素.style.fontSize = '14px'
-    消息元素.style.lineHeight = '1.5'
-    消息元素.style.color = 'var(--文字颜色)'
-    消息元素.style.whiteSpace = 'pre-wrap'
+    let 消息元素 = 创建元素('div', {
+      textContent: 消息,
+      style: {
+        fontSize: '14px',
+        lineHeight: '1.5',
+        color: 'var(--文字颜色)',
+        whiteSpace: 'pre-wrap',
+      },
+    })
 
-    let 输入框 = document.createElement('input')
-    输入框.type = 'text'
-    输入框.style.padding = '8px 12px'
-    输入框.style.border = '1px solid var(--边框颜色)'
-    输入框.style.borderRadius = '4px'
-    输入框.style.fontSize = '14px'
-    输入框.style.backgroundColor = 'var(--输入框背景)'
-    输入框.style.color = 'var(--输入框文字)'
-    输入框.style.outline = 'none'
-    输入框.style.width = '100%'
-    输入框.style.boxSizing = 'border-box'
+    let 输入框 = 创建元素('input', {
+      type: 'text',
+      style: {
+        padding: '8px 12px',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        fontSize: '14px',
+        backgroundColor: 'var(--输入框背景)',
+        color: 'var(--输入框文字)',
+        outline: 'none',
+        width: '100%',
+        boxSizing: 'border-box',
+      },
+    })
 
     if (默认值 !== void 0) {
       输入框.value = 默认值
@@ -254,36 +301,45 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       输入框.style.borderColor = 'var(--边框颜色)'
     })
 
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.justifyContent = 'flex-end'
-    按钮容器.style.gap = '8px'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px',
+      },
+    })
 
-    let 取消按钮 = document.createElement('button')
-    取消按钮.textContent = '取消'
-    取消按钮.style.padding = '8px 24px'
-    取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    取消按钮.style.color = 'var(--按钮文字)'
-    取消按钮.style.border = '1px solid var(--边框颜色)'
-    取消按钮.style.borderRadius = '4px'
-    取消按钮.style.cursor = 'pointer'
-    取消按钮.style.fontSize = '14px'
-
-    let 确定按钮 = document.createElement('button')
-    确定按钮.textContent = '确定'
-    确定按钮.style.padding = '8px 24px'
-    确定按钮.style.backgroundColor = 'var(--主色调)'
-    确定按钮.style.color = 'var(--卡片背景颜色)'
-    确定按钮.style.border = 'none'
-    确定按钮.style.borderRadius = '4px'
-    确定按钮.style.cursor = 'pointer'
-    确定按钮.style.fontSize = '14px'
+    let 取消按钮 = 创建元素('button', {
+      textContent: '取消',
+      style: {
+        padding: '8px 24px',
+        backgroundColor: 'var(--按钮背景)',
+        color: 'var(--按钮文字)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+      },
+    })
 
     取消按钮.addEventListener('mouseenter', () => {
       取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
     })
     取消按钮.addEventListener('mouseleave', () => {
       取消按钮.style.backgroundColor = 'var(--按钮背景)'
+    })
+
+    let 确定按钮 = 创建元素('button', {
+      textContent: '确定',
+      style: {
+        padding: '8px 24px',
+        backgroundColor: 'var(--主色调)',
+        color: 'var(--卡片背景颜色)',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+        fontSize: '14px',
+      },
     })
 
     确定按钮.addEventListener('mouseenter', () => {

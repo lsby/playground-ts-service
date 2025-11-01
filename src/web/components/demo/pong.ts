@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 路由事件监听对象, 路由事件监听类型 } from '../mechanics/route'
 import { ping事件 } from './ping'
 
@@ -13,7 +14,7 @@ export class 测试pong组件 extends 组件基类<属性类型, 发出事件类
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 结果 = document.createElement('p')
+    let 结果 = 创建元素('p')
     this.shadow.append(结果)
 
     this.派发事件(

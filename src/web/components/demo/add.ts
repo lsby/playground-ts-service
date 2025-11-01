@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { LsbyContainer } from '../layout/container'
 
 type 属性类型 = { a: string; b: string }
@@ -13,9 +14,9 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
     this.注册组件('lsby-demo-add', this)
   }
 
-  private 结果 = document.createElement('p')
-  private 输入框1 = document.createElement('input')
-  private 输入框2 = document.createElement('input')
+  private 结果 = 创建元素('p')
+  private 输入框1 = 创建元素('input')
+  private 输入框2 = 创建元素('input')
 
   protected override async 当加载时(): Promise<void> {
     let 输入框1容器 = new LsbyContainer({})

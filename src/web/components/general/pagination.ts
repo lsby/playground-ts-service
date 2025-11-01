@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 
 type 属性类型 = {}
 
@@ -50,54 +51,66 @@ export class LsbyPagination extends 组件基类<属性类型, 发出事件类�
     let { 当前页码, 每页数量, 总数量 } = this.配置
     let 总页数 = Math.ceil(总数量 / 每页数量)
 
-    let 容器 = document.createElement('div')
-    容器.style.display = 'flex'
-    容器.style.justifyContent = 'center'
-    容器.style.alignItems = 'center'
-    容器.style.gap = '12px'
-    容器.style.padding = '16px 0'
+    let 容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '16px 0',
+      },
+    })
 
     // 上一页按钮
-    let 上一页按钮 = document.createElement('button')
-    上一页按钮.textContent = '上一页'
-    上一页按钮.disabled = 当前页码 <= 1
-    上一页按钮.style.padding = '6px 16px'
-    上一页按钮.style.cursor = 当前页码 <= 1 ? 'not-allowed' : 'pointer'
-    上一页按钮.onclick = async (): Promise<void> => {
-      if (当前页码 > 1) {
-        this.配置.当前页码 = 当前页码 - 1
-        await this.渲染()
-        this.派发事件('页码变化', { 页码: this.配置.当前页码 })
-        if (this.页码变化回调 !== null) {
-          await this.页码变化回调(this.配置.当前页码)
+    let 上一页按钮 = 创建元素('button', {
+      textContent: '上一页',
+      disabled: 当前页码 <= 1,
+      style: {
+        padding: '6px 16px',
+        cursor: 当前页码 <= 1 ? 'not-allowed' : 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        if (当前页码 > 1) {
+          this.配置.当前页码 = 当前页码 - 1
+          await this.渲染()
+          this.派发事件('页码变化', { 页码: this.配置.当前页码 })
+          if (this.页码变化回调 !== null) {
+            await this.页码变化回调(this.配置.当前页码)
+          }
         }
-      }
-    }
+      },
+    })
     容器.appendChild(上一页按钮)
 
     // 页码显示
-    let 页码显示 = document.createElement('span')
-    页码显示.textContent = `第 ${当前页码} 页 / 共 ${总页数} 页 (总共 ${总数量} 条)`
-    页码显示.style.margin = '0 8px'
-    页码显示.style.color = 'var(--color-text-secondary)'
+    let 页码显示 = 创建元素('span', {
+      textContent: `第 ${当前页码} 页 / 共 ${总页数} 页 (总共 ${总数量} 条)`,
+      style: {
+        margin: '0 8px',
+        color: 'var(--color-text-secondary)',
+      },
+    })
     容器.appendChild(页码显示)
 
     // 下一页按钮
-    let 下一页按钮 = document.createElement('button')
-    下一页按钮.textContent = '下一页'
-    下一页按钮.disabled = 当前页码 >= 总页数
-    下一页按钮.style.padding = '6px 16px'
-    下一页按钮.style.cursor = 当前页码 >= 总页数 ? 'not-allowed' : 'pointer'
-    下一页按钮.onclick = async (): Promise<void> => {
-      if (当前页码 < 总页数) {
-        this.配置.当前页码 = 当前页码 + 1
-        await this.渲染()
-        this.派发事件('页码变化', { 页码: this.配置.当前页码 })
-        if (this.页码变化回调 !== null) {
-          await this.页码变化回调(this.配置.当前页码)
+    let 下一页按钮 = 创建元素('button', {
+      textContent: '下一页',
+      disabled: 当前页码 >= 总页数,
+      style: {
+        padding: '6px 16px',
+        cursor: 当前页码 >= 总页数 ? 'not-allowed' : 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        if (当前页码 < 总页数) {
+          this.配置.当前页码 = 当前页码 + 1
+          await this.渲染()
+          this.派发事件('页码变化', { 页码: this.配置.当前页码 })
+          if (this.页码变化回调 !== null) {
+            await this.页码变化回调(this.配置.当前页码)
+          }
         }
-      }
-    }
+      },
+    })
     容器.appendChild(下一页按钮)
 
     this.shadow.innerHTML = ''

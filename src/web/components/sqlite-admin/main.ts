@@ -1,5 +1,7 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
+import { LsbyTabsHorizontal } from '../general/tabs-horizontal'
 import { LsbyBackupDatabase } from './backup-database'
 import { LsbyDatabaseInfo } from './database-info'
 import { LsbyDatabaseManager } from './database-manager'
@@ -28,31 +30,31 @@ export class LsbySqliteAdminMain extends 组件基类<属性类型, 发出事件
     style.width = '100%'
     style.height = '100%'
 
-    this.标签页容器 = document.createElement('lsby-tabs-horizontal')
+    this.标签页容器 = new LsbyTabsHorizontal({})
 
     // 数据库信息标签页
-    let 数据库信息容器 = document.createElement('div')
+    let 数据库信息容器 = 创建元素('div')
     数据库信息容器.setAttribute('标签', '数据库信息')
     let 数据库信息组件 = new LsbyDatabaseInfo({})
     数据库信息容器.appendChild(数据库信息组件)
     this.标签页容器.appendChild(数据库信息容器)
 
     // 数据库管理标签页
-    let 数据库管理容器 = document.createElement('div')
+    let 数据库管理容器 = 创建元素('div')
     数据库管理容器.setAttribute('标签', '数据库管理')
     let 数据库管理组件 = new LsbyDatabaseManager({})
     数据库管理容器.appendChild(数据库管理组件)
     this.标签页容器.appendChild(数据库管理容器)
 
     // 查询标签页
-    let 查询容器 = document.createElement('div')
+    let 查询容器 = 创建元素('div')
     查询容器.setAttribute('标签', '查询')
     let 查询组件 = new LsbyExecuteQuery({})
     查询容器.appendChild(查询组件)
     this.标签页容器.appendChild(查询容器)
 
     // 备份数据库标签页
-    let 备份数据库容器 = document.createElement('div')
+    let 备份数据库容器 = 创建元素('div')
     备份数据库容器.setAttribute('标签', '备份数据库')
     let 备份数据库组件 = new LsbyBackupDatabase({})
     备份数据库容器.appendChild(备份数据库组件)

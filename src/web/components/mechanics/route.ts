@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
   `LsbyRoute-发出`,
@@ -55,7 +56,7 @@ export class LsbyRoute extends 组件基类<属性类型, 发出事件类型, �
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 插槽: HTMLSlotElement = document.createElement('slot')
+    let 插槽: HTMLSlotElement = 创建元素('slot')
     this.shadow.appendChild(插槽)
 
     this.监听事件('LsbyRoute-监听', async (data) => {

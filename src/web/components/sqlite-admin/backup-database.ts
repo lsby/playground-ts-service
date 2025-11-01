@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -27,31 +28,40 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
     style.gap = '10px'
     style.width = '100%'
 
-    let 标题 = document.createElement('h2')
-    标题.textContent = '备份数据库'
-    标题.style.fontSize = '20px'
-    标题.style.fontWeight = 'bold'
-    标题.style.margin = '0 0 16px 0'
+    let 标题 = 创建元素('h2', {
+      textContent: '备份数据库',
+      style: {
+        fontSize: '20px',
+        fontWeight: 'bold',
+        margin: '0 0 16px 0',
+      },
+    })
 
-    this.备份按钮 = document.createElement('button')
-    this.备份按钮.textContent = '开始备份'
-    this.备份按钮.style.padding = '8px 16px'
-    this.备份按钮.style.fontSize = '16px'
-    this.备份按钮.style.backgroundColor = 'var(--主要按钮颜色)'
-    this.备份按钮.style.color = '#fff'
-    this.备份按钮.style.border = 'none'
-    this.备份按钮.style.borderRadius = '4px'
-    this.备份按钮.style.cursor = 'pointer'
+    this.备份按钮 = 创建元素('button', {
+      textContent: '开始备份',
+      style: {
+        padding: '8px 16px',
+        fontSize: '16px',
+        backgroundColor: 'var(--主要按钮颜色)',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '4px',
+        cursor: 'pointer',
+      },
+    })
     this.备份按钮.addEventListener('click', () => this.执行备份())
 
-    this.结果消息 = document.createElement('div')
-    this.结果消息.style.padding = '10px'
-    this.结果消息.style.border = '1px solid var(--边框颜色)'
-    this.结果消息.style.backgroundColor = 'var(--背景颜色)'
-    this.结果消息.style.flex = '1'
-    this.结果消息.style.marginTop = '16px'
-    this.结果消息.style.fontSize = '16px'
-    this.结果消息.style.color = 'var(--主要按钮颜色)'
+    this.结果消息 = 创建元素('div', {
+      style: {
+        padding: '10px',
+        border: '1px solid var(--边框颜色)',
+        backgroundColor: 'var(--背景颜色)',
+        flex: '1',
+        marginTop: '16px',
+        fontSize: '16px',
+        color: 'var(--主要按钮颜色)',
+      },
+    })
 
     this.shadow.appendChild(标题)
     this.shadow.appendChild(this.备份按钮)

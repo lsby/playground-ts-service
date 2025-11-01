@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -30,23 +31,29 @@ export class LsbyDatabaseInfo extends 组件基类<属性类型, 发出事件类
     style.border = '1px solid var(--边框颜色)'
     style.width = '100%'
 
-    let 标题 = document.createElement('h2')
-    标题.textContent = '数据库信息'
-    标题.style.margin = '0'
-    标题.style.fontSize = '24px'
-    标题.style.fontWeight = 'bold'
-    标题.style.color = 'var(--文字颜色)'
-    标题.style.borderBottom = '2px solid var(--主色调)'
-    标题.style.paddingBottom = '10px'
+    let 标题 = 创建元素('h2', {
+      textContent: '数据库信息',
+      style: {
+        margin: '0',
+        fontSize: '24px',
+        fontWeight: 'bold',
+        color: 'var(--文字颜色)',
+        borderBottom: '2px solid var(--主色调)',
+        paddingBottom: '10px',
+      },
+    })
 
-    this.版本标签 = document.createElement('div')
-    this.版本标签.style.margin = '0'
-    this.版本标签.style.padding = '12px'
-    this.版本标签.style.backgroundColor = 'var(--悬浮背景颜色)'
-    this.版本标签.style.borderRadius = '6px'
-    this.版本标签.style.border = '1px solid var(--边框颜色)'
-    this.版本标签.style.fontSize = '16px'
-    this.版本标签.style.color = 'var(--文字颜色)'
+    this.版本标签 = 创建元素('div', {
+      style: {
+        margin: '0',
+        padding: '12px',
+        backgroundColor: 'var(--悬浮背景颜色)',
+        borderRadius: '6px',
+        border: '1px solid var(--边框颜色)',
+        fontSize: '16px',
+        color: 'var(--文字颜色)',
+      },
+    })
 
     this.shadow.appendChild(标题)
     this.shadow.appendChild(this.版本标签)

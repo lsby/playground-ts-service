@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { API管理器类 } from '../../global/class/api'
+import { 创建元素 } from '../../global/create-element'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { LsbyLog } from '../general/log'
 import { LsbyPagination } from '../general/pagination'
@@ -34,14 +35,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
   private 表格组件 = new LsbyTableView()
   private 分页组件 = new LsbyPagination()
   private 所有任务数据: 任务数据项[] = []
-  private 测试任务名称输入框 = document.createElement('input')
-  private 测试任务消息输入框 = document.createElement('input')
-  private 测试任务持续时间输入框 = document.createElement('input')
-  private 失败任务名称输入框 = document.createElement('input')
-  private 失败任务消息输入框 = document.createElement('input')
-  private 失败任务重试次数输入框 = document.createElement('input')
-  private 失败任务延迟时间输入框 = document.createElement('input')
-  private 失败任务优先级输入框 = document.createElement('input')
+  private 测试任务名称输入框 = 创建元素('input')
+  private 测试任务消息输入框 = 创建元素('input')
+  private 测试任务持续时间输入框 = 创建元素('input')
+  private 失败任务名称输入框 = 创建元素('input')
+  private 失败任务消息输入框 = 创建元素('input')
+  private 失败任务重试次数输入框 = 创建元素('input')
+  private 失败任务延迟时间输入框 = 创建元素('input')
+  private 失败任务优先级输入框 = 创建元素('input')
   private 当前任务详情WS: WebSocket | null = null
 
   private async 加载数据(页码: number, 每页数量: number): Promise<void> {
@@ -105,8 +106,11 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     window.history.pushState(null, '', `?type=instant&id=${任务.id}`)
 
     // 创建详情内容容器
-    let 详情内容 = document.createElement('div')
-    详情内容.style.padding = '1em'
+    let 详情内容 = 创建元素('div', {
+      style: {
+        padding: '1em',
+      },
+    })
 
     // 创建日志组件
     let 日志组件 = new LsbyLog({})
@@ -166,18 +170,24 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
   }
 
   private async 显示创建测试任务模态框(): Promise<void> {
-    let 内容容器 = document.createElement('div')
-    内容容器.style.padding = '1em'
-    内容容器.style.display = 'flex'
-    内容容器.style.flexDirection = 'column'
-    内容容器.style.gap = '1em'
+    let 内容容器 = 创建元素('div', {
+      style: {
+        padding: '1em',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1em',
+      },
+    })
 
     // 任务名称输入
-    let 名称容器 = document.createElement('div')
-    let 名称标签 = document.createElement('label')
-    名称标签.textContent = '任务名称:'
-    名称标签.style.display = 'block'
-    名称标签.style.marginBottom = '0.5em'
+    let 名称容器 = 创建元素('div')
+    let 名称标签 = 创建元素('label', {
+      textContent: '任务名称:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.测试任务名称输入框.placeholder = '输入测试任务名称'
     this.测试任务名称输入框.style.width = '100%'
     this.测试任务名称输入框.style.padding = '0.5em'
@@ -187,11 +197,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     名称容器.append(名称标签, this.测试任务名称输入框)
 
     // 打印消息输入
-    let 消息容器 = document.createElement('div')
-    let 消息标签 = document.createElement('label')
-    消息标签.textContent = '打印消息:'
-    消息标签.style.display = 'block'
-    消息标签.style.marginBottom = '0.5em'
+    let 消息容器 = 创建元素('div')
+    let 消息标签 = 创建元素('label', {
+      textContent: '打印消息:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.测试任务消息输入框.placeholder = '每秒打印的消息内容'
     this.测试任务消息输入框.style.width = '100%'
     this.测试任务消息输入框.style.padding = '0.5em'
@@ -201,11 +214,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     消息容器.append(消息标签, this.测试任务消息输入框)
 
     // 持续时间输入
-    let 时间容器 = document.createElement('div')
-    let 时间标签 = document.createElement('label')
-    时间标签.textContent = '持续时间(秒):'
-    时间标签.style.display = 'block'
-    时间标签.style.marginBottom = '0.5em'
+    let 时间容器 = 创建元素('div')
+    let 时间标签 = 创建元素('label', {
+      textContent: '持续时间(秒):',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.测试任务持续时间输入框.placeholder = '任务持续时间，默认60秒'
     this.测试任务持续时间输入框.type = 'number'
     this.测试任务持续时间输入框.style.width = '100%'
@@ -216,94 +232,106 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     时间容器.append(时间标签, this.测试任务持续时间输入框)
 
     // 按钮容器
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.gap = '0.5em'
-    按钮容器.style.justifyContent = 'flex-end'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        gap: '0.5em',
+        justifyContent: 'flex-end',
+      },
+    })
 
-    let 取消按钮 = document.createElement('button')
-    取消按钮.textContent = '取消'
-    取消按钮.style.padding = '0.5em 1em'
-    取消按钮.style.border = '1px solid var(--边框颜色)'
-    取消按钮.style.borderRadius = '4px'
-    取消按钮.style.backgroundColor = 'var(--背景颜色)'
-    取消按钮.style.color = 'var(--文字颜色)'
-    取消按钮.style.cursor = 'pointer'
+    let 取消按钮 = 创建元素('button', {
+      textContent: '取消',
+      style: {
+        padding: '0.5em 1em',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        backgroundColor: 'var(--背景颜色)',
+        color: 'var(--文字颜色)',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        await 关闭模态框()
+      },
+    })
 
-    let 确认按钮 = document.createElement('button')
-    确认按钮.textContent = '创建任务'
-    确认按钮.style.padding = '0.5em 1em'
-    确认按钮.style.border = 'none'
-    确认按钮.style.borderRadius = '4px'
-    确认按钮.style.backgroundColor = 'var(--强调按钮背景)'
-    确认按钮.style.color = 'var(--强调按钮文字)'
-    确认按钮.style.cursor = 'pointer'
+    let 确认按钮 = 创建元素('button', {
+      textContent: '创建任务',
+      style: {
+        padding: '0.5em 1em',
+        border: 'none',
+        borderRadius: '4px',
+        backgroundColor: 'var(--强调按钮背景)',
+        color: 'var(--强调按钮文字)',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        let 任务名称 = this.测试任务名称输入框.value.trim()
+        let 消息内容 = this.测试任务消息输入框.value.trim()
+        let 持续时间 = parseInt(this.测试任务持续时间输入框.value)
+        if (isNaN(持续时间) || 持续时间 <= 0) {
+          持续时间 = 60
+        }
+
+        if (任务名称 === '') {
+          alert('请输入任务名称')
+          return
+        }
+
+        if (消息内容 === '') {
+          alert('请输入打印消息')
+          return
+        }
+
+        try {
+          await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-test', {
+            测试任务名称: 任务名称,
+            测试任务消息: 消息内容,
+            测试任务持续时间: 持续时间,
+            任务优先级: 1,
+          })
+
+          await 关闭模态框()
+
+          // 清空表单
+          this.测试任务名称输入框.value = '测试任务_' + new Date().toLocaleTimeString()
+          this.测试任务消息输入框.value = '测试消息'
+          this.测试任务持续时间输入框.value = '60'
+
+          // 刷新列表
+          await this.刷新任务列表()
+        } catch (错误) {
+          console.error('创建测试任务失败:', 错误)
+          alert('创建测试任务失败，请查看控制台')
+        }
+      },
+    })
 
     按钮容器.append(取消按钮, 确认按钮)
-
-    // 事件绑定
-    取消按钮.onclick = async (): Promise<void> => {
-      await 关闭模态框()
-    }
-
-    确认按钮.onclick = async (): Promise<void> => {
-      let 任务名称 = this.测试任务名称输入框.value.trim()
-      let 消息内容 = this.测试任务消息输入框.value.trim()
-      let 持续时间 = parseInt(this.测试任务持续时间输入框.value)
-      if (isNaN(持续时间) || 持续时间 <= 0) {
-        持续时间 = 60
-      }
-
-      if (任务名称 === '') {
-        alert('请输入任务名称')
-        return
-      }
-
-      if (消息内容 === '') {
-        alert('请输入打印消息')
-        return
-      }
-
-      try {
-        await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-test', {
-          测试任务名称: 任务名称,
-          测试任务消息: 消息内容,
-          测试任务持续时间: 持续时间,
-          任务优先级: 1,
-        })
-
-        await 关闭模态框()
-
-        // 清空表单
-        this.测试任务名称输入框.value = '测试任务_' + new Date().toLocaleTimeString()
-        this.测试任务消息输入框.value = '测试消息'
-        this.测试任务持续时间输入框.value = '60'
-
-        // 刷新列表
-        await this.刷新任务列表()
-      } catch (错误) {
-        console.error('创建测试任务失败:', 错误)
-        alert('创建测试任务失败，请查看控制台')
-      }
-    }
 
     内容容器.append(名称容器, 消息容器, 时间容器, 按钮容器)
     await 显示模态框({ 标题: '创建测试任务' }, 内容容器)
   }
 
   private async 显示创建失败测试任务模态框(): Promise<void> {
-    let 内容容器 = document.createElement('div')
-    内容容器.style.padding = '1em'
-    内容容器.style.display = 'flex'
-    内容容器.style.flexDirection = 'column'
-    内容容器.style.gap = '1em'
+    let 内容容器 = 创建元素('div', {
+      style: {
+        padding: '1em',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1em',
+      },
+    })
 
     // 任务名称输入
-    let 名称容器 = document.createElement('div')
-    let 名称标签 = document.createElement('label')
-    名称标签.textContent = '任务名称:'
-    名称标签.style.display = 'block'
-    名称标签.style.marginBottom = '0.5em'
+    let 名称容器 = 创建元素('div')
+    let 名称标签 = 创建元素('label', {
+      textContent: '任务名称:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.失败任务名称输入框.placeholder = '输入失败测试任务名称'
     this.失败任务名称输入框.style.width = '100%'
     this.失败任务名称输入框.style.padding = '0.5em'
@@ -313,11 +341,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     名称容器.append(名称标签, this.失败任务名称输入框)
 
     // 失败消息输入
-    let 消息容器 = document.createElement('div')
-    let 消息标签 = document.createElement('label')
-    消息标签.textContent = '失败消息:'
-    消息标签.style.display = 'block'
-    消息标签.style.marginBottom = '0.5em'
+    let 消息容器 = 创建元素('div')
+    let 消息标签 = 创建元素('label', {
+      textContent: '失败消息:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.失败任务消息输入框.placeholder = '任务失败时显示的消息'
     this.失败任务消息输入框.style.width = '100%'
     this.失败任务消息输入框.style.padding = '0.5em'
@@ -327,11 +358,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     消息容器.append(消息标签, this.失败任务消息输入框)
 
     // 最大重试次数输入
-    let 重试容器 = document.createElement('div')
-    let 重试标签 = document.createElement('label')
-    重试标签.textContent = '最大重试次数:'
-    重试标签.style.display = 'block'
-    重试标签.style.marginBottom = '0.5em'
+    let 重试容器 = 创建元素('div')
+    let 重试标签 = 创建元素('label', {
+      textContent: '最大重试次数:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.失败任务重试次数输入框.placeholder = '任务失败后的最大重试次数'
     this.失败任务重试次数输入框.type = 'number'
     this.失败任务重试次数输入框.style.width = '100%'
@@ -342,11 +376,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     重试容器.append(重试标签, this.失败任务重试次数输入框)
 
     // 失败延迟时间输入
-    let 延迟容器 = document.createElement('div')
-    let 延迟标签 = document.createElement('label')
-    延迟标签.textContent = '失败延迟时间(毫秒):'
-    延迟标签.style.display = 'block'
-    延迟标签.style.marginBottom = '0.5em'
+    let 延迟容器 = 创建元素('div')
+    let 延迟标签 = 创建元素('label', {
+      textContent: '失败延迟时间(毫秒):',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.失败任务延迟时间输入框.placeholder = '可选，延迟多少毫秒后失败，默认立即失败'
     this.失败任务延迟时间输入框.type = 'number'
     this.失败任务延迟时间输入框.style.width = '100%'
@@ -357,11 +394,14 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     延迟容器.append(延迟标签, this.失败任务延迟时间输入框)
 
     // 任务优先级输入
-    let 优先级容器 = document.createElement('div')
-    let 优先级标签 = document.createElement('label')
-    优先级标签.textContent = '任务优先级:'
-    优先级标签.style.display = 'block'
-    优先级标签.style.marginBottom = '0.5em'
+    let 优先级容器 = 创建元素('div')
+    let 优先级标签 = 创建元素('label', {
+      textContent: '任务优先级:',
+      style: {
+        display: 'block',
+        marginBottom: '0.5em',
+      },
+    })
     this.失败任务优先级输入框.placeholder = '任务优先级，数字越大优先级越高'
     this.失败任务优先级输入框.type = 'number'
     this.失败任务优先级输入框.style.width = '100%'
@@ -372,87 +412,93 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
     优先级容器.append(优先级标签, this.失败任务优先级输入框)
 
     // 按钮容器
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.gap = '0.5em'
-    按钮容器.style.justifyContent = 'flex-end'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        gap: '0.5em',
+        justifyContent: 'flex-end',
+      },
+    })
 
-    let 取消按钮 = document.createElement('button')
-    取消按钮.textContent = '取消'
-    取消按钮.style.padding = '0.5em 1em'
-    取消按钮.style.border = '1px solid var(--边框颜色)'
-    取消按钮.style.borderRadius = '4px'
-    取消按钮.style.backgroundColor = 'var(--背景颜色)'
-    取消按钮.style.color = 'var(--文字颜色)'
-    取消按钮.style.cursor = 'pointer'
+    let 取消按钮 = 创建元素('button', {
+      textContent: '取消',
+      style: {
+        padding: '0.5em 1em',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        backgroundColor: 'var(--背景颜色)',
+        color: 'var(--文字颜色)',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        await 关闭模态框()
+      },
+    })
 
-    let 确认按钮 = document.createElement('button')
-    确认按钮.textContent = '创建任务'
-    确认按钮.style.padding = '0.5em 1em'
-    确认按钮.style.border = 'none'
-    确认按钮.style.borderRadius = '4px'
-    确认按钮.style.backgroundColor = 'var(--强调按钮背景)'
-    确认按钮.style.color = 'var(--强调按钮文字)'
-    确认按钮.style.cursor = 'pointer'
+    let 确认按钮 = 创建元素('button', {
+      textContent: '创建任务',
+      style: {
+        padding: '0.5em 1em',
+        border: 'none',
+        borderRadius: '4px',
+        backgroundColor: 'var(--强调按钮背景)',
+        color: 'var(--强调按钮文字)',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        let 任务名称 = this.失败任务名称输入框.value.trim()
+        let 失败消息 = this.失败任务消息输入框.value.trim()
+        let 最大重试次数 = parseInt(this.失败任务重试次数输入框.value)
+        let 失败延迟时间 = this.失败任务延迟时间输入框.value.trim()
+        let 任务优先级 = parseInt(this.失败任务优先级输入框.value)
+
+        if (isNaN(最大重试次数) || 最大重试次数 < 0) {
+          alert('请输入有效的最大重试次数')
+          return
+        }
+
+        if (任务名称 === '') {
+          alert('请输入任务名称')
+          return
+        }
+
+        if (失败消息 === '') {
+          alert('请输入失败消息')
+          return
+        }
+
+        if (isNaN(任务优先级) || 任务优先级 < 0) {
+          任务优先级 = 1
+        }
+
+        try {
+          await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-fail-test', {
+            失败任务名称: 任务名称,
+            失败消息: 失败消息,
+            最大重试次数: 最大重试次数,
+            任务优先级: 任务优先级,
+            ...(失败延迟时间 !== '' ? { 失败延迟时间: parseInt(失败延迟时间) } : {}),
+          })
+
+          await 关闭模态框()
+
+          // 清空表单
+          this.失败任务名称输入框.value = '失败测试任务_' + new Date().toLocaleTimeString()
+          this.失败任务消息输入框.value = '这是一个必然失败的任务，用于测试重试机制'
+          this.失败任务重试次数输入框.value = '3'
+          this.失败任务延迟时间输入框.value = ''
+          this.失败任务优先级输入框.value = '1'
+
+          // 刷新列表
+          await this.刷新任务列表()
+        } catch (错误) {
+          console.error('创建失败测试任务失败:', 错误)
+          alert('创建失败测试任务失败，请查看控制台')
+        }
+      },
+    })
 
     按钮容器.append(取消按钮, 确认按钮)
-
-    // 事件绑定
-    取消按钮.onclick = async (): Promise<void> => {
-      await 关闭模态框()
-    }
-
-    确认按钮.onclick = async (): Promise<void> => {
-      let 任务名称 = this.失败任务名称输入框.value.trim()
-      let 失败消息 = this.失败任务消息输入框.value.trim()
-      let 最大重试次数 = parseInt(this.失败任务重试次数输入框.value)
-      let 失败延迟时间 = this.失败任务延迟时间输入框.value.trim()
-      let 任务优先级 = parseInt(this.失败任务优先级输入框.value)
-
-      if (isNaN(最大重试次数) || 最大重试次数 < 0) {
-        alert('请输入有效的最大重试次数')
-        return
-      }
-
-      if (任务名称 === '') {
-        alert('请输入任务名称')
-        return
-      }
-
-      if (失败消息 === '') {
-        alert('请输入失败消息')
-        return
-      }
-
-      if (isNaN(任务优先级) || 任务优先级 < 0) {
-        任务优先级 = 1
-      }
-
-      try {
-        await API管理器.请求post接口并处理错误('/api/job-admin/instant-job-admin/create-fail-test', {
-          失败任务名称: 任务名称,
-          失败消息: 失败消息,
-          最大重试次数: 最大重试次数,
-          任务优先级: 任务优先级,
-          ...(失败延迟时间 !== '' ? { 失败延迟时间: parseInt(失败延迟时间) } : {}),
-        })
-
-        await 关闭模态框()
-
-        // 清空表单
-        this.失败任务名称输入框.value = '失败测试任务_' + new Date().toLocaleTimeString()
-        this.失败任务消息输入框.value = '这是一个必然失败的任务，用于测试重试机制'
-        this.失败任务重试次数输入框.value = '3'
-        this.失败任务延迟时间输入框.value = ''
-        this.失败任务优先级输入框.value = '1'
-
-        // 刷新列表
-        await this.刷新任务列表()
-      } catch (错误) {
-        console.error('创建失败测试任务失败:', 错误)
-        alert('创建失败测试任务失败，请查看控制台')
-      }
-    }
 
     内容容器.append(名称容器, 消息容器, 重试容器, 延迟容器, 优先级容器, 按钮容器)
     await 显示模态框({ 标题: '创建失败测试任务' }, 内容容器)
@@ -461,38 +507,53 @@ export class 测试任务组件 extends 组件基类<属性类型, 发出事件�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 主容器 = document.createElement('div')
-    主容器.style.display = 'flex'
-    主容器.style.flexDirection = 'column'
-    主容器.style.padding = '16px'
-    主容器.style.gap = '16px'
+    let 主容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '16px',
+        gap: '16px',
+      },
+    })
 
     // 顶部操作区
-    let 操作区 = document.createElement('div')
-    操作区.style.display = 'flex'
-    操作区.style.justifyContent = 'flex-end'
-    操作区.style.gap = '8px'
+    let 操作区 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px',
+      },
+    })
 
-    let 刷新按钮 = document.createElement('button')
-    刷新按钮.textContent = '刷新'
-    刷新按钮.style.padding = '6px 16px'
-    刷新按钮.onclick = async (): Promise<void> => {
-      await this.刷新任务列表()
-    }
+    let 刷新按钮 = 创建元素('button', {
+      textContent: '刷新',
+      style: {
+        padding: '6px 16px',
+      },
+      onclick: async (): Promise<void> => {
+        await this.刷新任务列表()
+      },
+    })
 
-    let 创建测试任务按钮 = document.createElement('button')
-    创建测试任务按钮.textContent = '创建测试任务'
-    创建测试任务按钮.style.padding = '6px 16px'
-    创建测试任务按钮.onclick = async (): Promise<void> => {
-      await this.显示创建测试任务模态框()
-    }
+    let 创建测试任务按钮 = 创建元素('button', {
+      textContent: '创建测试任务',
+      style: {
+        padding: '6px 16px',
+      },
+      onclick: async (): Promise<void> => {
+        await this.显示创建测试任务模态框()
+      },
+    })
 
-    let 创建失败测试任务按钮 = document.createElement('button')
-    创建失败测试任务按钮.textContent = '创建失败测试任务'
-    创建失败测试任务按钮.style.padding = '6px 16px'
-    创建失败测试任务按钮.onclick = async (): Promise<void> => {
-      await this.显示创建失败测试任务模态框()
-    }
+    let 创建失败测试任务按钮 = 创建元素('button', {
+      textContent: '创建失败测试任务',
+      style: {
+        padding: '6px 16px',
+      },
+      onclick: async (): Promise<void> => {
+        await this.显示创建失败测试任务模态框()
+      },
+    })
 
     操作区.appendChild(刷新按钮)
     操作区.appendChild(创建测试任务按钮)

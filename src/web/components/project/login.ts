@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 
 type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}
@@ -11,87 +12,123 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.注册组件('lsby-login', this)
   }
 
-  private 结果 = document.createElement('p')
-  private 用户名输入框 = document.createElement('input')
-  private 密码输入框 = document.createElement('input')
-  private 确认密码输入框 = document.createElement('input')
-  private 登录按钮 = document.createElement('button')
-  private 注册按钮 = document.createElement('button')
-  private 切换按钮 = document.createElement('button')
+  private 结果 = 创建元素('p')
+  private 用户名输入框 = 创建元素('input')
+  private 密码输入框 = 创建元素('input')
+  private 确认密码输入框 = 创建元素('input')
+  private 登录按钮 = 创建元素('button')
+  private 注册按钮 = 创建元素('button')
+  private 切换按钮 = 创建元素('button')
 
   protected override async 当加载时(): Promise<void> {
-    let 容器 = document.createElement('div')
-    容器.style.display = 'flex'
-    容器.style.alignItems = 'center'
-    容器.style.justifyContent = 'center'
-    容器.style.minHeight = '100vh'
-    容器.style.backgroundColor = 'var(--背景颜色)'
-    容器.style.padding = '20px'
-    容器.style.boxSizing = 'border-box'
+    let 容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minHeight: '100vh',
+        backgroundColor: 'var(--背景颜色)',
+        padding: '20px',
+        boxSizing: 'border-box',
+      },
+    })
 
-    let 卡片 = document.createElement('div')
-    卡片.style.backgroundColor = 'var(--卡片背景颜色)'
-    卡片.style.borderRadius = '8px'
-    卡片.style.boxShadow = '0 4px 12px var(--深阴影颜色)'
-    卡片.style.padding = '32px'
-    卡片.style.width = '100%'
-    卡片.style.maxWidth = '400px'
+    let 卡片 = 创建元素('div', {
+      style: {
+        backgroundColor: 'var(--卡片背景颜色)',
+        borderRadius: '8px',
+        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        padding: '32px',
+        width: '100%',
+        maxWidth: '400px',
+      },
+    })
 
-    let 标题 = document.createElement('h1')
-    标题.style.margin = '0 0 16px 0'
-    标题.style.fontSize = '24px'
-    标题.style.fontWeight = 'bold'
-    标题.style.color = 'var(--文字颜色)'
-    标题.style.textAlign = 'center'
-    标题.textContent = '欢迎'
+    let 标题 = 创建元素('h1', {
+      textContent: '欢迎',
+      style: {
+        margin: '0 0 16px 0',
+        fontSize: '24px',
+        fontWeight: 'bold',
+        color: 'var(--文字颜色)',
+        textAlign: 'center',
+      },
+    })
 
-    let 表单 = document.createElement('div')
-    表单.style.display = 'flex'
-    表单.style.flexDirection = 'column'
-    表单.style.gap = '16px'
+    let 表单 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+      },
+    })
 
-    let 提示区域 = document.createElement('div')
-    提示区域.style.minHeight = '24px'
-    提示区域.style.textAlign = 'center'
+    let 提示区域 = 创建元素('div', {
+      style: {
+        minHeight: '24px',
+        textAlign: 'center',
+      },
+    })
     提示区域.append(this.结果)
 
-    let 用户名容器 = document.createElement('div')
-    用户名容器.style.position = 'relative'
-    用户名容器.style.display = 'flex'
-    用户名容器.style.alignItems = 'center'
-    let 用户名图标 = document.createElement('span')
-    用户名图标.style.position = 'absolute'
-    用户名图标.style.left = '12px'
-    用户名图标.style.fontSize = '18px'
-    用户名图标.innerHTML = '👤'
+    let 用户名容器 = 创建元素('div', {
+      style: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+      },
+    })
+    let 用户名图标 = 创建元素('span', {
+      innerHTML: '👤',
+      style: {
+        position: 'absolute',
+        left: '12px',
+        fontSize: '18px',
+      },
+    })
     用户名容器.append(用户名图标, this.用户名输入框)
 
-    let 密码容器 = document.createElement('div')
-    密码容器.style.position = 'relative'
-    密码容器.style.display = 'flex'
-    密码容器.style.alignItems = 'center'
-    let 密码图标 = document.createElement('span')
-    密码图标.style.position = 'absolute'
-    密码图标.style.left = '12px'
-    密码图标.style.fontSize = '18px'
-    密码图标.innerHTML = '🔒'
+    let 密码容器 = 创建元素('div', {
+      style: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+      },
+    })
+    let 密码图标 = 创建元素('span', {
+      innerHTML: '🔒',
+      style: {
+        position: 'absolute',
+        left: '12px',
+        fontSize: '18px',
+      },
+    })
     密码容器.append(密码图标, this.密码输入框)
 
-    let 确认密码容器 = document.createElement('div')
-    确认密码容器.style.position = 'relative'
-    确认密码容器.style.display = 'flex'
-    确认密码容器.style.alignItems = 'center'
-    let 确认密码图标 = document.createElement('span')
-    确认密码图标.style.position = 'absolute'
-    确认密码图标.style.left = '12px'
-    确认密码图标.style.fontSize = '18px'
-    确认密码图标.innerHTML = '🔑'
+    let 确认密码容器 = 创建元素('div', {
+      style: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+      },
+    })
+    let 确认密码图标 = 创建元素('span', {
+      innerHTML: '🔑',
+      style: {
+        position: 'absolute',
+        left: '12px',
+        fontSize: '18px',
+      },
+    })
     确认密码容器.append(确认密码图标, this.确认密码输入框)
 
-    let 按钮容器 = document.createElement('div')
-    按钮容器.style.display = 'flex'
-    按钮容器.style.gap = '8px'
-    按钮容器.style.marginTop = '8px'
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        gap: '8px',
+        marginTop: '8px',
+      },
+    })
     this.登录按钮.style.flex = '1'
     this.登录按钮.style.padding = '12px'
     this.登录按钮.style.border = 'none'
@@ -110,9 +147,12 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.注册按钮.style.color = 'white'
     按钮容器.append(this.登录按钮, this.注册按钮)
 
-    let 切换容器 = document.createElement('div')
-    切换容器.style.textAlign = 'center'
-    切换容器.style.marginTop = '8px'
+    let 切换容器 = 创建元素('div', {
+      style: {
+        textAlign: 'center',
+        marginTop: '8px',
+      },
+    })
     this.切换按钮.style.background = 'none'
     this.切换按钮.style.border = 'none'
     this.切换按钮.style.color = 'var(--主色调)'

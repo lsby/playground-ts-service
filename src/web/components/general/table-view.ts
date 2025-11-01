@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 
 type 属性类型 = {}
 
@@ -44,36 +45,45 @@ export class LsbyTableView extends 组件基类<属性类型, 发出事件类型
 
     let { 列配置, 数据列表, 操作列表 = [] } = this.表格数据
 
-    let 表格元素 = document.createElement('table')
-    表格元素.style.width = '100%'
-    表格元素.style.borderCollapse = 'collapse'
-    表格元素.style.border = '1px solid var(--边框颜色)'
-    表格元素.style.tableLayout = 'fixed'
+    let 表格元素 = 创建元素('table', {
+      style: {
+        width: '100%',
+        borderCollapse: 'collapse',
+        border: '1px solid var(--边框颜色)',
+        tableLayout: 'fixed',
+      },
+    })
 
     // 渲染表头
-    let 表头 = document.createElement('thead')
-    let 表头行 = document.createElement('tr')
+    let 表头 = 创建元素('thead')
+    let 表头行 = 创建元素('tr')
 
     for (let 列 of 列配置) {
-      let th = document.createElement('th')
-      th.textContent = 列.显示名
-      th.style.border = '1px solid var(--边框颜色)'
-      th.style.padding = '8px'
-      th.style.textAlign = 'left'
-      th.style.backgroundColor = 'var(--color-background-secondary)'
+      let th = 创建元素('th', {
+        textContent: 列.显示名,
+        style: {
+          border: '1px solid var(--边框颜色)',
+          padding: '8px',
+          textAlign: 'left',
+          backgroundColor: 'var(--color-background-secondary)',
+        },
+      })
       表头行.appendChild(th)
     }
 
     // 添加操作列表头
     if (操作列表.length > 0) {
       for (let 操作 of 操作列表) {
-        let 操作th = document.createElement('th')
-        操作th.textContent = 操作.名称
-        操作th.style.border = '1px solid var(--边框颜色)'
-        操作th.style.padding = '8px'
-        操作th.style.textAlign = 'center'
-        操作th.style.backgroundColor = 'var(--color-background-secondary)'
-        操作th.style.width = '100px'
+        let 操作th = 创建元素('th', {
+          textContent: 操作.名称,
+          style: {
+            border: '1px solid var(--边框颜色)',
+            padding: '8px',
+            textAlign: 'center',
+            backgroundColor: 'var(--color-background-secondary)',
+            width: '100px',
+          },
+        })
         表头行.appendChild(操作th)
       }
     }
@@ -82,61 +92,75 @@ export class LsbyTableView extends 组件基类<属性类型, 发出事件类型
     表格元素.appendChild(表头)
 
     // 渲染表体
-    let 表体 = document.createElement('tbody')
+    let 表体 = 创建元素('tbody')
 
     if (数据列表.length === 0) {
-      let 空行 = document.createElement('tr')
-      let 空单元格 = document.createElement('td')
-      空单元格.colSpan = 列配置.length + 操作列表.length
-      空单元格.textContent = '无数据'
-      空单元格.style.textAlign = 'center'
-      空单元格.style.padding = '20px'
-      空单元格.style.border = '1px solid var(--边框颜色)'
-      空单元格.style.color = 'var(--color-text-secondary)'
+      let 空行 = 创建元素('tr')
+      let 空单元格 = 创建元素('td', {
+        colSpan: 列配置.length + 操作列表.length,
+        textContent: '无数据',
+        style: {
+          textAlign: 'center',
+          padding: '20px',
+          border: '1px solid var(--边框颜色)',
+          color: 'var(--color-text-secondary)',
+        },
+      })
       空行.appendChild(空单元格)
       表体.appendChild(空行)
     } else {
       for (let 数据项 of 数据列表) {
-        let 行 = document.createElement('tr')
-        行.style.transition = 'background-color 0.2s'
-        行.onmouseenter = (): void => {
-          行.style.backgroundColor = 'var(--color-background-hover)'
-        }
-        行.onmouseleave = (): void => {
-          行.style.backgroundColor = ''
-        }
+        let 行 = 创建元素('tr', {
+          style: {
+            transition: 'background-color 0.2s',
+          },
+          onmouseenter: (): void => {
+            行.style.backgroundColor = 'var(--color-background-hover)'
+          },
+          onmouseleave: (): void => {
+            行.style.backgroundColor = ''
+          },
+        })
 
         // 渲染数据列
         for (let 列 of 列配置) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           let 数据 = 数据项[列.字段名]
-          let td = document.createElement('td')
-
           let 显示值 = 列.格式化 !== void 0 ? 列.格式化(数据) : String(数据)
-          td.textContent = 显示值
-          td.title = 显示值
-          td.style.padding = '8px'
-          td.style.border = '1px solid var(--边框颜色)'
-          td.style.textOverflow = 'ellipsis'
-          td.style.whiteSpace = 'nowrap'
-          td.style.overflow = 'hidden'
+          let td = 创建元素('td', {
+            textContent: 显示值,
+            title: 显示值,
+            style: {
+              padding: '8px',
+              border: '1px solid var(--边框颜色)',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+            },
+          })
           行.appendChild(td)
         }
 
         // 渲染操作列
         for (let 操作 of 操作列表) {
-          let 单元格 = document.createElement('td')
-          单元格.style.padding = '8px'
-          单元格.style.border = '1px solid var(--边框颜色)'
-          单元格.style.textAlign = 'center'
+          let 单元格 = 创建元素('td', {
+            style: {
+              padding: '8px',
+              border: '1px solid var(--边框颜色)',
+              textAlign: 'center',
+            },
+          })
 
-          let 按钮 = document.createElement('button')
-          按钮.textContent = 操作.名称
-          按钮.style.padding = '4px 12px'
-          按钮.style.cursor = 'pointer'
-          按钮.onclick = async (): Promise<void> => {
-            await 操作.回调(数据项)
-          }
+          let 按钮 = 创建元素('button', {
+            textContent: 操作.名称,
+            style: {
+              padding: '4px 12px',
+              cursor: 'pointer',
+            },
+            onclick: async (): Promise<void> => {
+              await 操作.回调(数据项)
+            },
+          })
 
           单元格.appendChild(按钮)
           行.appendChild(单元格)

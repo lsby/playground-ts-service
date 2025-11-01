@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { API管理器类 } from '../../global/class/api'
+import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
 import { LsbyLog } from '../general/log'
 import { LsbyPagination } from '../general/pagination'
@@ -100,8 +101,11 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
     window.history.pushState(null, '', `?type=scheduled&id=${任务.id}`)
 
     // 创建详情内容容器
-    let 详情内容 = document.createElement('div')
-    详情内容.style.padding = '1em'
+    let 详情内容 = 创建元素('div', {
+      style: {
+        padding: '1em',
+      },
+    })
 
     // 创建日志组件
     let 日志组件 = new LsbyLog({})
@@ -163,21 +167,30 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 主容器 = document.createElement('div')
-    主容器.style.display = 'flex'
-    主容器.style.flexDirection = 'column'
-    主容器.style.padding = '16px'
-    主容器.style.gap = '16px'
+    let 主容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '16px',
+        gap: '16px',
+      },
+    })
 
     // 顶部操作区
-    let 操作区 = document.createElement('div')
-    操作区.style.display = 'flex'
-    操作区.style.justifyContent = 'flex-end'
-    操作区.style.gap = '8px'
+    let 操作区 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px',
+      },
+    })
 
-    let 刷新按钮 = document.createElement('button')
-    刷新按钮.textContent = '刷新'
-    刷新按钮.style.padding = '6px 16px'
+    let 刷新按钮 = 创建元素('button', {
+      textContent: '刷新',
+      style: {
+        padding: '6px 16px',
+      },
+    })
     刷新按钮.onclick = async (): Promise<void> => {
       await this.刷新任务列表()
     }

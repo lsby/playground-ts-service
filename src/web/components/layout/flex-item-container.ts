@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -31,7 +32,7 @@ export class LsbyFlexItemContainer extends 组件基类<属性类型, 发出事�
     style.flexShrink = '1' // 缩小比例
     style.flexBasis = 'auto' // 占据主轴大小
 
-    let 插槽: HTMLSlotElement = document.createElement('slot')
+    let 插槽: HTMLSlotElement = 创建元素('slot')
 
     this.shadow.appendChild(插槽)
   }

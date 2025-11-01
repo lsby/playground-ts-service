@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框 } from '../../global/dialog'
 import { 警告提示 } from '../../global/toast'
 import { LsbyPagination } from '../general/pagination'
@@ -70,35 +71,44 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 容器 = document.createElement('div')
-    容器.style.display = 'flex'
-    容器.style.flexDirection = 'column'
-    容器.style.padding = '16px'
-    容器.style.gap = '16px'
+    let 容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '16px',
+        gap: '16px',
+      },
+    })
 
     // 顶部操作区
-    let 操作区 = document.createElement('div')
-    操作区.style.display = 'flex'
-    操作区.style.justifyContent = 'flex-end'
-    操作区.style.gap = '8px'
+    let 操作区 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'flex-end',
+        gap: '8px',
+      },
+    })
 
-    let 添加按钮 = document.createElement('button')
-    添加按钮.textContent = '添加数据'
-    添加按钮.style.padding = '6px 16px'
-    添加按钮.onclick = async (): Promise<void> => {
-      let name = prompt('请输入名称:')
-      if (name === '' || name === null) {
-        await 警告提示('未输入数据')
-        return
-      }
-      let pwd = prompt('请输入密码:')
-      if (pwd === '' || pwd === null) {
-        await 警告提示('未输入数据')
-        return
-      }
-      await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
-      await this.加载数据(this.分页组件.获得当前页码(), this.分页组件.获得每页数量())
-    }
+    let 添加按钮 = 创建元素('button', {
+      textContent: '添加数据',
+      style: {
+        padding: '6px 16px',
+      },
+      onclick: async (): Promise<void> => {
+        let name = prompt('请输入名称:')
+        if (name === '' || name === null) {
+          await 警告提示('未输入数据')
+          return
+        }
+        let pwd = prompt('请输入密码:')
+        if (pwd === '' || pwd === null) {
+          await 警告提示('未输入数据')
+          return
+        }
+        await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
+        await this.加载数据(this.分页组件.获得当前页码(), this.分页组件.获得每页数量())
+      },
+    })
     操作区.appendChild(添加按钮)
 
     // 分页监听

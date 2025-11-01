@@ -1,5 +1,7 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
+import { LsbyTabsHorizontal } from '../general/tabs-horizontal'
 import { LsbyTableData } from './table-data'
 import { LsbyTableList } from './table-list'
 import { LsbyTableStructure } from './table-structure'
@@ -35,18 +37,24 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     style.height = '100%'
 
     // 左侧：表列表
-    this.左侧容器 = document.createElement('div')
-    this.左侧容器.style.flex = '0 0 250px'
-    this.左侧容器.style.borderRight = '1px solid var(--边框颜色)'
-    this.左侧容器.style.display = 'flex'
-    this.左侧容器.style.flexDirection = 'column'
+    this.左侧容器 = 创建元素('div', {
+      style: {
+        flex: '0 0 250px',
+        borderRight: '1px solid var(--边框颜色)',
+        display: 'flex',
+        flexDirection: 'column',
+      },
+    })
 
-    let 左侧标题 = document.createElement('h3')
-    左侧标题.textContent = '表列表'
-    左侧标题.style.margin = '0'
-    左侧标题.style.padding = '10px'
-    左侧标题.style.borderBottom = '1px solid var(--边框颜色)'
-    左侧标题.style.fontSize = '16px'
+    let 左侧标题 = 创建元素('h3', {
+      textContent: '表列表',
+      style: {
+        margin: '0',
+        padding: '10px',
+        borderBottom: '1px solid var(--边框颜色)',
+        fontSize: '16px',
+      },
+    })
 
     this.表列表组件 = new LsbyTableList({})
     this.监听事件('选择表', async (e) => this.当选择表(e.detail.表名))
@@ -55,51 +63,66 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     this.左侧容器.appendChild(this.表列表组件)
 
     // 右侧:表详细信息
-    this.右侧容器 = document.createElement('div')
-    this.右侧容器.style.flex = '1'
-    this.右侧容器.style.display = 'flex'
-    this.右侧容器.style.flexDirection = 'column'
-    this.右侧容器.style.minWidth = '0'
-    this.右侧容器.style.overflow = 'hidden'
+    this.右侧容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '0',
+        overflow: 'hidden',
+      },
+    })
 
-    let 右侧标题容器 = document.createElement('div')
-    右侧标题容器.style.padding = '10px'
-    右侧标题容器.style.borderBottom = '1px solid var(--边框颜色)'
-    右侧标题容器.style.display = 'flex'
-    右侧标题容器.style.alignItems = 'center'
-    右侧标题容器.style.gap = '10px'
+    let 右侧标题容器 = 创建元素('div', {
+      style: {
+        padding: '10px',
+        borderBottom: '1px solid var(--边框颜色)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+      },
+    })
 
-    let 右侧标题 = document.createElement('h3')
-    右侧标题.textContent = '表详细信息'
-    右侧标题.style.margin = '0'
-    右侧标题.style.fontSize = '16px'
+    let 右侧标题 = 创建元素('h3', {
+      textContent: '表详细信息',
+      style: {
+        margin: '0',
+        fontSize: '16px',
+      },
+    })
 
-    let 表名显示 = document.createElement('span')
-    表名显示.textContent = '未选择表'
-    表名显示.style.fontSize = '14px'
-    表名显示.style.color = 'var(--次要文字颜色)'
+    let 表名显示 = 创建元素('span', {
+      textContent: '未选择表',
+      style: {
+        fontSize: '14px',
+        color: 'var(--次要文字颜色)',
+      },
+    })
 
     右侧标题容器.appendChild(右侧标题)
     右侧标题容器.appendChild(表名显示)
 
     // 右侧内容tabs
-    let 内容容器 = document.createElement('div')
-    内容容器.style.flex = '1'
-    内容容器.style.display = 'flex'
-    内容容器.style.flexDirection = 'column'
-    内容容器.style.minHeight = '0'
-    内容容器.style.overflow = 'hidden'
+    let 内容容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '0',
+        overflow: 'hidden',
+      },
+    })
 
-    let tabs容器 = document.createElement('lsby-tabs-horizontal')
+    let tabs容器 = new LsbyTabsHorizontal({})
 
     // 数据tab
-    let 数据容器 = document.createElement('div')
+    let 数据容器 = 创建元素('div')
     数据容器.setAttribute('标签', '数据')
     this.表数据组件 = new LsbyTableData({})
     数据容器.appendChild(this.表数据组件)
 
     // 结构tab
-    let 结构容器 = document.createElement('div')
+    let 结构容器 = 创建元素('div')
     结构容器.setAttribute('标签', '结构')
     this.表结构组件 = new LsbyTableStructure({})
     结构容器.appendChild(this.表结构组件)

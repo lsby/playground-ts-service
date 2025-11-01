@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {
@@ -14,7 +15,7 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     this.注册组件('lsby-table-structure', this)
   }
 
-  private 结构容器: HTMLDivElement = document.createElement('div')
+  private 结构容器: HTMLDivElement | null = null
 
   public constructor(属性?: 属性类型) {
     super(属性)
@@ -29,10 +30,14 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     style.minWidth = '0'
     style.overflow = 'hidden'
 
-    this.结构容器.style.flex = '1'
-    this.结构容器.style.overflow = 'auto'
-    this.结构容器.style.padding = '10px'
-    this.结构容器.style.minWidth = '0'
+    this.结构容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        overflow: 'auto',
+        padding: '10px',
+        minWidth: '0',
+      },
+    })
 
     this.shadow.appendChild(this.结构容器)
 
@@ -69,36 +74,46 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
   private 渲染表结构(
     列列表: Array<{ name: string; type: string; notnull: number; pk: number; dflt_value: string | null }>,
   ): void {
+    if (this.结构容器 === null) return
     this.结构容器.innerHTML = ''
 
-    let 标题 = document.createElement('h3')
-    标题.textContent = '表结构'
-    标题.style.margin = '0 0 10px 0'
-    标题.style.fontSize = '18px'
+    let 标题 = 创建元素('h3', {
+      textContent: '表结构',
+      style: {
+        margin: '0 0 10px 0',
+        fontSize: '18px',
+      },
+    })
     this.结构容器.appendChild(标题)
 
-    let 表 = document.createElement('table')
-    表.style.width = '100%'
-    表.style.borderCollapse = 'collapse'
-    表.style.fontSize = '14px'
+    let 表 = 创建元素('table', {
+      style: {
+        width: '100%',
+        borderCollapse: 'collapse',
+        fontSize: '14px',
+      },
+    })
 
     // 表头
-    let 表头行 = document.createElement('tr')
+    let 表头行 = 创建元素('tr')
     let 表头列 = ['列名', '类型', '可空', '主键', '默认值']
     for (let 列名 of 表头列) {
-      let 表头单元格 = document.createElement('th')
-      表头单元格.textContent = 列名
-      表头单元格.style.border = '1px solid var(--边框颜色)'
-      表头单元格.style.padding = '8px'
-      表头单元格.style.backgroundColor = 'var(--次要背景颜色)'
-      表头单元格.style.textAlign = 'left'
+      let 表头单元格 = 创建元素('th', {
+        textContent: 列名,
+        style: {
+          border: '1px solid var(--边框颜色)',
+          padding: '8px',
+          backgroundColor: 'var(--次要背景颜色)',
+          textAlign: 'left',
+        },
+      })
       表头行.appendChild(表头单元格)
     }
     表.appendChild(表头行)
 
     // 数据行
     for (let 列 of 列列表) {
-      let 数据行 = document.createElement('tr')
+      let 数据行 = 创建元素('tr')
       let 单元格数据 = [
         列.name,
         列.type,
@@ -107,10 +122,13 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
         列.dflt_value ?? '',
       ]
       for (let 数据 of 单元格数据) {
-        let 数据单元格 = document.createElement('td')
-        数据单元格.textContent = 数据
-        数据单元格.style.border = '1px solid var(--边框颜色)'
-        数据单元格.style.padding = '8px'
+        let 数据单元格 = 创建元素('td', {
+          textContent: 数据,
+          style: {
+            border: '1px solid var(--边框颜色)',
+            padding: '8px',
+          },
+        })
         数据行.appendChild(数据单元格)
       }
       表.appendChild(数据行)
@@ -120,15 +138,19 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
   }
 
   private 显示消息(消息: string): void {
+    if (this.结构容器 === null) return
     this.结构容器.innerHTML = ''
-    let 消息元素 = document.createElement('div')
-    消息元素.textContent = 消息
-    消息元素.style.display = 'flex'
-    消息元素.style.justifyContent = 'center'
-    消息元素.style.alignItems = 'center'
-    消息元素.style.height = '100%'
-    消息元素.style.fontSize = '18px'
-    消息元素.style.color = 'var(--文本颜色)'
+    let 消息元素 = 创建元素('div', {
+      textContent: 消息,
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        fontSize: '18px',
+        color: 'var(--文本颜色)',
+      },
+    })
     this.结构容器.appendChild(消息元素)
   }
 }

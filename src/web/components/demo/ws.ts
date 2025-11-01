@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -11,8 +12,8 @@ export class 测试ws组件 extends 组件基类<属性类型, 发出事件类�
     this.注册组件('lsby-demo-ws-test', this)
   }
 
-  private 按钮 = document.createElement('button')
-  private 结果 = document.createElement('p')
+  private 按钮 = 创建元素('button')
+  private 结果 = 创建元素('p')
 
   protected override async 当加载时(): Promise<void> {
     this.shadow.append(this.按钮)

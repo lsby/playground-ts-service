@@ -5,6 +5,8 @@ type 模态框选项 = {
   关闭回调?: () => void | Promise<void>
 }
 
+import { 创建元素 } from './create-element'
+
 class 模态框管理器 {
   private 遮罩: HTMLDivElement | null = null
   private 框: HTMLDivElement | null = null
@@ -22,87 +24,111 @@ class 模态框管理器 {
     }
 
     // 遮罩
-    this.遮罩 = document.createElement('div')
-    this.遮罩.style.position = 'fixed'
-    this.遮罩.style.left = '0'
-    this.遮罩.style.top = '0'
-    this.遮罩.style.width = '100vw'
-    this.遮罩.style.height = '100vh'
-    this.遮罩.style.background = 'var(--遮罩颜色)'
-    this.遮罩.style.display = 'none'
-    this.遮罩.style.justifyContent = 'center'
-    this.遮罩.style.alignItems = 'center'
-    this.遮罩.style.zIndex = '9999'
+    this.遮罩 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        left: '0',
+        top: '0',
+        width: '100vw',
+        height: '100vh',
+        background: 'var(--遮罩颜色)',
+        display: 'none',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: '9999',
+      },
+    })
 
     // 框
-    this.框 = document.createElement('div')
-    this.框.style.position = 'absolute'
-    this.框.style.minWidth = '300px'
-    this.框.style.minHeight = '150px'
-    this.框.style.maxWidth = '80vw'
-    this.框.style.background = 'var(--卡片背景颜色)'
-    this.框.style.border = '1px solid var(--边框颜色)'
-    this.框.style.borderRadius = '4px'
-    this.框.style.boxShadow = '0 4px 12px var(--深阴影颜色)'
-    this.框.style.display = 'flex'
-    this.框.style.flexDirection = 'column'
+    this.框 = 创建元素('div', {
+      style: {
+        position: 'absolute',
+        minWidth: '300px',
+        minHeight: '150px',
+        maxWidth: '80vw',
+        background: 'var(--卡片背景颜色)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        display: 'flex',
+        flexDirection: 'column',
+      },
+    })
 
     // 头部
-    this.头部 = document.createElement('div')
-    this.头部.style.height = '32px'
-    this.头部.style.background = 'var(--按钮背景)'
-    this.头部.style.display = 'flex'
-    this.头部.style.alignItems = 'center'
-    this.头部.style.padding = '0 8px'
-    this.头部.style.justifyContent = 'space-between'
-    this.头部.style.userSelect = 'none'
+    this.头部 = 创建元素('div', {
+      style: {
+        height: '32px',
+        background: 'var(--按钮背景)',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 8px',
+        justifyContent: 'space-between',
+        userSelect: 'none',
+      },
+    })
 
-    let 标题元素 = document.createElement('span')
-    标题元素.style.color = 'var(--文字颜色)'
+    let 标题元素 = 创建元素('span', {
+      style: {
+        color: 'var(--文字颜色)',
+      },
+    })
     this.头部.appendChild(标题元素)
 
     // 右侧按钮容器
-    let 右侧按钮容器 = document.createElement('div')
-    右侧按钮容器.style.display = 'flex'
-    右侧按钮容器.style.alignItems = 'center'
-    右侧按钮容器.style.gap = '4px'
+    let 右侧按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '4px',
+      },
+    })
 
     // 最大化按钮
-    this.最大化按钮 = document.createElement('button')
-    this.最大化按钮.textContent = '□'
-    this.最大化按钮.style.border = 'none'
-    this.最大化按钮.style.background = 'transparent'
-    this.最大化按钮.style.cursor = 'pointer'
-    this.最大化按钮.style.fontSize = '14px'
-    this.最大化按钮.style.color = 'var(--文字颜色)'
-    this.最大化按钮.title = '最大化'
-    this.最大化按钮.onclick = (): void => {
-      this.切换最大化()
-    }
+    this.最大化按钮 = 创建元素('button', {
+      textContent: '□',
+      style: {
+        border: 'none',
+        background: 'transparent',
+        cursor: 'pointer',
+        fontSize: '14px',
+        color: 'var(--文字颜色)',
+      },
+      title: '最大化',
+      onclick: (): void => {
+        this.切换最大化()
+      },
+    })
     右侧按钮容器.appendChild(this.最大化按钮)
 
     // 关闭按钮
-    this.关闭按钮 = document.createElement('button')
-    this.关闭按钮.textContent = '✕'
-    this.关闭按钮.style.border = 'none'
-    this.关闭按钮.style.background = 'transparent'
-    this.关闭按钮.style.cursor = 'pointer'
-    this.关闭按钮.style.fontSize = '16px'
-    this.关闭按钮.style.color = 'red'
-    this.关闭按钮.style.fontWeight = 'bold'
-    this.关闭按钮.onclick = async (): Promise<void> => {
-      await this.关闭()
-    }
+    this.关闭按钮 = 创建元素('button', {
+      textContent: '✕',
+      style: {
+        border: 'none',
+        background: 'transparent',
+        cursor: 'pointer',
+        fontSize: '16px',
+        color: 'red',
+        fontWeight: 'bold',
+      },
+      onclick: async (): Promise<void> => {
+        await this.关闭()
+      },
+    })
     右侧按钮容器.appendChild(this.关闭按钮)
 
     this.头部.appendChild(右侧按钮容器)
 
     // 内容
-    this.内容 = document.createElement('div')
-    this.内容.style.padding = '8px'
-    this.内容.style.flex = '1'
-    this.内容.style.overflow = 'auto'
-    this.内容.style.maxHeight = '90vh'
+    this.内容 = 创建元素('div', {
+      style: {
+        padding: '8px',
+        flex: '1',
+        overflow: 'auto',
+        maxHeight: '90vh',
+      },
+    })
 
     this.框.appendChild(this.头部)
     this.框.appendChild(this.内容)

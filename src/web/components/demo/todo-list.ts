@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { LsbyColumn } from '../layout/column'
 import { LsbyContainer } from '../layout/container'
 import { LsbyRow } from '../layout/row'
@@ -13,36 +14,41 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
     this.注册组件('lsby-demo-todo-list', this)
   }
 
-  private 输入框 = document.createElement('input')
-  private 添加按钮 = document.createElement('button')
-  private 列表容器 = document.createElement('ul')
+  private 输入框 = 创建元素('input')
+  private 添加按钮 = 创建元素('button')
+  private 列表容器 = 创建元素('ul')
   private todo列表: string[] = []
 
   private 刷新列表(): void {
     this.列表容器.innerHTML = ''
     this.todo列表.forEach((任务内容, index) => {
-      let li = document.createElement('li')
-      li.textContent = 任务内容
-      li.style.display = 'flex'
-      li.style.justifyContent = 'space-between'
-      li.style.alignItems = 'center'
-      li.style.padding = '0.5em'
-      li.style.marginBottom = '0.5em'
-      li.style.border = '1px solid var(--边框颜色)'
-      li.style.borderRadius = '4px'
+      let li = 创建元素('li', {
+        textContent: 任务内容,
+        style: {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0.5em',
+          marginBottom: '0.5em',
+          border: '1px solid var(--边框颜色)',
+          borderRadius: '4px',
+        },
+      })
 
-      let 删除按钮 = document.createElement('button')
-      删除按钮.textContent = '❌'
-      删除按钮.onclick = (): void => {
-        this.todo列表.splice(index, 1)
-        this.刷新列表()
-      }
-
-      删除按钮.style.background = 'transparent'
-      删除按钮.style.border = 'none'
-      删除按钮.style.color = 'red'
-      删除按钮.style.fontSize = '1.2em'
-      删除按钮.style.cursor = 'pointer'
+      let 删除按钮 = 创建元素('button', {
+        textContent: '❌',
+        onclick: (): void => {
+          this.todo列表.splice(index, 1)
+          this.刷新列表()
+        },
+        style: {
+          background: 'transparent',
+          border: 'none',
+          color: 'red',
+          fontSize: '1.2em',
+          cursor: 'pointer',
+        },
+      })
 
       li.appendChild(删除按钮)
       this.列表容器.appendChild(li)

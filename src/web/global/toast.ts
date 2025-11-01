@@ -6,21 +6,26 @@ interface 吐司选项 {
   位置?: 'top' | 'bottom' | 'center'
 }
 
+import { 创建元素 } from './create-element'
+
 let 吐司容器: HTMLDivElement | null = null
 
 function 获取或创建吐司容器(位置: 'top' | 'bottom' | 'center'): HTMLDivElement {
   if (吐司容器 === null || 吐司容器.parentElement === null) {
-    吐司容器 = document.createElement('div')
-    吐司容器.style.position = 'fixed'
-    吐司容器.style.left = '50%'
-    吐司容器.style.transform = 'translateX(-50%)'
-    吐司容器.style.zIndex = '10001'
-    吐司容器.style.display = 'flex'
-    吐司容器.style.flexDirection = 'column'
-    吐司容器.style.gap = '8px'
-    吐司容器.style.pointerEvents = 'none'
-    吐司容器.style.maxWidth = '90%'
-    吐司容器.style.width = 'fit-content'
+    吐司容器 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: '10001',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+        pointerEvents: 'none',
+        maxWidth: '90%',
+        width: 'fit-content',
+      },
+    })
     document.body.appendChild(吐司容器)
   }
 
@@ -62,36 +67,44 @@ export function 显示吐司(消息: string, 选项: 吐司选项 = {}): Promise
     let 容器 = 获取或创建吐司容器(位置)
     let 样式 = 获取吐司样式(类型)
 
-    let 吐司元素 = document.createElement('div')
-    吐司元素.style.backgroundColor = 样式.背景色变量
-    吐司元素.style.color = 'var(--吐司文字颜色)'
-    吐司元素.style.padding = '12px 24px'
-    吐司元素.style.borderRadius = '4px'
-    吐司元素.style.boxShadow = '0 4px 12px var(--吐司阴影)'
-    吐司元素.style.display = 'flex'
-    吐司元素.style.alignItems = 'center'
-    吐司元素.style.gap = '8px'
-    吐司元素.style.fontSize = '14px'
-    吐司元素.style.lineHeight = '1.5'
-    吐司元素.style.pointerEvents = 'auto'
-    吐司元素.style.cursor = 'pointer'
-    吐司元素.style.minWidth = '200px'
-    吐司元素.style.maxWidth = '500px'
-    吐司元素.style.opacity = '0'
-    吐司元素.style.transform =
-      位置 === 'top' ? 'translateY(-20px)' : 位置 === 'bottom' ? 'translateY(20px)' : 'scale(0.9)'
-    吐司元素.style.transition = 'opacity 0.3s ease, transform 0.3s ease'
-    吐司元素.style.wordBreak = 'break-word'
+    let 吐司元素 = 创建元素('div', {
+      style: {
+        backgroundColor: 样式.背景色变量,
+        color: 'var(--吐司文字颜色)',
+        padding: '12px 24px',
+        borderRadius: '4px',
+        boxShadow: '0 4px 12px var(--吐司阴影)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontSize: '14px',
+        lineHeight: '1.5',
+        pointerEvents: 'auto',
+        cursor: 'pointer',
+        minWidth: '200px',
+        maxWidth: '500px',
+        opacity: '0',
+        transform: 位置 === 'top' ? 'translateY(-20px)' : 位置 === 'bottom' ? 'translateY(20px)' : 'scale(0.9)',
+        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        wordBreak: 'break-word',
+      },
+    })
 
-    let 图标元素 = document.createElement('span')
+    let 图标元素 = 创建元素('span', {
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+        flexShrink: '0',
+      },
+    })
     图标元素.textContent = 样式.图标
-    图标元素.style.fontSize = '16px'
-    图标元素.style.fontWeight = 'bold'
-    图标元素.style.flexShrink = '0'
 
-    let 消息元素 = document.createElement('span')
+    let 消息元素 = 创建元素('span', {
+      style: {
+        flex: '1',
+      },
+    })
     消息元素.textContent = 消息
-    消息元素.style.flex = '1'
 
     吐司元素.appendChild(图标元素)
     吐司元素.appendChild(消息元素)

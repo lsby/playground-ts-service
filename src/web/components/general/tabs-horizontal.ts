@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -14,8 +15,8 @@ export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal
   }
 
   private 当前索引: number = 0
-  private 标签头容器: HTMLDivElement = document.createElement('div')
-  private 插槽容器: HTMLDivElement = document.createElement('div')
+  private 标签头容器: HTMLDivElement = 创建元素('div')
+  private 插槽容器: HTMLDivElement = 创建元素('div')
 
   public constructor(属性: 属性类型) {
     super(属性)
@@ -28,8 +29,8 @@ export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal
     style.width = '100%'
     style.height = '100%'
 
-    let 滚动条样式 = document.createElement('style')
-    滚动条样式.textContent = `
+    let 滚动条样式 = 创建元素('style', {
+      textContent: `
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -43,7 +44,8 @@ export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal
       ::-webkit-scrollbar-thumb:hover {
         background: var(--主色调);
       }
-    `
+    `,
+    })
     this.shadow.appendChild(滚动条样式)
 
     this.标签头容器.style.display = 'flex'
@@ -55,7 +57,7 @@ export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal
     this.插槽容器.style.flexDirection = 'column'
     this.插槽容器.style.overflow = 'hidden'
 
-    let 插槽: HTMLSlotElement = document.createElement('slot')
+    let 插槽: HTMLSlotElement = 创建元素('slot')
     this.插槽容器.appendChild(插槽)
 
     this.shadow.appendChild(this.标签头容器)
@@ -72,18 +74,19 @@ export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal
 
     标签元素.forEach((el, idx) => {
       let 标签名 = el.getAttribute('标签') ?? `标签${idx}`
-      let 按钮 = document.createElement('button')
-
-      按钮.textContent = 标签名
-      按钮.style.padding = '6px 12px'
-      按钮.style.border = 'none'
-      按钮.style.borderBottom = idx === this.当前索引 ? '2px solid var(--主色调)' : 'none'
-      按钮.style.background = 'none'
-      按钮.style.cursor = 'pointer'
-      按钮.style.userSelect = 'none'
-      按钮.style.color = 'var(--文字颜色)'
-
-      按钮.onclick = (): void => this.切换标签(idx)
+      let 按钮 = 创建元素('button', {
+        textContent: 标签名,
+        style: {
+          padding: '6px 12px',
+          border: 'none',
+          borderBottom: idx === this.当前索引 ? '2px solid var(--主色调)' : 'none',
+          background: 'none',
+          cursor: 'pointer',
+          userSelect: 'none',
+          color: 'var(--文字颜色)',
+        },
+        onclick: (): void => this.切换标签(idx),
+      })
 
       this.标签头容器.appendChild(按钮)
     })

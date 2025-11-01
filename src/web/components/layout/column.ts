@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {}
@@ -29,7 +30,7 @@ export class LsbyColumn extends 组件基类<属性类型, 发出事件类型, �
     style.gap = '10px' // 设置元素间距
     style.height = '100%' // 容器高度占满父元素
 
-    let 插槽: HTMLSlotElement = document.createElement('slot')
+    let 插槽: HTMLSlotElement = 创建元素('slot')
 
     this.shadow.appendChild(插槽)
   }

@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 信息提示, 成功提示, 警告提示, 错误提示 } from '../../global/toast'
 
 type 属性类型 = {}
@@ -13,28 +14,37 @@ export class 吐司演示组件 extends 组件基类<属性类型, 发出事件�
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 容器 = document.createElement('div')
-    容器.style.padding = '20px'
-    容器.style.display = 'flex'
-    容器.style.flexDirection = 'column'
-    容器.style.gap = '10px'
-    容器.style.maxWidth = '400px'
+    let 容器 = 创建元素('div', {
+      style: {
+        padding: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        maxWidth: '400px',
+      },
+    })
 
-    let 标题 = document.createElement('h2')
-    标题.textContent = '吐司消息演示'
-    标题.style.marginBottom = '10px'
+    let 标题 = 创建元素('h2', {
+      textContent: '吐司消息演示',
+      style: {
+        marginBottom: '10px',
+      },
+    })
 
     let 创建按钮 = (文字: string, 点击回调: () => Promise<void>): HTMLButtonElement => {
-      let 按钮 = document.createElement('button')
-      按钮.textContent = 文字
-      按钮.style.padding = '10px 20px'
-      按钮.style.border = '1px solid var(--边框颜色)'
-      按钮.style.borderRadius = '4px'
-      按钮.style.backgroundColor = 'var(--按钮背景)'
-      按钮.style.color = 'var(--按钮文字)'
-      按钮.style.cursor = 'pointer'
-      按钮.style.fontSize = '14px'
-      按钮.style.transition = 'all 0.3s'
+      let 按钮 = 创建元素('button', {
+        textContent: 文字,
+        style: {
+          padding: '10px 20px',
+          border: '1px solid var(--边框颜色)',
+          borderRadius: '4px',
+          backgroundColor: 'var(--按钮背景)',
+          color: 'var(--按钮文字)',
+          cursor: 'pointer',
+          fontSize: '14px',
+          transition: 'all 0.3s',
+        },
+      })
 
       按钮.addEventListener('mouseenter', () => {
         按钮.style.backgroundColor = 'var(--悬浮背景颜色)'

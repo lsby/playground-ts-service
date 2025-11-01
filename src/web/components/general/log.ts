@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -17,18 +18,21 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
   private 自动滚动 = true
 
   protected override async 当加载时(): Promise<void> {
-    let 容器 = document.createElement('div')
-    容器.style.width = '100%'
-    容器.style.height = '100%'
-    容器.style.border = '1px solid var(--border-color)'
-    容器.style.borderRadius = '4px'
-    容器.style.overflowY = 'auto'
-    容器.style.backgroundColor = 'var(--bg-color)'
-    容器.style.color = 'var(--text-color)'
-    容器.style.fontFamily = 'monospace'
-    容器.style.fontSize = '12px'
-    容器.style.padding = '10px'
-    容器.style.boxSizing = 'border-box'
+    let 容器 = 创建元素('div', {
+      style: {
+        width: '100%',
+        height: '100%',
+        border: '1px solid var(--border-color)',
+        borderRadius: '4px',
+        overflowY: 'auto',
+        backgroundColor: 'var(--bg-color)',
+        color: 'var(--text-color)',
+        fontFamily: 'monospace',
+        fontSize: '12px',
+        padding: '10px',
+        boxSizing: 'border-box',
+      },
+    })
 
     this.日志容器 = 容器
     this.shadow.appendChild(容器)
@@ -63,9 +67,12 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
     // 如果容器为空，初始化所有日志
     if (this.日志容器.children.length === 0) {
       for (let 日志 of this.日志数组) {
-        let 日志行 = document.createElement('div')
-        日志行.textContent = 日志
-        日志行.style.marginBottom = '2px'
+        let 日志行 = 创建元素('div', {
+          textContent: 日志,
+          style: {
+            marginBottom: '2px',
+          },
+        })
         this.日志容器.appendChild(日志行)
       }
     } else {
@@ -73,9 +80,12 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       for (let i = this.日志容器.children.length; i < this.日志数组.length; i++) {
         let 日志 = this.日志数组[i]
         if (日志 !== void 0) {
-          let 日志行 = document.createElement('div')
-          日志行.textContent = 日志
-          日志行.style.marginBottom = '2px'
+          let 日志行 = 创建元素('div', {
+            textContent: 日志,
+            style: {
+              marginBottom: '2px',
+            },
+          })
           this.日志容器.appendChild(日志行)
         }
       }

@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../base/base'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 import { LsbyTabsHorizontal, tabHorizontal发出事件类型 } from '../general/tabs-horizontal'
 import { 测试任务组件 } from './instant-job'
@@ -23,12 +24,12 @@ export class 任务管理主组件 extends 组件基类<属性类型, 发出事�
     this.获得宿主样式().height = '100%'
 
     // 创建即时任务容器
-    let 即时任务容器 = document.createElement('div')
+    let 即时任务容器 = 创建元素('div')
     即时任务容器.setAttribute('标签', '即时任务')
     即时任务容器.appendChild(this.即时任务组件)
 
     // 创建定时任务容器
-    let 定时任务容器 = document.createElement('div')
+    let 定时任务容器 = 创建元素('div')
     定时任务容器.setAttribute('标签', '定时任务')
     定时任务容器.appendChild(this.定时任务组件)
 

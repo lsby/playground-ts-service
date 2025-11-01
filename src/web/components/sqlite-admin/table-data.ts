@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 import { 联合转元组 } from '../../global/types/types'
 import { LsbyPagination } from '../general/pagination'
 import { 共享表格管理器 } from './shared-table'
@@ -42,40 +43,25 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     style.overflow = 'hidden'
 
     // 每页条数选择容器
-    let 每页条数容器 = document.createElement('div')
-    每页条数容器.style.display = 'flex'
-    每页条数容器.style.alignItems = 'center'
-    每页条数容器.style.gap = '10px'
-    每页条数容器.style.padding = '10px'
-    每页条数容器.style.borderBottom = '1px solid var(--边框颜色)'
+    let 每页条数容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        padding: '10px',
+        borderBottom: '1px solid var(--边框颜色)',
+      },
+    })
 
-    let 每页条数标签 = document.createElement('label')
-    每页条数标签.textContent = '每页条数:'
-    this.每页条数选择 = document.createElement('select')
-
-    let 选项50 = document.createElement('option')
-    选项50.value = '50'
-    选项50.textContent = '50'
-    this.每页条数选择.appendChild(选项50)
-
-    let 选项100 = document.createElement('option')
-    选项100.value = '100'
-    选项100.textContent = '100'
-    选项100.selected = true
-    this.每页条数选择.appendChild(选项100)
-
-    let 选项200 = document.createElement('option')
-    选项200.value = '200'
-    选项200.textContent = '200'
-    this.每页条数选择.appendChild(选项200)
-
-    let 选项500 = document.createElement('option')
-    选项500.value = '500'
-    选项500.textContent = '500'
-    this.每页条数选择.appendChild(选项500)
-
-    this.每页条数选择.style.padding = '4px'
-    this.每页条数选择.style.cursor = 'pointer'
+    let 每页条数标签 = 创建元素('label', {
+      textContent: '每页条数:',
+    })
+    this.每页条数选择 = 创建元素('select', {
+      style: {
+        padding: '4px',
+        cursor: 'pointer',
+      },
+    })
     this.每页条数选择.addEventListener('change', () => {
       if (this.每页条数选择 !== null) {
         this.每页条数 = parseInt(this.每页条数选择.value)
@@ -87,14 +73,17 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     每页条数容器.appendChild(每页条数标签)
     每页条数容器.appendChild(this.每页条数选择)
 
-    this.数据容器 = document.createElement('div')
-    this.数据容器.style.flex = '1'
-    this.数据容器.style.overflow = 'hidden'
-    this.数据容器.style.display = 'flex'
-    this.数据容器.style.flexDirection = 'column'
-    this.数据容器.style.position = 'relative'
-    this.数据容器.style.minWidth = '0'
-    this.数据容器.style.minHeight = '0'
+    this.数据容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        minWidth: '0',
+        minHeight: '0',
+      },
+    })
 
     // 初始化表格管理器
     this.表格管理器 = new 共享表格管理器(this.数据容器, {
@@ -107,21 +96,24 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     })
 
     // 创建分页组件
-    this.分页组件 = document.createElement('lsby-pagination') as LsbyPagination
+    this.分页组件 = new LsbyPagination()
     this.分页组件.设置页码变化回调(async (页码: number): Promise<void> => {
       this.当前页 = 页码
       await this.加载表数据()
     })
 
     // 创建消息容器
-    this.消息容器 = document.createElement('div')
-    this.消息容器.style.display = 'flex'
-    this.消息容器.style.justifyContent = 'center'
-    this.消息容器.style.alignItems = 'center'
-    this.消息容器.style.height = '100%'
-    this.消息容器.style.fontSize = '18px'
-    this.消息容器.style.color = 'var(--文本颜色)'
-    this.消息容器.textContent = '请选择表'
+    this.消息容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        fontSize: '18px',
+        color: 'var(--文本颜色)',
+      },
+      textContent: '请选择表',
+    })
 
     this.shadow.appendChild(每页条数容器)
     this.shadow.appendChild(this.数据容器)

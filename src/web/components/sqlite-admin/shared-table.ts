@@ -1,4 +1,5 @@
 import { API管理器 } from '../../global/api-manager'
+import { 创建元素 } from '../../global/create-element'
 
 type 表格选项 = {
   可编辑?: boolean
@@ -28,11 +29,14 @@ export class 共享表格管理器 {
     this.根容器 = 根容器
     this.选项 = 选项
 
-    this.表格容器 = document.createElement('div')
-    this.表格容器.style.flex = '1'
-    this.表格容器.style.overflow = 'auto'
-    this.表格容器.style.minWidth = '0'
-    this.表格容器.style.minHeight = '0'
+    this.表格容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        overflow: 'auto',
+        minWidth: '0',
+        minHeight: '0',
+      },
+    })
 
     // 点击表格容器空白处取消选择
     this.表格容器.addEventListener('click', (事件) => {
@@ -49,15 +53,18 @@ export class 共享表格管理器 {
     })
 
     // 右键菜单
-    this.右键菜单 = document.createElement('div')
-    this.右键菜单.style.position = 'fixed'
-    this.右键菜单.style.backgroundColor = 'var(--主要背景颜色)'
-    this.右键菜单.style.border = '1px solid var(--边框颜色)'
-    this.右键菜单.style.borderRadius = '4px'
-    this.右键菜单.style.padding = '4px 0'
-    this.右键菜单.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)'
-    this.右键菜单.style.zIndex = '1000'
-    this.右键菜单.style.display = 'none'
+    this.右键菜单 = 创建元素('div', {
+      style: {
+        position: 'fixed',
+        backgroundColor: 'var(--主要背景颜色)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        padding: '4px 0',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        zIndex: '1000',
+        display: 'none',
+      },
+    })
     this.根容器.appendChild(this.右键菜单)
     this.根容器.appendChild(this.表格容器)
 
@@ -97,28 +104,34 @@ export class 共享表格管理器 {
       return
     }
 
-    let 表 = document.createElement('table')
-    表.style.width = '100%'
-    表.style.borderCollapse = 'collapse'
-    表.style.fontSize = '14px'
-    表.style.userSelect = 'none'
+    let 表 = 创建元素('table', {
+      style: {
+        width: '100%',
+        borderCollapse: 'collapse',
+        fontSize: '14px',
+        userSelect: 'none',
+      },
+    })
 
     // 表头
-    let 表头行 = document.createElement('tr')
+    let 表头行 = 创建元素('tr')
     let 第一行 = 行列表[0]
     if (第一行 === void 0) return
     let 列名 = Object.keys(第一行)
     this.当前列名 = 列名
     for (let 列 of 列名) {
-      let 表头单元格 = document.createElement('th')
-      表头单元格.textContent = 列
-      表头单元格.style.border = '1px solid var(--边框颜色)'
-      表头单元格.style.padding = '8px'
-      表头单元格.style.backgroundColor = 'var(--次要背景颜色)'
-      表头单元格.style.textAlign = 'left'
-      表头单元格.style.position = 'sticky'
-      表头单元格.style.top = '0'
-      表头单元格.style.zIndex = '1'
+      let 表头单元格 = 创建元素('th', {
+        textContent: 列,
+        style: {
+          border: '1px solid var(--边框颜色)',
+          padding: '8px',
+          backgroundColor: 'var(--次要背景颜色)',
+          textAlign: 'left',
+          position: 'sticky',
+          top: '0',
+          zIndex: '1',
+        },
+      })
       表头行.appendChild(表头单元格)
     }
     表.appendChild(表头行)
@@ -127,7 +140,7 @@ export class 共享表格管理器 {
     for (let 行索引 = 0; 行索引 < 行列表.length; 行索引++) {
       let 行 = 行列表[行索引]
       if (行 === void 0) continue
-      let 数据行 = document.createElement('tr')
+      let 数据行 = 创建元素('tr')
       let 行选中 = this.选中的行.has(行索引)
 
       // 保存行元素引用
@@ -147,21 +160,22 @@ export class 共享表格管理器 {
       for (let 列索引 = 0; 列索引 < 列名.length; 列索引++) {
         let 列 = 列名[列索引]
         if (列 === void 0) continue
-        let 数据单元格 = document.createElement('td')
-
-        // 保存单元格元素引用
-        let 单元格键 = `${行索引}-${列索引}`
-        this.表格单元格元素映射.set(单元格键, 数据单元格)
-
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         let 值 = 行[列]
-        数据单元格.textContent = 值 === null ? 'NULL' : String(值)
-        数据单元格.style.border = '1px solid var(--边框颜色)'
-        数据单元格.style.padding = '8px'
-        数据单元格.style.maxWidth = '200px'
-        数据单元格.style.overflow = 'hidden'
-        数据单元格.style.textOverflow = 'ellipsis'
-        数据单元格.style.cursor = 'pointer'
+        let 数据单元格 = 创建元素('td', {
+          textContent: 值 === null ? 'NULL' : String(值),
+          style: {
+            border: '1px solid var(--边框颜色)',
+            padding: '8px',
+            maxWidth: '200px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer',
+          },
+        })
+
+        // 保存单元格元素引用
+        this.表格单元格元素映射.set(`${行索引}-${列索引}`, 数据单元格)
 
         // 单元格选择样式
         if (
@@ -216,14 +230,17 @@ export class 共享表格管理器 {
 
   private 显示消息(消息: string): void {
     this.表格容器.innerHTML = ''
-    let 消息元素 = document.createElement('div')
-    消息元素.textContent = 消息
-    消息元素.style.display = 'flex'
-    消息元素.style.justifyContent = 'center'
-    消息元素.style.alignItems = 'center'
-    消息元素.style.height = '100%'
-    消息元素.style.fontSize = '18px'
-    消息元素.style.color = 'var(--文本颜色)'
+    let 消息元素 = 创建元素('div', {
+      textContent: 消息,
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        fontSize: '18px',
+        color: 'var(--文本颜色)',
+      },
+    })
     this.表格容器.appendChild(消息元素)
   }
 
@@ -231,11 +248,14 @@ export class 共享表格管理器 {
     let 菜单 = this.右键菜单
     菜单.innerHTML = ''
     for (let 选项 of 选项列表) {
-      let 菜单项 = document.createElement('div')
-      菜单项.textContent = 选项.文本
-      菜单项.style.padding = '8px 16px'
-      菜单项.style.cursor = 'pointer'
-      菜单项.style.color = 'var(--文字颜色)'
+      let 菜单项 = 创建元素('div', {
+        textContent: 选项.文本,
+        style: {
+          padding: '8px 16px',
+          cursor: 'pointer',
+          color: 'var(--文字颜色)',
+        },
+      })
 
       菜单项.addEventListener('mouseenter', () => {
         菜单项.style.backgroundColor = 'var(--次要背景颜色)'
@@ -436,16 +456,19 @@ export class 共享表格管理器 {
     this.编辑中 = true
 
     // 创建编辑输入框
-    let 输入框 = document.createElement('input')
-    输入框.type = 'text'
-    输入框.value = 值字符串
-    输入框.style.width = '100%'
-    输入框.style.padding = '4px'
-    输入框.style.border = '1px solid var(--边框颜色)'
-    输入框.style.borderRadius = '2px'
-    输入框.style.backgroundColor = 'var(--主要背景颜色)'
-    输入框.style.color = 'var(--文字颜色)'
-    输入框.style.boxSizing = 'border-box'
+    let 输入框 = 创建元素('input', {
+      type: 'text',
+      value: 值字符串,
+      style: {
+        width: '100%',
+        padding: '4px',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '2px',
+        backgroundColor: 'var(--主要背景颜色)',
+        color: 'var(--文字颜色)',
+        boxSizing: 'border-box',
+      },
+    })
 
     // 替换单元格内容
     单元格.innerHTML = ''
