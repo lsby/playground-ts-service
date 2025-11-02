@@ -10,7 +10,7 @@ export class 软件版本组件 extends 组件基类<属性类型, 发出事件�
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
-    this.注册组件('lsby-demo-version', this)
+    this.注册组件('lsby-app-version', this)
   }
 
   protected override async 当加载时(): Promise<void> {

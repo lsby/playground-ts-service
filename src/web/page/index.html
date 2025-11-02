@@ -12,9 +12,17 @@
     <lsby-set-html-full></lsby-set-html-full>
     <lsby-login-check></lsby-login-check>
 
-    <div>你好世界</div>
-    <button onclick="window.location.href='/demo'">进入demo页</button>
-    <button onclick="window.location.href='/sqlite-admin'">进入sqlite管理页</button>
-    <button onclick="window.location.href='/job-admin'">进入任务管理页</button>
+    <lsby-tabs-vertical>
+      <lsby-container 标签="开始">
+        <div>你好世界</div>
+      </lsby-container>
+      <lsby-container 标签="演示">
+        <button onclick="window.location.href='/demo'">进入demo页</button>
+      </lsby-container>
+      <lsby-container 标签="关于">
+        <lsby-app-version></lsby-app-version>
+      </lsby-container>
+    </lsby-tabs-vertical>
+    <management-float></management-float>
   </body>
 </html>

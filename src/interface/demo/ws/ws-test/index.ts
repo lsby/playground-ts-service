@@ -19,17 +19,11 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
       let _log = 请求附加参数.log.extend(接口路径)
 
       let 数据 = ['你', '好', '世', '界']
-      let 当前索引 = 0
 
-      let 定时器句柄 = setInterval(async () => {
-        let 当前数据 = 数据[当前索引]
-        当前索引++
-        if (当前数据 === void 0) {
-          clearInterval(定时器句柄)
-          return
-        }
+      for (let 当前数据 of 数据) {
         await 参数.ws操作?.发送ws信息({ data: 当前数据 }).catch(() => {})
-      }, 1000)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
 
       return new Right({})
     },

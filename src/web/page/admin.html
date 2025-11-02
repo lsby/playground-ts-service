@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../global/style/global.css" />
+    <script src="../components/index.ts" type="module"></script>
+  </head>
+
+  <body>
+    <lsby-set-debug></lsby-set-debug>
+    <lsby-set-html-full></lsby-set-html-full>
+    <lsby-login-check></lsby-login-check>
+
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        gap: 20px;
+        background-color: var(--背景颜色);
+      "
+    >
+      <h1 style="color: var(--文字颜色); margin: 0">管理中心</h1>
+      <div style="display: flex; gap: 20px">
+        <a href="sqlite-admin.html" style="text-decoration: none">
+          <button
+            style="
+              padding: 20px 40px;
+              font-size: 18px;
+              background-color: var(--主色调);
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              box-shadow: 0 4px 12px var(--深阴影颜色);
+            "
+          >
+            数据库管理
+          </button>
+        </a>
+        <a href="job-admin.html" style="text-decoration: none">
+          <button
+            style="
+              padding: 20px 40px;
+              font-size: 18px;
+              background-color: var(--主色调);
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              box-shadow: 0 4px 12px var(--深阴影颜色);
+            "
+          >
+            任务管理
+          </button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
