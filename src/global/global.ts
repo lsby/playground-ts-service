@@ -14,12 +14,24 @@ export let kysely管理器 = await (async function (): Promise<Kysely管理器<D
     await 创建sqlite数据库适配器(环境变量.DB_PATH),
     环境变量.NODE_ENV === 'production' ? [] : ['query', 'error'],
   )
-  // return Kysely管理器.从适配器创建<DB>(
-  //   await 创建pg数据库适配器(),
-  //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
+  // return Kysely管理器.从适配器创建<业务库类型>(
+  //   await 创建pg数据库适配器({
+  //     host: 环境变量.DB_HOST,
+  //     port: 环境变量.DB_PORT,
+  //     user: 环境变量.DB_USER,
+  //     password: 环境变量.DB_PWD,
+  //     database: 环境变量.DB_NAME,
+  //   }),
+  //   环境变量.NODE_ENV === 'production' ? [] : ['query', 'error'],
   // )
-  // return Kysely管理器.从适配器创建<DB>(
-  //   await 创建mysql数据库适配器(),
-  //   e.NODE_ENV === 'production' ? [] : ['query', 'error'],
+  // return Kysely管理器.从适配器创建<业务库类型>(
+  //   await 创建mysql数据库适配器({
+  //     host: 环境变量.DB_HOST,
+  //     port: 环境变量.DB_PORT,
+  //     user: 环境变量.DB_USER,
+  //     password: 环境变量.DB_PWD,
+  //     database: 环境变量.DB_NAME,
+  //   }),
+  //   环境变量.NODE_ENV === 'production' ? [] : ['query', 'error'],
   // )
 })()
