@@ -1,13 +1,13 @@
 datasource db {
   // sqlite
   provider = "sqlite"
-  url      = env("DATABASE_PATH_PRISMA")
+  url      = env("DB_PATH_PRISMA")
 
   // pg/mysql
   // provider          = "postgresql"
   // provider          = "mysql"
-  // url               = env("DATABASE_URL")
-  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  // url               = env("DB_URL")
+  // shadowDatabaseUrl = env("SHADOW_DB_URL")
 }
 
 generator kysely {

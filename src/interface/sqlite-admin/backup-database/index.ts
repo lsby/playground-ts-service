@@ -38,12 +38,12 @@ let 接口逻辑实现 = 接口逻辑
       let kysely = 参数.kysely.获得句柄()
 
       // 获取备份目录
-      let backupDir = 环境变量.DATABASE_BACKUP_PATH
+      let backupDir = 环境变量.DB_BACKUP_PATH
 
       // 生成备份文件名：前缀_环境_时间
       let envName = 环境变量.NODE_ENV
       let timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0]
-      let backupFileName = `${环境变量.DATABASE_BACKUP_PREFIX}${逻辑附加参数.isAuto ? 环境变量.DATABASE_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
+      let backupFileName = `${环境变量.DB_BACKUP_PREFIX}${逻辑附加参数.isAuto ? 环境变量.DB_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
       let backupPath = path.join(backupDir, backupFileName)
 
       // 确保备份目录存在

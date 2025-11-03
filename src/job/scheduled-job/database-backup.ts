@@ -40,13 +40,13 @@ class 定时任务实现 extends 定时任务抽象类 {
       }
 
       await log.info(`找到管理员用户ID：${管理员用户.id}`)
-      await log.info(`备份路径：${环境变量.DATABASE_BACKUP_PATH}`)
+      await log.info(`备份路径：${环境变量.DB_BACKUP_PATH}`)
 
       await log.info('开始备份数据库')
       await 备份数据库.实现({ kysely: kysely管理器 }, { isAuto: true, userId: 管理员用户.id }, { log: log })
       await log.info('数据库备份完成')
 
-      let 删除数量 = await this.清理旧备份(环境变量.DATABASE_BACKUP_PATH, 环境变量.DATABASE_BACKUP_RETENTION_DAYS, log)
+      let 删除数量 = await this.清理旧备份(环境变量.DB_BACKUP_PATH, 环境变量.DB_BACKUP_RETENTION_DAYS, log)
       await log.info(`清理完成，共删除 ${删除数量} 个旧备份文件`)
 
       await log.info('数据库备份定时任务执行完成')
@@ -64,7 +64,7 @@ class 定时任务实现 extends 定时任务抽象类 {
 
     for (let 文件名 of 文件列表) {
       if (
-        文件名.startsWith(`${环境变量.DATABASE_BACKUP_PREFIX}${环境变量.DATABASE_BACKUP_AUTO_PREFIX}`) &&
+        文件名.startsWith(`${环境变量.DB_BACKUP_PREFIX}${环境变量.DB_BACKUP_AUTO_PREFIX}`) &&
         文件名.endsWith('.db')
       ) {
         let 文件路径 = path.join(备份目录, 文件名)

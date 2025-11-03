@@ -11,7 +11,7 @@ export let 定时任务管理器 = new 定时任务管理器类()
 export let globalLog = new Log(环境变量.DEBUG_NAME)
 export let kysely管理器 = await (async function (): Promise<Kysely管理器<DB>> {
   return Kysely管理器.从适配器创建<DB>(
-    await 创建sqlite数据库适配器(),
+    await 创建sqlite数据库适配器(环境变量.DB_PATH),
     环境变量.NODE_ENV === 'production' ? [] : ['query', 'error'],
   )
   // return Kysely管理器.从适配器创建<DB>(
