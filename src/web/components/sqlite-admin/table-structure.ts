@@ -1,7 +1,7 @@
+import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 联合转元组 } from '../../global/types/types'
 
 type 属性类型 = {
   表名?: string

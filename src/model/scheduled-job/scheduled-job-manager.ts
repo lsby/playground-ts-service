@@ -19,11 +19,22 @@ export class 定时任务管理器类 {
   public constructor() {}
 
   private async 执行任务(任务: 定时任务抽象类, 任务信息: 定时任务信息, job: schedule.Job): Promise<void> {
+    if (任务信息.状态 === '运行中') {
+      任务.记录日志('任务已在执行中，跳过本次执行')
+      return
+    }
+
     let 开始时间 = new Date()
     任务信息.状态 = '运行中'
     任务信息.最后执行时间 = 开始时间
-    任务信息.执行次数 = 任务信息.执行次数 + 1
     任务信息.下次执行时间 = job.nextInvocation()
+
+    if (任务信息.执行次数 >= Number.MAX_SAFE_INTEGER - 1) {
+      任务.记录日志('执行次数已达上限，重置为 0')
+      任务信息.执行次数 = 0
+    } else {
+      任务信息.执行次数 = 任务信息.执行次数 + 1
+    }
 
     try {
       let 上下文 = {

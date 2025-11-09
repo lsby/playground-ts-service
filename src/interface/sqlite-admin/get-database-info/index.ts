@@ -6,7 +6,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
-import { CompiledQuery } from 'kysely'
+import { CompiledQuery, QueryResult } from 'kysely'
 import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../global/plugin'
 import { 检查管理员登录 } from '../../../interface-logic/check/check-login-jwt-admin'
@@ -30,7 +30,9 @@ let 接口逻辑实现 = 接口逻辑
       let kysely = 参数.kysely.获得句柄()
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      let 版本结果 = (await kysely.executeQuery(CompiledQuery.raw('SELECT sqlite_version() as version;', []))) as any
+      let 版本结果: QueryResult<any> = await kysely.executeQuery(
+        CompiledQuery.raw('SELECT sqlite_version() as version;', []),
+      )
 
       return new Right({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

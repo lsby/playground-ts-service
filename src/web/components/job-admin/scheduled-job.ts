@@ -103,13 +103,13 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
     // 创建详情内容容器
     let 详情内容 = 创建元素('div', {
       style: {
-        padding: '1em',
+        height: '100%',
       },
     })
 
     // 创建日志组件
     let 日志组件 = new LsbyLog({})
-    日志组件.style.height = '400px'
+    日志组件.style.height = '100%'
     日志组件.style.width = '100%'
 
     // 更新日志显示的函数
@@ -120,30 +120,12 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
 
     详情内容.appendChild(日志组件)
 
-    // 直接用一个请求同时获取历史日志并建立WebSocket连接
-    this.api管理器
-      .请求post接口并处理错误(
-        '/api/job-admin/scheduled-job-admin/get-logs',
-        { 任务id: 任务.id },
-        async (ws数据) => {
-          // 收到WebSocket消息，实时更新单条新日志
-          更新日志显示(ws数据.新日志)
-        },
-        async (ws) => {
-          // WS连接成功时存储WS对象
-          this.当前任务详情WS = ws
-        },
-      )
-      .then((结果) => {
-        // 显示历史日志
-        结果.日志列表.forEach((日志) => {
-          更新日志显示(日志)
-        })
-      })
-      .catch((错误) => {
-        console.error('获取定时任务日志失败:', 错误)
-      })
+    // 标志：历史日志是否已加载
+    let 历史日志已加载 = false
+    // 缓存：在历史日志加载前收到的WS数据
+    let ws数据缓存: { 时间: number; 消息: string }[] = []
 
+    // 显示模态框
     await 显示模态框(
       {
         标题: '定时任务详情',
@@ -162,6 +144,51 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
       },
       详情内容,
     )
+
+    // 组件已挂载到DOM，现在设置加载状态
+    日志组件.设置加载状态(true)
+
+    // 直接用一个请求同时获取历史日志并建立WebSocket连接
+    this.api管理器
+      .请求post接口并处理错误(
+        '/api/job-admin/scheduled-job-admin/get-logs',
+        { 任务id: 任务.id },
+        async (ws数据) => {
+          // 收到WebSocket消息
+          if (历史日志已加载 === true) {
+            // 历史日志已加载，直接显示
+            更新日志显示(ws数据.新日志)
+          } else {
+            // 历史日志未加载，缓存WS数据
+            ws数据缓存.push(ws数据.新日志)
+          }
+        },
+        async (ws) => {
+          // WS连接成功时存储WS对象
+          this.当前任务详情WS = ws
+        },
+      )
+      .then((结果) => {
+        // 显示历史日志
+        结果.日志列表.forEach((日志) => {
+          更新日志显示(日志)
+        })
+        // 显示缓存的WS数据
+        ws数据缓存.forEach((日志) => {
+          更新日志显示(日志)
+        })
+        // 清空缓存
+        ws数据缓存 = []
+        // 标记历史日志已加载
+        历史日志已加载 = true
+        // 隐藏加载状态
+        日志组件.设置加载状态(false)
+      })
+      .catch((错误) => {
+        console.error('获取定时任务日志失败:', 错误)
+        // 即使出错也要隐藏加载状态
+        日志组件.设置加载状态(false)
+      })
   }
 
   protected override async 当加载时(): Promise<void> {

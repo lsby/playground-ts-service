@@ -1,6 +1,6 @@
+import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
-import { 联合转元组 } from '../../global/types/types'
 import { LsbyTabsHorizontal, tabHorizontal发出事件类型 } from '../general/tabs-horizontal'
 import { 测试任务组件 } from './instant-job'
 import { 定时任务组件 } from './scheduled-job'

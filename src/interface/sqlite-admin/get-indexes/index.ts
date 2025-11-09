@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑
       let kysely = 参数.kysely.获得句柄()
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      let 结果 = (await kysely.executeQuery(
+      let 结果 = await kysely.executeQuery(
         CompiledQuery.raw(
           [
             `SELECT name, tbl_name, sql`,
@@ -40,7 +40,7 @@ let 接口逻辑实现 = 接口逻辑
           ].join('\n'),
           [],
         ),
-      )) as any
+      )
 
       return new Right({
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
