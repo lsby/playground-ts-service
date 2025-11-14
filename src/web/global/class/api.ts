@@ -224,7 +224,7 @@ export class API管理器类 {
 
     if (请求结果.status === 'fail' || 请求结果.status === 'unexpected') {
       let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
-      await 错误提示(提示)
+      void 错误提示(提示)
       throw new Error(提示)
     }
     return 请求结果.data as any

@@ -43,9 +43,8 @@ class 模态框管理器 {
     this.框 = 创建元素('div', {
       style: {
         position: 'absolute',
-        minWidth: '300px',
-        minHeight: '150px',
-        maxWidth: '80vw',
+        width: '80vw',
+        height: '60vh',
         background: 'var(--卡片背景颜色)',
         border: '1px solid var(--边框颜色)',
         borderRadius: '4px',
@@ -126,7 +125,6 @@ class 模态框管理器 {
         padding: '8px',
         flex: '1',
         overflow: 'auto',
-        maxHeight: '90vh',
       },
     })
 
@@ -146,7 +144,6 @@ class 模态框管理器 {
     if (this.是否最大化 === true) {
       this.框.style.width = '100vw'
       this.框.style.height = '100vh'
-      this.框.style.maxWidth = '100vw'
       this.框.style.left = '0'
       this.框.style.top = '0'
       this.框.style.transform = 'none'
@@ -155,9 +152,8 @@ class 模态框管理器 {
       this.最大化按钮.textContent = '🗗'
       this.最大化按钮.title = '还原'
     } else {
-      this.框.style.width = ''
-      this.框.style.height = ''
-      this.框.style.maxWidth = '80vw'
+      this.框.style.width = '80vw'
+      this.框.style.height = '60vh'
       this.框.style.left = ''
       this.框.style.top = ''
       this.框.style.transform = ''

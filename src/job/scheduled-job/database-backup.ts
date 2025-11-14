@@ -43,7 +43,14 @@ class 定时任务实现 extends 定时任务抽象类 {
       await log.info(`备份路径：${环境变量.DB_BACKUP_PATH}`)
 
       await log.info('开始备份数据库')
-      await 备份数据库.实现({ kysely: kysely管理器 }, { isAuto: true, userId: 管理员用户.id }, { log: log })
+      await 备份数据库.实现(
+        {
+          kysely: kysely管理器,
+          ws操作: { 关闭ws连接: async () => {}, 发送ws信息: async () => {}, 设置清理函数: async () => {} },
+        },
+        { isAuto: true, userId: 管理员用户.id },
+        { log: log },
+      )
       await log.info('数据库备份完成')
 
       let 删除数量 = await this.清理旧备份(环境变量.DB_BACKUP_PATH, 环境变量.DB_BACKUP_RETENTION_DAYS, log)
