@@ -14,6 +14,7 @@ class 模态框管理器 {
   private 内容: HTMLDivElement | null = null
   private 最大化按钮: HTMLButtonElement | null = null
   private 关闭按钮: HTMLButtonElement | null = null
+  private 标题元素: HTMLSpanElement | null = null
   private 是否最大化 = false
   private 关闭回调: (() => void | Promise<void>) | null = null
   private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
@@ -73,6 +74,7 @@ class 模态框管理器 {
       },
     })
     this.头部.appendChild(标题元素)
+    this.标题元素 = 标题元素
 
     // 右侧按钮容器
     let 右侧按钮容器 = 创建元素('div', {
@@ -172,9 +174,8 @@ class 模态框管理器 {
     }
 
     // 设置标题
-    let 标题元素 = this.头部.querySelector('span')
-    if (标题元素 !== null) {
-      标题元素.textContent = 选项.标题
+    if (this.标题元素 !== null) {
+      this.标题元素.textContent = 选项.标题
     }
 
     // 设置是否可关闭

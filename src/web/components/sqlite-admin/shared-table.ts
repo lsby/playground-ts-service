@@ -528,7 +528,6 @@ export class 共享表格管理器 {
     let 当前值 = 行[列名]
     let 值字符串 = 当前值 === null ? '' : String(当前值)
 
-    // 直接从缓存的映射中获取单元格元素,避免 querySelector
     let 单元格键 = `${行索引}-${列索引}`
     let 单元格 = this.表格单元格元素映射.get(单元格键)
     if (单元格 === void 0) return

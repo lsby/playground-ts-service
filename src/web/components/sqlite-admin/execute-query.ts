@@ -33,6 +33,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       执行按钮: HTMLButtonElement
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
+      影响行数消息元素: HTMLDivElement | null
     }
   > = new Map()
 
@@ -185,6 +186,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     执行按钮: HTMLButtonElement
     结果容器: HTMLDivElement
     表格管理器: 共享表格管理器 | null
+    影响行数消息元素: HTMLDivElement | null
   } {
     let 内容 = this.选项卡内容映射.get(tabId)
     if (内容 !== void 0) {
@@ -233,7 +235,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       },
     })
 
-    let 新内容 = { sql输入, 执行按钮, 结果容器, 表格管理器: null }
+    let 新内容 = { sql输入, 执行按钮, 结果容器, 表格管理器: null, 影响行数消息元素: null }
     this.选项卡内容映射.set(tabId, 新内容)
     return 新内容
   }
@@ -310,6 +312,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       执行按钮: HTMLButtonElement
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
+      影响行数消息元素: HTMLDivElement | null
     },
     数据: {
       rows: Record<string, any>[]
@@ -356,9 +359,8 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     // 如果有影响行数，添加到底部
     if (数据.numAffectedRows !== void 0) {
       // 先移除旧的影响行数消息
-      let 旧消息 = 内容.结果容器.querySelector('.影响行数消息')
-      if (旧消息 !== null) {
-        旧消息.remove()
+      if (内容.影响行数消息元素 !== null) {
+        内容.影响行数消息元素.remove()
       }
 
       let 影响行数消息 = 创建元素('div', {
@@ -372,6 +374,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       })
 
       内容.结果容器.appendChild(影响行数消息)
+      内容.影响行数消息元素 = 影响行数消息
     }
   }
 
@@ -381,6 +384,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       执行按钮: HTMLButtonElement
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
+      影响行数消息元素: HTMLDivElement | null
     },
     消息: string,
   ): void {
