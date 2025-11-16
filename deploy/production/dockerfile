@@ -5,7 +5,7 @@ COPY . /opt/app
 WORKDIR /opt/app
 
 RUN corepack enable && \
-    pnpm i && \
+    pnpm i --prod && \
     export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
