@@ -114,4 +114,28 @@ export class 定时任务管理器类 {
     }
     return 任务条目.任务
   }
+
+  public async 刷新任务(): Promise<void> {
+    for (let 条目 of this.调度任务列表) {
+      let { 任务, job, 信息 } = 条目
+
+      // 取消当前job
+      job.cancel()
+
+      // 重新获得cron表达式
+      let 新表达式 = await 任务.获得cron表达式()
+
+      // 重新调度
+      let 新job = schedule.scheduleJob(新表达式, async () => {
+        await this.执行任务(任务, 信息, 新job)
+      })
+      条目.job = 新job
+      信息.表达式 = 新表达式
+      信息.下次执行时间 = 新job.nextInvocation()
+
+      if (新表达式 !== 信息.表达式) {
+        任务.记录日志(`cron表达式已更新为: ${新表达式}`)
+      }
+    }
+  }
 }
