@@ -1,5 +1,6 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
+import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
 import { kysely管理器 } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
@@ -9,6 +10,7 @@ export default new 接口测试(
   async (): Promise<void> => {
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
+    await db.insertInto('system_config').values({ id: randomUUID(), is_initialized: 1, enable_register: 1 }).execute()
   },
 
   async (): Promise<object> => {

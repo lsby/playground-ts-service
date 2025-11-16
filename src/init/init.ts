@@ -60,6 +60,14 @@ export async function init(): Promise<void> {
 
   await log.debug('初始化完成, 写入初始化标记...')
   await kysely管理器.获得句柄().deleteFrom('system_config').execute()
-  await kysely管理器.获得句柄().insertInto('system_config').values({ id: randomUUID(), is_initialized: 1 }).execute()
+  await kysely管理器
+    .获得句柄()
+    .insertInto('system_config')
+    .values({
+      id: randomUUID(),
+      is_initialized: 1,
+      enable_register: 0,
+    })
+    .execute()
   await log.debug('写入初始化标记完成')
 }

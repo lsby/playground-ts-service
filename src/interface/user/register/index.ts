@@ -5,7 +5,7 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Right } from '@lsby/ts-fp-data'
+import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
@@ -25,6 +25,15 @@ let 用户表 = z.object({
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
+  .混合(
+    接口逻辑.构造([kysely插件], async (参数, _逻辑附加参数, _请求附加参数) => {
+      let 配置 = await 参数.kysely.获得句柄().selectFrom('system_config').select('enable_register').executeTakeFirst()
+      if ((配置?.enable_register ?? 0) !== 1) {
+        return new Left('注册未启用' as const)
+      }
+      return new Right({})
+    }),
+  )
   .混合(new 检查用户名('userName'))
   .混合(new 检查密码('userPassword'))
   .混合(
@@ -76,6 +85,7 @@ let 接口错误类型描述 = z.enum([
   '密码不能为空',
   '密码过短',
   '密码过长',
+  '注册未启用',
 ])
 let 接口正确类型描述 = z.object({})
 

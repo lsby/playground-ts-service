@@ -9,6 +9,7 @@ export type system_config = {
     created_at: Generated<string>;
     updated_at: Generated<string>;
     is_initialized: Generated<number>;
+    enable_register: number;
 };
 export type user = {
     id: string;

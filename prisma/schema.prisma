@@ -25,6 +25,7 @@ model system_config {
   updated_at DateTime @default(now()) @updatedAt
 
   is_initialized Boolean @default(false) // 是否已初始化
+  enable_register Boolean // 启用注册
 }
 
 // 用户配置

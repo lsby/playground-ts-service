@@ -14,6 +14,7 @@ export default new 接口测试(
   async (): Promise<void> => {
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
+    await db.insertInto('system_config').values({ id: randomUUID(), is_initialized: 1, enable_register: 1 }).execute()
     await db
       .insertInto('user')
       .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10), is_admin: 0 })

@@ -19,8 +19,17 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
   private 登录按钮 = 创建元素('button')
   private 注册按钮 = 创建元素('button')
   private 切换按钮 = 创建元素('button')
+  private enableRegister = false
 
   protected override async 当加载时(): Promise<void> {
+    // 获取注册启用状态
+    try {
+      let 响应 = await API管理器.请求post接口并处理错误('/api/system-config/enable-registration/read', {})
+      this.enableRegister = 响应.enable_register === 1
+    } catch (_e) {
+      this.enableRegister = false
+    }
+
     let 容器 = 创建元素('div', {
       style: {
         display: 'flex',
@@ -241,6 +250,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
       this.注册按钮.style.display = 'none'
       this.登录按钮.style.display = 'block'
       this.切换按钮.textContent = '还没有账号？立即注册'
+      this.切换按钮.style.display = this.enableRegister ? 'block' : 'none'
     } else {
       this.结果.textContent = '创建您的账号'
       确认密码父容器.style.display = 'flex'
@@ -252,9 +262,12 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
 
   private async 切换模式(): Promise<void> {
     let 当前模式 = (await this.获得属性('mode')) ?? 'login'
+    if (当前模式 === 'login' && this.enableRegister === false) {
+      return
+    }
     let 新模式: 'login' | 'register' = 当前模式 === 'login' ? 'register' : 'login'
     await this.设置属性('mode', 新模式)
-    void this.更新UI()
+    await this.更新UI()
   }
 
   private async 执行认证(): Promise<void> {
