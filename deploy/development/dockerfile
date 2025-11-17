@@ -9,4 +9,6 @@ RUN corepack enable && \
     export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
+EXPOSE 3000
+
 CMD echo "\n" | npm run db:push:dev && npm run run:service:dev
