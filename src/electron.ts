@@ -29,7 +29,7 @@ let 窗口状态路径 = path.join(资源目录, 'window-state.json')
  * 负责创建 Electron 主窗口，包括：
  * - 生成预加载脚本
  * - 恢复窗口状态（位置、大小、最大化/全屏状态）
- * - 处理多显示器环境下的窗口位置和尺寸（详见 ./electron/multi-display.ts）
+ * - 处理多显示器环境下的窗口位置和尺寸
  * - 加载应用页面
  */
 async function 创建主窗口(): Promise<void> {
