@@ -13,7 +13,13 @@ export class App {
     await 定时任务管理器.执行([onTimeAlarm, databaseBackupCron])
 
     let 静态文件目录 = resolve(import.meta.dirname, '../../web')
-    let service = new 服务器(interfaceApiList, 环境变量.APP_PORT, 静态文件目录)
+    let service = new 服务器({
+      接口们: interfaceApiList,
+      端口: 环境变量.APP_PORT,
+      静态资源路径: 静态文件目录,
+      接口log: globalLog,
+      系统log: globalLog,
+    })
     let serviceInfo = await service.run()
 
     await log.debug('已加载的api路径: %O', serviceInfo.api)

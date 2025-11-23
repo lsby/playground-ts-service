@@ -31,6 +31,7 @@ import _src_interface_job_admin_scheduled_job_admin_list_index_ts from './job-ad
 import _src_interface_job_admin_scheduled_job_admin_manual_trigger_index_ts from './job-admin/scheduled-job-admin/manual-trigger/index'
 import _src_interface_job_admin_scheduled_job_admin_get_log_index_ts from './job-admin/scheduled-job-admin/get-log/index'
 import _src_interface_system_config_enable_registration_read_index_ts from './system-config/enable-registration/read/index'
+import _src_interface_log_admin_get_logs_index_ts from './log-admin/get-logs/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_sqlite_admin_backup_database_index_ts,
@@ -63,4 +64,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_job_admin_scheduled_job_admin_manual_trigger_index_ts,
   _src_interface_job_admin_scheduled_job_admin_get_log_index_ts,
   _src_interface_system_config_enable_registration_read_index_ts,
+  _src_interface_log_admin_get_logs_index_ts,
 ]
