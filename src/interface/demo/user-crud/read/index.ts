@@ -28,8 +28,7 @@ let 接口逻辑实现 = 接口逻辑
       z.object({
         page: z.number(),
         size: z.number(),
-        orderBy: z.enum(['id', 'name']).optional(),
-        orderDirection: z.enum(['asc', 'desc']).optional(),
+        orderBy: z.array(z.object({ field: z.enum(['id', 'name']), direction: z.enum(['asc', 'desc']) })).optional(),
         filter: z
           .object({
             id: z.string().optional(),
@@ -44,7 +43,7 @@ let 接口逻辑实现 = 接口逻辑
       let _log = 请求附加参数.log.extend(接口路径)
       let kysely = 参数.kysely.获得句柄()
 
-      let { page, size, orderBy, orderDirection, filter } = 逻辑附加参数
+      let { page, size, orderBy, filter } = 逻辑附加参数
       if (page <= 0) throw new Error('当前页从1开始')
 
       let builder总数 = kysely.selectFrom('user').select((eb) => eb.fn.countAll().as('total'))
@@ -68,8 +67,10 @@ let 接口逻辑实现 = 接口逻辑
       }
 
       // 应用排序
-      if (orderBy !== void 0 && orderDirection !== void 0) {
-        builder数据 = builder数据.orderBy(orderBy, orderDirection)
+      if (orderBy !== void 0) {
+        for (let 排序项 of orderBy) {
+          builder数据 = builder数据.orderBy(排序项.field, 排序项.direction)
+        }
       }
 
       let 查询总数 = await builder总数.executeTakeFirst()
