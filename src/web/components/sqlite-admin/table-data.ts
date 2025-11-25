@@ -2,7 +2,6 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { LsbyPagination } from '../general/pagination'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -24,7 +23,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
 
   private 数据容器: HTMLDivElement | null = null
   private 每页条数选择: HTMLSelectElement | null = null
-  private 分页组件: LsbyPagination | null = null
+  private 分页容器: HTMLDivElement | null = null
   private 消息容器: HTMLDivElement | null = null
 
   private 当前页: number = 1
@@ -278,12 +277,60 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    // 创建分页组件
-    this.分页组件 = new LsbyPagination()
-    this.分页组件.设置页码变化回调(async (页码: number): Promise<void> => {
-      this.当前页 = 页码
-      await this.加载表数据()
+    // 创建分页容器
+    this.分页容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '12px',
+        padding: '16px 0',
+      },
     })
+
+    // 上一页按钮
+    let 上一页按钮 = 创建元素('button', {
+      textContent: '上一页',
+      disabled: this.当前页 <= 1,
+      style: {
+        padding: '6px 16px',
+        cursor: this.当前页 <= 1 ? 'not-allowed' : 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        if (this.当前页 > 1) {
+          this.当前页 -= 1
+          await this.加载表数据()
+        }
+      },
+    })
+    this.分页容器.appendChild(上一页按钮)
+
+    // 页码显示
+    let 页码显示 = 创建元素('span', {
+      textContent: `第 ${this.当前页} 页 / 共 ${Math.ceil(this.总条数 / this.每页条数)} 页 (总共 ${this.总条数} 条)`,
+      style: {
+        margin: '0 8px',
+        color: 'var(--color-text-secondary)',
+      },
+    })
+    this.分页容器.appendChild(页码显示)
+
+    // 下一页按钮
+    let 下一页按钮 = 创建元素('button', {
+      textContent: '下一页',
+      disabled: this.当前页 >= Math.ceil(this.总条数 / this.每页条数),
+      style: {
+        padding: '6px 16px',
+        cursor: this.当前页 >= Math.ceil(this.总条数 / this.每页条数) ? 'not-allowed' : 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        if (this.当前页 < Math.ceil(this.总条数 / this.每页条数)) {
+          this.当前页 += 1
+          await this.加载表数据()
+        }
+      },
+    })
+    this.分页容器.appendChild(下一页按钮)
 
     // 创建消息容器
     this.消息容器 = 创建元素('div', {
@@ -301,8 +348,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     this.shadow.appendChild(每页条数容器)
     this.shadow.appendChild(this.过滤容器)
     this.shadow.appendChild(this.数据容器)
+    this.shadow.appendChild(this.分页容器)
     this.shadow.appendChild(this.消息容器)
-    this.shadow.appendChild(this.分页组件)
 
     await this.加载表数据()
     this.更新过滤容器()
@@ -406,13 +453,18 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       let 解析后的总条数 = parseInt(总条数字符串)
       this.总条数 = isNaN(解析后的总条数) === false ? 解析后的总条数 : 0
 
-      // 更新分页组件配置
-      if (this.分页组件 !== null) {
-        this.分页组件.设置配置({
-          当前页码: this.当前页,
-          每页数量: this.每页条数,
-          总数量: this.总条数,
-        })
+      // 更新分页
+      if (this.分页容器 !== null) {
+        let 上一页按钮 = this.分页容器.children[0] as HTMLButtonElement
+        let 页码显示 = this.分页容器.children[1] as HTMLSpanElement
+        let 下一页按钮 = this.分页容器.children[2] as HTMLButtonElement
+
+        let 总页数 = Math.ceil(this.总条数 / this.每页条数)
+        上一页按钮.disabled = this.当前页 <= 1
+        上一页按钮.style.cursor = this.当前页 <= 1 ? 'not-allowed' : 'pointer'
+        页码显示.textContent = `第 ${this.当前页} 页 / 共 ${总页数} 页 (总共 ${this.总条数} 条)`
+        下一页按钮.disabled = this.当前页 >= 总页数
+        下一页按钮.style.cursor = this.当前页 >= 总页数 ? 'not-allowed' : 'pointer'
       }
 
       // 查询当前页数据

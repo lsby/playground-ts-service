@@ -61,8 +61,46 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private 排序列表: { field: keyof 数据项; direction: 'asc' | 'desc' }[] = []
   private 筛选条件: Record<string, string> = {}
   private 是否加载中: boolean = false
+  private 是否正在拖动: boolean = false
+  private 拖动列索引: number = -1
+  private 拖动起始X: number = 0
+  private 拖动起始宽度: number = 0
   private 列最小宽度: string = '50px'
   private 列最大宽度: string | undefined = void 0
+
+  private 处理鼠标移动 = (event: MouseEvent): void => {
+    if (this.是否正在拖动 === false) return
+    let 差值 = event.clientX - this.拖动起始X
+    let 新宽度 = Math.max(50, this.拖动起始宽度 + 差值)
+    let 列索引 = this.拖动列索引
+    let ths = this.shadow.querySelectorAll(`th[data-col-index="${列索引}"]`)
+    let tds = this.shadow.querySelectorAll(`tbody td[data-col-index="${列索引}"]`)
+    for (let th of ths) {
+      let 元素 = th as HTMLElement
+      元素.style.width = `${新宽度}px`
+      if (差值 > 0) {
+        元素.style.maxWidth = `${新宽度}px`
+      } else if (差值 < 0) {
+        元素.style.minWidth = `${新宽度}px`
+      }
+    }
+    for (let td of tds) {
+      let 元素 = td as HTMLElement
+      元素.style.width = `${新宽度}px`
+      if (差值 > 0) {
+        元素.style.maxWidth = `${新宽度}px`
+      } else if (差值 < 0) {
+        元素.style.minWidth = `${新宽度}px`
+      }
+    }
+  }
+
+  private 处理鼠标释放 = (): void => {
+    this.是否正在拖动 = false
+    this.拖动列索引 = -1
+    document.removeEventListener('mousemove', this.处理鼠标移动)
+    document.removeEventListener('mouseup', this.处理鼠标释放)
+  }
 
   public constructor(选项: 数据表格选项<数据项>) {
     super()
@@ -163,6 +201,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
 
     for (let 列 of 列配置) {
       let 字段名 = String(列.字段名)
+      let 列索引 = 列配置.indexOf(列)
       let 有筛选值 = this.筛选条件[字段名] !== void 0
       let 筛选值 = this.筛选条件[字段名] ?? ''
       let 列最大宽度 = 列.列最大宽度 ?? this.列最大宽度
@@ -182,6 +221,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           whiteSpace: 'nowrap',
         },
       })
+      th.setAttribute('data-col-index', 列索引.toString())
 
       // 创建表头内容容器
       let 表头内容 = 创建元素('div', {
@@ -289,6 +329,35 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       th.textContent = ''
       th.appendChild(表头内容)
 
+      // 添加拖动句柄
+      th.style.position = 'relative'
+      let 拖动句柄 = 创建元素('div', {
+        style: {
+          position: 'absolute',
+          right: '0',
+          top: '0',
+          bottom: '0',
+          width: '5px',
+          backgroundColor: 'transparent',
+        },
+        onmouseenter: (): void => {
+          拖动句柄.style.cursor = 'ew-resize'
+        },
+        onmouseleave: (): void => {
+          拖动句柄.style.cursor = 'pointer'
+        },
+        onmousedown: (event: MouseEvent): void => {
+          this.是否正在拖动 = true
+          this.拖动列索引 = 列配置.indexOf(列)
+          this.拖动起始X = event.clientX
+          this.拖动起始宽度 = th.offsetWidth
+          document.addEventListener('mousemove', this.处理鼠标移动)
+          document.addEventListener('mouseup', this.处理鼠标释放)
+          event.preventDefault()
+        },
+      })
+      th.appendChild(拖动句柄)
+
       if (列.可排序 === true) {
         let 执行排序 = async (): Promise<void> => {
           let 字段名 = 列.字段名
@@ -307,9 +376,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           await this.加载数据()
         }
 
-        th.style.cursor = 'pointer'
         标签文本.style.cursor = 'pointer'
-        th.onclick = 执行排序
         标签文本.onclick = 执行排序
 
         // 添加hover效果
@@ -319,9 +386,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         let 移除悬停效果 = (): void => {
           标签文本.style.color = ''
         }
-        th.onmouseenter = 添加悬停效果
         标签文本.onmouseenter = 添加悬停效果
-        th.onmouseleave = 移除悬停效果
         标签文本.onmouseleave = 移除悬停效果
 
         // 添加排序指示器
@@ -400,6 +465,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
 
         // 渲染数据列
         for (let 列 of 列配置) {
+          let 列索引 = 列配置.indexOf(列)
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           let 数据 = 数据项[列.字段名]
           let 显示值 = 列.格式化 !== void 0 ? 列.格式化(数据) : String(数据)
@@ -418,6 +484,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
               whiteSpace: 'nowrap',
             },
           })
+          td.setAttribute('data-col-index', 列索引.toString())
           行.appendChild(td)
         }
 
