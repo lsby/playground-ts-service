@@ -30,6 +30,12 @@ let 接口逻辑实现 = 接口逻辑
         size: z.number(),
         orderBy: z.enum(['id', 'name']).optional(),
         orderDirection: z.enum(['asc', 'desc']).optional(),
+        filter: z
+          .object({
+            id: z.string().optional(),
+            name: z.string().optional(),
+          })
+          .optional(),
       }),
     ),
   )
@@ -38,7 +44,7 @@ let 接口逻辑实现 = 接口逻辑
       let _log = 请求附加参数.log.extend(接口路径)
       let kysely = 参数.kysely.获得句柄()
 
-      let { page, size, orderBy, orderDirection } = 逻辑附加参数
+      let { page, size, orderBy, orderDirection, filter } = 逻辑附加参数
       if (page <= 0) throw new Error('当前页从1开始')
 
       let builder总数 = kysely.selectFrom('user').select((eb) => eb.fn.countAll().as('total'))
@@ -49,6 +55,19 @@ let 接口逻辑实现 = 接口逻辑
         .limit(size)
         .offset((page - 1) * size)
 
+      // 应用筛选条件
+      if (filter !== void 0) {
+        if (filter.id !== void 0) {
+          builder数据 = builder数据.where('id', 'like', `%${filter.id}%`)
+          builder总数 = builder总数.where('id', 'like', `%${filter.id}%`)
+        }
+        if (filter.name !== void 0) {
+          builder数据 = builder数据.where('name', 'like', `%${filter.name}%`)
+          builder总数 = builder总数.where('name', 'like', `%${filter.name}%`)
+        }
+      }
+
+      // 应用排序
       if (orderBy !== void 0 && orderDirection !== void 0) {
         builder数据 = builder数据.orderBy(orderBy, orderDirection)
       }
