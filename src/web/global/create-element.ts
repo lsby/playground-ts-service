@@ -16,6 +16,10 @@ type 增强样式类型 = Omit<
   | 'wordBreak'
   | 'cursor'
   | 'pointerEvents'
+  | 'maxWidth'
+  | 'minWidth'
+  | 'maxHeight'
+  | 'minHeight'
 > & {
   // Flex 相关
   flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
@@ -71,6 +75,12 @@ type 增强样式类型 = Omit<
 } & {
   // Pointer Events
   pointerEvents?: 'auto' | 'none'
+} & {
+  // Size
+  maxWidth?: string | undefined
+  minWidth?: string | undefined
+  maxHeight?: string | undefined
+  minHeight?: string | undefined
 }
 
 type 元素属性 = {

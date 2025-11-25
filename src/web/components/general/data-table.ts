@@ -6,6 +6,8 @@ export type 数据表列配置<数据项> = {
   显示名: string
   格式化?: (值: any) => string
   可排序?: boolean
+  列最小宽度?: string
+  列最大宽度?: string
 }
 
 export type 数据表操作配置<数据项> = {
@@ -31,6 +33,8 @@ export type 数据表格选项<数据项> = {
   列配置: 数据表列配置<数据项>[]
   操作列表?: 数据表操作配置<数据项>[]
   每页数量?: number
+  列最小宽度?: string
+  列最大宽度?: string
   加载数据: (参数: 数据表加载数据参数) => Promise<{ 数据: 数据项[]; 总数: number }>
 }
 
@@ -59,12 +63,16 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private 当前排序方向: 'asc' | 'desc' | null = null
   private 筛选条件: Record<string, string> = {}
   private 是否加载中: boolean = false
+  private 列最小宽度: string = '50px'
+  private 列最大宽度: string | undefined = void 0
 
   public constructor(选项: 数据表格选项<数据项>) {
     super()
     this.列配置 = 选项.列配置
     this.操作列表 = 选项.操作列表 ?? []
     this.加载数据回调 = 选项.加载数据
+    this.列最小宽度 = 选项.列最小宽度 ?? '50px'
+    this.列最大宽度 = 选项.列最大宽度
     this.分页配置 = {
       当前页码: 1,
       每页数量: 选项.每页数量 ?? 10,
@@ -113,6 +121,27 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     let 数据列表 = this.数据列表
     let 操作列表 = this.操作列表
 
+    let 有可扩展列 = this.列配置.some((列) => 列.列最大宽度 === void 0 && this.列最大宽度 === void 0)
+
+    // 计算操作列宽度
+    let 操作列宽度列表: number[] = []
+    for (let 操作 of 操作列表) {
+      let 临时按钮 = 创建元素('button', {
+        textContent: 操作.名称,
+        style: {
+          padding: '4px 12px',
+          visibility: 'hidden',
+          position: 'absolute',
+          top: '-1000px',
+        },
+      })
+      document.body.appendChild(临时按钮)
+      await new Promise((resolve) => setTimeout(resolve, 0))
+      let 宽度 = 临时按钮.offsetWidth
+      操作列宽度列表.push(宽度 + 16) // 额外 padding
+      document.body.removeChild(临时按钮)
+    }
+
     let 容器 = 创建元素('div', {
       style: {
         display: 'flex',
@@ -127,7 +156,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         width: '100%',
         borderCollapse: 'collapse',
         border: '1px solid var(--边框颜色)',
-        tableLayout: 'fixed',
+        tableLayout: 有可扩展列 ? 'fixed' : 'auto',
       },
     })
 
@@ -139,6 +168,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       let 字段名 = String(列.字段名)
       let 有筛选值 = this.筛选条件[字段名] !== void 0
       let 筛选值 = this.筛选条件[字段名] ?? ''
+      let 列最大宽度 = 列.列最大宽度 ?? this.列最大宽度
 
       let th = 创建元素('th', {
         style: {
@@ -148,6 +178,11 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           backgroundColor: 有筛选值 ? 'var(--color-accent)' : 'var(--color-background-secondary)',
           position: 'relative',
           userSelect: 'none',
+          minWidth: 列.列最小宽度 ?? this.列最小宽度,
+          ...(列最大宽度 !== void 0 ? { maxWidth: 列最大宽度, width: 列最大宽度 } : {}),
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         },
       })
 
@@ -308,14 +343,17 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     }
 
     // 添加操作列表头
-    if (操作列表.length > 0) {
+    for (let i = 0; i < 操作列表.length; i++) {
+      let 操作 = 操作列表[i]
+      if (操作 === void 0) throw new Error('意外的数组越界')
       let 操作th = 创建元素('th', {
-        textContent: '操作',
+        textContent: 操作.名称,
         style: {
           border: '1px solid var(--边框颜色)',
           padding: '8px',
           textAlign: 'center',
           backgroundColor: 'var(--color-background-secondary)',
+          width: `${操作列宽度列表[i]}px`,
         },
       })
       表头行.appendChild(操作th)
@@ -329,7 +367,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
 
     if (数据列表.length === 0) {
       let 空行 = 创建元素('tr')
-      let 列数 = 列配置.length + (操作列表.length > 0 ? 1 : 0)
+      let 列数 = 列配置.length + 操作列表.length
       let 空单元格 = 创建元素('td', {
         colSpan: 列数,
         textContent: '无数据',
@@ -361,44 +399,49 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           let 数据 = 数据项[列.字段名]
           let 显示值 = 列.格式化 !== void 0 ? 列.格式化(数据) : String(数据)
+          let 列最大宽度 = 列.列最大宽度 ?? this.列最大宽度
+
           let td = 创建元素('td', {
             textContent: 显示值,
             title: 显示值,
             style: {
               padding: '8px',
               border: '1px solid var(--边框颜色)',
+              minWidth: 列.列最小宽度 ?? this.列最小宽度,
+              ...(列最大宽度 !== void 0 ? { maxWidth: 列最大宽度, width: 列最大宽度 } : {}),
+              overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              overflow: 'hidden',
             },
           })
           行.appendChild(td)
         }
 
         // 渲染操作列
-        if (操作列表.length > 0) {
+        for (let i = 0; i < 操作列表.length; i++) {
+          let 操作 = 操作列表[i]
+          if (操作 === void 0) throw new Error('意外的数组越界')
           let 操作单元格 = 创建元素('td', {
             style: {
               padding: '8px',
               border: '1px solid var(--边框颜色)',
               textAlign: 'center',
+              width: `${操作列宽度列表[i]}px`,
             },
           })
 
-          for (let 操作 of 操作列表) {
-            let 按钮 = 创建元素('button', {
-              textContent: 操作.名称,
-              style: {
-                padding: '4px 12px',
-                cursor: 'pointer',
-                marginRight: '4px',
-              },
-              onclick: async (): Promise<void> => {
-                await 操作.回调(数据项)
-              },
-            })
-            操作单元格.appendChild(按钮)
-          }
+          let 按钮 = 创建元素('button', {
+            textContent: 操作.名称,
+            style: {
+              padding: '4px 12px',
+              cursor: 'pointer',
+            },
+            onclick: async (): Promise<void> => {
+              await 操作.回调(数据项)
+              await this.刷新数据()
+            },
+          })
+          操作单元格.appendChild(按钮)
 
           行.appendChild(操作单元格)
         }
