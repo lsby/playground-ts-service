@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 显示确认对话框 } from '../../global/dialog'
+import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 import { 警告提示 } from '../../global/toast'
 import { LsbyPagination } from '../general/pagination'
 import { LsbyTableView } from '../general/table-view'
@@ -37,8 +37,8 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
         {
           名称: '编辑',
           回调: async (数据项: 数据项): Promise<void> => {
-            let name = prompt('请输入新名称:')
-            if (name === '' || name === null) {
+            let name = await 显示输入对话框('请输入新名称:', 数据项.name)
+            if (name === null || name === '') {
               await 警告提示('未输入数据')
               return
             }
@@ -95,13 +95,13 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
         padding: '6px 16px',
       },
       onclick: async (): Promise<void> => {
-        let name = prompt('请输入名称:')
-        if (name === '' || name === null) {
+        let name = await 显示输入对话框('请输入名称:')
+        if (name === null || name === '') {
           await 警告提示('未输入数据')
           return
         }
-        let pwd = prompt('请输入密码:')
-        if (pwd === '' || pwd === null) {
+        let pwd = await 显示输入对话框('请输入密码:')
+        if (pwd === null || pwd === '') {
           await 警告提示('未输入数据')
           return
         }
