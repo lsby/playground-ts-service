@@ -28,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑
       z.object({
         page: z.number(),
         size: z.number(),
-        orderBy: z.string().optional(),
+        orderBy: z.enum(['id', 'name']).optional(),
         orderDirection: z.enum(['asc', 'desc']).optional(),
       }),
     ),
@@ -50,9 +50,7 @@ let 接口逻辑实现 = 接口逻辑
         .offset((page - 1) * size)
 
       if (orderBy !== void 0 && orderDirection !== void 0) {
-        builder数据 = builder数据.orderBy(orderBy as any, orderDirection)
-      } else {
-        builder数据 = builder数据.orderBy('created_at', 'asc')
+        builder数据 = builder数据.orderBy(orderBy, orderDirection)
       }
 
       let 查询总数 = await builder总数.executeTakeFirst()
