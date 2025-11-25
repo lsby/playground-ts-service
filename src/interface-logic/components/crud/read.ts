@@ -19,7 +19,7 @@ export class 查询逻辑<
       选择的字段们: 选择的字段们类型[]
       当前页: number
       每页数量: number
-      排序字段: keyof DB[表名类型]
+      排序字段?: keyof DB[表名类型]
       排序模式?: 'asc' | 'desc'
       条件们?: 条件<DB[表名类型]>[]
     }>,
@@ -56,7 +56,10 @@ export class 查询逻辑<
       .select(参数结果.选择的字段们)
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
-      .orderBy(参数结果.排序字段, 参数结果.排序模式)
+
+    if (参数结果.排序字段 !== void 0) {
+      builder数据 = builder数据.orderBy(参数结果.排序字段, 参数结果.排序模式 ?? 'asc')
+    }
 
     if (参数结果.条件们 !== void 0 && 参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {

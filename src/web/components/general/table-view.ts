@@ -13,6 +13,7 @@ export type 列配置<数据项> = {
   字段名: keyof 数据项
   显示名: string
   格式化?: (值: any) => string
+  可排序?: boolean
 }
 
 export type 操作配置 = {
@@ -34,10 +35,17 @@ export class LsbyTableView extends 组件基类<属性类型, 发出事件类型
   }
 
   private 表格数据: 表格数据<any> | null = null
+  private 当前排序字段: string | null = null
+  private 当前排序方向: 'asc' | 'desc' | null = null
+  private 排序变化回调: ((排序字段: string | null, 排序方向: 'asc' | 'desc' | null) => Promise<void>) | null = null
 
   public 设置数据<数据项>(数据: 表格数据<数据项>): void {
     this.表格数据 = 数据
     this.渲染表格().catch(console.error)
+  }
+
+  public 设置排序变化回调(回调: (排序字段: string | null, 排序方向: 'asc' | 'desc' | null) => Promise<void>): void {
+    this.排序变化回调 = 回调
   }
 
   private async 渲染表格(): Promise<void> {
@@ -68,6 +76,40 @@ export class LsbyTableView extends 组件基类<属性类型, 发出事件类型
           backgroundColor: 'var(--color-background-secondary)',
         },
       })
+
+      if (列.可排序 === true) {
+        th.style.cursor = 'pointer'
+        th.onclick = async (): Promise<void> => {
+          let 字段名 = String(列.字段名)
+          if (this.当前排序字段 !== 字段名) {
+            this.当前排序字段 = 字段名
+            this.当前排序方向 = 'asc'
+          } else if (this.当前排序方向 === 'asc') {
+            this.当前排序方向 = 'desc'
+          } else if (this.当前排序方向 === 'desc') {
+            this.当前排序字段 = null
+            this.当前排序方向 = null
+          } else {
+            this.当前排序方向 = 'asc'
+          }
+          if (this.排序变化回调 !== null) {
+            await this.排序变化回调(this.当前排序字段, this.当前排序方向)
+          }
+          await this.渲染表格()
+        }
+
+        // 添加排序指示器
+        let 指示器 = ''
+        if (this.当前排序字段 === String(列.字段名)) {
+          if (this.当前排序方向 === 'asc') {
+            指示器 = ' ↑'
+          } else if (this.当前排序方向 === 'desc') {
+            指示器 = ' ↓'
+          }
+        }
+        th.textContent = 列.显示名 + 指示器
+      }
+
       表头行.appendChild(th)
     }
 
