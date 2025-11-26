@@ -43,6 +43,7 @@
 - 前端组件: `src/web/components`
   - 示例组件: `src/web/components/demo`
   - 通用组件: `src/web/components/general`
+  - 基础通用组件: `src/web/components/general/base`
   - 常用布局: `src/web/components/layout`
   - 机制组件: `src/web/components/mechanics`
   - 流程控制: `src/web/components/process`
@@ -75,12 +76,16 @@
 2. **Web组件开发**
 
 - 组件的注册名不要使用中文
-- 尽可能复用通用组件: `src/web/components/general`
+- 尽可能复用通用组件: `src/web/components/general`, 便于统一样式和行为
+- 尽可能复用基础通用组件: `src/web/components/general/base`, 便于统一样式和行为
 - 尽可能复用常用布局: `src/web/components/layout`
 - 尽可能使用工厂函数创建元素: `src/web/global/create-element.ts`
 - 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接new出来
 - 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 CSS 变量
-- 使用路由机制进行兄弟组件通信: `src/web/components/mechanics/route.ts`
+- 使用路由机制处理兄弟组件通信:
+  - 路由模型: `src/web/components/mechanics/route.ts`
+  - 示例组件: `src/web/components/demo/pong.ts`, `src/web/components/demo/pong.ts`
+  - 在html层组合: `src/web/page/demo.html`
 - 使用 `src/web/global/api-manager.ts` 来请求后端
   这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端ws的推送信息
 
