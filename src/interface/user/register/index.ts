@@ -9,6 +9,7 @@ import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
+import { 环境变量 } from '../../../global/env'
 import { kysely插件 } from '../../../global/plugin'
 import { 检查唯一性 } from '../../../interface-logic/check/check-exist'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
@@ -55,7 +56,7 @@ let 接口逻辑实现 = 接口逻辑
           .values({
             id: userId,
             name: 逻辑附加参数.userName,
-            pwd: await bcrypt.hash(逻辑附加参数.userPassword, 10),
+            pwd: await bcrypt.hash(逻辑附加参数.userPassword, 环境变量.BCRYPT_ROUNDS),
             is_admin: 0,
           })
           .execute()

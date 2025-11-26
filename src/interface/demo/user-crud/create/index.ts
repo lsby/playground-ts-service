@@ -9,6 +9,7 @@ import {
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
+import { 环境变量 } from '../../../../global/env'
 import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
@@ -41,7 +42,7 @@ let 接口逻辑实现 = 接口逻辑
                   数据: {
                     id: userId,
                     name: 参数.name,
-                    pwd: await bcrypt.hash(参数.pwd, 10),
+                    pwd: await bcrypt.hash(参数.pwd, 环境变量.BCRYPT_ROUNDS),
                     is_admin: 0,
                   },
                 }),

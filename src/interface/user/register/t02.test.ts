@@ -3,6 +3,7 @@ import assert from 'assert'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
+import { 环境变量 } from '../../../global/env'
 import { kysely管理器 } from '../../../global/global'
 import { 请求用例 } from '../../../tools/request'
 import 接口 from './index'
@@ -17,7 +18,7 @@ export default new 接口测试(
     await db.insertInto('system_config').values({ id: randomUUID(), is_initialized: 1, enable_register: 1 }).execute()
     await db
       .insertInto('user')
-      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 10), is_admin: 0 })
+      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 0 })
       .execute()
   },
 

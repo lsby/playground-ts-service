@@ -23,7 +23,7 @@ export async function init(): Promise<void> {
     .selectFrom('user')
     .select('id')
     .where('name', '=', 环境变量.DEFAULT_SYSTEM_USER)
-    .where('pwd', '=', await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 10))
+    .where('pwd', '=', await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS))
     .executeTakeFirst()
 
   if (用户存在判定 !== void 0) {
@@ -41,7 +41,7 @@ export async function init(): Promise<void> {
         .values({
           id: 初始用户id,
           name: 环境变量.DEFAULT_SYSTEM_USER,
-          pwd: await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 10),
+          pwd: await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS),
           is_admin: 1,
         })
         .execute()

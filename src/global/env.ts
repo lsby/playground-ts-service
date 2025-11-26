@@ -35,5 +35,7 @@ export let 环境变量 = await new Env({
     // JWT
     JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
+    // bcrypt
+    BCRYPT_ROUNDS: z.coerce.number(),
   }),
 }).获得环境变量()
