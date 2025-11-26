@@ -143,7 +143,8 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
 
     let 切换容器 = 创建元素('div', {
       style: {
-        textAlign: 'center',
+        display: 'flex',
+        justifyContent: 'center',
         marginTop: '8px',
       },
     })
@@ -184,20 +185,16 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
 
   private async 更新UI(): Promise<void> {
     let 模式 = (await this.获得属性('mode')) ?? 'login'
-    let 确认密码父容器 = this.确认密码输入框.parentElement
-    if (确认密码父容器 === null) {
-      return
-    }
     if (模式 === 'login') {
       this.结果.textContent = '请输入用户名和密码'
-      确认密码父容器.style.display = 'none'
+      this.确认密码输入框.style.display = 'none'
       this.注册按钮.style.display = 'none'
       this.登录按钮.style.display = 'block'
       this.切换按钮.textContent = '还没有账号？立即注册'
       this.切换按钮.style.display = this.enableRegister ? 'block' : 'none'
     } else {
       this.结果.textContent = '创建您的账号'
-      确认密码父容器.style.display = 'flex'
+      this.确认密码输入框.style.display = 'flex'
       this.注册按钮.style.display = 'block'
       this.登录按钮.style.display = 'none'
       this.切换按钮.textContent = '已有账号？立即登录'
