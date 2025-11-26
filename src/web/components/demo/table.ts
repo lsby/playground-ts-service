@@ -3,7 +3,6 @@ import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 import { 警告提示 } from '../../global/toast'
-import { 成功按钮 } from '../general/base/button'
 import type { 数据表加载数据参数 } from '../general/data-table'
 import { LsbyDataTable } from '../general/data-table'
 
@@ -30,6 +29,27 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
         { 字段名: 'name', 显示名: '名称', 可排序: true },
       ],
       每页数量: 5,
+      顶部操作列表: [
+        {
+          名称: '添加数据',
+          回调: async (): Promise<void> => {
+            let name = await 显示输入对话框('请输入名称:')
+            if (name === null) return
+            if (name === '') {
+              await 警告提示('未输入数据')
+              return
+            }
+            let pwd = await 显示输入对话框('请输入密码:')
+            if (pwd === null) return
+            if (pwd === '') {
+              await 警告提示('未输入数据')
+              return
+            }
+            await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
+            await this.表格组件.刷新数据()
+          },
+        },
+      ],
       操作列表: [
         {
           名称: '编辑',
@@ -79,37 +99,6 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
       },
     })
 
-    // 顶部操作区
-    let 操作区 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-      },
-    })
-
-    let 添加按钮 = new 成功按钮({
-      文本: '添加数据',
-      点击处理函数: async (): Promise<void> => {
-        let name = await 显示输入对话框('请输入名称:')
-        if (name === null) return
-        if (name === '') {
-          await 警告提示('未输入数据')
-          return
-        }
-        let pwd = await 显示输入对话框('请输入密码:')
-        if (pwd === null) return
-        if (pwd === '') {
-          await 警告提示('未输入数据')
-          return
-        }
-        await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
-        await this.表格组件.刷新数据()
-      },
-    })
-    操作区.appendChild(添加按钮)
-
-    容器.appendChild(操作区)
     容器.appendChild(this.表格组件)
 
     this.shadow.appendChild(容器)
