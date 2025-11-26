@@ -6,6 +6,8 @@ import { 显示确认对话框 } from '../../global/dialog'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { 警告提示 } from '../../global/toast'
 import { 主要按钮, 普通按钮 } from '../general/base/button'
+import { 表单, 表单项配置 } from '../general/form/form'
+import { 数字输入框, 普通输入框 } from '../general/form/input'
 import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
 
 type 属性类型 = {
@@ -227,49 +229,32 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    // 为每个列创建输入框
-    let 输入框映射: Map<string, HTMLInputElement> = new Map()
+    // 创建表单项列表
+    let 表单项列表: 表单项配置[] = []
 
     for (let 列 of this.列列表) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列名 = 列.name
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      let 是主键 = this.主键列.includes(列名)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列类型 = 列.type
+      let 输入框 =
+        this.获得输入框类型(列类型) === 'number'
+          ? new 数字输入框({ 占位符: `请输入 ${列名}` })
+          : new 普通输入框({ 占位符: `请输入 ${列名}` })
 
-      // 跳过主键列（通常是自增的）
-      if (是主键) continue
-
-      let 标签 = 创建元素('label', {
-        textContent: 列名,
-        style: {
-          display: 'block',
-          marginBottom: '4px',
-          fontSize: '14px',
-          color: 'var(--文字颜色)',
-          fontWeight: 'bold',
-        },
+      表单项列表.push({
+        键: 列名,
+        组件: 输入框,
+        标签: 列名,
       })
-
-      let 输入框 = 创建元素('input', {
-        type: this.获得输入框类型(列类型),
-        placeholder: `请输入 ${列名}`,
-        style: {
-          width: '100%',
-          padding: '8px',
-          border: '1px solid var(--边框颜色)',
-          borderRadius: '4px',
-          backgroundColor: 'var(--背景颜色)',
-          color: 'var(--文字颜色)',
-          boxSizing: 'border-box',
-        },
-      })
-
-      输入框映射.set(列名, 输入框)
-      内容容器.appendChild(标签)
-      内容容器.appendChild(输入框)
     }
+
+    // 创建表单
+    let 表单实例 = new 表单({
+      项列表: 表单项列表,
+    })
+
+    内容容器.appendChild(表单实例)
 
     // 按钮容器
     let 按钮容器 = 创建元素('div', {
@@ -292,7 +277,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 确认按钮 = new 主要按钮({
       文本: '添加',
       点击处理函数: async (): Promise<void> => {
-        await this.保存新行(输入框映射)
+        await this.保存新行(表单实例)
       },
     })
 
@@ -315,8 +300,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    // 为每个列创建输入框
-    let 输入框映射: Map<string, HTMLInputElement> = new Map()
+    // 创建表单项列表
+    let 表单项列表: 表单项配置[] = []
 
     for (let 列 of this.列列表) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -326,36 +311,24 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 当前值 = 行数据[列名]
 
-      let 标签 = 创建元素('label', {
-        textContent: 列名,
-        style: {
-          display: 'block',
-          marginBottom: '4px',
-          fontSize: '14px',
-          color: 'var(--文字颜色)',
-          fontWeight: 'bold',
-        },
-      })
+      let 输入框 =
+        this.获得输入框类型(列类型) === 'number'
+          ? new 数字输入框({ 值: String(当前值 ?? '') })
+          : new 普通输入框({ 值: String(当前值 ?? '') })
 
-      let 输入框 = 创建元素('input', {
-        type: this.获得输入框类型(列类型),
-        value: String(当前值 ?? ''),
-        placeholder: `请输入 ${列名}`,
-        style: {
-          width: '100%',
-          padding: '8px',
-          border: '1px solid var(--边框颜色)',
-          borderRadius: '4px',
-          backgroundColor: 'var(--背景颜色)',
-          color: 'var(--文字颜色)',
-          boxSizing: 'border-box',
-        },
+      表单项列表.push({
+        键: 列名,
+        组件: 输入框,
+        标签: 列名,
       })
-
-      输入框映射.set(列名, 输入框)
-      内容容器.appendChild(标签)
-      内容容器.appendChild(输入框)
     }
+
+    // 创建表单
+    let 表单实例 = new 表单({
+      项列表: 表单项列表,
+    })
+
+    内容容器.appendChild(表单实例)
 
     // 按钮容器
     let 按钮容器 = 创建元素('div', {
@@ -378,7 +351,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 确认按钮 = new 主要按钮({
       文本: '保存',
       点击处理函数: async (): Promise<void> => {
-        await this.保存编辑行(行数据, 输入框映射)
+        await this.保存编辑行(行数据, 表单实例)
       },
     })
 
@@ -389,23 +362,24 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     await 显示模态框({ 标题: '编辑数据', 可关闭: true }, 内容容器)
   }
 
-  private async 保存新行(输入框映射: Map<string, HTMLInputElement>): Promise<void> {
+  private async 保存新行(表单实例: 表单): Promise<void> {
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
+
+    let 数据 = 表单实例.获得数据()
 
     let 列列表: string[] = []
     let 值列表: string[] = []
     let 参数列表: (string | number)[] = []
 
-    for (let [列名, 输入框] of 输入框映射) {
-      let 值 = 输入框.value.trim()
+    for (let [列名, 值] of Object.entries(数据)) {
       if (值 === '') {
         await 警告提示(`${列名} 不能为空`)
         return
       }
       列列表.push(`\`${列名}\``)
       值列表.push('?')
-      参数列表.push(值)
+      参数列表.push(值 as string | number)
     }
 
     let sql = `INSERT INTO \`${表名}\` (${列列表.join(', ')}) VALUES (${值列表.join(', ')})`
@@ -425,7 +399,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     }
   }
 
-  private async 保存编辑行(行数据: 数据项, 输入框映射: Map<string, HTMLInputElement>): Promise<void> {
+  private async 保存编辑行(行数据: 数据项, 表单实例: 表单): Promise<void> {
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
@@ -434,14 +408,15 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       return
     }
 
+    let 数据 = 表单实例.获得数据()
+
     // 构建 SET 语句
     let 设置条件列表: string[] = []
     let 参数列表: (string | number)[] = []
 
-    for (let [列名, 输入框] of 输入框映射) {
-      let 值 = 输入框.value.trim()
+    for (let [列名, 值] of Object.entries(数据)) {
       设置条件列表.push(`\`${列名}\` = ?`)
-      参数列表.push(值)
+      参数列表.push(值 as string | number)
     }
 
     // 构建 WHERE 语句

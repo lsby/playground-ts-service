@@ -69,9 +69,10 @@ class 表单<数据类型 extends Record<string, 基础值结构> = Record<strin
 
     for (let 项配置 of this.配置.项列表) {
       // 创建项包装器，使用 flex 布局
+      let 排版 = 项配置.排版 ?? '全宽'
       let 项包装器 = 创建元素('div', {
         style: {
-          gridColumn: 项配置.排版 === '全宽' ? 'span 2' : 'span 1',
+          gridColumn: 排版 === '全宽' ? 'span 2' : 'span 1',
           display: 'flex',
           flexDirection: 'column',
           minWidth: '0',
