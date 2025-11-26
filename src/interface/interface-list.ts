@@ -23,8 +23,6 @@ import _src_interface_sqlite_admin_get_indexes_index_ts from './sqlite-admin/get
 import _src_interface_sqlite_admin_get_table_schema_index_ts from './sqlite-admin/get-table-schema/index'
 import _src_interface_sqlite_admin_get_tables_index_ts from './sqlite-admin/get-tables/index'
 import _src_interface_sqlite_admin_get_triggers_index_ts from './sqlite-admin/get-triggers/index'
-import _src_interface_job_admin_instant_job_admin_create_fail_test_index_ts from './job-admin/instant-job-admin/create-fail-test/index'
-import _src_interface_job_admin_instant_job_admin_create_test_index_ts from './job-admin/instant-job-admin/create-test/index'
 import _src_interface_job_admin_instant_job_admin_get_log_index_ts from './job-admin/instant-job-admin/get-log/index'
 import _src_interface_job_admin_instant_job_admin_list_index_ts from './job-admin/instant-job-admin/list/index'
 import _src_interface_job_admin_scheduled_job_admin_list_index_ts from './job-admin/scheduled-job-admin/list/index'
@@ -56,8 +54,6 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_sqlite_admin_get_table_schema_index_ts,
   _src_interface_sqlite_admin_get_tables_index_ts,
   _src_interface_sqlite_admin_get_triggers_index_ts,
-  _src_interface_job_admin_instant_job_admin_create_fail_test_index_ts,
-  _src_interface_job_admin_instant_job_admin_create_test_index_ts,
   _src_interface_job_admin_instant_job_admin_get_log_index_ts,
   _src_interface_job_admin_instant_job_admin_list_index_ts,
   _src_interface_job_admin_scheduled_job_admin_list_index_ts,
