@@ -3,6 +3,7 @@ import { 右键菜单管理器 } from '../../../global/context-menu-manager'
 import { 创建元素 } from '../../../global/create-element'
 import { 显示输入对话框 } from '../../../global/dialog'
 import { 普通按钮 } from '../base/button'
+import { LsbyPagination, 数据表分页配置 } from '../pagination/pagination'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
@@ -21,12 +22,6 @@ export type 数据表操作配置<数据项> = {
 export type 顶部操作配置 = {
   名称: string
   回调: () => Promise<void>
-}
-
-export type 数据表分页配置 = {
-  当前页码: number
-  每页数量: number
-  总数量: number
 }
 
 export type 数据表加载数据参数<数据项> = {
@@ -84,6 +79,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private shift选择起点: number = -1
   private 表格行元素映射: Map<number, HTMLTableRowElement> = new Map()
   private 表格单元格元素映射: Map<string, HTMLTableCellElement> = new Map()
+  private 分页组件: LsbyPagination | null = null
 
   private 处理鼠标移动 = (event: MouseEvent): void => {
     if (this.是否正在拖动 === false) return
@@ -723,56 +719,16 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     容器.appendChild(表格元素)
 
     // 渲染分页
-    let { 当前页码, 每页数量, 总数量 } = this.分页配置
-    let 总页数 = Math.ceil(总数量 / 每页数量)
-
-    let 分页容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '12px',
-        padding: '16px 0',
-      },
-    })
-
-    // 上一页按钮
-    let 上一页按钮 = new 普通按钮({
-      文本: '上一页',
-      禁用: 当前页码 <= 1 || this.是否加载中,
-      点击处理函数: async (): Promise<void> => {
-        if (当前页码 > 1) {
-          this.分页配置.当前页码 = 当前页码 - 1
-          await this.加载数据()
-        }
-      },
-    })
-    分页容器.appendChild(上一页按钮)
-
-    // 页码显示
-    let 页码显示 = 创建元素('span', {
-      textContent: `第 ${当前页码} 页 / 共 ${总页数} 页 (总共 ${总数量} 条)`,
-      style: {
-        margin: '0 8px',
-        color: 'var(--color-text-secondary)',
-      },
-    })
-    分页容器.appendChild(页码显示)
-
-    // 下一页按钮
-    let 下一页按钮 = new 普通按钮({
-      文本: '下一页',
-      禁用: 当前页码 >= 总页数 || this.是否加载中,
-      点击处理函数: async (): Promise<void> => {
-        if (当前页码 < 总页数) {
-          this.分页配置.当前页码 = 当前页码 + 1
-          await this.加载数据()
-        }
-      },
-    })
-    分页容器.appendChild(下一页按钮)
-
-    容器.appendChild(分页容器)
+    if (this.分页组件 === null) {
+      this.分页组件 = new LsbyPagination(this.分页配置, this.是否加载中)
+      this.分页组件.监听发出事件('页码变化', async (event) => {
+        this.分页配置.当前页码 = event.detail.页码
+        await this.加载数据()
+      })
+    } else {
+      this.分页组件.更新配置(this.分页配置, this.是否加载中)
+    }
+    容器.appendChild(this.分页组件)
 
     this.shadow.innerHTML = ''
     this.shadow.appendChild(容器)
