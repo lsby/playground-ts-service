@@ -2,6 +2,7 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { 图标按钮, 普通按钮 } from '../general/button'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -34,6 +35,9 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
   private 表格管理器: 共享表格管理器 | null = null
   private 当前排序列: string | null = null
   private 当前排序方向: 'asc' | 'desc' | null = null
+
+  private 上一页按钮: 普通按钮 | null = null
+  private 下一页按钮: 普通按钮 | null = null
 
   private 列列表: any[] = []
   private 过滤项列表: 过滤项[] = []
@@ -117,45 +121,27 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       过滤输入框.value = 当前项.文本
     }
 
-    let 添加按钮 = 创建元素('button', {
-      textContent: '+',
-      style: {
-        padding: '4px 8px',
-        cursor: 'pointer',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
+    let 添加按钮 = new 图标按钮({
+      图标: '+',
+      点击处理函数: (): void => {
+        this.过滤项列表.push({ 列: null, 文本: '' })
+        this.更新过滤容器()
       },
-    })
-    添加按钮.addEventListener('click', () => {
-      this.过滤项列表.push({ 列: null, 文本: '' })
-      this.更新过滤容器()
     })
 
-    let 删除按钮 = 创建元素('button', {
-      textContent: '-',
-      style: {
-        padding: '4px 8px',
-        cursor: 'pointer',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
+    let 删除按钮 = new 图标按钮({
+      图标: '-',
+      点击处理函数: (): void => {
+        if (this.过滤项列表.length > 1) {
+          this.过滤项列表.splice(索引, 1)
+          this.更新过滤容器()
+        }
       },
-    })
-    删除按钮.addEventListener('click', () => {
-      if (this.过滤项列表.length > 1) {
-        this.过滤项列表.splice(索引, 1)
-        this.更新过滤容器()
-      }
     })
 
     // 如果只有一行，禁用删除按钮
     if (this.过滤项列表.length === 1) {
-      删除按钮.disabled = true
-      删除按钮.style.opacity = '0.5'
-      删除按钮.style.cursor = 'not-allowed'
+      删除按钮.设置禁用(true)
     }
 
     行容器.appendChild(过滤列标签)
@@ -289,21 +275,16 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     })
 
     // 上一页按钮
-    let 上一页按钮 = 创建元素('button', {
-      textContent: '上一页',
-      disabled: this.当前页 <= 1,
-      style: {
-        padding: '6px 16px',
-        cursor: this.当前页 <= 1 ? 'not-allowed' : 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    this.上一页按钮 = new 普通按钮({
+      文本: '上一页',
+      点击处理函数: async (): Promise<void> => {
         if (this.当前页 > 1) {
           this.当前页 -= 1
           await this.加载表数据()
         }
       },
     })
-    this.分页容器.appendChild(上一页按钮)
+    this.分页容器.appendChild(this.上一页按钮)
 
     // 页码显示
     let 页码显示 = 创建元素('span', {
@@ -316,21 +297,16 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     this.分页容器.appendChild(页码显示)
 
     // 下一页按钮
-    let 下一页按钮 = 创建元素('button', {
-      textContent: '下一页',
-      disabled: this.当前页 >= Math.ceil(this.总条数 / this.每页条数),
-      style: {
-        padding: '6px 16px',
-        cursor: this.当前页 >= Math.ceil(this.总条数 / this.每页条数) ? 'not-allowed' : 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    this.下一页按钮 = new 普通按钮({
+      文本: '下一页',
+      点击处理函数: async (): Promise<void> => {
         if (this.当前页 < Math.ceil(this.总条数 / this.每页条数)) {
           this.当前页 += 1
           await this.加载表数据()
         }
       },
     })
-    this.分页容器.appendChild(下一页按钮)
+    this.分页容器.appendChild(this.下一页按钮)
 
     // 创建消息容器
     this.消息容器 = 创建元素('div', {
@@ -411,6 +387,9 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       if (this.数据容器 !== null) {
         this.数据容器.style.display = 'none'
       }
+      if (this.分页容器 !== null) {
+        this.分页容器.style.display = 'none'
+      }
       if (this.消息容器 !== null) {
         this.消息容器.style.display = 'flex'
         this.消息容器.textContent = '请选择表'
@@ -418,9 +397,12 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       return
     }
 
-    // 有表名时，显示数据容器，隐藏消息容器
+    // 有表名时，显示数据容器和分页容器，隐藏消息容器
     if (this.数据容器 !== null) {
       this.数据容器.style.display = 'flex'
+    }
+    if (this.分页容器 !== null) {
+      this.分页容器.style.display = 'flex'
     }
     if (this.消息容器 !== null) {
       this.消息容器.style.display = 'none'
@@ -454,17 +436,13 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       this.总条数 = isNaN(解析后的总条数) === false ? 解析后的总条数 : 0
 
       // 更新分页
-      if (this.分页容器 !== null) {
-        let 上一页按钮 = this.分页容器.children[0] as HTMLButtonElement
+      if (this.分页容器 !== null && this.上一页按钮 !== null && this.下一页按钮 !== null) {
         let 页码显示 = this.分页容器.children[1] as HTMLSpanElement
-        let 下一页按钮 = this.分页容器.children[2] as HTMLButtonElement
 
         let 总页数 = Math.ceil(this.总条数 / this.每页条数)
-        上一页按钮.disabled = this.当前页 <= 1
-        上一页按钮.style.cursor = this.当前页 <= 1 ? 'not-allowed' : 'pointer'
+        this.上一页按钮.设置禁用(this.当前页 <= 1)
         页码显示.textContent = `第 ${this.当前页} 页 / 共 ${总页数} 页 (总共 ${this.总条数} 条)`
-        下一页按钮.disabled = this.当前页 >= 总页数
-        下一页按钮.style.cursor = this.当前页 >= 总页数 ? 'not-allowed' : 'pointer'
+        this.下一页按钮.设置禁用(this.当前页 >= 总页数)
       }
 
       // 查询当前页数据

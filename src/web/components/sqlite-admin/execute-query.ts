@@ -2,6 +2,7 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { 图标按钮, 普通按钮 } from '../general/button'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {}
@@ -25,12 +26,15 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 当前选项卡索引: number = 0
   private 选项卡头容器: HTMLDivElement = 创建元素('div')
   private 内容容器: HTMLDivElement = 创建元素('div')
-  private 添加选项卡按钮: HTMLButtonElement = 创建元素('button')
+  private 添加选项卡按钮: 图标按钮 = new 图标按钮({
+    图标: '+',
+    点击处理函数: () => this.添加选项卡(),
+  })
   private 选项卡内容映射: Map<
     string,
     {
       sql输入: HTMLTextAreaElement
-      执行按钮: HTMLButtonElement
+      执行按钮: 普通按钮
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
       影响行数消息元素: HTMLDivElement | null
@@ -72,15 +76,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     this.选项卡头容器.style.overflowX = 'auto'
 
     // 添加 选项卡 按钮
-    this.添加选项卡按钮.textContent = '+'
-    this.添加选项卡按钮.style.padding = '6px'
-    this.添加选项卡按钮.style.border = '1px solid var(--边框颜色)'
-    this.添加选项卡按钮.style.backgroundColor = 'var(--背景颜色)'
-    this.添加选项卡按钮.style.color = 'var(--文字颜色)'
-    this.添加选项卡按钮.style.cursor = 'pointer'
-    this.添加选项卡按钮.style.fontSize = '14px'
-    this.添加选项卡按钮.style.borderRadius = '4px'
-    this.添加选项卡按钮.addEventListener('click', () => this.添加选项卡())
+    // 已在构造函数中初始化
 
     // 内容容器
     this.内容容器.style.flex = '1'
@@ -126,26 +122,12 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
         },
       })
 
-      let 关闭按钮 = 创建元素('button', {
-        textContent: '×',
-        style: {
-          padding: '4px',
-          cursor: 'pointer',
-          border: 'none',
-          background: 'none',
-          color: 'inherit',
-          fontSize: '16px',
-          lineHeight: '1',
-          width: '16px',
-          height: '16px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+      let 关闭按钮 = new 图标按钮({
+        图标: '×',
+        点击处理函数: (e: Event): void => {
+          e.stopPropagation()
+          this.删除选项卡(索引)
         },
-      })
-      关闭按钮.addEventListener('click', (e) => {
-        e.stopPropagation()
-        this.删除选项卡(索引)
       })
 
       选项卡按钮.appendChild(标题span)
@@ -183,7 +165,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
 
   private 获取或创建选项卡内容(tabId: string): {
     sql输入: HTMLTextAreaElement
-    执行按钮: HTMLButtonElement
+    执行按钮: 普通按钮
     结果容器: HTMLDivElement
     表格管理器: 共享表格管理器 | null
     影响行数消息元素: HTMLDivElement | null
@@ -210,17 +192,10 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       },
     })
 
-    let 执行按钮 = 创建元素('button', {
-      textContent: '执行',
-      style: {
-        padding: '8px 16px',
-        fontSize: '14px',
-        cursor: 'pointer',
-        alignSelf: 'flex-start',
-        marginBottom: '10px',
-      },
+    let 执行按钮 = new 普通按钮({
+      文本: '执行',
+      点击处理函数: async (): Promise<void> => this.查询(tabId),
     })
-    执行按钮.addEventListener('click', () => this.查询(tabId))
 
     let 结果容器 = 创建元素('div', {
       style: {
@@ -309,7 +284,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 显示查询结果(
     内容: {
       sql输入: HTMLTextAreaElement
-      执行按钮: HTMLButtonElement
+      执行按钮: 普通按钮
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
       影响行数消息元素: HTMLDivElement | null
@@ -381,7 +356,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 显示结果(
     内容: {
       sql输入: HTMLTextAreaElement
-      执行按钮: HTMLButtonElement
+      执行按钮: 普通按钮
       结果容器: HTMLDivElement
       表格管理器: 共享表格管理器 | null
       影响行数消息元素: HTMLDivElement | null

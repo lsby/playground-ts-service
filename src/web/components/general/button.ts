@@ -21,6 +21,7 @@ type 按钮配置 = {
 
 abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监听按钮事件> {
   protected 配置: 按钮配置
+  private 按钮元素?: HTMLButtonElement
 
   public constructor(配置: 按钮配置 = {}) {
     super({})
@@ -73,9 +74,21 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
       this.派发事件('点击', void 0)
     })
     this.shadow.appendChild(按钮元素)
+    this.按钮元素 = 按钮元素
   }
 
   protected abstract 获得按钮样式对象(): 增强样式类型
+
+  public 设置禁用(值: boolean): void {
+    this.配置.禁用 = 值
+    if (this.按钮元素 !== void 0) {
+      this.按钮元素.disabled = 值
+    }
+  }
+
+  public 获得禁用(): boolean {
+    return this.配置.禁用 ?? false
+  }
 }
 
 export class 普通按钮 extends 按钮基类 {

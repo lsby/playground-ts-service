@@ -3,6 +3,7 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
+import { 普通按钮 } from '../general/button'
 import { LsbySplitLog } from '../general/split-log'
 
 type 属性类型 = {}
@@ -36,62 +37,51 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
       },
     })
 
-    let 备份按钮 = 创建元素('button', {
-      textContent: '开始备份',
-      style: {
-        padding: '8px 16px',
-        fontSize: '16px',
-        backgroundColor: 'var(--主要按钮颜色)',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
+    let 备份按钮 = new 普通按钮({
+      文本: '开始备份',
+      点击处理函数: async (): Promise<void> => {
+        let splitLog = new LsbySplitLog()
+
+        let 左侧内容 = 创建元素('div', {
+          style: {
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+          },
+        })
+
+        let 开始备份按钮 = new 普通按钮({
+          文本: '开始备份',
+          点击处理函数: async (): Promise<void> => {
+            开始备份按钮.设置禁用(true)
+            splitLog.日志组件.添加日志('开始备份数据库...')
+            try {
+              await API管理器.请求post接口并处理错误(
+                '/api/sqlite-admin/backup-database',
+                {},
+                async (data: { message: string }) => {
+                  splitLog.日志组件.添加日志(data.message)
+                },
+              )
+              splitLog.日志组件.添加日志('备份成功')
+            } catch (错误) {
+              console.error('备份数据库失败:', 错误)
+              splitLog.日志组件.添加日志(`备份失败: ${错误}`)
+            } finally {
+              开始备份按钮.设置禁用(false)
+            }
+          },
+        })
+
+        左侧内容.appendChild(开始备份按钮)
+        左侧内容.setAttribute('slot', 'left')
+        splitLog.appendChild(左侧内容)
+
+        await 显示模态框({ 标题: '备份数据库' }, splitLog)
       },
     })
-    备份按钮.onclick = async (): Promise<void> => {
-      let splitLog = new LsbySplitLog()
-
-      let 左侧内容 = 创建元素('div', {
-        style: {
-          padding: '20px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-        },
-      })
-
-      let 开始备份按钮 = 创建元素('button', {
-        textContent: '开始备份',
-        style: { marginBottom: '10px' },
-      })
-
-      左侧内容.appendChild(开始备份按钮)
-      左侧内容.setAttribute('slot', 'left')
-      splitLog.appendChild(左侧内容)
-
-      开始备份按钮.addEventListener('click', async () => {
-        开始备份按钮.disabled = true
-        splitLog.日志组件.添加日志('开始备份数据库...')
-        try {
-          await API管理器.请求post接口并处理错误(
-            '/api/sqlite-admin/backup-database',
-            {},
-            async (data: { message: string }) => {
-              splitLog.日志组件.添加日志(data.message)
-            },
-          )
-          splitLog.日志组件.添加日志('备份成功')
-        } catch (错误) {
-          console.error('备份数据库失败:', 错误)
-          splitLog.日志组件.添加日志(`备份失败: ${错误}`)
-        } finally {
-          开始备份按钮.disabled = false
-        }
-      })
-
-      await 显示模态框({ 标题: '备份数据库' }, splitLog)
-    }
 
     this.shadow.appendChild(标题)
     this.shadow.appendChild(备份按钮)
