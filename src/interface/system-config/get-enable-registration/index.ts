@@ -7,9 +7,9 @@ import {
 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { kysely插件 } from '../../../../global/plugin'
+import { kysely插件 } from '../../../global/plugin'
 
-let 接口路径 = '/api/system-config/enable-registration/read' as const
+let 接口路径 = '/api/system-config/get-enable-registration' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(

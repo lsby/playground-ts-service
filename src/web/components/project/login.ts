@@ -39,7 +39,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
   protected override async 当加载时(): Promise<void> {
     // 获取注册启用状态
     try {
-      let 响应 = await API管理器.请求post接口并处理错误('/api/system-config/enable-registration/read', {})
+      let 响应 = await API管理器.请求post接口并处理错误('/api/system-config/get-enable-registration', {})
       this.enableRegister = 响应.enable_register === 1
     } catch (_e) {
       this.enableRegister = false
