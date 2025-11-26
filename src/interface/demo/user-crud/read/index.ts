@@ -49,7 +49,8 @@ let 接口逻辑实现 = 接口逻辑
           当前页: page,
           每页数量: size,
           ...(orderBy !== void 0 ? { 排序字段们: orderBy } : {}),
-          应用筛选函数: (builder数据, builder总数): { builder数据: any; builder总数: any } => {
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+          应用筛选函数: (builder数据, builder总数) => {
             let newBuilder数据 = builder数据
             let newBuilder总数 = builder总数
             if (filter !== void 0) {

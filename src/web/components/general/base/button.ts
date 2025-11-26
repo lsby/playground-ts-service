@@ -13,10 +13,8 @@ type 按钮配置 = {
   文本?: string
   禁用?: boolean
   点击处理函数?: (e: Event) => void | Promise<void>
-  悬浮效果类型?: '背景' | '透明度'
-  字体大小?: string
-  颜色?: string
-  样式?: 增强样式类型
+  宿主样式?: 增强样式类型
+  元素样式?: 增强样式类型
 }
 
 abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监听按钮事件> {
@@ -30,16 +28,21 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
 
   protected async 当加载时(): Promise<void> {
     // 应用宿主样式
-    if (this.配置.样式 !== void 0) {
-      for (let 键 in this.配置.样式) {
-        if (this.配置.样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+    if (this.配置.宿主样式 !== void 0) {
+      for (let 键 in this.配置.宿主样式) {
+        if (this.配置.宿主样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
         }
       }
     }
 
+    let 按钮样式 = this.获得按钮样式对象()
+    if (this.配置.元素样式 !== void 0) {
+      按钮样式 = { ...按钮样式, ...this.配置.元素样式 }
+    }
+
     let 按钮元素 = 创建元素('button', {
-      style: this.获得按钮样式对象(),
+      style: 按钮样式,
     })
     if (this.配置.文本 !== void 0) {
       let 文本元素 = 创建元素('span', { textContent: this.配置.文本 })
@@ -47,27 +50,6 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
     }
     if (this.配置.禁用 === true) {
       按钮元素.disabled = true
-    }
-    // 添加 hover 效果
-    let 初始背景色 = this.获得按钮样式对象().backgroundColor ?? 'var(--按钮背景)'
-    let 初始透明度 = 按钮元素.style.opacity !== '' ? 按钮元素.style.opacity : '1'
-    按钮元素.onmouseenter = (): void => {
-      if (this.配置.禁用 !== true) {
-        if (this.配置.悬浮效果类型 === '透明度') {
-          按钮元素.style.opacity = '1'
-        } else {
-          按钮元素.style.backgroundColor = 'var(--悬浮背景颜色)'
-        }
-      }
-    }
-    按钮元素.onmouseleave = (): void => {
-      if (this.配置.禁用 !== true) {
-        if (this.配置.悬浮效果类型 === '透明度') {
-          按钮元素.style.opacity = 初始透明度
-        } else {
-          按钮元素.style.backgroundColor = 初始背景色
-        }
-      }
     }
     按钮元素.onclick = async (e: MouseEvent): Promise<void> => {
       e.preventDefault()

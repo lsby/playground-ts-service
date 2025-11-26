@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import type { 表单元素 } from './form'
 
 type 输入框属性 = {}
 
@@ -22,17 +23,11 @@ type 输入框配置 = {
   变化处理函数?: (值: string) => void | Promise<void>
   焦点处理函数?: () => void | Promise<void>
   失焦处理函数?: (值: string) => void | Promise<void>
-  字体大小?: string
-  宽度?: string
-  标签?: string
-  内边距?: string
-  边框颜色?: string
-  背景颜色?: string
-  文字颜色?: string
-  样式?: 增强样式类型
+  宿主样式?: 增强样式类型
+  元素样式?: 增强样式类型
 }
 
-abstract class 输入框基类 extends 组件基类<输入框属性, 输入框事件, 监听输入框事件> {
+abstract class 输入框基类 extends 组件基类<输入框属性, 输入框事件, 监听输入框事件> implements 表单元素<string> {
   protected 配置: 输入框配置
   private 输入框元素?: HTMLInputElement
 
@@ -43,10 +38,10 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
 
   protected async 当加载时(): Promise<void> {
     // 应用宿主样式
-    if (this.配置.样式 !== void 0) {
-      for (let 键 in this.配置.样式) {
-        if (this.配置.样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+    if (this.配置.宿主样式 !== void 0) {
+      for (let 键 in this.配置.宿主样式) {
+        if (this.配置.宿主样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
         }
       }
     }
@@ -56,32 +51,24 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
-        width: this.配置.宽度 ?? '100%',
+        width: '100%',
       },
     })
+
+    let 输入框样式 = this.获得输入框样式对象()
+    if (this.配置.元素样式 !== void 0) {
+      输入框样式 = { ...输入框样式, ...this.配置.元素样式 }
+    }
 
     let 输入框元素 = 创建元素('input', {
       type: this.配置.类型 ?? 'text',
       placeholder: this.配置.占位符 ?? '',
       value: this.配置.值 ?? '',
-      style: this.获得输入框样式对象(),
+      style: 输入框样式,
     })
 
     if (this.配置.类型 === 'number') {
       输入框元素.style.appearance = 'none'
-    }
-
-    if (this.配置.标签 !== void 0) {
-      let 标签元素 = 创建元素('span', {
-        textContent: this.配置.标签,
-        style: {
-          marginRight: '8px',
-          fontSize: this.配置.字体大小 ?? '14px',
-          color: 'var(--文字颜色)',
-          flexShrink: '0',
-        },
-      })
-      容器.appendChild(标签元素)
     }
 
     if (this.配置.禁用 === true) {
@@ -167,13 +154,13 @@ export class 普通输入框 extends 输入框基类 {
   protected 获得输入框样式对象(): 增强样式类型 {
     let 禁用 = this.配置.禁用 ?? false
     return {
-      width: this.配置.宽度 ?? '100%',
-      padding: this.配置.内边距 ?? '8px 12px',
-      fontSize: this.配置.字体大小 ?? '14px',
-      border: `1px solid ${this.配置.边框颜色 ?? 'var(--边框颜色)'}`,
+      width: '100%',
+      padding: '8px 12px',
+      fontSize: '14px',
+      border: '1px solid var(--边框颜色)',
       borderRadius: '4px',
-      backgroundColor: 禁用 ? 'var(--禁用背景)' : (this.配置.背景颜色 ?? 'var(--输入框背景)'),
-      color: this.配置.文字颜色 ?? 'var(--文字颜色)',
+      backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
+      color: 'var(--文字颜色)',
       cursor: 禁用 ? 'not-allowed' : 'text',
       opacity: 禁用 ? '0.6' : '1',
       outline: 'none',
@@ -191,13 +178,13 @@ export class 密码输入框 extends 输入框基类 {
   protected 获得输入框样式对象(): 增强样式类型 {
     let 禁用 = this.配置.禁用 ?? false
     return {
-      width: this.配置.宽度 ?? '100%',
-      padding: this.配置.内边距 ?? '8px 12px',
-      fontSize: this.配置.字体大小 ?? '14px',
-      border: `1px solid ${this.配置.边框颜色 ?? 'var(--边框颜色)'}`,
+      width: '100%',
+      padding: '8px 12px',
+      fontSize: '14px',
+      border: '1px solid var(--边框颜色)',
       borderRadius: '4px',
-      backgroundColor: 禁用 ? 'var(--禁用背景)' : (this.配置.背景颜色 ?? 'var(--输入框背景)'),
-      color: this.配置.文字颜色 ?? 'var(--文字颜色)',
+      backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
+      color: 'var(--文字颜色)',
       cursor: 禁用 ? 'not-allowed' : 'text',
       opacity: 禁用 ? '0.6' : '1',
       outline: 'none',
@@ -216,13 +203,13 @@ export class 数字输入框 extends 输入框基类 {
   protected 获得输入框样式对象(): 增强样式类型 {
     let 禁用 = this.配置.禁用 ?? false
     return {
-      width: this.配置.宽度 ?? '100%',
-      padding: this.配置.内边距 ?? '8px 12px',
-      fontSize: this.配置.字体大小 ?? '14px',
-      border: `1px solid ${this.配置.边框颜色 ?? 'var(--边框颜色)'}`,
+      width: '100%',
+      padding: '8px 12px',
+      fontSize: '14px',
+      border: '1px solid var(--边框颜色)',
       borderRadius: '4px',
-      backgroundColor: 禁用 ? 'var(--禁用背景)' : (this.配置.背景颜色 ?? 'var(--输入框背景)'),
-      color: this.配置.文字颜色 ?? 'var(--文字颜色)',
+      backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
+      color: 'var(--文字颜色)',
       cursor: 禁用 ? 'not-allowed' : 'text',
       opacity: 禁用 ? '0.6' : '1',
       outline: 'none',

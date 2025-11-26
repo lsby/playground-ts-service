@@ -41,7 +41,13 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
   private 上一页按钮: 普通按钮 | null = null
   private 下一页按钮: 普通按钮 | null = null
 
-  private 列列表: any[] = []
+  private 列列表: {
+    type: string
+    name: string
+    notnull: number
+    pk: number
+    dflt_value: string | null
+  }[] = []
   private 过滤项列表: 过滤项[] = []
   private 过滤容器: HTMLDivElement | null = null
 
@@ -60,7 +66,6 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     })
 
     let 过滤列选择 = new 普通下拉框({
-      标签: '过滤列:',
       选项列表: [
         { 值: '', 文本: '选择列' },
         ...this.列列表.map((列) => ({
@@ -70,6 +75,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
           文本: 列.name,
         })),
       ],
+      宿主样式: { width: '150px' },
       变化处理函数: (值: string): void => {
         let 项 = this.过滤项列表[索引]
         if (项 !== void 0) {
@@ -81,10 +87,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     })
 
     let 过滤输入框 = new 普通输入框({
-      标签: '过滤文本:',
       占位符: '输入过滤文本',
-      宽度: '100%',
-      内边距: '4px',
+      元素样式: { padding: '4px' },
       变化处理函数: (值: string): void => {
         let 项 = this.过滤项列表[索引]
         if (项 !== void 0) {
@@ -166,9 +170,17 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
+    let 标签 = 创建元素('span', {
+      textContent: '每页条数:',
+      style: {
+        minWidth: '80px',
+        color: 'var(--文字颜色)',
+      },
+    })
+    每页条数容器.appendChild(标签)
+
     let 选项值列表 = [10, 50, 100, 200, 500]
     this.每页条数选择 = new 普通下拉框({
-      标签: '每页条数:',
       选项列表: 选项值列表.map((值) => ({ 值: String(值), 文本: String(值) })),
       值: String(this.每页条数),
       变化处理函数: (值: string): void => {
@@ -327,7 +339,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        this.主键列 = 结果.data.columns.filter((列: any) => 列.pk === 1).map((列: any) => 列.name)
+        this.主键列 = 结果.data.columns.filter((列) => 列.pk === 1).map((列) => 列.name)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         this.列列表 = 结果.data.columns
       } else {

@@ -13,7 +13,11 @@ type 选项卡数据 = {
   id: string
   标题: string
   sql: string
-  结果数据: any
+  结果数据: {
+    rows: Record<string, any>[]
+    numAffectedRows?: number | undefined
+    insertId?: number | undefined
+  } | null
 }
 
 export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
@@ -29,7 +33,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 添加选项卡按钮: 普通按钮 = new 普通按钮({
     文本: '➕',
     点击处理函数: () => this.添加选项卡(),
-    样式: { display: 'flex' },
+    宿主样式: { display: 'flex' },
   })
   private 选项卡内容映射: Map<
     string,
@@ -193,7 +197,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     let 执行按钮 = new 普通按钮({
       文本: '执行',
       点击处理函数: async (): Promise<void> => this.查询(tabId),
-      样式: { marginBottom: '10px' },
+      宿主样式: { marginBottom: '10px' },
     })
 
     let 结果容器 = 创建元素('div', {
@@ -291,7 +295,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     数据: {
       rows: Record<string, any>[]
       numAffectedRows?: number | undefined
-      insertId?: any
+      insertId?: number | undefined
     },
   ): void {
     if (数据.rows.length === 0) {

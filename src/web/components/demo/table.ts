@@ -2,7 +2,10 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
+import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { 警告提示 } from '../../global/toast'
+import { 表单 } from '../general/form/form'
+import { 密码输入框, 普通输入框 } from '../general/form/input'
 import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
 
 type 属性类型 = {}
@@ -32,20 +35,7 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
         {
           名称: '添加数据',
           回调: async (): Promise<void> => {
-            let name = await 显示输入对话框('请输入名称:')
-            if (name === null) return
-            if (name === '') {
-              await 警告提示('未输入数据')
-              return
-            }
-            let pwd = await 显示输入对话框('请输入密码:')
-            if (pwd === null) return
-            if (pwd === '') {
-              await 警告提示('未输入数据')
-              return
-            }
-            await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', { name: name, pwd: pwd })
-            await this.表格组件.刷新数据()
+            await this.显示添加用户模态框()
           },
         },
       ],
@@ -101,5 +91,125 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
     容器.appendChild(this.表格组件)
 
     this.shadow.appendChild(容器)
+  }
+
+  private async 显示添加用户模态框(): Promise<void> {
+    // 创建表单元素
+    let 用户名输入框 = new 普通输入框({
+      占位符: '请输入用户名',
+    })
+
+    let 密码框 = new 密码输入框({
+      占位符: '请输入密码',
+    })
+
+    // 创建表单
+    let 表单实例 = new 表单<{ username: string; password: string }>({
+      项列表: [
+        {
+          键: 'username',
+          组件: 用户名输入框,
+          排版: '全宽',
+          标签: '用户名',
+        },
+        {
+          键: 'password',
+          组件: 密码框,
+          排版: '全宽',
+          标签: '密码',
+        },
+      ],
+      元素样式: { gap: '12px' },
+    })
+
+    // 创建模态框内容容器
+    let 内容容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        height: '100%',
+      },
+    })
+
+    // 添加表单到容器
+    let 表单容器 = 创建元素('div', {
+      style: {
+        flex: '1',
+        overflow: 'auto',
+      },
+    })
+    表单容器.appendChild(表单实例 as any)
+    内容容器.appendChild(表单容器)
+
+    // 添加按钮到容器底部
+    let 按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        gap: '8px',
+        justifyContent: 'flex-end',
+        padding: '8px 0',
+        borderTop: '1px solid var(--边框颜色)',
+      },
+    })
+
+    let 确认按钮 = 创建元素('button', {
+      textContent: '确认',
+      style: {
+        padding: '8px 16px',
+        background: 'var(--按钮背景)',
+        color: 'var(--文字颜色)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        let 表单数据 = 表单实例.获得数据()
+
+        // 验证数据
+        if (表单数据.username === '') {
+          await 警告提示('用户名不能为空')
+          return
+        }
+        if (表单数据.password === '') {
+          await 警告提示('密码不能为空')
+          return
+        }
+
+        // 调用 API
+        await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', {
+          name: 表单数据.username,
+          pwd: 表单数据.password,
+        })
+
+        // 关闭模态框
+        await 关闭模态框()
+
+        // 刷新表格
+        await this.表格组件.刷新数据()
+      },
+    })
+
+    let 取消按钮 = 创建元素('button', {
+      textContent: '取消',
+      style: {
+        padding: '8px 16px',
+        background: 'transparent',
+        color: 'var(--文字颜色)',
+        border: '1px solid var(--边框颜色)',
+        borderRadius: '4px',
+        cursor: 'pointer',
+      },
+      onclick: async (): Promise<void> => {
+        await 关闭模态框()
+      },
+    })
+
+    按钮容器.appendChild(取消按钮)
+    按钮容器.appendChild(确认按钮)
+    内容容器.appendChild(按钮容器)
+
+    // 显示模态框
+    await 显示模态框({ 标题: '添加用户', 可关闭: true }, 内容容器)
   }
 }

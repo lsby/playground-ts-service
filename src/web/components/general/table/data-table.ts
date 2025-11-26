@@ -293,9 +293,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         // 清空筛选按钮
         let 清空按钮 = new 普通按钮({
           文本: '✕',
-          字体大小: '12px',
-          颜色: 'var(--color-text-secondary)',
-          悬浮效果类型: '透明度',
+          元素样式: { fontSize: '12px', color: 'var(--color-text-secondary)' },
           点击处理函数: async (event: Event): Promise<void> => {
             event.stopPropagation()
             delete this.筛选条件[字段名]
@@ -311,7 +309,6 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       // 筛选图标
       let 筛选图标 = new 普通按钮({
         文本: '🔍',
-        悬浮效果类型: '透明度',
         点击处理函数: async (event: Event): Promise<void> => {
           event.stopPropagation()
           let 字段名 = String(列.字段名)

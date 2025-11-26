@@ -3,6 +3,10 @@ type 模态框选项 = {
   最大化?: boolean
   可关闭?: boolean
   关闭回调?: () => void | Promise<void>
+  宽度?: string
+  高度?: string
+  最小宽度?: string
+  最小高度?: string
 }
 
 import { 创建元素 } from './create-element'
@@ -18,6 +22,11 @@ class 模态框管理器 {
   private 是否最大化 = false
   private 关闭回调: (() => void | Promise<void>) | null = null
   private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
+  private 默认宽度 = '80vw'
+  private 默认高度 = '60vh'
+  private 默认最小宽度 = '300px'
+  private 默认最小高度 = '200px'
+  private resize观察器: ResizeObserver | null = null
 
   private 初始化(): void {
     if (this.遮罩 !== null) {
@@ -44,8 +53,10 @@ class 模态框管理器 {
     this.框 = 创建元素('div', {
       style: {
         position: 'absolute',
-        width: '80vw',
-        height: '60vh',
+        width: 'auto',
+        height: 'auto',
+        maxWidth: this.默认宽度,
+        maxHeight: this.默认高度,
         background: 'var(--卡片背景颜色)',
         border: '1px solid var(--边框颜色)',
         borderRadius: '4px',
@@ -146,6 +157,8 @@ class 模态框管理器 {
     if (this.是否最大化 === true) {
       this.框.style.width = '100vw'
       this.框.style.height = '100vh'
+      this.框.style.maxWidth = '100vw'
+      this.框.style.maxHeight = '100vh'
       this.框.style.left = '0'
       this.框.style.top = '0'
       this.框.style.transform = 'none'
@@ -154,8 +167,10 @@ class 模态框管理器 {
       this.最大化按钮.textContent = '🗗'
       this.最大化按钮.title = '还原'
     } else {
-      this.框.style.width = '80vw'
-      this.框.style.height = '60vh'
+      this.框.style.width = 'auto'
+      this.框.style.height = 'auto'
+      this.框.style.maxWidth = this.默认宽度
+      this.框.style.maxHeight = this.默认高度
       this.框.style.left = ''
       this.框.style.top = ''
       this.框.style.transform = ''
@@ -201,6 +216,31 @@ class 模态框管理器 {
     }
     this.内容.appendChild(内容)
 
+    // 设置自定义宽度和高度
+    if (选项.宽度 !== void 0) {
+      this.框.style.width = 选项.宽度
+    } else if (this.是否最大化 === false) {
+      this.框.style.width = 'auto'
+    }
+
+    if (选项.高度 !== void 0) {
+      this.框.style.height = 选项.高度
+    } else if (this.是否最大化 === false) {
+      this.框.style.height = 'auto'
+    }
+
+    if (选项.最小宽度 !== void 0) {
+      this.框.style.minWidth = 选项.最小宽度
+    } else {
+      this.框.style.minWidth = this.默认最小宽度
+    }
+
+    if (选项.最小高度 !== void 0) {
+      this.框.style.minHeight = 选项.最小高度
+    } else {
+      this.框.style.minHeight = this.默认最小高度
+    }
+
     // 显示遮罩
     this.遮罩.style.display = 'flex'
 
@@ -237,6 +277,12 @@ class 模态框管理器 {
     if (this.键盘处理器 !== null) {
       document.removeEventListener('keydown', this.键盘处理器)
       this.键盘处理器 = null
+    }
+
+    // 停止观察
+    if (this.resize观察器 !== null) {
+      this.resize观察器.disconnect()
+      this.resize观察器 = null
     }
 
     // 重置关闭回调

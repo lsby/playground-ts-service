@@ -18,9 +18,11 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
 
   private 输入框 = new 普通输入框({
     占位符: '请输入任务内容',
-    内边距: '0.5em',
-    字体大小: '1em',
-    边框颜色: 'var(--边框颜色)',
+    元素样式: {
+      padding: '0.5em',
+      fontSize: '1em',
+      borderColor: 'var(--边框颜色)',
+    },
   })
   private 添加按钮 = new 主要按钮({
     文本: '添加任务',

@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import type { 表单元素 } from './form'
 
 type 复选框组属性 = {}
 
@@ -14,10 +15,11 @@ type 复选框组配置 = {
   选中值列表?: string[]
   禁用?: boolean
   变化处理函数?: (选中值列表: string[]) => void | Promise<void>
-  样式?: 增强样式类型
+  宿主样式?: 增强样式类型
+  元素样式?: 增强样式类型
 }
 
-class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 监听复选框组事件> {
+class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 监听复选框组事件> implements 表单元素<string[]> {
   protected 配置: 复选框组配置
   private 复选框元素们: HTMLInputElement[] = []
 
@@ -28,10 +30,10 @@ class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 
 
   protected async 当加载时(): Promise<void> {
     // 应用宿主样式
-    if (this.配置.样式 !== void 0) {
-      for (let 键 in this.配置.样式) {
-        if (this.配置.样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+    if (this.配置.宿主样式 !== void 0) {
+      for (let 键 in this.配置.宿主样式) {
+        if (this.配置.宿主样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
         }
       }
     }
@@ -93,6 +95,24 @@ class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 
 
   public 获得选中值列表(): string[] {
     return this.复选框元素们.filter((复选框) => 复选框.checked).map((复选框) => 复选框.value)
+  }
+
+  /**
+   * 实现表单元素接口: 获得值
+   * @returns 选中值列表
+   */
+  public 获得值(): string[] {
+    return this.获得选中值列表()
+  }
+
+  /**
+   * 实现表单元素接口: 设置值
+   * @param 值 要设置的值列表
+   */
+  public 设置值(值: string[]): void {
+    if (Array.isArray(值)) {
+      this.设置选中值列表(值)
+    }
   }
 
   public 设置禁用(值: boolean): void {

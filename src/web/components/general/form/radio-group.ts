@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import type { 表单元素 } from './form'
 
 type 单选框组属性 = {}
 
@@ -14,10 +15,11 @@ type 单选框组配置 = {
   值?: string
   禁用?: boolean
   变化处理函数?: (值: string) => void | Promise<void>
-  样式?: 增强样式类型
+  宿主样式?: 增强样式类型
+  元素样式?: 增强样式类型
 }
 
-class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 监听单选框组事件> {
+class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 监听单选框组事件> implements 表单元素<string> {
   protected 配置: 单选框组配置
   private 单选框元素们: HTMLInputElement[] = []
 
@@ -28,10 +30,10 @@ class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 
 
   protected async 当加载时(): Promise<void> {
     // 应用宿主样式
-    if (this.配置.样式 !== void 0) {
-      for (let 键 in this.配置.样式) {
-        if (this.配置.样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+    if (this.配置.宿主样式 !== void 0) {
+      for (let 键 in this.配置.宿主样式) {
+        if (this.配置.宿主样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
         }
       }
     }

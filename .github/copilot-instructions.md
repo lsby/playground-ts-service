@@ -44,6 +44,7 @@
   - 示例组件: `src/web/components/demo`
   - 通用组件: `src/web/components/general`
   - 基础通用组件: `src/web/components/general/base`
+  - 基础表单组件: `src/web/components/general/form`
   - 常用布局: `src/web/components/layout`
   - 机制组件: `src/web/components/mechanics`
   - 流程控制: `src/web/components/process`
@@ -78,6 +79,7 @@
 - 组件的注册名不要使用中文
 - 尽可能复用通用组件: `src/web/components/general`, 便于统一样式和行为
 - 尽可能复用基础通用组件: `src/web/components/general/base`, 便于统一样式和行为
+- 尽可能复用基础表单组件: `src/web/components/general/form`, 便于统一样式和行为
 - 尽可能复用常用布局: `src/web/components/layout`
 - 尽可能使用工厂函数创建元素: `src/web/global/create-element.ts`
 - 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接new出来
@@ -118,4 +120,5 @@
 - 不要删除已有的空值断言, 注释等
 - 如果中文变量名或函数名等能表达含义, 就不需要写同样含义的注释了
 - 在不影响逻辑的情况下, 将代码写的尽可能短, 尽量减少不必要的换行
-- 写出完整的类型, 尽可能不要使用any
+- 写出完整的类型, 尽可能不要使用 any
+- 写类型时, 尽可能写 type 而不是 interface
