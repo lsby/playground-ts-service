@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
+import { 图标按钮, 普通按钮 } from './button'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
@@ -259,25 +260,12 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         筛选值容器.appendChild(筛选值显示)
 
         // 清空筛选按钮
-        let 清空按钮 = 创建元素('button', {
-          textContent: '✕',
-          style: {
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '0',
-            fontSize: '12px',
-            color: 'var(--color-text-secondary)',
-            opacity: '0.7',
-            transition: 'opacity 0.2s',
-          },
-          onmouseenter: (): void => {
-            清空按钮.style.opacity = '1'
-          },
-          onmouseleave: (): void => {
-            清空按钮.style.opacity = '0.7'
-          },
-          onclick: async (event: Event): Promise<void> => {
+        let 清空按钮 = new 图标按钮({
+          图标: '✕',
+          字体大小: '12px',
+          颜色: 'var(--color-text-secondary)',
+          悬浮效果类型: '透明度',
+          点击处理函数: async (event: Event): Promise<void> => {
             event.stopPropagation()
             delete this.筛选条件[字段名]
             this.分页配置.当前页码 = 1
@@ -290,24 +278,10 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       }
 
       // 筛选图标
-      let 筛选图标 = 创建元素('button', {
-        textContent: '🔍',
-        style: {
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          padding: '0',
-          fontSize: '16px',
-          opacity: '0.5',
-          transition: 'opacity 0.2s',
-        },
-        onmouseenter: (): void => {
-          筛选图标.style.opacity = '1'
-        },
-        onmouseleave: (): void => {
-          筛选图标.style.opacity = '0.5'
-        },
-        onclick: async (event: Event): Promise<void> => {
+      let 筛选图标 = new 图标按钮({
+        图标: '🔍',
+        悬浮效果类型: '透明度',
+        点击处理函数: async (event: Event): Promise<void> => {
           event.stopPropagation()
           let { 显示输入对话框 } = await import('../../global/dialog')
           let 字段名 = String(列.字段名)
@@ -501,13 +475,9 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
             },
           })
 
-          let 按钮 = 创建元素('button', {
-            textContent: 操作.名称,
-            style: {
-              padding: '4px 12px',
-              cursor: 'pointer',
-            },
-            onclick: async (): Promise<void> => {
+          let 按钮 = new 普通按钮({
+            文本: 操作.名称,
+            点击处理函数: async (): Promise<void> => {
               await 操作.回调(数据项)
               await this.刷新数据()
             },
@@ -540,14 +510,10 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     })
 
     // 上一页按钮
-    let 上一页按钮 = 创建元素('button', {
-      textContent: '上一页',
-      disabled: 当前页码 <= 1 || this.是否加载中,
-      style: {
-        padding: '6px 16px',
-        cursor: 当前页码 <= 1 || this.是否加载中 ? 'not-allowed' : 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    let 上一页按钮 = new 普通按钮({
+      文本: '上一页',
+      禁用: 当前页码 <= 1 || this.是否加载中,
+      点击处理函数: async (): Promise<void> => {
         if (当前页码 > 1) {
           this.分页配置.当前页码 = 当前页码 - 1
           await this.加载数据()
@@ -567,14 +533,10 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     分页容器.appendChild(页码显示)
 
     // 下一页按钮
-    let 下一页按钮 = 创建元素('button', {
-      textContent: '下一页',
-      disabled: 当前页码 >= 总页数 || this.是否加载中,
-      style: {
-        padding: '6px 16px',
-        cursor: 当前页码 >= 总页数 || this.是否加载中 ? 'not-allowed' : 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    let 下一页按钮 = new 普通按钮({
+      文本: '下一页',
+      禁用: 当前页码 >= 总页数 || this.是否加载中,
+      点击处理函数: async (): Promise<void> => {
         if (当前页码 < 总页数) {
           this.分页配置.当前页码 = 当前页码 + 1
           await this.加载数据()
