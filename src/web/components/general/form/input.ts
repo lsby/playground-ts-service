@@ -23,6 +23,7 @@ type 输入框配置 = {
   变化处理函数?: (值: string) => void | Promise<void>
   焦点处理函数?: () => void | Promise<void>
   失焦处理函数?: (值: string) => void | Promise<void>
+  回车处理函数?: (值: string) => void | Promise<void>
   宿主样式?: 增强样式类型
   元素样式?: 增强样式类型
 }
@@ -92,6 +93,12 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
     输入框元素.onblur = async (): Promise<void> => {
       let 值 = 输入框元素.value
       await this.配置.失焦处理函数?.(值)
+    }
+    输入框元素.onkeydown = async (e: KeyboardEvent): Promise<void> => {
+      if (e.key === 'Enter') {
+        let 值 = (e.target as HTMLInputElement).value
+        await this.配置.回车处理函数?.(值)
+      }
     }
 
     容器.appendChild(输入框元素)

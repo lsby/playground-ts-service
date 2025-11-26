@@ -16,6 +16,13 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
     this.注册组件('lsby-demo-todo-list', this)
   }
 
+  private 添加任务 = (): void => {
+    let 内容 = this.输入框.获得值().trim()
+    if (内容 === '') return
+    this.todo列表.push(内容)
+    this.输入框.设置值('')
+    this.刷新列表()
+  }
   private 输入框 = new 普通输入框({
     占位符: '请输入任务内容',
     元素样式: {
@@ -23,15 +30,14 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
       fontSize: '1em',
       borderColor: 'var(--边框颜色)',
     },
+    回车处理函数: (): void => {
+      this.添加任务()
+    },
   })
   private 添加按钮 = new 主要按钮({
     文本: '添加任务',
     点击处理函数: (): void => {
-      let 内容 = this.输入框.获得值().trim()
-      if (内容 === '') return
-      this.todo列表.push(内容)
-      this.输入框.设置值('')
-      this.刷新列表()
+      this.添加任务()
     },
   })
   private 列表容器 = 创建元素('ul')
@@ -80,14 +86,6 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
     let 输入行 = new LsbyRow({})
 
     列布局.style.justifyContent = 'center'
-
-    // ===== 输入框 =====
-    // this.输入框.placeholder = '请输入任务内容'
-    // this.输入框.style.padding = '0.5em'
-    // this.输入框.style.fontSize = '1em'
-    // this.输入框.style.border = '1px solid var(--边框颜色)'
-    // this.输入框.style.borderRadius = '4px'
-    // this.输入框.style.boxSizing = 'border-box'
 
     // ===== 列表容器样=====
     this.列表容器.style.listStyle = 'none'
