@@ -4,6 +4,7 @@ import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 图标按钮, 普通按钮 } from '../general/base/button'
 import { 普通输入框 } from '../general/base/input'
+import { 普通下拉框 } from '../general/base/select'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -24,7 +25,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
   }
 
   private 数据容器: HTMLDivElement | null = null
-  private 每页条数选择: HTMLSelectElement | null = null
+  private 每页条数选择: 普通下拉框 | null = null
   private 分页容器: HTMLDivElement | null = null
   private 消息容器: HTMLDivElement | null = null
 
@@ -61,39 +62,25 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 过滤列标签 = 创建元素('label', {
       textContent: '过滤列:',
     })
-    let 过滤列选择 = 创建元素('select', {
-      style: {
-        padding: '4px',
-        cursor: 'pointer',
+    let 过滤列选择 = new 普通下拉框({
+      选项列表: [
+        { 值: '', 文本: '选择列' },
+        ...this.列列表.map((列) => ({
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          值: 列.name,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+          文本: 列.name,
+        })),
+      ],
+      变化处理函数: (值: string): void => {
+        let 项 = this.过滤项列表[索引]
+        if (项 !== void 0) {
+          项.列 = 值 === '' ? null : 值
+          this.当前页 = 1
+          void this.加载表数据()
+        }
       },
     })
-
-    // 添加默认选项
-    let 默认选项 = 创建元素('option', {
-      value: '',
-      textContent: '选择列',
-    })
-    过滤列选择.appendChild(默认选项)
-
-    // 添加列选项
-    for (let 列 of this.列列表) {
-      let 选项 = 创建元素('option', {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        value: 列.name,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-        textContent: 列.name,
-      })
-      过滤列选择.appendChild(选项)
-    }
-
-    过滤列选择.onchange = (): void => {
-      let 项 = this.过滤项列表[索引]
-      if (项 !== void 0) {
-        项.列 = 过滤列选择.value === '' ? null : 过滤列选择.value
-        this.当前页 = 1
-        void this.加载表数据()
-      }
-    }
 
     let 过滤输入标签 = 创建元素('label', {
       textContent: '过滤文本:',
@@ -115,7 +102,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     // 设置当前值
     let 当前项 = this.过滤项列表[索引]
     if (当前项 !== void 0) {
-      过滤列选择.value = 当前项.列 ?? ''
+      过滤列选择.设置值(当前项.列 ?? '')
       过滤输入框.设置值(当前项.文本)
     }
 
@@ -188,31 +175,16 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 每页条数标签 = 创建元素('label', {
       textContent: '每页条数:',
     })
-    this.每页条数选择 = 创建元素('select', {
-      style: {
-        padding: '4px',
-        cursor: 'pointer',
-      },
-    })
-    // 添加每页条数选项
     let 选项值列表 = [10, 50, 100, 200, 500]
-    for (let 值 of 选项值列表) {
-      let 选项 = 创建元素('option', {
-        value: String(值),
-        textContent: String(值),
-      })
-      if (值 === this.每页条数) {
-        选项.selected = true
-      }
-      this.每页条数选择.appendChild(选项)
-    }
-    this.每页条数选择.onchange = (): void => {
-      if (this.每页条数选择 !== null) {
-        this.每页条数 = parseInt(this.每页条数选择.value)
+    this.每页条数选择 = new 普通下拉框({
+      选项列表: 选项值列表.map((值) => ({ 值: String(值), 文本: String(值) })),
+      值: String(this.每页条数),
+      变化处理函数: (值: string): void => {
+        this.每页条数 = parseInt(值)
         this.当前页 = 1
         void this.加载表数据()
-      }
-    }
+      },
+    })
 
     每页条数容器.appendChild(每页条数标签)
     每页条数容器.appendChild(this.每页条数选择)
