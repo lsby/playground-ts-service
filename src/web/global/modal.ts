@@ -250,7 +250,7 @@ class 模态框管理器 {
         await this.关闭()
       }
     }
-    document.addEventListener('keydown', this.键盘处理器)
+    document.onkeydown = this.键盘处理器
   }
 
   public async 关闭(): Promise<void> {

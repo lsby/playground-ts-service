@@ -246,10 +246,10 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
     }
 
     // 监听全局mouseup事件,防止鼠标移出容器后松开
-    document.addEventListener('mouseup', () => {
+    document.onmouseup = (): void => {
       this.正在选择 = false
       this.选择起始索引 = null
-    })
+    }
 
     // 监听右键菜单
     容器.oncontextmenu = (事件: MouseEvent): void => {
@@ -263,7 +263,7 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
     }
 
     // 点击其他地方隐藏菜单
-    document.addEventListener('click', (事件) => {
+    document.onclick = (事件: MouseEvent): void => {
       if (
         this.右键菜单 !== null &&
         事件.target !== this.右键菜单 &&
@@ -271,7 +271,7 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       ) {
         this.隐藏右键菜单()
       }
-    })
+    }
   }
 
   public 添加日志(消息: string): void {

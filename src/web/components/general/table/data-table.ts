@@ -1,4 +1,5 @@
 import { 组件基类 } from '../../../base/base'
+import { 右键菜单管理器 } from '../../../global/context-menu-manager'
 import { 创建元素 } from '../../../global/create-element'
 import { 显示输入对话框 } from '../../../global/dialog'
 import { 普通按钮 } from '../base/button'
@@ -76,6 +77,13 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private 拖动起始宽度: number = 0
   private 列最小宽度: string = '50px'
   private 列最大宽度: string | undefined = void 0
+  private 选中的行: Set<number> = new Set()
+  private 最后点击的单元格: { 行: number; 列: number } | null = null
+  private 多选模式: boolean = false
+  private 最后点击的行: number = -1
+  private shift选择起点: number = -1
+  private 表格行元素映射: Map<number, HTMLTableRowElement> = new Map()
+  private 表格单元格元素映射: Map<string, HTMLTableCellElement> = new Map()
 
   private 处理鼠标移动 = (event: MouseEvent): void => {
     if (this.是否正在拖动 === false) return
@@ -107,8 +115,8 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private 处理鼠标释放 = (): void => {
     this.是否正在拖动 = false
     this.拖动列索引 = -1
-    document.removeEventListener('mousemove', this.处理鼠标移动)
-    document.removeEventListener('mouseup', this.处理鼠标释放)
+    document.onmousemove = null
+    document.onmouseup = null
   }
 
   public constructor(选项: 数据表格选项<数据项>) {
@@ -139,11 +147,142 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     await this.加载数据()
   }
 
+  private 处理行点击(行索引: number, ctrl键: boolean, shift键: boolean): void {
+    if (ctrl键 === true) {
+      if (this.选中的行.has(行索引) === true) {
+        this.选中的行.delete(行索引)
+      } else {
+        this.选中的行.add(行索引)
+      }
+      this.shift选择起点 = -1
+    } else if (shift键 === true) {
+      if (this.shift选择起点 === -1) {
+        this.shift选择起点 = this.最后点击的行
+      }
+      let 开始行 = Math.min(this.shift选择起点, 行索引)
+      let 结束行 = Math.max(this.shift选择起点, 行索引)
+      this.选中的行.clear()
+      for (let i = 开始行; i <= 结束行; i++) {
+        this.选中的行.add(i)
+      }
+    } else {
+      this.选中的行.clear()
+      this.选中的行.add(行索引)
+      this.shift选择起点 = -1
+    }
+    this.最后点击的行 = 行索引
+    this.多选模式 = this.选中的行.size > 1
+  }
+
+  private 处理单元格点击(行索引: number, 列索引: number, ctrl键: boolean, shift键: boolean): void {
+    this.最后点击的单元格 = { 行: 行索引, 列: 列索引 }
+    this.处理行点击(行索引, ctrl键, shift键)
+  }
+
+  private async 复制选中内容(): Promise<void> {
+    let 内容 = ''
+    if (this.选中的行.size === 1 && this.最后点击的单元格 !== null) {
+      // 复制单个单元格
+      let 行数据 = this.数据列表[this.最后点击的单元格.行]
+      if (行数据 !== void 0) {
+        let 列配置 = this.列配置[this.最后点击的单元格.列]
+        if (列配置 !== void 0) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          let 值 = 行数据?.[列配置.字段名]
+          内容 = 值 === null || 值 === void 0 ? 'NULL' : String(值)
+        }
+      }
+    } else if (this.选中的行.size > 0) {
+      // 复制选中行
+      let 行内容列表: string[] = []
+      for (let 行索引 = 0; 行索引 < this.数据列表.length; 行索引++) {
+        if (this.选中的行.has(行索引) === true) {
+          let 行数据 = this.数据列表[行索引]
+          if (行数据 !== void 0) {
+            let 单元格内容列表: string[] = []
+            for (let 列 of this.列配置) {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              let 值 = 行数据?.[列.字段名]
+              单元格内容列表.push(值 === null || 值 === void 0 ? 'NULL' : String(值))
+            }
+            行内容列表.push(单元格内容列表.join('\t'))
+          }
+        }
+      }
+      内容 = 行内容列表.join('\n') + '\n'
+    }
+    if (内容 !== '') {
+      try {
+        await navigator.clipboard.writeText(内容)
+      } catch (错误) {
+        console.error('复制失败:', 错误)
+      }
+    }
+  }
+
+  private 更新选中状态(): void {
+    // 使用 requestAnimationFrame 来确保在浏览器下一次重绘前更新
+    requestAnimationFrame(() => {
+      // 更新行的选中状态
+      for (let [行索引, 行元素] of this.表格行元素映射) {
+        if (this.选中的行.has(行索引) === true) {
+          行元素.style.backgroundColor = 'var(--选中背景颜色)'
+        } else {
+          行元素.style.backgroundColor = ''
+        }
+      }
+
+      // 更新单元格的强调状态
+      for (let [键, 单元格元素] of this.表格单元格元素映射) {
+        let 部分列表 = 键.split('-')
+        let 行索引字符串 = 部分列表[0]
+        let 列索引字符串 = 部分列表[1]
+        let 行索引 = 行索引字符串 !== void 0 ? parseInt(行索引字符串) : -1
+        let 列索引 = 列索引字符串 !== void 0 ? parseInt(列索引字符串) : -1
+
+        if (
+          this.最后点击的单元格 !== null &&
+          this.最后点击的单元格.行 === 行索引 &&
+          this.最后点击的单元格.列 === 列索引 &&
+          this.多选模式 === false
+        ) {
+          单元格元素.style.backgroundColor = 'var(--强调背景颜色)'
+          单元格元素.style.border = '2px solid var(--强调颜色)'
+        } else {
+          单元格元素.style.backgroundColor = ''
+          单元格元素.style.border = '1px solid var(--边框颜色)'
+        }
+      }
+    })
+  }
+
+  private 显示右键菜单(x: number, y: number): void {
+    let 菜单管理器 = 右键菜单管理器.获得实例()
+    菜单管理器.显示菜单(x, y, [
+      {
+        文本: '复制',
+        回调: async (): Promise<void> => {
+          await this.复制选中内容()
+        },
+      },
+    ])
+  }
+
   private async 加载数据(): Promise<void> {
     if (this.是否加载中) return
 
     try {
       this.是否加载中 = true
+
+      // 隐藏右键菜单
+      右键菜单管理器.获得实例().隐藏菜单()
+
+      // 清除选择状态
+      this.选中的行.clear()
+      this.最后点击的单元格 = null
+      this.多选模式 = false
+      this.最后点击的行 = -1
+      this.shift选择起点 = -1
 
       let { 数据, 总数 } = await this.加载数据回调({
         页码: this.分页配置.当前页码,
@@ -224,6 +363,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         borderCollapse: 'collapse',
         border: '1px solid var(--边框颜色)',
         tableLayout: 有可扩展列 ? 'fixed' : 'auto',
+        userSelect: 'none',
       },
     })
 
@@ -352,8 +492,8 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           this.拖动列索引 = 列配置.indexOf(列)
           this.拖动起始X = event.clientX
           this.拖动起始宽度 = th.offsetWidth
-          document.addEventListener('mousemove', this.处理鼠标移动)
-          document.addEventListener('mouseup', this.处理鼠标释放)
+          document.onmousemove = this.处理鼠标移动
+          document.onmouseup = this.处理鼠标释放
           event.preventDefault()
         },
       })
@@ -451,41 +591,101 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       空行.appendChild(空单元格)
       表体.appendChild(空行)
     } else {
-      for (let 数据项 of 数据列表) {
+      for (let 行索引 = 0; 行索引 < 数据列表.length; 行索引++) {
+        let 数据项 = 数据列表[行索引]
+        if (数据项 === void 0) continue
+        let 行选中 = this.选中的行.has(行索引)
         let 行 = 创建元素('tr', {
           style: {
             transition: 'background-color 0.2s',
+            backgroundColor: 行选中 === true ? 'var(--选中背景颜色)' : '',
+            cursor: 'pointer',
           },
           onmouseenter: (): void => {
-            行.style.backgroundColor = 'var(--color-background-hover)'
+            // 动态判断当前是否选中
+            if (this.选中的行.has(行索引) === false) {
+              行.style.backgroundColor = 'var(--color-background-hover)'
+            }
           },
           onmouseleave: (): void => {
-            行.style.backgroundColor = ''
+            // 动态判断当前是否选中
+            行.style.backgroundColor = this.选中的行.has(行索引) === true ? 'var(--选中背景颜色)' : ''
+          },
+          onclick: (事件: MouseEvent): void => {
+            事件.stopPropagation()
+            this.处理行点击(行索引, 事件.ctrlKey, 事件.shiftKey)
+            this.更新选中状态()
+          },
+          oncontextmenu: (事件: MouseEvent): void => {
+            事件.preventDefault()
+            事件.stopPropagation()
+            // 右键时如果当前行未选中，则选中当前行
+            if (this.选中的行.has(行索引) === false) {
+              this.处理行点击(行索引, false, false)
+              this.更新选中状态()
+            }
+            this.显示右键菜单(事件.clientX, 事件.clientY)
           },
         })
 
+        // 保存行元素引用
+        this.表格行元素映射.set(行索引, 行)
+
         // 渲染数据列
-        for (let 列 of 列配置) {
-          let 列索引 = 列配置.indexOf(列)
+        for (let 列索引 = 0; 列索引 < 列配置.length; 列索引++) {
+          let 列 = 列配置[列索引]
+          if (列 === void 0) continue
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          let 数据 = 数据项[列.字段名]
+          let 数据 = 数据项?.[列.字段名]
           let 显示值 = 列.格式化 !== void 0 ? 列.格式化(数据) : String(数据)
           let 列最大宽度 = 列.列最大宽度 ?? this.列最大宽度
+          let 单元格被强调 =
+            this.最后点击的单元格 !== null &&
+            this.最后点击的单元格.行 === 行索引 &&
+            this.最后点击的单元格.列 === 列索引 &&
+            this.多选模式 === false
 
           let td = 创建元素('td', {
             textContent: 显示值,
             title: 显示值,
             style: {
               padding: '8px',
-              border: '1px solid var(--边框颜色)',
+              border: 单元格被强调 === true ? '2px solid var(--强调颜色)' : '1px solid var(--边框颜色)',
+              backgroundColor: 单元格被强调 === true ? 'var(--强调背景颜色)' : '',
               minWidth: 列.列最小宽度 ?? this.列最小宽度,
               ...(列最大宽度 !== void 0 ? { maxWidth: 列最大宽度, width: 列最大宽度 } : {}),
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
+              cursor: 'pointer',
+            },
+            onclick: (事件: MouseEvent): void => {
+              事件.stopPropagation()
+              this.处理单元格点击(行索引, 列索引, 事件.ctrlKey, 事件.shiftKey)
+              this.更新选中状态()
+            },
+            oncontextmenu: (事件: MouseEvent): void => {
+              事件.preventDefault()
+              事件.stopPropagation()
+              // 右键时如果当前行未选中或不是单选，则选中当前单元格
+              if (
+                this.选中的行.has(行索引) === false ||
+                (this.选中的行.size === 1 &&
+                  (this.最后点击的单元格 === null ||
+                    this.最后点击的单元格.行 !== 行索引 ||
+                    this.最后点击的单元格.列 !== 列索引))
+              ) {
+                this.处理单元格点击(行索引, 列索引, false, false)
+                this.更新选中状态()
+              }
+              this.显示右键菜单(事件.clientX, 事件.clientY)
             },
           })
           td.setAttribute('data-col-index', 列索引.toString())
+
+          // 保存单元格元素引用
+          this.表格单元格元素映射.set(`${行索引}-${列索引}`, td)
+
           行.appendChild(td)
         }
 

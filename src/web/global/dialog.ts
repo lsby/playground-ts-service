@@ -53,6 +53,7 @@ export function 显示对话框(消息: string): Promise<void> {
 
     let 关闭对话框 = (): void => {
       document.body.removeChild(遮罩层)
+      document.onkeydown = null
       resolve()
     }
 
@@ -60,20 +61,21 @@ export function 显示对话框(消息: string): Promise<void> {
       文本: '确定',
       点击处理函数: 关闭对话框,
     })
-    // 遮罩层.addEventListener('click', (event: MouseEvent) => {
-    //   if (event.target === 遮罩层) {
-    //     关闭对话框()
-    //   }
-    // })
 
-    // 支持 ESC 键关闭
     let 键盘处理 = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         关闭对话框()
-        document.removeEventListener('keydown', 键盘处理)
       }
     }
-    document.addEventListener('keydown', 键盘处理)
+
+    遮罩层.onclick = (event: MouseEvent): void => {
+      if (event.target === 遮罩层) {
+        关闭对话框()
+      }
+    }
+
+    // 支持 ESC 键关闭
+    document.onkeydown = 键盘处理
 
     按钮容器.appendChild(确定按钮)
     对话框.appendChild(消息元素)
@@ -140,6 +142,7 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
 
     let 关闭对话框 = (结果: boolean): void => {
       document.body.removeChild(遮罩层)
+      document.onkeydown = null
       resolve(结果)
     }
 
@@ -157,6 +160,12 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       },
     })
 
+    let 键盘处理 = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        关闭对话框(false)
+      }
+    }
+
     遮罩层.onclick = (event: MouseEvent): void => {
       if (event.target === 遮罩层) {
         关闭对话框(false)
@@ -164,13 +173,7 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
     }
 
     // 支持 ESC 键取消
-    let 键盘处理 = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
-        关闭对话框(false)
-        document.removeEventListener('keydown', 键盘处理)
-      }
-    }
-    document.addEventListener('keydown', 键盘处理)
+    document.onkeydown = 键盘处理
 
     按钮容器.appendChild(取消按钮)
     按钮容器.appendChild(确定按钮)
@@ -244,6 +247,7 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
 
     let 关闭对话框 = (结果: string | null): void => {
       document.body.removeChild(遮罩层)
+      document.onkeydown = null
       resolve(结果)
     }
 
@@ -260,23 +264,23 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
         关闭对话框(输入框.获得值())
       },
     })
-    // 遮罩层.addEventListener('click', (event: MouseEvent) => {
-    //   if (event.target === 遮罩层) {
-    //     关闭对话框(null)
-    //   }
-    // })
 
-    // 支持 ESC 键取消
     let 键盘处理 = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         关闭对话框(null)
-        document.removeEventListener('keydown', 键盘处理)
       } else if (event.key === 'Enter') {
         关闭对话框(输入框.获得值())
-        document.removeEventListener('keydown', 键盘处理)
       }
     }
-    document.addEventListener('keydown', 键盘处理)
+
+    遮罩层.onclick = (event: MouseEvent): void => {
+      if (event.target === 遮罩层) {
+        关闭对话框(null)
+      }
+    }
+
+    // 支持 ESC 键取消
+    document.onkeydown = 键盘处理
 
     按钮容器.appendChild(取消按钮)
     按钮容器.appendChild(确定按钮)
