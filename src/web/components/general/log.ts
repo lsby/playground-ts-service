@@ -69,11 +69,11 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       },
     })
 
-    滚动到底部按钮.addEventListener('click', () => {
+    滚动到底部按钮.onclick = (): void => {
       if (this.日志容器 !== null) {
         this.日志容器.scrollTop = this.日志容器.scrollHeight
       }
-    })
+    }
 
     let 清空日志按钮 = 创建元素('button', {
       textContent: '🗑️',
@@ -95,9 +95,9 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       },
     })
 
-    清空日志按钮.addEventListener('click', () => {
+    清空日志按钮.onclick = (): void => {
       this.清空日志()
-    })
+    }
 
     // 创建右键菜单
     let 右键菜单 = 创建元素('div', {
@@ -127,10 +127,10 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       },
     })
 
-    复制按钮.addEventListener('click', () => {
+    复制按钮.onclick = (): void => {
       this.复制选中日志()
       this.隐藏右键菜单()
-    })
+    }
 
     右键菜单.appendChild(复制按钮)
 
@@ -144,15 +144,15 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
     this.shadow.appendChild(包装器)
 
     // 监听滚动事件
-    容器.addEventListener('scroll', () => {
+    容器.onscroll = (): void => {
       if (this.日志容器 !== null) {
         let 滚动到底部距离 = this.日志容器.scrollHeight - this.日志容器.scrollTop - this.日志容器.clientHeight
         this.自动滚动 = 滚动到底部距离 <= this.滚动阈值
       }
-    })
+    }
 
     // 监听鼠标事件用于选择
-    容器.addEventListener('mousedown', (事件) => {
+    容器.onmousedown = (事件: MouseEvent): void => {
       if (事件.button === 0) {
         // 左键
         事件.preventDefault() // 阻止默认文本选择
@@ -191,10 +191,10 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
           this.更新选中状态()
         }
       }
-    })
+    }
 
     // 添加点击事件监听器,用于清除选择
-    容器.addEventListener('click', (事件) => {
+    容器.onclick = (事件: MouseEvent): void => {
       if (事件.button === 0 && this.发生了拖动 === false) {
         // 左键且没有发生拖动
         let 索引 = this.获取日志行索引(事件.target as HTMLElement)
@@ -204,9 +204,9 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
           this.更新选中状态()
         }
       }
-    })
+    }
 
-    容器.addEventListener('mousemove', (事件) => {
+    容器.onmousemove = (事件: MouseEvent): void => {
       if (this.正在选择 === true && this.选择起始索引 !== null) {
         let 当前索引 = this.获取日志行索引(事件.target as HTMLElement)
         if (当前索引 !== null && 当前索引 !== this.选择起始索引) {
@@ -238,12 +238,12 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
           this.更新选中状态()
         }
       }
-    })
+    }
 
-    容器.addEventListener('mouseup', () => {
+    容器.onmouseup = (): void => {
       this.正在选择 = false
       this.选择起始索引 = null
-    })
+    }
 
     // 监听全局mouseup事件,防止鼠标移出容器后松开
     document.addEventListener('mouseup', () => {
@@ -252,7 +252,7 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
     })
 
     // 监听右键菜单
-    容器.addEventListener('contextmenu', (事件) => {
+    容器.oncontextmenu = (事件: MouseEvent): void => {
       事件.preventDefault()
       if (this.选中的索引集合.size > 0 && this.右键菜单 !== null) {
         let 包装器矩形 = 包装器.getBoundingClientRect()
@@ -260,7 +260,7 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
         this.右键菜单.style.top = `${事件.clientY - 包装器矩形.top}px`
         this.右键菜单.style.display = 'block'
       }
-    })
+    }
 
     // 点击其他地方隐藏菜单
     document.addEventListener('click', (事件) => {

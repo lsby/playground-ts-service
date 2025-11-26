@@ -90,7 +90,7 @@ export class LsbyTableList extends 组件基类<属性类型, 发出事件类型
           fontSize: '14px',
         },
       })
-      表项.addEventListener('click', () => this.选择表(表名))
+      表项.onclick = async (): Promise<void> => this.选择表(表名)
       表列表容器.appendChild(表项)
     }
   }

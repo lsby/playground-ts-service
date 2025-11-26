@@ -1,3 +1,4 @@
+import { 普通输入框 } from '../components/general/input'
 import { 创建元素 } from './create-element'
 
 export function 显示对话框(消息: string): Promise<void> {
@@ -62,19 +63,19 @@ export function 显示对话框(消息: string): Promise<void> {
       },
     })
 
-    确定按钮.addEventListener('mouseenter', () => {
+    确定按钮.onmouseenter = (): void => {
       确定按钮.style.opacity = '0.8'
-    })
-    确定按钮.addEventListener('mouseleave', () => {
+    }
+    确定按钮.onmouseleave = (): void => {
       确定按钮.style.opacity = '1'
-    })
+    }
 
     let 关闭对话框 = (): void => {
       document.body.removeChild(遮罩层)
       resolve()
     }
 
-    确定按钮.addEventListener('click', 关闭对话框)
+    确定按钮.onclick = 关闭对话框
     // 遮罩层.addEventListener('click', (event: MouseEvent) => {
     //   if (event.target === 遮罩层) {
     //     关闭对话框()
@@ -166,12 +167,12 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       },
     })
 
-    取消按钮.addEventListener('mouseenter', () => {
+    取消按钮.onmouseenter = (): void => {
       取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
-    })
-    取消按钮.addEventListener('mouseleave', () => {
+    }
+    取消按钮.onmouseleave = (): void => {
       取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    })
+    }
 
     let 确定按钮 = 创建元素('button', {
       textContent: '确定',
@@ -186,29 +187,29 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       },
     })
 
-    确定按钮.addEventListener('mouseenter', () => {
+    确定按钮.onmouseenter = (): void => {
       确定按钮.style.opacity = '0.8'
-    })
-    确定按钮.addEventListener('mouseleave', () => {
+    }
+    确定按钮.onmouseleave = (): void => {
       确定按钮.style.opacity = '1'
-    })
+    }
 
     let 关闭对话框 = (结果: boolean): void => {
       document.body.removeChild(遮罩层)
       resolve(结果)
     }
 
-    取消按钮.addEventListener('click', () => {
+    取消按钮.onclick = (): void => {
       关闭对话框(false)
-    })
-    确定按钮.addEventListener('click', () => {
+    }
+    确定按钮.onclick = (): void => {
       关闭对话框(true)
-    })
-    遮罩层.addEventListener('click', (event: MouseEvent) => {
+    }
+    遮罩层.onclick = (event: MouseEvent): void => {
       if (event.target === 遮罩层) {
         关闭对话框(false)
       }
-    })
+    }
 
     // 支持 ESC 键取消
     let 键盘处理 = (event: KeyboardEvent): void => {
@@ -275,31 +276,14 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       },
     })
 
-    let 输入框 = 创建元素('input', {
-      type: 'text',
-      style: {
-        padding: '8px 12px',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        fontSize: '14px',
-        backgroundColor: 'var(--输入框背景)',
-        color: 'var(--输入框文字)',
-        outline: 'none',
-        width: '100%',
-        boxSizing: 'border-box',
-      },
-    })
-
-    if (默认值 !== void 0) {
-      输入框.value = 默认值
+    let 输入框配置: any = {
+      占位符: '请输入内容',
+      宽度: '100%',
     }
-
-    输入框.addEventListener('focus', () => {
-      输入框.style.borderColor = 'var(--主色调)'
-    })
-    输入框.addEventListener('blur', () => {
-      输入框.style.borderColor = 'var(--边框颜色)'
-    })
+    if (默认值 !== void 0) {
+      输入框配置.值 = 默认值
+    }
+    let 输入框 = new 普通输入框(输入框配置)
 
     let 按钮容器 = 创建元素('div', {
       style: {
@@ -322,12 +306,12 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       },
     })
 
-    取消按钮.addEventListener('mouseenter', () => {
+    取消按钮.onmouseenter = (): void => {
       取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
-    })
-    取消按钮.addEventListener('mouseleave', () => {
+    }
+    取消按钮.onmouseleave = (): void => {
       取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    })
+    }
 
     let 确定按钮 = 创建元素('button', {
       textContent: '确定',
@@ -342,24 +326,24 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       },
     })
 
-    确定按钮.addEventListener('mouseenter', () => {
+    确定按钮.onmouseenter = (): void => {
       确定按钮.style.opacity = '0.8'
-    })
-    确定按钮.addEventListener('mouseleave', () => {
+    }
+    确定按钮.onmouseleave = (): void => {
       确定按钮.style.opacity = '1'
-    })
+    }
 
     let 关闭对话框 = (结果: string | null): void => {
       document.body.removeChild(遮罩层)
       resolve(结果)
     }
 
-    取消按钮.addEventListener('click', () => {
+    取消按钮.onclick = (): void => {
       关闭对话框(null)
-    })
-    确定按钮.addEventListener('click', () => {
-      关闭对话框(输入框.value)
-    })
+    }
+    确定按钮.onclick = (): void => {
+      关闭对话框(输入框.获得值())
+    }
     // 遮罩层.addEventListener('click', (event: MouseEvent) => {
     //   if (event.target === 遮罩层) {
     //     关闭对话框(null)
@@ -372,7 +356,7 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
         关闭对话框(null)
         document.removeEventListener('keydown', 键盘处理)
       } else if (event.key === 'Enter') {
-        关闭对话框(输入框.value)
+        关闭对话框(输入框.获得值())
         document.removeEventListener('keydown', 键盘处理)
       }
     }
@@ -388,10 +372,7 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
 
     // 自动聚焦到输入框
     setTimeout(() => {
-      输入框.focus()
-      if (默认值 !== void 0) {
-        输入框.select()
-      }
+      输入框.聚焦()
     }, 0)
   })
 }

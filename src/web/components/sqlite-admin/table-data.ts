@@ -3,6 +3,7 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 图标按钮, 普通按钮 } from '../general/button'
+import { 普通输入框 } from '../general/input'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {
@@ -85,40 +86,37 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       过滤列选择.appendChild(选项)
     }
 
-    过滤列选择.addEventListener('change', () => {
+    过滤列选择.onchange = (): void => {
       let 项 = this.过滤项列表[索引]
       if (项 !== void 0) {
         项.列 = 过滤列选择.value === '' ? null : 过滤列选择.value
         this.当前页 = 1
         void this.加载表数据()
       }
-    })
+    }
 
     let 过滤输入标签 = 创建元素('label', {
       textContent: '过滤文本:',
     })
-    let 过滤输入框 = 创建元素('input', {
-      type: 'text',
-      placeholder: '输入过滤文本',
-      style: {
-        padding: '4px',
-        flex: '1',
+    let 过滤输入框 = new 普通输入框({
+      占位符: '输入过滤文本',
+      宽度: '100%',
+      内边距: '4px',
+      变化处理函数: (值: string): void => {
+        let 项 = this.过滤项列表[索引]
+        if (项 !== void 0) {
+          项.文本 = 值
+          this.当前页 = 1
+          void this.加载表数据()
+        }
       },
-    })
-    过滤输入框.addEventListener('input', () => {
-      let 项 = this.过滤项列表[索引]
-      if (项 !== void 0) {
-        项.文本 = 过滤输入框.value
-        this.当前页 = 1
-        void this.加载表数据()
-      }
     })
 
     // 设置当前值
     let 当前项 = this.过滤项列表[索引]
     if (当前项 !== void 0) {
       过滤列选择.value = 当前项.列 ?? ''
-      过滤输入框.value = 当前项.文本
+      过滤输入框.设置值(当前项.文本)
     }
 
     let 添加按钮 = new 图标按钮({
@@ -208,13 +206,13 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
       this.每页条数选择.appendChild(选项)
     }
-    this.每页条数选择.addEventListener('change', () => {
+    this.每页条数选择.onchange = (): void => {
       if (this.每页条数选择 !== null) {
         this.每页条数 = parseInt(this.每页条数选择.value)
         this.当前页 = 1
         void this.加载表数据()
       }
-    })
+    }
 
     每页条数容器.appendChild(每页条数标签)
     每页条数容器.appendChild(this.每页条数选择)

@@ -1,6 +1,7 @@
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
+import { 普通输入框 } from '../general/input'
 
 type 表格选项 = {
   可编辑?: boolean
@@ -43,7 +44,7 @@ export class 共享表格管理器 {
     })
 
     // 点击表格容器空白处取消选择
-    this.表格容器.addEventListener('click', (事件) => {
+    this.表格容器.onclick = (事件: Event): void => {
       let 目标 = 事件.target
       if (目标 instanceof Element === false) throw new Error('意外的元素类型')
       if (目标 === this.表格容器 || 目标.tagName === 'TABLE') {
@@ -54,7 +55,7 @@ export class 共享表格管理器 {
         this.shift选择起点 = -1
         this.更新选中状态()
       }
-    })
+    }
 
     // 右键菜单
     this.右键菜单 = 创建元素('div', {
@@ -73,9 +74,9 @@ export class 共享表格管理器 {
     this.根容器.appendChild(this.表格容器)
 
     // 点击空白处隐藏右键菜单
-    this.根容器.addEventListener('click', () => {
+    this.根容器.onclick = (): void => {
       this.隐藏右键菜单()
-    })
+    }
   }
 
   public 更新数据(数据: Record<string, any>[]): void {
@@ -195,10 +196,10 @@ export class 共享表格管理器 {
       表头单元格.appendChild(表头内容容器)
 
       // 添加点击事件
-      表头单元格.addEventListener('click', async (事件) => {
+      表头单元格.onclick = async (事件: Event): Promise<void> => {
         事件.stopPropagation()
         await this.处理表头点击(列)
-      })
+      }
 
       表头行.appendChild(表头单元格)
     }
@@ -219,11 +220,11 @@ export class 共享表格管理器 {
       }
 
       // 行点击事件
-      数据行.addEventListener('click', (事件) => {
+      数据行.onclick = (事件: MouseEvent): void => {
         事件.stopPropagation()
         this.隐藏右键菜单()
         this.处理行点击(行索引, 事件.ctrlKey, 事件.shiftKey)
-      })
+      }
 
       for (let 列索引 = 0; 列索引 < 列名.length; 列索引++) {
         let 列 = 列名[列索引]
@@ -258,22 +259,22 @@ export class 共享表格管理器 {
         }
 
         // 单元格点击事件
-        数据单元格.addEventListener('click', (事件) => {
+        数据单元格.onclick = (事件: MouseEvent): void => {
           事件.stopPropagation()
           this.隐藏右键菜单()
           this.处理单元格点击(行索引, 列索引, 事件.ctrlKey, 事件.shiftKey)
-        })
+        }
 
         // 单元格双击事件
-        数据单元格.addEventListener('dblclick', (事件) => {
+        数据单元格.ondblclick = (事件: MouseEvent): void => {
           事件.stopPropagation()
           if (this.编辑中 === false && this.选项.可编辑 === true) {
             this.编辑单元格(行索引, 列索引)
           }
-        })
+        }
 
         // 右键菜单事件
-        数据单元格.addEventListener('contextmenu', (事件) => {
+        数据单元格.oncontextmenu = (事件: MouseEvent): void => {
           事件.preventDefault()
           事件.stopPropagation()
           if (
@@ -287,7 +288,7 @@ export class 共享表格管理器 {
             this.处理单元格点击(行索引, 列索引, false, false)
           }
           this.处理右键菜单(行索引, 列索引, 事件.clientX, 事件.clientY)
-        })
+        }
 
         数据行.appendChild(数据单元格)
       }
@@ -337,16 +338,16 @@ export class 共享表格管理器 {
         },
       })
 
-      菜单项.addEventListener('mouseenter', () => {
+      菜单项.onmouseenter = (): void => {
         菜单项.style.backgroundColor = 'var(--次要背景颜色)'
-      })
-      菜单项.addEventListener('mouseleave', () => {
+      }
+      菜单项.onmouseleave = (): void => {
         菜单项.style.backgroundColor = 'transparent'
-      })
-      菜单项.addEventListener('click', () => {
+      }
+      菜单项.onclick = (): void => {
         选项.回调()
         this.隐藏右键菜单()
-      })
+      }
       菜单.appendChild(菜单项)
     }
     菜单.style.left = `${x}px`
@@ -535,32 +536,22 @@ export class 共享表格管理器 {
     this.编辑中 = true
 
     // 创建编辑输入框
-    let 输入框 = 创建元素('input', {
-      type: 'text',
-      value: 值字符串,
-      style: {
-        width: '100%',
-        padding: '4px',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '2px',
-        backgroundColor: 'var(--主要背景颜色)',
-        color: 'var(--文字颜色)',
-        boxSizing: 'border-box',
-      },
+    let 输入框 = new 普通输入框({
+      值: 值字符串,
+      宽度: '100%',
+      内边距: '4px',
+      背景颜色: 'var(--主要背景颜色)',
+      文字颜色: 'var(--文字颜色)',
+      边框颜色: 'var(--边框颜色)',
     })
 
     // 替换单元格内容
     单元格.innerHTML = ''
     单元格.appendChild(输入框)
-    输入框.focus()
-    输入框.select()
-
-    输入框.addEventListener('click', (事件) => {
-      事件.stopPropagation()
-    })
+    输入框.聚焦()
 
     let 保存值 = async (): Promise<void> => {
-      let 新值 = 输入框.value
+      let 新值 = 输入框.获得值()
 
       if (this.选项.表名 === void 0) {
         单元格.textContent = 值字符串 === '' ? 'NULL' : 值字符串
@@ -628,17 +619,18 @@ export class 共享表格管理器 {
       this.编辑中 = false
     }
 
-    输入框.addEventListener('keydown', async (事件) => {
+    // 添加键盘事件监听
+    输入框.onkeydown = async (事件: KeyboardEvent): Promise<void> => {
       if (事件.key === 'Enter') {
         await 保存值()
       } else if (事件.key === 'Escape') {
         取消编辑()
       }
-    })
+    }
 
-    输入框.addEventListener('blur', async () => {
+    输入框.onblur = async (): Promise<void> => {
       await 保存值()
-    })
+    }
   }
 
   private async 显示编辑模态框(行索引: number, 列索引: number): Promise<void> {
@@ -790,22 +782,22 @@ export class 共享表格管理器 {
     }
 
     // 绑定事件
-    确定按钮.addEventListener('click', () => {
+    确定按钮.onclick = (): void => {
       void 保存值()
-    })
+    }
 
-    取消按钮.addEventListener('click', () => {
+    取消按钮.onclick = (): void => {
       void 关闭模态框()
-    })
+    }
 
-    输入框.addEventListener('keydown', (事件) => {
+    输入框.onkeydown = (事件: KeyboardEvent): void => {
       if (事件.key === 'Enter' && 事件.ctrlKey === true) {
         事件.preventDefault()
         void 保存值()
       } else if (事件.key === 'Escape') {
         void 关闭模态框()
       }
-    })
+    }
 
     // 聚焦输入框
     setTimeout(() => {

@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { 密码输入框, 普通输入框 } from '../general/input'
 
 type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}
@@ -13,9 +14,42 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
   }
 
   private 结果 = 创建元素('p')
-  private 用户名输入框 = 创建元素('input')
-  private 密码输入框 = 创建元素('input')
-  private 确认密码输入框 = 创建元素('input')
+  private 用户名输入框 = new 普通输入框({
+    占位符: '请输入用户名',
+    图标: '👤',
+    内边距: '12px',
+    字体大小: '16px',
+    背景颜色: 'var(--按钮背景)',
+    文字颜色: 'var(--文字颜色)',
+    边框颜色: 'var(--边框颜色)',
+    输入处理函数: async (值: string): Promise<void> => {
+      await this.设置属性('username', 值)
+    },
+  })
+  private 密码输入框 = new 密码输入框({
+    占位符: '请输入密码',
+    图标: '🔒',
+    内边距: '12px',
+    字体大小: '16px',
+    背景颜色: 'var(--按钮背景)',
+    文字颜色: 'var(--文字颜色)',
+    边框颜色: 'var(--边框颜色)',
+    输入处理函数: async (值: string): Promise<void> => {
+      await this.设置属性('password', 值)
+    },
+  })
+  private 确认密码输入框 = new 密码输入框({
+    占位符: '请再次输入密码',
+    图标: '🔑',
+    内边距: '12px',
+    字体大小: '16px',
+    背景颜色: 'var(--按钮背景)',
+    文字颜色: 'var(--文字颜色)',
+    边框颜色: 'var(--边框颜色)',
+    输入处理函数: async (值: string): Promise<void> => {
+      await this.设置属性('confirmPassword', 值)
+    },
+  })
   private 登录按钮 = 创建元素('button')
   private 注册按钮 = 创建元素('button')
   private 切换按钮 = 创建元素('button')
@@ -80,56 +114,7 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     })
     提示区域.append(this.结果)
 
-    let 用户名容器 = 创建元素('div', {
-      style: {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-      },
-    })
-    let 用户名图标 = 创建元素('span', {
-      innerHTML: '👤',
-      style: {
-        position: 'absolute',
-        left: '12px',
-        fontSize: '18px',
-      },
-    })
-    用户名容器.append(用户名图标, this.用户名输入框)
-
-    let 密码容器 = 创建元素('div', {
-      style: {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-      },
-    })
-    let 密码图标 = 创建元素('span', {
-      innerHTML: '🔒',
-      style: {
-        position: 'absolute',
-        left: '12px',
-        fontSize: '18px',
-      },
-    })
-    密码容器.append(密码图标, this.密码输入框)
-
-    let 确认密码容器 = 创建元素('div', {
-      style: {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-      },
-    })
-    let 确认密码图标 = 创建元素('span', {
-      innerHTML: '🔑',
-      style: {
-        position: 'absolute',
-        left: '12px',
-        fontSize: '18px',
-      },
-    })
-    确认密码容器.append(确认密码图标, this.确认密码输入框)
+    表单.append(this.用户名输入框, this.密码输入框, this.确认密码输入框)
 
     let 按钮容器 = 创建元素('div', {
       style: {
@@ -170,58 +155,15 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
     this.切换按钮.style.padding = '4px 8px'
     切换容器.append(this.切换按钮)
 
-    表单.append(用户名容器, 密码容器, 确认密码容器, 按钮容器, 切换容器)
+    表单.append(按钮容器, 切换容器)
     卡片.append(标题, 提示区域, 表单)
     容器.append(卡片)
     this.shadow.append(容器)
-
-    this.结果.style.margin = '0'
-    this.结果.style.padding = '8px'
-    this.结果.style.borderRadius = '4px'
-    this.结果.style.fontSize = '14px'
-    this.结果.style.backgroundColor = 'var(--按钮背景)'
-    this.结果.style.color = 'var(--文字颜色)'
-    this.结果.textContent = '请输入用户名和密码'
-
-    this.用户名输入框.style.width = '100%'
-    this.用户名输入框.style.padding = '12px 12px 12px 40px'
-    this.用户名输入框.style.border = '1px solid var(--边框颜色)'
-    this.用户名输入框.style.borderRadius = '4px'
-    this.用户名输入框.style.fontSize = '16px'
-    this.用户名输入框.style.backgroundColor = 'var(--按钮背景)'
-    this.用户名输入框.style.color = 'var(--文字颜色)'
-    this.用户名输入框.style.boxSizing = 'border-box'
-    this.用户名输入框.placeholder = '请输入用户名'
-
-    this.密码输入框.style.width = '100%'
-    this.密码输入框.style.padding = '12px 12px 12px 40px'
-    this.密码输入框.style.border = '1px solid var(--边框颜色)'
-    this.密码输入框.style.borderRadius = '4px'
-    this.密码输入框.style.fontSize = '16px'
-    this.密码输入框.style.backgroundColor = 'var(--按钮背景)'
-    this.密码输入框.style.color = 'var(--文字颜色)'
-    this.密码输入框.style.boxSizing = 'border-box'
-    this.密码输入框.placeholder = '请输入密码'
-    this.密码输入框.type = 'password'
-
-    this.确认密码输入框.style.width = '100%'
-    this.确认密码输入框.style.padding = '12px 12px 12px 40px'
-    this.确认密码输入框.style.border = '1px solid var(--边框颜色)'
-    this.确认密码输入框.style.borderRadius = '4px'
-    this.确认密码输入框.style.fontSize = '16px'
-    this.确认密码输入框.style.backgroundColor = 'var(--按钮背景)'
-    this.确认密码输入框.style.color = 'var(--文字颜色)'
-    this.确认密码输入框.style.boxSizing = 'border-box'
-    this.确认密码输入框.placeholder = '请再次输入密码'
-    this.确认密码输入框.type = 'password'
 
     this.登录按钮.textContent = '登录'
     this.注册按钮.textContent = '注册'
     this.切换按钮.textContent = '还没有账号？立即注册'
 
-    this.用户名输入框.oninput = async (): Promise<void> => this.设置属性('username', this.用户名输入框.value)
-    this.密码输入框.oninput = async (): Promise<void> => this.设置属性('password', this.密码输入框.value)
-    this.确认密码输入框.oninput = async (): Promise<void> => this.设置属性('confirmPassword', this.确认密码输入框.value)
     this.登录按钮.onclick = async (): Promise<void> => this.执行认证()
     this.注册按钮.onclick = async (): Promise<void> => this.执行认证()
     this.切换按钮.onclick = async (): Promise<void> => this.切换模式()
@@ -231,6 +173,8 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         await this.执行认证()
       }
     }
+
+    // 为输入框添加回车键监听
     this.用户名输入框.onkeydown = 处理回车键
     this.密码输入框.onkeydown = 处理回车键
     this.确认密码输入框.onkeydown = 处理回车键

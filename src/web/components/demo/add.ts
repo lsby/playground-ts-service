@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { 数字输入框 } from '../general/input'
 import { LsbyContainer } from '../layout/container'
 
 type 属性类型 = { a: string; b: string }
@@ -15,8 +16,18 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
   }
 
   private 结果 = 创建元素('p')
-  private 输入框1 = 创建元素('input')
-  private 输入框2 = 创建元素('input')
+  private 输入框1 = new 数字输入框({
+    占位符: '输入第一个数字',
+    输入处理函数: async (值: string): Promise<void> => {
+      await this.设置属性('a', 值)
+    },
+  })
+  private 输入框2 = new 数字输入框({
+    占位符: '输入第二个数字',
+    输入处理函数: async (值: string): Promise<void> => {
+      await this.设置属性('b', 值)
+    },
+  })
 
   protected override async 当加载时(): Promise<void> {
     let 输入框1容器 = new LsbyContainer({})
@@ -34,18 +45,14 @@ export class 测试加法组件 extends 组件基类<属性类型, 发出事件�
     this.shadow.append(输入框1容器)
     this.shadow.append(输入框2容器)
     this.shadow.append(结果容器)
-
-    this.结果.textContent = '计算中...'
-    this.输入框1.oninput = async (): Promise<void> => this.设置属性('a', this.输入框1.value)
-    this.输入框2.oninput = async (): Promise<void> => this.设置属性('b', this.输入框2.value)
   }
   protected override async 当变化时(_name: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
-    this.输入框1.value = (await this.获得属性('a')) ?? '0'
-    this.输入框2.value = (await this.获得属性('b')) ?? '0'
+    this.输入框1.设置值((await this.获得属性('a')) ?? '0')
+    this.输入框2.设置值((await this.获得属性('b')) ?? '0')
 
     let 调用结果 = await API管理器.请求post接口并处理错误('/api/demo/base/add', {
-      a: parseInt(this.输入框1.value),
-      b: parseInt(this.输入框2.value),
+      a: parseInt(this.输入框1.获得值()),
+      b: parseInt(this.输入框2.获得值()),
     })
     this.结果.textContent = 调用结果.res.toString()
   }

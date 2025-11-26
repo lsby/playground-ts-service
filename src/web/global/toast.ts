@@ -135,7 +135,7 @@ export function 显示吐司(消息: string, 选项: 吐司选项 = {}): Promise
     }
 
     // 点击关闭
-    吐司元素.addEventListener('click', 移除吐司)
+    吐司元素.onclick = 移除吐司
 
     // 自动关闭
     if (持续时间 > 0) {

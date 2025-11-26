@@ -49,7 +49,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
     // 添加 hover 效果
     let 初始背景色 = this.获得按钮样式对象().backgroundColor ?? 'var(--按钮背景)'
     let 初始透明度 = 按钮元素.style.opacity !== '' ? 按钮元素.style.opacity : '1'
-    按钮元素.addEventListener('mouseenter', () => {
+    按钮元素.onmouseenter = (): void => {
       if (this.配置.禁用 !== true) {
         if (this.配置.悬浮效果类型 === '透明度') {
           按钮元素.style.opacity = '1'
@@ -57,8 +57,8 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
           按钮元素.style.backgroundColor = 'var(--悬浮背景颜色)'
         }
       }
-    })
-    按钮元素.addEventListener('mouseleave', () => {
+    }
+    按钮元素.onmouseleave = (): void => {
       if (this.配置.禁用 !== true) {
         if (this.配置.悬浮效果类型 === '透明度') {
           按钮元素.style.opacity = 初始透明度
@@ -66,13 +66,13 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
           按钮元素.style.backgroundColor = 初始背景色
         }
       }
-    })
-    按钮元素.addEventListener('click', async (e) => {
+    }
+    按钮元素.onclick = async (e: MouseEvent): Promise<void> => {
       e.preventDefault()
       if (this.配置.禁用 === true) return
       await this.配置.点击处理函数?.(e)
       this.派发事件('点击', void 0)
-    })
+    }
     this.shadow.appendChild(按钮元素)
     this.按钮元素 = 按钮元素
   }

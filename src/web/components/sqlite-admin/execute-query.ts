@@ -132,7 +132,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
 
       选项卡按钮.appendChild(标题span)
       选项卡按钮.appendChild(关闭按钮)
-      选项卡按钮.addEventListener('click', () => this.切换选项卡(索引))
+      选项卡按钮.onclick = (): void => this.切换选项卡(索引)
 
       this.选项卡头容器.appendChild(选项卡按钮)
     })
