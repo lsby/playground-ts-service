@@ -3,6 +3,7 @@ import { API管理器 } from '../../global/api-manager'
 import { API管理器类 } from '../../global/class/api'
 import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
+import { 普通按钮 } from '../general/button'
 import { LsbyDataTable, 数据表加载数据参数 } from '../general/data-table'
 import { LsbyLog } from '../general/log'
 
@@ -249,15 +250,12 @@ export class 定时任务组件 extends 组件基类<属性类型, 发出事件�
       },
     })
 
-    let 刷新按钮 = 创建元素('button', {
-      textContent: '刷新',
-      style: {
-        padding: '6px 16px',
+    let 刷新按钮 = new 普通按钮({
+      文本: '刷新',
+      点击处理函数: async (): Promise<void> => {
+        await this.刷新任务列表()
       },
     })
-    刷新按钮.onclick = async (): Promise<void> => {
-      await this.刷新任务列表()
-    }
     操作区.appendChild(刷新按钮)
 
     主容器.appendChild(操作区)
