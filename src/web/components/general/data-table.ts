@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
-import { 图标按钮, 普通按钮 } from './button'
+import { 图标按钮, 普通按钮 } from './base/button'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项

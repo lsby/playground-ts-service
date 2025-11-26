@@ -3,7 +3,7 @@ import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 import { 警告提示 } from '../../global/toast'
-import { 成功按钮 } from '../general/button'
+import { 成功按钮 } from '../general/base/button'
 import type { 数据表加载数据参数 } from '../general/data-table'
 import { LsbyDataTable } from '../general/data-table'
 

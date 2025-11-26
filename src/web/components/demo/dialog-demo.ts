@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
 import { 显示对话框, 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
-import { 主要按钮 } from '../general/button'
+import { 主要按钮 } from '../general/base/button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

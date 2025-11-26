@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 数字输入框 } from '../general/input'
+import { 数字输入框 } from '../general/base/input'
 import { LsbyContainer } from '../layout/container'
 
 type 属性类型 = { a: string; b: string }

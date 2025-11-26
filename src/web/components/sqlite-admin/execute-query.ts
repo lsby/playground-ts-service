@@ -2,7 +2,7 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 图标按钮, 普通按钮 } from '../general/button'
+import { 图标按钮, 普通按钮 } from '../general/base/button'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {}

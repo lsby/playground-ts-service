@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 密码输入框, 普通输入框 } from '../general/input'
+import { 密码输入框, 普通输入框 } from '../general/base/input'
 
 type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}

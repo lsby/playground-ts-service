@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
 import { 信息提示, 成功提示, 警告提示, 错误提示 } from '../../global/toast'
-import { 主要按钮, 危险按钮, 成功按钮, 普通按钮, 警告按钮 } from '../general/button'
+import { 主要按钮, 危险按钮, 成功按钮, 普通按钮, 警告按钮 } from '../general/base/button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

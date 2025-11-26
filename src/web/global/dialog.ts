@@ -1,4 +1,4 @@
-import { 普通输入框 } from '../components/general/input'
+import { 普通输入框 } from '../components/general/base/input'
 import { 创建元素 } from './create-element'
 
 export function 显示对话框(消息: string): Promise<void> {

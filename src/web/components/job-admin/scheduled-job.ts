@@ -3,7 +3,7 @@ import { API管理器 } from '../../global/api-manager'
 import { API管理器类 } from '../../global/class/api'
 import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
-import { 普通按钮 } from '../general/button'
+import { 普通按钮 } from '../general/base/button'
 import { LsbyDataTable, 数据表加载数据参数 } from '../general/data-table'
 import { LsbyLog } from '../general/log'
 

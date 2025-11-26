@@ -3,7 +3,7 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
-import { 普通按钮 } from '../general/button'
+import { 普通按钮 } from '../general/base/button'
 import { LsbySplitLog } from '../general/split-log'
 
 type 属性类型 = {}

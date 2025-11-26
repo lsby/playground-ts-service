@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 主要按钮 } from '../general/button'
+import { 主要按钮 } from '../general/base/button'
 import { 路由事件派发对象, 路由事件派发类型 } from '../mechanics/route'
 
 export type ping事件 = 路由事件派发类型<'ping', number>

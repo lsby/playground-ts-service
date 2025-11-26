@@ -1,5 +1,5 @@
-import { 组件基类 } from '../../base/base'
-import { 创建元素, 增强样式类型 } from '../../global/create-element'
+import { 组件基类 } from '../../../base/base'
+import { 创建元素, 增强样式类型 } from '../../../global/create-element'
 
 type 按钮属性 = {}
 
