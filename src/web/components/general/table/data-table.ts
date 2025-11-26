@@ -1,6 +1,7 @@
-import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
-import { 普通按钮 } from './base/button'
+import { 组件基类 } from '../../../base/base'
+import { 创建元素 } from '../../../global/create-element'
+import { 显示输入对话框 } from '../../../global/dialog'
+import { 普通按钮 } from '../base/button'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
@@ -313,7 +314,6 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         悬浮效果类型: '透明度',
         点击处理函数: async (event: Event): Promise<void> => {
           event.stopPropagation()
-          let { 显示输入对话框 } = await import('../../global/dialog')
           let 字段名 = String(列.字段名)
           let 当前筛选值 = this.筛选条件[字段名] ?? ''
           let 筛选值 = await 显示输入对话框('输入筛选条件:', 当前筛选值)

@@ -1,7 +1,7 @@
 import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
-import { LsbyTabsHorizontal } from '../general/tabs-horizontal'
+import { LsbyTabsHorizontal } from '../general/tabs/tabs-horizontal'
 import { LsbyBackupDatabase } from './backup-database'
 import { LsbyDatabaseInfo } from './database-info'
 import { LsbyDatabaseManager } from './database-manager'

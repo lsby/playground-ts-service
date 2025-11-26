@@ -4,7 +4,7 @@ import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示模态框 } from '../../global/modal'
 import { 普通按钮 } from '../general/base/button'
-import { LsbySplitLog } from '../general/split-log'
+import { LsbySplitLog } from '../general/log/split-log'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

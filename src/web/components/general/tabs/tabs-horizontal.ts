@@ -1,17 +1,17 @@
-import { 联合转元组 } from '../../../tools/tools'
-import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 联合转元组 } from '../../../../tools/tools'
+import { 组件基类 } from '../../../base/base'
+import { 创建元素 } from '../../../global/create-element'
 
 type 属性类型 = {}
-export type tabVertical发出事件类型 = {
+export type tabHorizontal发出事件类型 = {
   切换: { 当前索引: number }
 }
 type 监听事件类型 = {}
 
-export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发出事件类型, 监听事件类型> {
+export class LsbyTabsHorizontal extends 组件基类<属性类型, tabHorizontal发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
-    this.注册组件('lsby-tabs-vertical', this)
+    this.注册组件('lsby-tabs-horizontal', this)
   }
 
   private 当前索引: number = 0
@@ -25,7 +25,7 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
   protected override async 当加载时(): Promise<void> {
     let style = this.获得宿主样式()
     style.display = 'flex'
-    style.flexDirection = 'row'
+    style.flexDirection = 'column'
     style.width = '100%'
     style.height = '100%'
 
@@ -49,10 +49,8 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
     this.shadow.appendChild(滚动条样式)
 
     this.标签头容器.style.display = 'flex'
-    this.标签头容器.style.flexDirection = 'column'
-    this.标签头容器.style.borderRight = '1px solid var(--边框颜色)'
+    this.标签头容器.style.borderBottom = '1px solid var(--边框颜色)'
     this.标签头容器.style.gap = '10px'
-    this.标签头容器.style.minWidth = '100px'
 
     this.插槽容器.style.flex = '1'
     this.插槽容器.style.display = 'flex'
@@ -81,10 +79,9 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
         style: {
           padding: '6px 12px',
           border: 'none',
-          borderLeft: idx === this.当前索引 ? '2px solid var(--主色调)' : 'none',
+          borderBottom: idx === this.当前索引 ? '2px solid var(--主色调)' : 'none',
           background: 'none',
           cursor: 'pointer',
-          textAlign: 'left',
           userSelect: 'none',
           color: 'var(--文字颜色)',
         },
@@ -98,6 +95,10 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
       if (idx === this.当前索引) {
         el.style.display = 'flex'
         el.style.flex = '1'
+        el.style.flexDirection = 'column'
+        el.style.minHeight = '0'
+        el.style.minWidth = '0'
+        el.style.overflow = 'hidden'
       } else {
         el.style.display = 'none'
       }
@@ -108,5 +109,10 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
     if (this.当前索引 === index) return
     this.当前索引 = index
     this.更新UI()
+    this.派发事件('切换', { 当前索引: index })
+  }
+
+  public 设置当前索引(index: number): void {
+    this.切换标签(index)
   }
 }

@@ -3,8 +3,7 @@ import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 import { 警告提示 } from '../../global/toast'
-import type { 数据表加载数据参数 } from '../general/data-table'
-import { LsbyDataTable } from '../general/data-table'
+import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

@@ -1,5 +1,5 @@
-import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 组件基类 } from '../../../base/base'
+import { 创建元素 } from '../../../global/create-element'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
