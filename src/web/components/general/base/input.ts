@@ -24,11 +24,12 @@ type 输入框配置 = {
   失焦处理函数?: (值: string) => void | Promise<void>
   字体大小?: string
   宽度?: string
-  图标?: string
+  标签?: string
   内边距?: string
   边框颜色?: string
   背景颜色?: string
   文字颜色?: string
+  样式?: 增强样式类型
 }
 
 abstract class 输入框基类 extends 组件基类<输入框属性, 输入框事件, 监听输入框事件> {
@@ -41,6 +42,15 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
   }
 
   protected async 当加载时(): Promise<void> {
+    // 应用宿主样式
+    if (this.配置.样式 !== void 0) {
+      for (let 键 in this.配置.样式) {
+        if (this.配置.样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+        }
+      }
+    }
+
     let 容器 = 创建元素('div', {
       style: {
         position: 'relative',
@@ -57,9 +67,21 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
       style: this.获得输入框样式对象(),
     })
 
-    if (this.配置.图标 !== void 0) {
-      let 占位符 = this.配置.占位符 ?? ''
-      输入框元素.placeholder = this.配置.图标 + ' ' + 占位符
+    if (this.配置.类型 === 'number') {
+      输入框元素.style.appearance = 'none'
+    }
+
+    if (this.配置.标签 !== void 0) {
+      let 标签元素 = 创建元素('span', {
+        textContent: this.配置.标签,
+        style: {
+          marginRight: '8px',
+          fontSize: this.配置.字体大小 ?? '14px',
+          color: 'var(--文字颜色)',
+          flexShrink: '0',
+        },
+      })
+      容器.appendChild(标签元素)
     }
 
     if (this.配置.禁用 === true) {
@@ -136,11 +158,7 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
   public 设置占位符(占位符: string): void {
     this.配置.占位符 = 占位符
     if (this.输入框元素 !== void 0) {
-      let 最终占位符 = 占位符
-      if (this.配置.图标 !== void 0) {
-        最终占位符 = this.配置.图标 + ' ' + 占位符
-      }
-      this.输入框元素.placeholder = 最终占位符
+      this.输入框元素.placeholder = 占位符
     }
   }
 }
@@ -154,44 +172,6 @@ export class 普通输入框 extends 输入框基类 {
       fontSize: this.配置.字体大小 ?? '14px',
       border: '1px solid var(--边框颜色)',
       borderRadius: '4px',
-      backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
-      color: 'var(--文字颜色)',
-      cursor: 禁用 ? 'not-allowed' : 'text',
-      opacity: 禁用 ? '0.6' : '1',
-      outline: 'none',
-      boxSizing: 'border-box',
-    }
-  }
-}
-
-export class 主要输入框 extends 输入框基类 {
-  protected 获得输入框样式对象(): 增强样式类型 {
-    let 禁用 = this.配置.禁用 ?? false
-    return {
-      width: this.配置.宽度 ?? '100%',
-      padding: '8px 12px',
-      fontSize: this.配置.字体大小 ?? '14px',
-      border: `2px solid ${禁用 ? 'var(--边框颜色)' : 'var(--主色调)'}`,
-      borderRadius: '4px',
-      backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
-      color: 'var(--文字颜色)',
-      cursor: 禁用 ? 'not-allowed' : 'text',
-      opacity: 禁用 ? '0.6' : '1',
-      outline: 'none',
-      boxSizing: 'border-box',
-    }
-  }
-}
-
-export class 搜索输入框 extends 输入框基类 {
-  protected 获得输入框样式对象(): 增强样式类型 {
-    let 禁用 = this.配置.禁用 ?? false
-    return {
-      width: this.配置.宽度 ?? '100%',
-      padding: '10px 16px',
-      fontSize: this.配置.字体大小 ?? '14px',
-      border: '1px solid var(--边框颜色)',
-      borderRadius: '20px',
       backgroundColor: 禁用 ? 'var(--禁用背景)' : 'var(--输入框背景)',
       color: 'var(--文字颜色)',
       cursor: 禁用 ? 'not-allowed' : 'text',
@@ -247,6 +227,7 @@ export class 数字输入框 extends 输入框基类 {
       opacity: 禁用 ? '0.6' : '1',
       outline: 'none',
       boxSizing: 'border-box',
+      appearance: 'none',
       // textAlign: 'right',
     }
   }
@@ -254,7 +235,5 @@ export class 数字输入框 extends 输入框基类 {
 
 // 注册组件
 普通输入框.注册组件('lsby-input-default', 普通输入框)
-主要输入框.注册组件('lsby-input-primary', 主要输入框)
-搜索输入框.注册组件('lsby-input-search', 搜索输入框)
 密码输入框.注册组件('lsby-input-password', 密码输入框)
 数字输入框.注册组件('lsby-input-number', 数字输入框)

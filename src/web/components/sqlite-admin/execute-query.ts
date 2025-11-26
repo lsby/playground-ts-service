@@ -2,7 +2,7 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 图标按钮, 普通按钮 } from '../general/base/button'
+import { 普通按钮 } from '../general/base/button'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {}
@@ -26,9 +26,10 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 当前选项卡索引: number = 0
   private 选项卡头容器: HTMLDivElement = 创建元素('div')
   private 内容容器: HTMLDivElement = 创建元素('div')
-  private 添加选项卡按钮: 图标按钮 = new 图标按钮({
-    图标: '+',
+  private 添加选项卡按钮: 普通按钮 = new 普通按钮({
+    文本: '➕',
     点击处理函数: () => this.添加选项卡(),
+    样式: { display: 'flex' },
   })
   private 选项卡内容映射: Map<
     string,
@@ -75,9 +76,6 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     this.选项卡头容器.style.padding = '10px'
     this.选项卡头容器.style.overflowX = 'auto'
 
-    // 添加 选项卡 按钮
-    // 已在构造函数中初始化
-
     // 内容容器
     this.内容容器.style.flex = '1'
     this.内容容器.style.display = 'flex'
@@ -122,8 +120,8 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
         },
       })
 
-      let 关闭按钮 = new 图标按钮({
-        图标: '×',
+      let 关闭按钮 = new 普通按钮({
+        文本: '✕',
         点击处理函数: (e: Event): void => {
           e.stopPropagation()
           this.删除选项卡(索引)
@@ -195,6 +193,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     let 执行按钮 = new 普通按钮({
       文本: '执行',
       点击处理函数: async (): Promise<void> => this.查询(tabId),
+      样式: { marginBottom: '10px' },
     })
 
     let 结果容器 = 创建元素('div', {

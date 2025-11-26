@@ -27,10 +27,12 @@ type 下拉框配置 = {
   失焦处理函数?: (值: string) => void | Promise<void>
   字体大小?: string
   宽度?: string
+  标签?: string
   内边距?: string
   边框颜色?: string
   背景颜色?: string
   文字颜色?: string
+  样式?: 增强样式类型
 }
 
 abstract class 下拉框基类 extends 组件基类<下拉框属性, 下拉框事件, 监听下拉框事件> {
@@ -43,9 +45,40 @@ abstract class 下拉框基类 extends 组件基类<下拉框属性, 下拉框�
   }
 
   protected async 当加载时(): Promise<void> {
+    // 应用宿主样式
+    if (this.配置.样式 !== void 0) {
+      for (let 键 in this.配置.样式) {
+        if (this.配置.样式[键] !== void 0) {
+          ;(this.获得宿主样式() as any)[键] = this.配置.样式[键]
+        }
+      }
+    }
+
+    let 容器 = 创建元素('div', {
+      style: {
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        width: this.配置.宽度 ?? '100%',
+      },
+    })
+
     let 下拉框元素 = 创建元素('select', {
       style: this.获得下拉框样式对象(),
     })
+
+    if (this.配置.标签 !== void 0) {
+      let 标签元素 = 创建元素('span', {
+        textContent: this.配置.标签,
+        style: {
+          marginRight: '8px',
+          fontSize: this.配置.字体大小 ?? '14px',
+          color: 'var(--文字颜色)',
+          flexShrink: '0',
+        },
+      })
+      容器.appendChild(标签元素)
+    }
 
     if (this.配置.占位符 !== void 0) {
       let 占位符选项 = 创建元素('option', {
@@ -91,7 +124,8 @@ abstract class 下拉框基类 extends 组件基类<下拉框属性, 下拉框�
       this.派发事件('失焦', 值)
     }
 
-    this.shadow.appendChild(下拉框元素)
+    容器.appendChild(下拉框元素)
+    this.shadow.appendChild(容器)
     this.下拉框元素 = 下拉框元素
   }
 
@@ -149,7 +183,7 @@ export class 普通下拉框 extends 下拉框基类 {
   protected 获得下拉框样式对象(): 增强样式类型 {
     let 禁用 = this.配置.禁用 ?? false
     return {
-      width: this.配置.宽度 ?? '100%',
+      width: '100%',
       padding: this.配置.内边距 ?? '8px 12px',
       fontSize: this.配置.字体大小 ?? '14px',
       border: `1px solid ${this.配置.边框颜色 ?? 'var(--边框颜色)'}`,

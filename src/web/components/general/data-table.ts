@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
-import { 图标按钮, 普通按钮 } from './base/button'
+import { 普通按钮 } from './base/button'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
@@ -260,8 +260,8 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         筛选值容器.appendChild(筛选值显示)
 
         // 清空筛选按钮
-        let 清空按钮 = new 图标按钮({
-          图标: '✕',
+        let 清空按钮 = new 普通按钮({
+          文本: '✕',
           字体大小: '12px',
           颜色: 'var(--color-text-secondary)',
           悬浮效果类型: '透明度',
@@ -278,8 +278,8 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       }
 
       // 筛选图标
-      let 筛选图标 = new 图标按钮({
-        图标: '🔍',
+      let 筛选图标 = new 普通按钮({
+        文本: '🔍',
         悬浮效果类型: '透明度',
         点击处理函数: async (event: Event): Promise<void> => {
           event.stopPropagation()

@@ -2,7 +2,7 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
-import { 图标按钮, 普通按钮 } from '../general/base/button'
+import { 普通按钮 } from '../general/base/button'
 import { 普通输入框 } from '../general/base/input'
 import { 普通下拉框 } from '../general/base/select'
 import { 共享表格管理器 } from './shared-table'
@@ -59,10 +59,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    let 过滤列标签 = 创建元素('label', {
-      textContent: '过滤列:',
-    })
     let 过滤列选择 = new 普通下拉框({
+      标签: '过滤列:',
       选项列表: [
         { 值: '', 文本: '选择列' },
         ...this.列列表.map((列) => ({
@@ -82,10 +80,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    let 过滤输入标签 = 创建元素('label', {
-      textContent: '过滤文本:',
-    })
     let 过滤输入框 = new 普通输入框({
+      标签: '过滤文本:',
       占位符: '输入过滤文本',
       宽度: '100%',
       内边距: '4px',
@@ -106,16 +102,16 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       过滤输入框.设置值(当前项.文本)
     }
 
-    let 添加按钮 = new 图标按钮({
-      图标: '+',
+    let 添加按钮 = new 普通按钮({
+      文本: '➕',
       点击处理函数: (): void => {
         this.过滤项列表.push({ 列: null, 文本: '' })
         this.更新过滤容器()
       },
     })
 
-    let 删除按钮 = new 图标按钮({
-      图标: '-',
+    let 删除按钮 = new 普通按钮({
+      文本: '➖',
       点击处理函数: (): void => {
         if (this.过滤项列表.length > 1) {
           this.过滤项列表.splice(索引, 1)
@@ -129,9 +125,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       删除按钮.设置禁用(true)
     }
 
-    行容器.appendChild(过滤列标签)
     行容器.appendChild(过滤列选择)
-    行容器.appendChild(过滤输入标签)
     行容器.appendChild(过滤输入框)
     行容器.appendChild(添加按钮)
     行容器.appendChild(删除按钮)
@@ -172,11 +166,9 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    let 每页条数标签 = 创建元素('label', {
-      textContent: '每页条数:',
-    })
     let 选项值列表 = [10, 50, 100, 200, 500]
     this.每页条数选择 = new 普通下拉框({
+      标签: '每页条数:',
       选项列表: 选项值列表.map((值) => ({ 值: String(值), 文本: String(值) })),
       值: String(this.每页条数),
       变化处理函数: (值: string): void => {
@@ -186,7 +178,6 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       },
     })
 
-    每页条数容器.appendChild(每页条数标签)
     每页条数容器.appendChild(this.每页条数选择)
 
     // 初始化过滤项列表
