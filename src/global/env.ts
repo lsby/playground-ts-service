@@ -28,8 +28,8 @@ export let 环境变量 = await new Env({
     APP_PORT: z.coerce.number(),
     WEB_PORT: z.coerce.number(),
     // 系统用户
-    SYSTEM_USER: z.string(),
-    SYSTEM_PWD: z.string(),
+    DEFAULT_SYSTEM_USER: z.string(),
+    DEFAULT_SYSTEM_PWD: z.string(),
     // 文件上传
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     // JWT

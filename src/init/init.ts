@@ -22,8 +22,8 @@ export async function init(): Promise<void> {
     .获得句柄()
     .selectFrom('user')
     .select('id')
-    .where('name', '=', 环境变量.SYSTEM_USER)
-    .where('pwd', '=', await bcrypt.hash(环境变量.SYSTEM_PWD, 10))
+    .where('name', '=', 环境变量.DEFAULT_SYSTEM_USER)
+    .where('pwd', '=', await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 10))
     .executeTakeFirst()
 
   if (用户存在判定 !== void 0) {
@@ -40,8 +40,8 @@ export async function init(): Promise<void> {
         .insertInto('user')
         .values({
           id: 初始用户id,
-          name: 环境变量.SYSTEM_USER,
-          pwd: await bcrypt.hash(环境变量.SYSTEM_PWD, 10),
+          name: 环境变量.DEFAULT_SYSTEM_USER,
+          pwd: await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 10),
           is_admin: 1,
         })
         .execute()
