@@ -19,7 +19,7 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
-    this.注册组件('lsby-demo-table', this)
+    this.注册组件('lsby-demo-user-table-management', this)
   }
 
   private 表格组件: LsbyDataTable<数据项>
