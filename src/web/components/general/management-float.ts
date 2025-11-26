@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 主要按钮 } from './base/button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -11,9 +11,9 @@ export class 管理浮动 extends 组件基类<属性类型, 发出事件类型,
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 按钮 = 创建元素('button', {
-      textContent: '管理',
-      style: {
+    let 按钮 = new 主要按钮({
+      文本: '管理',
+      元素样式: {
         position: 'fixed',
         bottom: '20px',
         right: '20px',
@@ -29,7 +29,7 @@ export class 管理浮动 extends 组件基类<属性类型, 发出事件类型,
         boxShadow: '0 4px 12px var(--深阴影颜色)',
         zIndex: '1000',
       },
-      onclick: async (): Promise<void> => {
+      点击处理函数: async (): Promise<void> => {
         window.open('/admin.html', '_blank')
       },
     })

@@ -11,6 +11,7 @@ type 监听按钮事件 = {}
 
 type 按钮配置 = {
   文本?: string
+  标题?: string
   禁用?: boolean
   点击处理函数?: (e: Event) => void | Promise<void>
   宿主样式?: 增强样式类型
@@ -48,6 +49,9 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
       let 文本元素 = 创建元素('span', { textContent: this.配置.文本 })
       按钮元素.appendChild(文本元素)
     }
+    if (this.配置.标题 !== void 0) {
+      按钮元素.title = this.配置.标题
+    }
     if (this.配置.禁用 === true) {
       按钮元素.disabled = true
     }
@@ -81,6 +85,23 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
   public 按钮聚焦(): void {
     if (this.按钮元素 !== void 0) {
       this.按钮元素.focus()
+    }
+  }
+
+  public 设置文本(文本: string): void {
+    this.配置.文本 = 文本
+    if (this.按钮元素 !== void 0) {
+      let span = this.按钮元素.querySelector('span')
+      if (span !== null) {
+        span.textContent = 文本
+      }
+    }
+  }
+
+  public 设置标题(标题: string): void {
+    this.配置.标题 = 标题
+    if (this.按钮元素 !== void 0) {
+      this.按钮元素.title = 标题
     }
   }
 }

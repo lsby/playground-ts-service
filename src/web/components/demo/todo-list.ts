@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
-import { 主要按钮 } from '../general/base/button'
+import { 主要按钮, 文本按钮 } from '../general/base/button'
 import { 普通输入框 } from '../general/form/input'
 import { LsbyColumn } from '../layout/column'
 import { LsbyContainer } from '../layout/container'
@@ -59,18 +59,18 @@ export class 测试todo列表组件 extends 组件基类<属性类型, 发出事
         },
       })
 
-      let 删除按钮 = 创建元素('button', {
-        textContent: '❌',
-        onclick: (): void => {
-          this.todo列表.splice(index, 1)
-          this.刷新列表()
-        },
-        style: {
+      let 删除按钮 = new 文本按钮({
+        文本: '❌',
+        元素样式: {
           background: 'transparent',
           border: 'none',
           color: 'red',
           fontSize: '1.2em',
           cursor: 'pointer',
+        },
+        点击处理函数: (): void => {
+          this.todo列表.splice(index, 1)
+          this.刷新列表()
         },
       })
 

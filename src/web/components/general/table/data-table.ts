@@ -310,13 +310,15 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     // 计算操作列宽度
     let 操作列宽度列表: number[] = []
     for (let 操作 of 操作列表) {
-      let 临时按钮 = 创建元素('button', {
-        textContent: 操作.名称,
-        style: {
-          padding: '4px 12px',
+      let 临时按钮 = new 普通按钮({
+        文本: 操作.名称,
+        宿主样式: {
           visibility: 'hidden',
           position: 'absolute',
           top: '-1000px',
+        },
+        元素样式: {
+          padding: '4px 12px',
         },
       })
       document.body.appendChild(临时按钮)

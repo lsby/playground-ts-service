@@ -1,5 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/create-element'
+import { 文本按钮, 普通按钮 } from '../base/button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -49,9 +50,9 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       },
     })
 
-    let 滚动到底部按钮 = 创建元素('button', {
-      textContent: '↓',
-      style: {
+    let 滚动到底部按钮 = new 普通按钮({
+      文本: '↓',
+      元素样式: {
         position: 'absolute',
         bottom: '10px',
         right: '20px',
@@ -67,17 +68,16 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
         fontWeight: 'bold',
         boxShadow: '0 2px 4px var(--深阴影颜色)',
       },
+      点击处理函数: (): void => {
+        if (this.日志容器 !== null) {
+          this.日志容器.scrollTop = this.日志容器.scrollHeight
+        }
+      },
     })
 
-    滚动到底部按钮.onclick = (): void => {
-      if (this.日志容器 !== null) {
-        this.日志容器.scrollTop = this.日志容器.scrollHeight
-      }
-    }
-
-    let 清空日志按钮 = 创建元素('button', {
-      textContent: '🗑️',
-      style: {
+    let 清空日志按钮 = new 普通按钮({
+      文本: '🗑️',
+      元素样式: {
         position: 'absolute',
         bottom: '10px',
         right: '60px',
@@ -93,11 +93,10 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
         fontWeight: 'bold',
         boxShadow: '0 2px 4px var(--深阴影颜色)',
       },
+      点击处理函数: (): void => {
+        this.清空日志()
+      },
     })
-
-    清空日志按钮.onclick = (): void => {
-      this.清空日志()
-    }
 
     // 创建右键菜单
     let 右键菜单 = 创建元素('div', {
@@ -113,9 +112,9 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
       },
     })
 
-    let 复制按钮 = 创建元素('button', {
-      textContent: '复制',
-      style: {
+    let 复制按钮 = new 文本按钮({
+      文本: '复制',
+      元素样式: {
         width: '100%',
         padding: '8px 16px',
         backgroundColor: 'transparent',
@@ -125,12 +124,11 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
         fontSize: '14px',
         color: 'var(--文字颜色)',
       },
+      点击处理函数: (): void => {
+        this.复制选中日志()
+        this.隐藏右键菜单()
+      },
     })
-
-    复制按钮.onclick = (): void => {
-      this.复制选中日志()
-      this.隐藏右键菜单()
-    }
 
     右键菜单.appendChild(复制按钮)
 

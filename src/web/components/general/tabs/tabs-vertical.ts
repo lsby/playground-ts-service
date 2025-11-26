@@ -1,6 +1,7 @@
 import { 联合转元组 } from '../../../../tools/tools'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/create-element'
+import { 文本按钮 } from '../base/button'
 
 type 属性类型 = {}
 export type tabVertical发出事件类型 = {
@@ -76,9 +77,9 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
 
     标签元素.forEach((el, idx) => {
       let 标签名 = el.getAttribute('标签') ?? `标签${idx}`
-      let 按钮 = 创建元素('button', {
-        textContent: 标签名,
-        style: {
+      let 按钮 = new 文本按钮({
+        文本: 标签名,
+        元素样式: {
           padding: '6px 12px',
           border: 'none',
           borderLeft: idx === this.当前索引 ? '2px solid var(--主色调)' : 'none',
@@ -88,7 +89,7 @@ export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发�
           userSelect: 'none',
           color: 'var(--文字颜色)',
         },
-        onclick: (): void => this.切换标签(idx),
+        点击处理函数: (): void => this.切换标签(idx),
       })
 
       this.标签头容器.appendChild(按钮)

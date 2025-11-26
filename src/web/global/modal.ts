@@ -9,6 +9,7 @@ type 模态框选项 = {
   最小高度?: string
 }
 
+import { 文本按钮 } from '../components/general/base/button'
 import { 创建元素 } from './create-element'
 
 class 模态框管理器 {
@@ -16,8 +17,8 @@ class 模态框管理器 {
   private 框: HTMLDivElement | null = null
   private 头部: HTMLDivElement | null = null
   private 内容: HTMLDivElement | null = null
-  private 最大化按钮: HTMLButtonElement | null = null
-  private 关闭按钮: HTMLButtonElement | null = null
+  private 最大化按钮: 文本按钮 | null = null
+  private 关闭按钮: 文本按钮 | null = null
   private 标题元素: HTMLSpanElement | null = null
   private 是否最大化 = false
   private 关闭回调: (() => void | Promise<void>) | null = null
@@ -97,34 +98,34 @@ class 模态框管理器 {
     })
 
     // 最大化按钮
-    this.最大化按钮 = 创建元素('button', {
-      textContent: '□',
-      style: {
+    this.最大化按钮 = new 文本按钮({
+      文本: '□',
+      元素样式: {
         border: 'none',
         background: 'transparent',
         cursor: 'pointer',
         fontSize: '14px',
         color: 'var(--文字颜色)',
       },
-      title: '最大化',
-      onclick: (): void => {
+      标题: '最大化',
+      点击处理函数: (): void => {
         this.切换最大化()
       },
     })
     右侧按钮容器.appendChild(this.最大化按钮)
 
     // 关闭按钮
-    this.关闭按钮 = 创建元素('button', {
-      textContent: '✕',
-      style: {
-        border: 'none',
-        background: 'transparent',
-        cursor: 'pointer',
+    this.关闭按钮 = new 文本按钮({
+      文本: '✕',
+      元素样式: {
+        padding: '0',
         fontSize: '16px',
         color: 'red',
         fontWeight: 'bold',
+        border: 'none',
+        background: 'transparent',
       },
-      onclick: async (): Promise<void> => {
+      点击处理函数: async (): Promise<void> => {
         await this.关闭()
       },
     })
@@ -164,8 +165,8 @@ class 模态框管理器 {
       this.框.style.transform = 'none'
       this.遮罩.style.justifyContent = 'flex-start'
       this.遮罩.style.alignItems = 'flex-start'
-      this.最大化按钮.textContent = '🗗'
-      this.最大化按钮.title = '还原'
+      this.最大化按钮.设置文本('🗗')
+      this.最大化按钮.设置标题('还原')
     } else {
       this.框.style.width = 'auto'
       this.框.style.height = 'auto'
@@ -176,8 +177,8 @@ class 模态框管理器 {
       this.框.style.transform = ''
       this.遮罩.style.justifyContent = 'center'
       this.遮罩.style.alignItems = 'center'
-      this.最大化按钮.textContent = '□'
-      this.最大化按钮.title = '最大化'
+      this.最大化按钮.设置文本('□')
+      this.最大化按钮.设置标题('最大化')
     }
   }
 
@@ -195,9 +196,9 @@ class 模态框管理器 {
 
     // 设置是否可关闭
     if (选项.可关闭 === false) {
-      this.关闭按钮.style.display = 'none'
+      this.关闭按钮.获得宿主样式().display = 'none'
     } else {
-      this.关闭按钮.style.display = ''
+      this.关闭按钮.获得宿主样式().display = ''
     }
 
     // 设置关闭回调
