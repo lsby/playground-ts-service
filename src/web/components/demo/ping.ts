@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 主要按钮 } from '../general/button'
 import { 路由事件派发对象, 路由事件派发类型 } from '../mechanics/route'
 
 export type ping事件 = 路由事件派发类型<'ping', number>
@@ -14,9 +14,9 @@ export class 测试ping组件 extends 组件基类<属性类型, 发出事件类
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 按钮 = 创建元素('button', {
-      textContent: '开始测试',
-      onclick: async (): Promise<void> => {
+    let 按钮 = new 主要按钮({
+      文本: '开始测试',
+      点击处理函数: async (): Promise<void> => {
         this.派发事件('LsbyRoute-发出', new 路由事件派发对象('ping', Math.random()))
       },
     })

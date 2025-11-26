@@ -1,6 +1,6 @@
 import { Dialog } from '@capacitor/dialog'
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 主要按钮 } from '../general/button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -14,9 +14,10 @@ export class 测试capacitor组件 extends 组件基类<属性类型, 发出事�
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 按钮 = 创建元素('button', {
-      innerText: '点我',
-      onclick: async (): Promise<void> => {
+    let 按钮 = new 主要按钮({
+      文本: '点我',
+      禁用: false,
+      点击处理函数: async (): Promise<void> => {
         await Dialog.alert({
           title: '提示',
           message: '你好世界',

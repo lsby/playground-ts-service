@@ -1,4 +1,4 @@
-type 增强样式类型 = Omit<
+export type 增强样式类型 = Omit<
   Partial<CSSStyleDeclaration>,
   | 'flexDirection'
   | 'flexWrap'
