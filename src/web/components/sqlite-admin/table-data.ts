@@ -285,7 +285,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     按钮容器.appendChild(确认按钮)
     内容容器.appendChild(按钮容器)
 
-    await 显示模态框({ 标题: '添加数据', 可关闭: true }, 内容容器)
+    await 显示模态框({ 标题: '添加数据', 可关闭: true, 最小宽度: '500px' }, 内容容器)
   }
 
   private async 显示编辑模态框(行数据: 数据项): Promise<void> {
@@ -359,7 +359,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     按钮容器.appendChild(确认按钮)
     内容容器.appendChild(按钮容器)
 
-    await 显示模态框({ 标题: '编辑数据', 可关闭: true }, 内容容器)
+    await 显示模态框({ 标题: '编辑数据', 可关闭: true, 最小宽度: '500px' }, 内容容器)
   }
 
   private async 保存新行(表单实例: 表单): Promise<void> {
@@ -373,7 +373,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 参数列表: (string | number)[] = []
 
     for (let [列名, 值] of Object.entries(数据)) {
-      if (值 === '') {
+      let 列 = this.列列表.find((c) => c.name === 列名)
+      if (列 !== void 0 && 列.notnull === 1 && 列.dflt_value === null && 值 === '') {
         await 警告提示(`${列名} 不能为空`)
         return
       }

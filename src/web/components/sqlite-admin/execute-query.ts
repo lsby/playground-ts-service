@@ -316,24 +316,22 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       可排序: false,
     }))
 
-    // 创建或更新表格
-    if (内容.表格组件 === null) {
-      内容.表格组件 = new LsbyDataTable<Record<string, any>>({
-        列配置,
-        每页数量: 20,
-        加载数据: async (
-          参数: 数据表加载数据参数<Record<string, any>>,
-        ): Promise<{ 数据: Record<string, any>[]; 总数: number }> => {
-          // 在内存中分页
-          let 开始 = (参数.页码 - 1) * 参数.每页数量
-          let 结束 = 开始 + 参数.每页数量
-          return {
-            数据: 数据.rows.slice(开始, 结束),
-            总数: 数据.rows.length,
-          }
-        },
-      })
-    }
+    // 每次都重新创建表格以确保数据更新
+    内容.表格组件 = new LsbyDataTable<Record<string, any>>({
+      列配置,
+      每页数量: 20,
+      加载数据: async (
+        参数: 数据表加载数据参数<Record<string, any>>,
+      ): Promise<{ 数据: Record<string, any>[]; 总数: number }> => {
+        // 在内存中分页
+        let 开始 = (参数.页码 - 1) * 参数.每页数量
+        let 结束 = 开始 + 参数.每页数量
+        return {
+          数据: 数据.rows.slice(开始, 结束),
+          总数: 数据.rows.length,
+        }
+      },
+    })
 
     内容.结果容器.appendChild(内容.表格组件)
   }

@@ -15,11 +15,19 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
   private 日志实例: LsbyLog | null = null
 
   protected override async 当加载时(): Promise<void> {
+    // 设置宿主元素为 flex 容器，占满父容器
+    let hostStyle = this.获得宿主样式()
+    hostStyle.display = 'flex'
+    hostStyle.flexDirection = 'row'
+    hostStyle.width = '100%'
+    hostStyle.height = '100%'
+    hostStyle.minWidth = '500px'
+    hostStyle.minHeight = '400px'
+
     let 容器 = 创建元素('div', {
       style: {
         display: 'flex',
         width: '100%',
-        height: '100%',
         gap: '10px',
       },
     })
@@ -27,7 +35,6 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
     let 左侧插槽容器 = 创建元素('div', {
       style: {
         flex: '1',
-        height: '100%',
         overflow: 'auto',
       },
     })
@@ -41,14 +48,13 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
     let 右侧日志容器 = 创建元素('div', {
       style: {
         flex: '1',
-        height: '100%',
         display: 'flex',
         flexDirection: 'column',
       },
     })
 
     this.日志实例 = new LsbyLog()
-    this.日志实例.style.height = '100%'
+    this.日志实例.style.flex = '1'
     右侧日志容器.appendChild(this.日志实例)
 
     容器.appendChild(左侧插槽容器)

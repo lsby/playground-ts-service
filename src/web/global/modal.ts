@@ -3,8 +3,8 @@ type 模态框选项 = {
   最大化?: boolean
   可关闭?: boolean
   关闭回调?: () => void | Promise<void>
-  宽度?: string
-  高度?: string
+  最大宽度?: string
+  最大高度?: string
   最小宽度?: string
   最小高度?: string
 }
@@ -23,10 +23,10 @@ class 模态框管理器 {
   private 是否最大化 = false
   private 关闭回调: (() => void | Promise<void>) | null = null
   private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
-  private 默认宽度 = '80vw'
-  private 默认高度 = '60vh'
-  private 默认最小宽度 = '300px'
-  private 默认最小高度 = '200px'
+  private 默认最大宽度 = '60vw'
+  private 默认最大高度 = '80vh'
+  private 默认最小宽度 = '30vw'
+  private 默认最小高度 = '20vh'
   private resize观察器: ResizeObserver | null = null
 
   private 初始化(): void {
@@ -56,8 +56,8 @@ class 模态框管理器 {
         position: 'absolute',
         width: 'auto',
         height: 'auto',
-        maxWidth: this.默认宽度,
-        maxHeight: this.默认高度,
+        maxWidth: this.默认最大宽度,
+        maxHeight: this.默认最大高度,
         background: 'var(--卡片背景颜色)',
         border: '1px solid var(--边框颜色)',
         borderRadius: '4px',
@@ -170,8 +170,8 @@ class 模态框管理器 {
     } else {
       this.框.style.width = 'auto'
       this.框.style.height = 'auto'
-      this.框.style.maxWidth = this.默认宽度
-      this.框.style.maxHeight = this.默认高度
+      this.框.style.maxWidth = this.默认最大宽度
+      this.框.style.maxHeight = this.默认最大高度
       this.框.style.left = ''
       this.框.style.top = ''
       this.框.style.transform = ''
@@ -185,7 +185,14 @@ class 模态框管理器 {
   public async 显示(选项: 模态框选项, 内容: HTMLElement): Promise<void> {
     this.初始化()
 
-    if (this.遮罩 === null || this.框 === null || this.头部 === null || this.内容 === null || this.关闭按钮 === null) {
+    if (
+      this.遮罩 === null ||
+      this.框 === null ||
+      this.头部 === null ||
+      this.内容 === null ||
+      this.关闭按钮 === null ||
+      this.最大化按钮 === null
+    ) {
       return
     }
 
@@ -204,30 +211,23 @@ class 模态框管理器 {
     // 设置关闭回调
     this.关闭回调 = 选项.关闭回调 ?? null
 
-    // 设置是否最大化
-    if (选项.最大化 === true && this.是否最大化 === false) {
-      this.切换最大化()
-    } else if (选项.最大化 === false && this.是否最大化 === true) {
-      this.切换最大化()
-    }
-
     // 清空并设置内容
     while (this.内容.firstChild !== null) {
       this.内容.removeChild(this.内容.firstChild)
     }
     this.内容.appendChild(内容)
 
-    // 设置自定义宽度和高度
-    if (选项.宽度 !== void 0) {
-      this.框.style.width = 选项.宽度
-    } else if (this.是否最大化 === false) {
-      this.框.style.width = 'auto'
+    // 设置自定义最大宽度和高度
+    if (选项.最大宽度 !== void 0) {
+      this.框.style.maxWidth = 选项.最大宽度
+    } else {
+      this.框.style.maxWidth = this.默认最大宽度
     }
 
-    if (选项.高度 !== void 0) {
-      this.框.style.height = 选项.高度
-    } else if (this.是否最大化 === false) {
-      this.框.style.height = 'auto'
+    if (选项.最大高度 !== void 0) {
+      this.框.style.maxHeight = 选项.最大高度
+    } else {
+      this.框.style.maxHeight = this.默认最大高度
     }
 
     if (选项.最小宽度 !== void 0) {
@@ -240,6 +240,33 @@ class 模态框管理器 {
       this.框.style.minHeight = 选项.最小高度
     } else {
       this.框.style.minHeight = this.默认最小高度
+    }
+
+    // 设置是否最大化
+    if (选项.最大化 === true) {
+      this.框.style.width = '100vw'
+      this.框.style.height = '100vh'
+      this.框.style.maxWidth = '100vw'
+      this.框.style.maxHeight = '100vh'
+      this.框.style.left = '0'
+      this.框.style.top = '0'
+      this.框.style.transform = 'none'
+      this.遮罩.style.justifyContent = 'flex-start'
+      this.遮罩.style.alignItems = 'flex-start'
+      this.最大化按钮.设置文本('🗗')
+      this.最大化按钮.设置标题('还原')
+      this.是否最大化 = true
+    } else {
+      this.框.style.width = 'auto'
+      this.框.style.height = 'auto'
+      this.框.style.left = ''
+      this.框.style.top = ''
+      this.框.style.transform = ''
+      this.遮罩.style.justifyContent = 'center'
+      this.遮罩.style.alignItems = 'center'
+      this.最大化按钮.设置文本('□')
+      this.最大化按钮.设置标题('最大化')
+      this.是否最大化 = false
     }
 
     // 显示遮罩
