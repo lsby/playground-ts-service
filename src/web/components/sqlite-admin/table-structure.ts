@@ -2,12 +2,21 @@ import { 联合转元组 } from '../../../tools/tools'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
 
 type 属性类型 = {
   表名?: string
 }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
+
+type 表结构数据项 = {
+  列名: string
+  类型: string
+  可空: string
+  主键: string
+  默认值: string
+}
 
 export class LsbyTableStructure extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['表名']
@@ -16,6 +25,7 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
   }
 
   private 结构容器: HTMLDivElement | null = null
+  private 表格组件: LsbyDataTable<表结构数据项> | null = null
 
   public constructor(属性?: 属性类型) {
     super(属性)
@@ -41,116 +51,87 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
 
     this.shadow.appendChild(this.结构容器)
 
-    await this.加载表结构()
+    await this.初始化表格()
   }
 
   protected override async 当变化时(属性名: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (属性名 === '表名') {
-      await this.加载表结构()
+      await this.初始化表格()
     }
   }
 
-  private async 加载表结构(): Promise<void> {
+  private async 初始化表格(): Promise<void> {
     let 表名 = await this.获得属性('表名')
+
+    // 清空旧表格
+    if (this.表格组件 !== null) {
+      this.表格组件.remove()
+      this.表格组件 = null
+    }
+
     if (表名 === void 0 || 表名 === null) {
-      this.显示消息('请选择表')
+      if (this.结构容器 !== null) {
+        this.结构容器.textContent = '请选择表'
+        this.结构容器.style.display = 'flex'
+      }
       return
     }
 
-    try {
-      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
-      if (结果.status === 'success') {
-        this.渲染表结构(结果.data.columns)
-      } else {
-        this.显示消息('获取表结构失败')
-      }
-    } catch (错误) {
-      console.error('获取表结构失败:', 错误)
-      this.显示消息('获取表结构失败')
-    }
-  }
-
-  private 渲染表结构(
-    列列表: Array<{ name: string; type: string; notnull: number; pk: number; dflt_value: string | null }>,
-  ): void {
-    if (this.结构容器 === null) return
-    this.结构容器.innerHTML = ''
-
-    let 标题 = 创建元素('h3', {
-      textContent: '表结构',
-      style: {
-        margin: '0 0 10px 0',
-        fontSize: '18px',
-      },
-    })
-    this.结构容器.appendChild(标题)
-
-    let 表 = 创建元素('table', {
-      style: {
-        width: '100%',
-        borderCollapse: 'collapse',
-        fontSize: '14px',
-      },
-    })
-
-    // 表头
-    let 表头行 = 创建元素('tr')
-    let 表头列 = ['列名', '类型', '可空', '主键', '默认值']
-    for (let 列名 of 表头列) {
-      let 表头单元格 = 创建元素('th', {
-        textContent: 列名,
-        style: {
-          border: '1px solid var(--边框颜色)',
-          padding: '8px',
-          backgroundColor: 'var(--次要背景颜色)',
-          textAlign: 'left',
-        },
-      })
-      表头行.appendChild(表头单元格)
-    }
-    表.appendChild(表头行)
-
-    // 数据行
-    for (let 列 of 列列表) {
-      let 数据行 = 创建元素('tr')
-      let 单元格数据 = [
-        列.name,
-        列.type,
-        列.notnull === 1 ? '否' : '是',
-        列.pk === 1 ? '是' : '否',
-        列.dflt_value ?? '',
-      ]
-      for (let 数据 of 单元格数据) {
-        let 数据单元格 = 创建元素('td', {
-          textContent: 数据,
-          style: {
-            border: '1px solid var(--边框颜色)',
-            padding: '8px',
-          },
-        })
-        数据行.appendChild(数据单元格)
-      }
-      表.appendChild(数据行)
+    if (this.结构容器 !== null) {
+      this.结构容器.style.display = 'none'
     }
 
-    this.结构容器.appendChild(表)
-  }
+    // 创建表格
+    this.表格组件 = new LsbyDataTable<表结构数据项>({
+      列配置: [
+        { 字段名: '列名', 显示名: '列名', 可排序: false },
+        { 字段名: '类型', 显示名: '类型', 可排序: false },
+        { 字段名: '可空', 显示名: '可空', 可排序: false },
+        { 字段名: '主键', 显示名: '主键', 可排序: false },
+        { 字段名: '默认值', 显示名: '默认值', 可排序: false },
+      ],
+      每页数量: 50,
+      加载数据: async (参数: 数据表加载数据参数<表结构数据项>): Promise<{ 数据: 表结构数据项[]; 总数: number }> => {
+        let 表名 = await this.获得属性('表名')
+        if (表名 === void 0 || 表名 === null) {
+          return { 数据: [], 总数: 0 }
+        }
 
-  private 显示消息(消息: string): void {
-    if (this.结构容器 === null) return
-    this.结构容器.innerHTML = ''
-    let 消息元素 = 创建元素('div', {
-      textContent: 消息,
-      style: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        fontSize: '18px',
-        color: 'var(--文本颜色)',
+        try {
+          let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
+          if (结果.status === 'success') {
+            let 数据: 表结构数据项[] = (
+              结果.data.columns as Array<{
+                name: string
+                type: string
+                notnull: number
+                pk: number
+                dflt_value: string | null
+              }>
+            ).map((列) => ({
+              列名: 列.name,
+              类型: 列.type,
+              可空: 列.notnull === 1 ? '否' : '是',
+              主键: 列.pk === 1 ? '是' : '否',
+              默认值: 列.dflt_value ?? '',
+            }))
+
+            // 应用分页
+            let 偏移 = (参数.页码 - 1) * 参数.每页数量
+            let 分页数据 = 数据.slice(偏移, 偏移 + 参数.每页数量)
+
+            return { 数据: 分页数据, 总数: 数据.length }
+          }
+          return { 数据: [], 总数: 0 }
+        } catch (错误) {
+          console.error('获取表结构失败:', 错误)
+          return { 数据: [], 总数: 0 }
+        }
       },
     })
-    this.结构容器.appendChild(消息元素)
+
+    // 添加表格到 shadow DOM
+    this.shadow.appendChild(this.表格组件)
   }
 }

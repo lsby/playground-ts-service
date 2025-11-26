@@ -1,6 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 右键菜单管理器 } from '../../../global/context-menu-manager'
-import { 创建元素 } from '../../../global/create-element'
+import { 创建元素, 增强样式类型 } from '../../../global/create-element'
 import { 显示输入对话框 } from '../../../global/dialog'
 import { 普通按钮 } from '../base/button'
 import { LsbyPagination, 数据表分页配置 } from '../pagination/pagination'
@@ -38,6 +38,7 @@ export type 数据表格选项<数据项> = {
   每页数量?: number
   列最小宽度?: string
   列最大宽度?: string
+  宿主样式?: 增强样式类型
   加载数据: (参数: 数据表加载数据参数<数据项>) => Promise<{ 数据: 数据项[]; 总数: number }>
 }
 
@@ -80,6 +81,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   private 表格行元素映射: Map<number, HTMLTableRowElement> = new Map()
   private 表格单元格元素映射: Map<string, HTMLTableCellElement> = new Map()
   private 分页组件: LsbyPagination | null = null
+  private 宿主样式: 增强样式类型 | undefined
 
   private 处理鼠标移动 = (event: MouseEvent): void => {
     if (this.是否正在拖动 === false) return
@@ -123,6 +125,7 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
     this.加载数据回调 = 选项.加载数据
     this.列最小宽度 = 选项.列最小宽度 ?? '50px'
     this.列最大宽度 = 选项.列最大宽度
+    this.宿主样式 = 选项.宿主样式
     this.分页配置 = {
       当前页码: 1,
       每页数量: 选项.每页数量 ?? 10,
@@ -735,6 +738,13 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
   }
 
   protected override async 当加载时(): Promise<void> {
+    if (this.宿主样式 !== void 0) {
+      for (let [键, 值] of Object.entries(this.宿主样式)) {
+        if (typeof 值 === 'string') {
+          this.style.setProperty(键, 值)
+        }
+      }
+    }
     await this.加载数据()
   }
 }

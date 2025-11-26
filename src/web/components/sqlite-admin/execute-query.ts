@@ -3,7 +3,7 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 普通按钮 } from '../general/base/button'
-import { 共享表格管理器 } from './shared-table'
+import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -13,11 +13,12 @@ type 选项卡数据 = {
   id: string
   标题: string
   sql: string
-  结果数据: {
-    rows: Record<string, any>[]
-    numAffectedRows?: number | undefined
-    insertId?: number | undefined
-  } | null
+}
+
+type 查询结果数据 = {
+  rows: Record<string, any>[]
+  numAffectedRows?: number | undefined
+  insertId?: number | undefined
 }
 
 export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
@@ -41,10 +42,10 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       sql输入: HTMLTextAreaElement
       执行按钮: 普通按钮
       结果容器: HTMLDivElement
-      表格管理器: 共享表格管理器 | null
-      影响行数消息元素: HTMLDivElement | null
+      表格组件: LsbyDataTable<Record<string, any>> | null
     }
   > = new Map()
+  private 选项卡结果映射: Map<string, 查询结果数据 | null> = new Map()
 
   public constructor(属性: 属性类型) {
     super(属性)
@@ -53,12 +54,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
 
   private 添加默认选项卡(): void {
     let id = this.生成选项卡Id()
-    this.选项卡列表.push({
-      id,
-      标题: '查询1',
-      sql: '',
-      结果数据: null,
-    })
+    this.选项卡列表.push({ id, 标题: '查询1', sql: '' })
   }
 
   private 生成选项卡Id(): string {
@@ -73,14 +69,12 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     style.height = '100%'
     style.overflow = 'hidden'
 
-    // 选项卡头部容器
     this.选项卡头容器.style.display = 'flex'
     this.选项卡头容器.style.borderBottom = '1px solid var(--边框颜色)'
     this.选项卡头容器.style.gap = '10px'
     this.选项卡头容器.style.padding = '10px'
     this.选项卡头容器.style.overflowX = 'auto'
 
-    // 内容容器
     this.内容容器.style.flex = '1'
     this.内容容器.style.display = 'flex'
     this.内容容器.style.flexDirection = 'column'
@@ -117,13 +111,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
         },
       })
 
-      let 标题span = 创建元素('span', {
-        textContent: 选项卡.标题,
-        style: {
-          flex: '1',
-        },
-      })
-
+      let 标题span = 创建元素('span', { textContent: 选项卡.标题, style: { flex: '1' } })
       let 关闭按钮 = new 普通按钮({
         文本: '✕',
         点击处理函数: (e: Event): void => {
@@ -156,12 +144,11 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     this.内容容器.appendChild(内容.执行按钮)
     this.内容容器.appendChild(内容.结果容器)
 
-    // 更新 SQL 输入框的值
     内容.sql输入.value = 当前选项卡.sql
 
-    // 如果有结果数据，显示结果
-    if (当前选项卡.结果数据 !== null) {
-      this.显示查询结果(内容, 当前选项卡.结果数据)
+    let 结果 = this.选项卡结果映射.get(当前选项卡.id)
+    if (结果 !== null && 结果 !== void 0) {
+      this.显示查询结果(内容, 结果)
     }
   }
 
@@ -169,8 +156,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     sql输入: HTMLTextAreaElement
     执行按钮: 普通按钮
     结果容器: HTMLDivElement
-    表格管理器: 共享表格管理器 | null
-    影响行数消息元素: HTMLDivElement | null
+    表格组件: LsbyDataTable<Record<string, any>> | null
   } {
     let 内容 = this.选项卡内容映射.get(tabId)
     if (内容 !== void 0) {
@@ -203,7 +189,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     let 结果容器 = 创建元素('div', {
       style: {
         border: '1px solid var(--边框颜色)',
-        overflow: 'auto',
+        overflow: 'hidden',
         backgroundColor: 'var(--背景颜色)',
         minWidth: '0',
         flex: '1 1 0',
@@ -213,7 +199,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       },
     })
 
-    let 新内容 = { sql输入, 执行按钮, 结果容器, 表格管理器: null, 影响行数消息元素: null }
+    let 新内容 = { sql输入, 执行按钮, 结果容器, 表格组件: null }
     this.选项卡内容映射.set(tabId, 新内容)
     return 新内容
   }
@@ -227,26 +213,21 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
   private 添加选项卡(): void {
     let id = this.生成选项卡Id()
     let 选项卡编号 = this.选项卡列表.length + 1
-    this.选项卡列表.push({
-      id,
-      标题: `查询${选项卡编号}`,
-      sql: '',
-      结果数据: null,
-    })
+    this.选项卡列表.push({ id, 标题: `查询${选项卡编号}`, sql: '' })
     this.当前选项卡索引 = this.选项卡列表.length - 1
     this.更新UI()
   }
 
   private 删除选项卡(index: number): void {
-    if (this.选项卡列表.length <= 1) return // 至少保留一个 选项卡
+    if (this.选项卡列表.length <= 1) return
     if (index < 0 || index >= this.选项卡列表.length) return
 
     let 选项卡 = this.选项卡列表[index]
     if (选项卡 === void 0) return
 
-    let 选项卡Id = 选项卡.id
     this.选项卡列表.splice(index, 1)
-    this.选项卡内容映射.delete(选项卡Id)
+    this.选项卡内容映射.delete(选项卡.id)
+    this.选项卡结果映射.delete(选项卡.id)
 
     if (this.当前选项卡索引 >= this.选项卡列表.length) {
       this.当前选项卡索引 = this.选项卡列表.length - 1
@@ -263,7 +244,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     if (内容 === void 0) return
 
     let sql = 内容.sql输入.value.trim()
-    选项卡.sql = sql // 保存 SQL 到 选项卡 数据
+    选项卡.sql = sql
 
     if (sql === '') {
       this.显示结果(内容, '请输入SQL语句')
@@ -273,7 +254,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     try {
       let 结果 = await API管理器.请求post接口('/api/sqlite-admin/execute-query', { sql, parameters: [] })
       if (结果.status === 'success') {
-        选项卡.结果数据 = 结果.data
+        this.选项卡结果映射.set(tabId, 结果.data)
         this.显示查询结果(内容, 结果.data)
       } else {
         this.显示结果(内容, '查询失败')
@@ -289,71 +270,72 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       sql输入: HTMLTextAreaElement
       执行按钮: 普通按钮
       结果容器: HTMLDivElement
-      表格管理器: 共享表格管理器 | null
-      影响行数消息元素: HTMLDivElement | null
+      表格组件: LsbyDataTable<Record<string, any>> | null
     },
-    数据: {
-      rows: Record<string, any>[]
-      numAffectedRows?: number | undefined
-      insertId?: number | undefined
-    },
+    数据: 查询结果数据,
   ): void {
+    内容.结果容器.innerHTML = ''
+
     if (数据.rows.length === 0) {
-      // 清空所有内容
-      内容.结果容器.innerHTML = ''
-      let 无结果消息 = 创建元素('div', {
-        textContent: '查询无结果',
+      let 消息容器 = 创建元素('div', {
         style: {
-          padding: '20px',
-          textAlign: 'center',
-          color: 'var(--次要文字颜色)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flex: '1',
+          gap: '12px',
         },
       })
 
-      内容.结果容器.appendChild(无结果消息)
+      let 文本 = 创建元素('div', {
+        textContent: '查询无结果',
+        style: { color: 'var(--次要文字颜色)' },
+      })
+      消息容器.appendChild(文本)
 
       if (数据.numAffectedRows !== void 0) {
-        let 影响行数消息 = 创建元素('div', {
+        let 影响行数 = 创建元素('div', {
           textContent: `影响行数: ${数据.numAffectedRows}`,
-          style: {
-            fontWeight: 'bold',
-            marginTop: '10px',
-          },
+          style: { fontWeight: 'bold', color: 'var(--文字颜色)' },
         })
-
-        内容.结果容器.appendChild(影响行数消息)
+        消息容器.appendChild(影响行数)
       }
+
+      内容.结果容器.appendChild(消息容器)
       return
     }
 
-    // 如果表格管理器还未创建，现在创建
-    if (内容.表格管理器 === null) {
-      内容.表格管理器 = new 共享表格管理器(内容.结果容器, { 可编辑: false })
-    }
+    // 提取列配置
+    let 第一行 = 数据.rows[0]
+    if (第一行 === void 0) return
 
-    // 使用表格管理器显示数据
-    内容.表格管理器.更新数据(数据.rows)
+    let 列配置 = Object.keys(第一行).map((列名) => ({
+      字段名: 列名,
+      显示名: 列名,
+      可排序: false,
+    }))
 
-    // 如果有影响行数，添加到底部
-    if (数据.numAffectedRows !== void 0) {
-      // 先移除旧的影响行数消息
-      if (内容.影响行数消息元素 !== null) {
-        内容.影响行数消息元素.remove()
-      }
-
-      let 影响行数消息 = 创建元素('div', {
-        className: '影响行数消息',
-        textContent: `影响行数: ${数据.numAffectedRows}`,
-        style: {
-          padding: '10px',
-          fontWeight: 'bold',
-          borderTop: '1px solid var(--边框颜色)',
+    // 创建或更新表格
+    if (内容.表格组件 === null) {
+      内容.表格组件 = new LsbyDataTable<Record<string, any>>({
+        列配置,
+        每页数量: 20,
+        加载数据: async (
+          参数: 数据表加载数据参数<Record<string, any>>,
+        ): Promise<{ 数据: Record<string, any>[]; 总数: number }> => {
+          // 在内存中分页
+          let 开始 = (参数.页码 - 1) * 参数.每页数量
+          let 结束 = 开始 + 参数.每页数量
+          return {
+            数据: 数据.rows.slice(开始, 结束),
+            总数: 数据.rows.length,
+          }
         },
       })
-
-      内容.结果容器.appendChild(影响行数消息)
-      内容.影响行数消息元素 = 影响行数消息
     }
+
+    内容.结果容器.appendChild(内容.表格组件)
   }
 
   private 显示结果(
@@ -361,8 +343,7 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
       sql输入: HTMLTextAreaElement
       执行按钮: 普通按钮
       结果容器: HTMLDivElement
-      表格管理器: 共享表格管理器 | null
-      影响行数消息元素: HTMLDivElement | null
+      表格组件: LsbyDataTable<Record<string, any>> | null
     },
     消息: string,
   ): void {
@@ -370,8 +351,9 @@ export class LsbyExecuteQuery extends 组件基类<属性类型, 发出事件类
     let 消息元素 = 创建元素('div', {
       textContent: 消息,
       style: {
-        padding: '10px',
-        backgroundColor: 'var(--背景颜色)',
+        padding: '20px',
+        textAlign: 'center',
+        color: 'var(--次要文字颜色)',
       },
     })
 
