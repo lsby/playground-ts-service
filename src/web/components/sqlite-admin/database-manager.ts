@@ -58,7 +58,7 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     })
 
     this.表列表组件 = new LsbyTableList({})
-    this.监听事件('选择表', async (e) => this.当选择表(e.detail.表名))
+    this.监听冒泡事件('选择表', async (e) => this.当选择表(e.detail.表名))
 
     this.左侧容器.appendChild(左侧标题)
     this.左侧容器.appendChild(this.表列表组件)

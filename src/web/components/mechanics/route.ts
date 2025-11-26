@@ -57,14 +57,14 @@ export class LsbyRoute extends 组件基类<属性类型, 发出事件类型, �
     let 插槽: HTMLSlotElement = 创建元素('slot')
     this.shadow.appendChild(插槽)
 
-    this.监听事件('LsbyRoute-监听', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
+    this.监听冒泡事件('LsbyRoute-监听', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
       if (this.监听表[事件名称] === void 0) {
         this.监听表[事件名称] = []
       }
       this.监听表[事件名称].push(data.detail.获得回调函数())
     })
-    this.监听事件('LsbyRoute-发出', async (data: CustomEvent<路由事件派发对象<string, any>>) => {
+    this.监听冒泡事件('LsbyRoute-发出', async (data: CustomEvent<路由事件派发对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
       let 函数列表 = this.监听表[事件名称]
       if (函数列表 !== void 0) {

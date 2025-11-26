@@ -92,7 +92,10 @@ export abstract class 组件基类<
       }),
     )
   }
-  public 监听事件<K extends keyof 监听事件类型>(
+  /**
+   * 监听从其他地方冒泡上来的事件 (捕获从子组件或外部冒泡的事件)
+   */
+  public 监听冒泡事件<K extends keyof 监听事件类型>(
     k: K,
     f: (e: CustomEvent<监听事件类型[K]>) => Promise<void>,
     o?: AddEventListenerOptions,
@@ -103,6 +106,23 @@ export abstract class 组件基类<
       passive: false, // 是否阻止默认行为
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-undefined
       signal: undefined as any, // 触发控制器, 可以用 new AbortController 创建
+      ...o,
+    })
+  }
+  /**
+   * 监听这个组件发出的事件 (外部监听组件派发的事件)
+   */
+  public 监听发出事件<K extends keyof 发出事件类型>(
+    k: K,
+    f: (e: CustomEvent<发出事件类型[K]>) => Promise<void>,
+    o?: AddEventListenerOptions,
+  ): void {
+    this.addEventListener(k.toString(), f as any, {
+      capture: false,
+      once: false,
+      passive: false,
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-undefined
+      signal: undefined as any,
       ...o,
     })
   }

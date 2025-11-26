@@ -36,7 +36,7 @@ export class 任务管理主组件 extends 组件基类<属性类型, 发出事�
     // 添加到 tabs
     this.tabs.appendChild(即时任务容器)
     this.tabs.appendChild(定时任务容器)
-    this.监听事件('切换', async (e: CustomEvent<{ 当前索引: number }>) => {
+    this.监听冒泡事件('切换', async (e: CustomEvent<{ 当前索引: number }>) => {
       let type = e.detail.当前索引 === 0 ? 'instant' : 'scheduled'
       let url = new URL(window.location.href)
       url.searchParams.set('type', type)
