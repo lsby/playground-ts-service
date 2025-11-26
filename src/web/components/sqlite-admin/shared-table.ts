@@ -1,7 +1,7 @@
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
-import { 普通输入框 } from '../general/base/input'
+import { 普通输入框 } from '../general/form/input'
 
 type 表格选项 = {
   可编辑?: boolean

@@ -3,8 +3,8 @@ import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 普通按钮 } from '../general/base/button'
-import { 普通输入框 } from '../general/base/input'
-import { 普通下拉框 } from '../general/base/select'
+import { 普通输入框 } from '../general/form/input'
+import { 普通下拉框 } from '../general/form/select'
 import { 共享表格管理器 } from './shared-table'
 
 type 属性类型 = {

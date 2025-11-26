@@ -1,7 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
 import { 主要按钮 } from '../general/base/button'
-import { 普通输入框 } from '../general/base/input'
+import { 普通输入框 } from '../general/form/input'
 import { LsbyColumn } from '../layout/column'
 import { LsbyContainer } from '../layout/container'
 import { LsbyRow } from '../layout/row'
