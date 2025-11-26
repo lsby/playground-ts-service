@@ -1,3 +1,4 @@
+import { 主要按钮, 普通按钮 } from '../components/general/base/button'
 import { 普通输入框 } from '../components/general/form/input'
 import { 创建元素 } from './create-element'
 
@@ -50,32 +51,15 @@ export function 显示对话框(消息: string): Promise<void> {
       },
     })
 
-    let 确定按钮 = 创建元素('button', {
-      textContent: '确定',
-      style: {
-        padding: '8px 24px',
-        backgroundColor: 'var(--主色调)',
-        color: 'var(--卡片背景颜色)',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-      },
-    })
-
-    确定按钮.onmouseenter = (): void => {
-      确定按钮.style.opacity = '0.8'
-    }
-    确定按钮.onmouseleave = (): void => {
-      确定按钮.style.opacity = '1'
-    }
-
     let 关闭对话框 = (): void => {
       document.body.removeChild(遮罩层)
       resolve()
     }
 
-    确定按钮.onclick = 关闭对话框
+    let 确定按钮 = new 主要按钮({
+      文本: '确定',
+      点击处理函数: 关闭对话框,
+    })
     // 遮罩层.addEventListener('click', (event: MouseEvent) => {
     //   if (event.target === 遮罩层) {
     //     关闭对话框()
@@ -99,7 +83,7 @@ export function 显示对话框(消息: string): Promise<void> {
 
     // 自动聚焦到确定按钮
     setTimeout(() => {
-      确定按钮.focus()
+      确定按钮.按钮聚焦()
     }, 0)
   })
 }
@@ -154,57 +138,25 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       },
     })
 
-    let 取消按钮 = 创建元素('button', {
-      textContent: '取消',
-      style: {
-        padding: '8px 24px',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-      },
-    })
-
-    取消按钮.onmouseenter = (): void => {
-      取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
-    }
-    取消按钮.onmouseleave = (): void => {
-      取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    }
-
-    let 确定按钮 = 创建元素('button', {
-      textContent: '确定',
-      style: {
-        padding: '8px 24px',
-        backgroundColor: 'var(--主色调)',
-        color: 'var(--卡片背景颜色)',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-      },
-    })
-
-    确定按钮.onmouseenter = (): void => {
-      确定按钮.style.opacity = '0.8'
-    }
-    确定按钮.onmouseleave = (): void => {
-      确定按钮.style.opacity = '1'
-    }
-
     let 关闭对话框 = (结果: boolean): void => {
       document.body.removeChild(遮罩层)
       resolve(结果)
     }
 
-    取消按钮.onclick = (): void => {
-      关闭对话框(false)
-    }
-    确定按钮.onclick = (): void => {
-      关闭对话框(true)
-    }
+    let 取消按钮 = new 普通按钮({
+      文本: '取消',
+      点击处理函数: (): void => {
+        关闭对话框(false)
+      },
+    })
+
+    let 确定按钮 = new 主要按钮({
+      文本: '确定',
+      点击处理函数: (): void => {
+        关闭对话框(true)
+      },
+    })
+
     遮罩层.onclick = (event: MouseEvent): void => {
       if (event.target === 遮罩层) {
         关闭对话框(false)
@@ -229,7 +181,7 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
 
     // 自动聚焦到确定按钮
     setTimeout(() => {
-      确定按钮.focus()
+      确定按钮.按钮聚焦()
     }, 0)
   })
 }
@@ -290,57 +242,24 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       },
     })
 
-    let 取消按钮 = 创建元素('button', {
-      textContent: '取消',
-      style: {
-        padding: '8px 24px',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-      },
-    })
-
-    取消按钮.onmouseenter = (): void => {
-      取消按钮.style.backgroundColor = 'var(--悬浮背景颜色)'
-    }
-    取消按钮.onmouseleave = (): void => {
-      取消按钮.style.backgroundColor = 'var(--按钮背景)'
-    }
-
-    let 确定按钮 = 创建元素('button', {
-      textContent: '确定',
-      style: {
-        padding: '8px 24px',
-        backgroundColor: 'var(--主色调)',
-        color: 'var(--卡片背景颜色)',
-        border: 'none',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        fontSize: '14px',
-      },
-    })
-
-    确定按钮.onmouseenter = (): void => {
-      确定按钮.style.opacity = '0.8'
-    }
-    确定按钮.onmouseleave = (): void => {
-      确定按钮.style.opacity = '1'
-    }
-
     let 关闭对话框 = (结果: string | null): void => {
       document.body.removeChild(遮罩层)
       resolve(结果)
     }
 
-    取消按钮.onclick = (): void => {
-      关闭对话框(null)
-    }
-    确定按钮.onclick = (): void => {
-      关闭对话框(输入框.获得值())
-    }
+    let 取消按钮 = new 普通按钮({
+      文本: '取消',
+      点击处理函数: (): void => {
+        关闭对话框(null)
+      },
+    })
+
+    let 确定按钮 = new 主要按钮({
+      文本: '确定',
+      点击处理函数: (): void => {
+        关闭对话框(输入框.获得值())
+      },
+    })
     // 遮罩层.addEventListener('click', (event: MouseEvent) => {
     //   if (event.target === 遮罩层) {
     //     关闭对话框(null)

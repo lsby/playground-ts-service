@@ -1,6 +1,7 @@
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
+import { 主要按钮, 普通按钮 } from '../general/base/button'
 import { 普通输入框 } from '../general/form/input'
 
 type 表格选项 = {
@@ -684,36 +685,6 @@ export class 共享表格管理器 {
       },
     })
 
-    // 确定按钮
-    let 确定按钮 = 创建元素('button', {
-      textContent: '确定',
-      style: {
-        padding: '8px 16px',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      },
-    })
-
-    // 取消按钮
-    let 取消按钮 = 创建元素('button', {
-      textContent: '取消',
-      style: {
-        padding: '8px 16px',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      },
-    })
-
-    按钮容器.appendChild(取消按钮)
-    按钮容器.appendChild(确定按钮)
-    内容容器.appendChild(按钮容器)
-
     // 保存函数
     let 保存值 = async (): Promise<void> => {
       let 新值 = 输入框.value
@@ -783,14 +754,25 @@ export class 共享表格管理器 {
       }
     }
 
-    // 绑定事件
-    确定按钮.onclick = (): void => {
-      void 保存值()
-    }
+    // 确定按钮
+    let 确定按钮 = new 主要按钮({
+      文本: '确定',
+      点击处理函数: async (): Promise<void> => {
+        await 保存值()
+      },
+    })
 
-    取消按钮.onclick = (): void => {
-      void 关闭模态框()
-    }
+    // 取消按钮
+    let 取消按钮 = new 普通按钮({
+      文本: '取消',
+      点击处理函数: async (): Promise<void> => {
+        await 关闭模态框()
+      },
+    })
+
+    按钮容器.appendChild(取消按钮)
+    按钮容器.appendChild(确定按钮)
+    内容容器.appendChild(按钮容器)
 
     输入框.onkeydown = (事件: KeyboardEvent): void => {
       if (事件.key === 'Enter' && 事件.ctrlKey === true) {

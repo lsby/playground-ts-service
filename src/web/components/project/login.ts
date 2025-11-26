@@ -1,6 +1,7 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { 创建元素 } from '../../global/create-element'
+import { 主要按钮, 链接按钮 } from '../general/base/button'
 import { 表单 } from '../general/form/form'
 import { 密码输入框, 普通输入框 } from '../general/form/input'
 
@@ -30,9 +31,9 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
   private 注册表单: 表单<注册表单数据> | null = null
   private 登录表单容器 = 创建元素('div')
   private 注册表单容器 = 创建元素('div')
-  private 登录按钮 = 创建元素('button')
-  private 注册按钮 = 创建元素('button')
-  private 切换按钮 = 创建元素('button')
+  private 登录按钮: 主要按钮 | null = null
+  private 注册按钮: 主要按钮 | null = null
+  private 切换按钮: 链接按钮 | null = null
   private enableRegister = false
 
   protected override async 当加载时(): Promise<void> {
@@ -199,23 +200,20 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         marginTop: '8px',
       },
     })
-    this.登录按钮.style.flex = '1'
-    this.登录按钮.style.padding = '12px'
-    this.登录按钮.style.border = 'none'
-    this.登录按钮.style.borderRadius = '4px'
-    this.登录按钮.style.fontSize = '16px'
-    this.登录按钮.style.cursor = 'pointer'
-    this.登录按钮.style.backgroundColor = 'var(--主色调)'
-    this.登录按钮.style.color = 'white'
-    this.注册按钮.style.flex = '1'
-    this.注册按钮.style.padding = '12px'
-    this.注册按钮.style.border = 'none'
-    this.注册按钮.style.borderRadius = '4px'
-    this.注册按钮.style.fontSize = '16px'
-    this.注册按钮.style.cursor = 'pointer'
-    this.注册按钮.style.backgroundColor = 'var(--主色调)'
-    this.注册按钮.style.color = 'white'
-    按钮容器.append(this.登录按钮, this.注册按钮)
+    this.登录按钮 = new 主要按钮({
+      文本: '登录',
+      元素样式: { flex: '1', padding: '12px', fontSize: '16px', width: '100%' },
+      宿主样式: { width: '100%' },
+      点击处理函数: async (): Promise<void> => this.执行认证(),
+    })
+    this.注册按钮 = new 主要按钮({
+      文本: '注册',
+      元素样式: { flex: '1', padding: '12px', fontSize: '16px', width: '100%' },
+      宿主样式: { width: '100%' },
+      点击处理函数: async (): Promise<void> => this.执行认证(),
+    })
+    按钮容器.appendChild(this.登录按钮)
+    按钮容器.appendChild(this.注册按钮)
 
     let 切换容器 = 创建元素('div', {
       style: {
@@ -224,26 +222,17 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
         marginTop: '8px',
       },
     })
-    this.切换按钮.style.background = 'none'
-    this.切换按钮.style.border = 'none'
-    this.切换按钮.style.color = 'var(--主色调)'
-    this.切换按钮.style.fontSize = '14px'
-    this.切换按钮.style.cursor = 'pointer'
-    this.切换按钮.style.padding = '4px 8px'
-    切换容器.append(this.切换按钮)
+    this.切换按钮 = new 链接按钮({
+      文本: '还没有账号？立即注册',
+      元素样式: { fontSize: '14px' },
+      点击处理函数: async (): Promise<void> => this.切换模式(),
+    })
+    切换容器.appendChild(this.切换按钮)
 
     表单容器.append(按钮容器, 切换容器)
     卡片.append(标题, 提示区域, 表单容器)
     容器.append(卡片)
     this.shadow.append(容器)
-
-    this.登录按钮.textContent = '登录'
-    this.注册按钮.textContent = '注册'
-    this.切换按钮.textContent = '还没有账号？立即注册'
-
-    this.登录按钮.onclick = async (): Promise<void> => this.执行认证()
-    this.注册按钮.onclick = async (): Promise<void> => this.执行认证()
-    this.切换按钮.onclick = async (): Promise<void> => this.切换模式()
 
     let 处理回车键 = async (事件: KeyboardEvent): Promise<void> => {
       if (事件.key === 'Enter') {
@@ -269,17 +258,28 @@ export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, �
       this.结果.textContent = '请输入用户名和密码'
       this.登录表单容器.style.display = 'block'
       this.注册表单容器.style.display = 'none'
-      this.注册按钮.style.display = 'none'
-      this.登录按钮.style.display = 'block'
-      this.切换按钮.textContent = '还没有账号？立即注册'
-      this.切换按钮.style.display = this.enableRegister ? 'block' : 'none'
+      if (this.注册按钮 !== null) {
+        this.注册按钮.获得宿主样式().display = 'none'
+      }
+      if (this.登录按钮 !== null) {
+        this.登录按钮.获得宿主样式().display = 'block'
+      }
+      if (this.切换按钮 !== null) {
+        this.切换按钮.获得宿主样式().display = this.enableRegister ? 'block' : 'none'
+      }
     } else {
       this.结果.textContent = '创建您的账号'
       this.登录表单容器.style.display = 'none'
       this.注册表单容器.style.display = 'block'
-      this.注册按钮.style.display = 'block'
-      this.登录按钮.style.display = 'none'
-      this.切换按钮.textContent = '已有账号？立即登录'
+      if (this.注册按钮 !== null) {
+        this.注册按钮.获得宿主样式().display = 'block'
+      }
+      if (this.登录按钮 !== null) {
+        this.登录按钮.获得宿主样式().display = 'none'
+      }
+      if (this.切换按钮 !== null) {
+        this.切换按钮.获得宿主样式().display = 'block'
+      }
     }
   }
 

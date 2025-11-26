@@ -4,6 +4,7 @@ import { 创建元素 } from '../../global/create-element'
 import { 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
 import { 关闭模态框, 显示模态框 } from '../../global/modal'
 import { 警告提示 } from '../../global/toast'
+import { 主要按钮, 普通按钮 } from '../general/base/button'
 import { 表单 } from '../general/form/form'
 import { 密码输入框, 普通输入框 } from '../general/form/input'
 import { LsbyDataTable, 数据表加载数据参数 } from '../general/table/data-table'
@@ -153,17 +154,9 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
       },
     })
 
-    let 确认按钮 = 创建元素('button', {
-      textContent: '确认',
-      style: {
-        padding: '8px 16px',
-        background: 'var(--按钮背景)',
-        color: 'var(--文字颜色)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    let 确认按钮 = new 主要按钮({
+      文本: '确认',
+      点击处理函数: async (): Promise<void> => {
         let 表单数据 = 表单实例.获得数据()
 
         // 验证数据
@@ -190,17 +183,9 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
       },
     })
 
-    let 取消按钮 = 创建元素('button', {
-      textContent: '取消',
-      style: {
-        padding: '8px 16px',
-        background: 'transparent',
-        color: 'var(--文字颜色)',
-        border: '1px solid var(--边框颜色)',
-        borderRadius: '4px',
-        cursor: 'pointer',
-      },
-      onclick: async (): Promise<void> => {
+    let 取消按钮 = new 普通按钮({
+      文本: '取消',
+      点击处理函数: async (): Promise<void> => {
         await 关闭模态框()
       },
     })

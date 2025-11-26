@@ -73,6 +73,16 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
   public 获得禁用(): boolean {
     return this.配置.禁用 ?? false
   }
+
+  public 获得按钮元素(): HTMLButtonElement | undefined {
+    return this.按钮元素
+  }
+
+  public 按钮聚焦(): void {
+    if (this.按钮元素 !== void 0) {
+      this.按钮元素.focus()
+    }
+  }
 }
 
 export class 普通按钮 extends 按钮基类 {
@@ -150,9 +160,42 @@ export class 警告按钮 extends 按钮基类 {
   }
 }
 
+export class 文本按钮 extends 按钮基类 {
+  protected 获得按钮样式对象(): 增强样式类型 {
+    let 禁用 = this.配置.禁用 ?? false
+    return {
+      backgroundColor: 'transparent',
+      color: 禁用 ? 'var(--按钮文字)' : 'var(--主色调)',
+      border: 'none',
+      padding: '8px 16px',
+      borderRadius: '4px',
+      cursor: 禁用 ? 'not-allowed' : 'pointer',
+      opacity: 禁用 ? '0.5' : '1',
+    }
+  }
+}
+
+export class 链接按钮 extends 按钮基类 {
+  protected 获得按钮样式对象(): 增强样式类型 {
+    let 禁用 = this.配置.禁用 ?? false
+    return {
+      backgroundColor: 'transparent',
+      color: 禁用 ? 'var(--按钮文字)' : 'var(--主色调)',
+      border: 'none',
+      padding: '4px 8px',
+      borderRadius: '0',
+      cursor: 禁用 ? 'not-allowed' : 'pointer',
+      opacity: 禁用 ? '0.5' : '1',
+      textDecoration: '暂不使用',
+    }
+  }
+}
+
 // 注册组件
 普通按钮.注册组件('lsby-button-default', 普通按钮)
 主要按钮.注册组件('lsby-button-primary', 主要按钮)
 危险按钮.注册组件('lsby-button-danger', 危险按钮)
 成功按钮.注册组件('lsby-button-success', 成功按钮)
 警告按钮.注册组件('lsby-button-warning', 警告按钮)
+文本按钮.注册组件('lsby-button-text', 文本按钮)
+链接按钮.注册组件('lsby-button-link', 链接按钮)
