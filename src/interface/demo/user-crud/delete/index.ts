@@ -11,13 +11,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(
-    new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({
-      表名: 'user',
-      id字段: 'id',
-      标识字段: 'is_admin',
-    })),
-  )
+  .混合(new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' })))
   .混合(new 检查JSON参数(z.object({ id: z.string() })))
   .混合(
     接口逻辑.构造([kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
