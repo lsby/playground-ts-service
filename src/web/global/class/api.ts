@@ -231,7 +231,7 @@ export class API管理器类 {
   }
 
   private 是标准返回格式(
-    x: any,
+    x: unknown,
   ): x is
     | { status: 'fail'; data: string }
     | { status: 'success'; data: Record<string, any> }

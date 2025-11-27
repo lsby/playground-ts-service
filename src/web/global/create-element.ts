@@ -83,11 +83,14 @@ export type 增强样式类型 = Omit<
   minHeight?: string | undefined
 }
 
+type 子元素类型 = HTMLElement | string | number | 子元素类型[]
+
 type 元素属性 = {
   style?: 增强样式类型
+  children?: 子元素类型
 }
 
-function 是否为普通对象(值: any): boolean {
+function 是否为普通对象(值: unknown): boolean {
   if (值 === null || 值 === void 0) {
     return false
   }
@@ -113,7 +116,7 @@ function 智能赋值(目标: any, 键: string, 值: any): void {
     目标[键] = 值
   }
 }
-function 添加子元素(父元素: HTMLElement, 子元素: any): void {
+function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): void {
   if (Array.isArray(子元素)) {
     for (let 子 of 子元素) {
       添加子元素(父元素, 子)
@@ -147,4 +150,14 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
   }
 
   return 元素
+}
+
+export function 应用宿主样式(样式对象: CSSStyleDeclaration, 样式?: 增强样式类型): void {
+  if (样式 !== void 0) {
+    for (let 键 in 样式) {
+      if (样式[键] !== void 0) {
+        ;(样式对象 as any)[键] = 样式[键]
+      }
+    }
+  }
 }

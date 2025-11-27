@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../../base/base'
-import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../global/create-element'
 import type { 表单元素 } from './form'
 
 type 复选框组属性 = {}
@@ -29,14 +29,7 @@ class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 
   }
 
   protected async 当加载时(): Promise<void> {
-    // 应用宿主样式
-    if (this.配置.宿主样式 !== void 0) {
-      for (let 键 in this.配置.宿主样式) {
-        if (this.配置.宿主样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
-        }
-      }
-    }
+    应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
     let 容器 = 创建元素('div', {
       style: {

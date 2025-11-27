@@ -8,7 +8,7 @@ import { LsbyPagination, 数据表分页配置 } from '../pagination/pagination'
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
   显示名: string
-  格式化?: (值: any) => string
+  格式化?: (值: unknown) => string
   可排序?: boolean
   列最小宽度?: string
   列最大宽度?: string

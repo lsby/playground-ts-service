@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../../base/base'
-import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../global/create-element'
 
 type 按钮属性 = {}
 
@@ -28,14 +28,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
   }
 
   protected async 当加载时(): Promise<void> {
-    // 应用宿主样式
-    if (this.配置.宿主样式 !== void 0) {
-      for (let 键 in this.配置.宿主样式) {
-        if (this.配置.宿主样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
-        }
-      }
-    }
+    应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
     let 按钮样式 = this.获得按钮样式对象()
     if (this.配置.元素样式 !== void 0) {

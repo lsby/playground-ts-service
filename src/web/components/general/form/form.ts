@@ -1,10 +1,10 @@
 import { 组件基类 } from '../../../base/base'
-import { 创建元素, 增强样式类型 } from '../../../global/create-element'
+import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../global/create-element'
 
 type 基础值 = string | number | boolean | null
 type 基础值结构 = 基础值 | 基础值结构[] | { [键: string]: 基础值结构 }
 
-interface 表单元素<值类型 extends 基础值结构 = 基础值结构> {
+interface 表单元素<值类型 extends 基础值结构 = 基础值结构> extends HTMLElement {
   获得值(): 值类型
   设置值(值: 值类型): void
 }
@@ -45,14 +45,7 @@ class 表单<数据类型 extends Record<string, 基础值结构> = Record<strin
   }
 
   protected async 当加载时(): Promise<void> {
-    // 应用宿主样式
-    if (this.配置.宿主样式 !== void 0) {
-      for (let 键 in this.配置.宿主样式) {
-        if (this.配置.宿主样式[键] !== void 0) {
-          ;(this.获得宿主样式() as any)[键] = this.配置.宿主样式[键]
-        }
-      }
-    }
+    应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
     let 容器样式: 增强样式类型 = {
       display: 'grid',
@@ -101,9 +94,7 @@ class 表单<数据类型 extends Record<string, 基础值结构> = Record<strin
         },
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      let 组件元素 = 项配置.组件 as any
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+      let 组件元素 = 项配置.组件
       组件包装器.appendChild(组件元素)
       项包装器.appendChild(组件包装器)
       容器.appendChild(项包装器)
@@ -126,30 +117,25 @@ class 表单<数据类型 extends Record<string, 基础值结构> = Record<strin
     for (let [键, 值] of Object.entries(数据)) {
       let 元素 = this.项映射.get(键)
       if (元素 !== void 0) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        元素.设置值(值 as any)
+        元素.设置值(值)
       }
     }
   }
 
   public 获得项值(键: keyof 数据类型): 基础值结构 {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    let 值 = this.项映射.get(键 as any)?.获得值()
+    let 值 = this.项映射.get(键 as string)?.获得值()
     return 值 ?? null
   }
 
   public 设置项值(键: keyof 数据类型, 值: 基础值结构): void {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-    this.项映射.get(键 as any)?.设置值(值 as any)
+    this.项映射.get(键 as string)?.设置值(值)
   }
 
   public 获得所有元素(): Partial<Record<keyof 数据类型, HTMLElement>> {
     let 元素映射: Partial<Record<keyof 数据类型, HTMLElement>> = {}
     for (let [键, _元素] of this.项映射) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      let dom元素 = _元素 as any
-      if (dom元素 !== void 0 && dom元素 instanceof HTMLElement) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      let dom元素 = _元素
+      if (dom元素 instanceof HTMLElement) {
         元素映射[键 as keyof 数据类型] = dom元素
       }
     }
