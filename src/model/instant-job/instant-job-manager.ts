@@ -1,5 +1,5 @@
 import { Log } from '@lsby/ts-log'
-import { 安全的any } from '../../tools/types'
+import { 已审阅的any } from '../../tools/types'
 import { 即时任务上下文, 即时任务抽象类 } from './instant-job'
 
 export class 即时任务管理器类 {
@@ -147,7 +147,7 @@ export class 即时任务管理器类 {
       let 上下文: 即时任务上下文 = {
         任务id: 任务.获得id(),
         开始时间: 任务.获得开始时间() ?? new Date(),
-        输出日志: (...args: 安全的any[]): void => {
+        输出日志: (...args: 已审阅的any[]): void => {
           任务.记录日志(...args)
         },
       }

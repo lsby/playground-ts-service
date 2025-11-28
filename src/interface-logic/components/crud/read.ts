@@ -3,7 +3,7 @@ import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请�
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
 import { SelectQueryBuilder } from 'kysely'
-import { 从插件类型计算DB, 安全的any, 替换ColumnType, 条件 } from '../../../tools/types'
+import { 从插件类型计算DB, 已审阅的any, 替换ColumnType, 条件 } from '../../../tools/types'
 
 export class 查询逻辑<
   表名类型 extends keyof DB,
@@ -47,11 +47,11 @@ export class 查询逻辑<
     let 参数结果 = await this.计算参数(逻辑附加参数)
     if (参数结果.当前页 <= 0) throw new Error('当前页从1开始')
 
-    let builder总数 = (参数.kysely.获得句柄() as 安全的any)
+    let builder总数 = (参数.kysely.获得句柄() as 已审阅的any)
       .selectFrom(this.表名)
       .distinct()
       .select((eb: { fn: { countAll: () => { as: (a: string) => string } } }) => eb.fn.countAll().as('total'))
-    let builder数据 = (参数.kysely.获得句柄() as 安全的any)
+    let builder数据 = (参数.kysely.获得句柄() as 已审阅的any)
       .selectFrom(this.表名)
       .distinct()
       .select(参数结果.选择的字段们)

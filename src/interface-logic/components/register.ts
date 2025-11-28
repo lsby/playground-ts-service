@@ -2,7 +2,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
-import { undefined加可选, 从插件类型计算DB, 安全的any, 替换ColumnType } from '../../tools/types'
+import { undefined加可选, 从插件类型计算DB, 已审阅的any, 替换ColumnType } from '../../tools/types'
 
 export class 注册逻辑<
   表名类型 extends keyof DB,
@@ -28,7 +28,7 @@ export class 注册逻辑<
   ): Promise<Either<never, {}>> {
     let _log = 请求附加参数.log.extend(注册逻辑.name)
 
-    await (参数.kysely.获得句柄() as 安全的any)
+    await (参数.kysely.获得句柄() as 已审阅的any)
       .insertInto(this.表名)
       .values(await this.计算数据(逻辑附加参数))
       .executeTakeFirst()

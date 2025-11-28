@@ -3,7 +3,7 @@ import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请�
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
-import { 安全的any } from '../../tools/types'
+import { 已审阅的any } from '../../tools/types'
 
 export class 检查唯一性<
   表名类型 extends string,
@@ -38,7 +38,7 @@ export class 检查唯一性<
   ): Promise<Either<错误信息类型, {}>> {
     let _log = 请求附加参数.log.extend(检查唯一性.name)
 
-    let 已存在 = await (参数.kysely.获得句柄() as 安全的any)
+    let 已存在 = await (参数.kysely.获得句柄() as 已审阅的any)
       .selectFrom(this.opt.表名)
       .select(this.opt.数据库字段名)
       .where(this.opt.数据库字段名, '=', 逻辑附加参数[this.opt.参数字段名])

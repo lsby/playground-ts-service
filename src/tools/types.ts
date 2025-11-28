@@ -28,4 +28,13 @@ export type undefined加可选<T> = {
   [K in keyof T as 包含undefined<T[K]> extends true ? never : K]: T[K]
 }
 
-export type 安全的any = any
+/**
+ * 用于标记经过人工审查过的 any 类型
+ *
+ * @description
+ * 仅在开发者确认使用 any 是合理的, 且不会导致污染或逃逸到外部时使用.
+ * 常用于开发者确定某赋值是正确的, 但无法或很难给 ts 证明时.
+ *
+ * **使用时务必谨慎**
+ */
+export type 已审阅的any = any
