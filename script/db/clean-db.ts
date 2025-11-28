@@ -8,7 +8,7 @@ export async function cleanDB(db: Kysely<DB>): Promise<void> {
   switch (DB_TYPE) {
     case 'sqlite': {
       var 删除语句 = (
-        await db.executeQuery(
+        await db.executeQuery<{ name: string }>(
           CompiledQuery.raw(
             [
               // ..
@@ -20,7 +20,7 @@ export async function cleanDB(db: Kysely<DB>): Promise<void> {
             [],
           ),
         )
-      ).rows.map((row: any) => `DELETE FROM ${row.name};`)
+      ).rows.map((row) => `DELETE FROM ${row.name};`)
 
       // 关闭外键约束
       await db.executeQuery(CompiledQuery.raw('PRAGMA foreign_keys = OFF;', []))
@@ -41,7 +41,7 @@ export async function cleanDB(db: Kysely<DB>): Promise<void> {
       try {
         // 获取所有表的名称
         const tables = (
-          await db.executeQuery(
+          await db.executeQuery<{ tablename: string }>(
             CompiledQuery.raw(
               `
                 SELECT tablename
@@ -51,7 +51,7 @@ export async function cleanDB(db: Kysely<DB>): Promise<void> {
               [],
             ),
           )
-        ).rows.map((row: any) => row.tablename)
+        ).rows.map((row) => row.tablename)
 
         // 清除每个表的数据
         for (const table of tables) {

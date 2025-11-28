@@ -16,7 +16,7 @@ type 属性类型 = {
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-type 数据项 = Record<string, any>
+type 数据项 = Record<string, string | number>
 
 export class LsbyTableData extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['表名']
@@ -75,9 +75,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     try {
       let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-table-schema', { tableName: 表名 })
       if (结果.status === 'success') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         this.主键列 = 结果.data.columns.filter((列) => 列.pk === 1).map((列) => 列.name)
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         this.列列表 = 结果.data.columns
       } else {
         console.error('获取表结构失败:', 结果)
@@ -117,9 +115,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     // 创建表格
     this.表格组件 = new LsbyDataTable<数据项>({
       列配置: this.列列表.map((列) => ({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         字段名: 列.name,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         显示名: 列.name,
         可排序: true,
       })),
@@ -187,7 +183,6 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
 
           let 总数 = 0
           if (总数结果.status === 'success' && 总数结果.data.rows.length > 0 && 总数结果.data.rows[0] !== void 0) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
             总数 = parseInt(String(总数结果.data.rows[0]['count'] ?? 0))
           }
 
@@ -233,9 +228,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 表单项列表: 表单项配置[] = []
 
     for (let 列 of this.列列表) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列名 = 列.name
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列类型 = 列.type
       let 输入框 =
         this.获得输入框类型(列类型) === 'number'
@@ -304,11 +297,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 表单项列表: 表单项配置[] = []
 
     for (let 列 of this.列列表) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列名 = 列.name
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       let 列类型 = 列.type
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 当前值 = 行数据[列名]
 
       let 输入框 =
@@ -423,8 +413,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     // 构建 WHERE 语句
     let where条件列表: string[] = []
     for (let 主键列名 of this.主键列) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 主键值 = 行数据[主键列名]
+      if (主键值 === void 0) throw new Error('意外的空数据')
       where条件列表.push(`\`${主键列名}\` = ?`)
       参数列表.push(主键值)
     }
@@ -460,8 +450,8 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     let 参数列表: (string | number)[] = []
 
     for (let 主键列名 of this.主键列) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 主键值 = 行数据[主键列名]
+      if (主键值 === void 0) throw new Error('意外的空数据')
       where条件列表.push(`\`${主键列名}\` = ?`)
       参数列表.push(主键值)
     }

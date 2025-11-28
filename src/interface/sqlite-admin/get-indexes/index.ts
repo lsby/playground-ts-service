@@ -23,7 +23,6 @@ let 接口逻辑实现 = 接口逻辑
 
       let kysely = 参数.kysely.获得句柄()
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 结果 = await kysely.executeQuery(
         CompiledQuery.raw(
           [
@@ -36,16 +35,23 @@ let 接口逻辑实现 = 接口逻辑
         ),
       )
 
+      let rowSchema = z.object({
+        name: z.string(),
+        tbl_name: z.string(),
+        sql: z.union([z.string(), z.null()]),
+      })
+
+      let indexes = 结果.rows.map((row) => {
+        let parsed = rowSchema.parse(row)
+        return {
+          name: parsed.name,
+          table: parsed.tbl_name,
+          sql: parsed.sql,
+        }
+      })
+
       return new Right({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        indexes: 结果.rows.map((row: any) => ({
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          name: row.name,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          table: row.tbl_name,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          sql: row.sql,
-        })),
+        indexes: 接口正确类型描述.shape.indexes.parse(indexes),
       })
     }),
   )

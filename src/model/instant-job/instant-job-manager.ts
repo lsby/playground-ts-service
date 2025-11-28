@@ -1,9 +1,10 @@
 import { Log } from '@lsby/ts-log'
+import { 安全的any } from '../../tools/types'
 import { 即时任务上下文, 即时任务抽象类 } from './instant-job'
 
 export class 即时任务管理器类 {
   private log = new Log('即时任务管理器')
-  private 任务映射表: Map<string, 即时任务抽象类<any>> = new Map()
+  private 任务映射表: Map<string, 即时任务抽象类<unknown>> = new Map()
   private 运行中任务集合: Set<string> = new Set()
   private 最大并发数: number
   private 历史记录保留天数: number
@@ -44,7 +45,6 @@ export class 即时任务管理器类 {
       }
       let 任务 = 条目[1]
       if (任务.获得当前状态() === '等待中') {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         等待中任务列表.push(任务)
       }
     }
@@ -147,14 +147,13 @@ export class 即时任务管理器类 {
       let 上下文: 即时任务上下文 = {
         任务id: 任务.获得id(),
         开始时间: 任务.获得开始时间() ?? new Date(),
-        输出日志: (...args: any[]): void => {
+        输出日志: (...args: 安全的any[]): void => {
           任务.记录日志(...args)
         },
       }
 
       // 执行任务逻辑
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      let 输出数据: 输出类型 = await 任务.任务逻辑(上下文)
+      let 输出数据 = (await 任务.任务逻辑(上下文)) as 输出类型
 
       // 执行成功钩子
       await 任务.执行成功钩子(输出数据)
@@ -199,7 +198,7 @@ export class 即时任务管理器类 {
     }
   }
 
-  public 获得所有任务列表(): Array<即时任务抽象类<any>> {
+  public 获得所有任务列表(): Array<即时任务抽象类<unknown>> {
     return Array.from(this.任务映射表.values())
   }
   public 查询任务(过滤器: (任务: 即时任务抽象类<any>) => boolean): Array<即时任务抽象类<any>> {

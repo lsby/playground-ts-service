@@ -106,7 +106,6 @@ class 表单<数据类型 extends Record<string, 基础值结构> = Record<strin
   public 获得数据(): 数据类型 {
     let 数据: Record<string, 基础值结构> = {}
     for (let [键, 元素] of this.项映射) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 值 = 元素.获得值()
       数据[键] = 值
     }

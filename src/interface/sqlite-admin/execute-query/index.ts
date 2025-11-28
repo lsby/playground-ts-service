@@ -36,9 +36,9 @@ let 接口逻辑实现 = 接口逻辑
         let kysely = 参数.kysely.获得句柄()
 
         try {
-          let 结果 = await kysely.executeQuery(CompiledQuery.raw(参数.sql, 参数.parameters))
+          let 结果 = await kysely.executeQuery<{ rows: Record<any, any> }>(CompiledQuery.raw(参数.sql, 参数.parameters))
           return new Right({
-            rows: 结果.rows as any[],
+            rows: 结果.rows,
             numAffectedRows: 结果.numAffectedRows === void 0 ? 结果.numAffectedRows : Number(结果.numAffectedRows),
             insertId: 结果.insertId === void 0 ? 结果.insertId : Number(结果.insertId),
           })

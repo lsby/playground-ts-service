@@ -54,11 +54,8 @@ export class LsbyTableStructure extends 组件基类<属性类型, 发出事件�
     await this.初始化表格()
   }
 
-  protected override async 当变化时(属性名: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (属性名 === '表名') {
-      await this.初始化表格()
-    }
+  protected override async 当变化时(_属性名: keyof 属性类型, _oldValue: string, _newValue: string): Promise<void> {
+    await this.初始化表格()
   }
 
   private async 初始化表格(): Promise<void> {

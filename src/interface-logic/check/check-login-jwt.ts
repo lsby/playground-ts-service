@@ -4,7 +4,7 @@ import { JWT插件 } from '@lsby/net-core-jwt'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { ZodObject, ZodString, ZodUndefined, ZodUnion } from 'zod'
-import { 从插件类型计算DB } from '../types/types'
+import { 从插件类型计算DB, 安全的any } from '../../tools/types'
 
 type 逻辑错误类型 = '未登录'
 
@@ -42,8 +42,7 @@ export class 检查登录<
 
     let 参数结果 = this.计算参数(逻辑附加参数)
 
-    let kysely = 参数.kysely.获得句柄() as any
-    let 存在确认 = await kysely
+    let 存在确认 = await (参数.kysely.获得句柄() as 安全的any)
       .selectFrom(参数结果.表名)
       .select(参数结果.id字段)
       .where(参数结果.id字段, '=', userId)

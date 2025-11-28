@@ -23,13 +23,11 @@ export abstract class 组件基类<
   private 初始化完成解析器: (() => void) | null = null
   private 变化队列: { name: keyof 属性类型; oldValue: string; newValue: string }[] = []
 
-  public constructor(属性?: 属性类型 | undefined) {
+  public constructor(属性?: Partial<属性类型> | undefined) {
     super()
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (属性 === void 0) return
     Object.entries(属性).forEach(([k, v]) => {
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (v !== void 0) this.setAttribute(k, v)
+      if (typeof v === 'string') this.setAttribute(k, v)
     })
   }
 
@@ -40,12 +38,15 @@ export abstract class 组件基类<
   public async 获得属性<K extends keyof 属性类型>(k: K): Promise<属性类型[K] | null> {
     let r = this.getAttribute(k.toString())
     await this.log.debug('获得属性: %o = %o, 对象: %O', k, r, this)
-    return r as any
+    return r as 属性类型[K]
   }
 
   public 获得宿主样式(): CSSStyleDeclaration {
-    let style = (this.shadow.host as any).style as CSSStyleDeclaration
-    return style
+    let host = this.shadow.host
+    if (host instanceof HTMLElement) {
+      return host.style
+    }
+    throw new Error('Shadow host is not HTMLElement')
   }
 
   public 清空dom(): void {
@@ -100,14 +101,20 @@ export abstract class 组件基类<
     f: (e: CustomEvent<监听事件类型[K]>) => Promise<void>,
     o?: AddEventListenerOptions,
   ): void {
-    this.addEventListener(k.toString(), f as any, {
-      capture: false, // 是否在捕获阶段响应, true: 在捕获阶段响应, false: 在冒泡阶段响应
-      once: false, // 是否只触发一次
-      passive: false, // 是否阻止默认行为
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-undefined
-      signal: undefined as any, // 触发控制器, 可以用 new AbortController 创建
-      ...o,
-    })
+    this.addEventListener(
+      k.toString(),
+      (event: Event): void => {
+        // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
+        void f(event as CustomEvent<监听事件类型[K]>)
+      },
+      {
+        capture: false, // 是否在捕获阶段响应, true: 在捕获阶段响应, false: 在冒泡阶段响应
+        once: false, // 是否只触发一次
+        passive: false, // 是否阻止默认行为
+        // signal: _, // 触发控制器, 可以用 new AbortController 创建
+        ...o,
+      },
+    )
   }
   /**
    * 监听这个组件发出的事件 (外部监听组件派发的事件)
@@ -117,14 +124,20 @@ export abstract class 组件基类<
     f: (e: CustomEvent<发出事件类型[K]>) => Promise<void>,
     o?: AddEventListenerOptions,
   ): void {
-    this.addEventListener(k.toString(), f as any, {
-      capture: false,
-      once: false,
-      passive: false,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, no-undefined
-      signal: undefined as any,
-      ...o,
-    })
+    this.addEventListener(
+      k.toString(),
+      (event: Event): void => {
+        // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
+        void f(event as CustomEvent<发出事件类型[K]>)
+      },
+      {
+        capture: false,
+        once: false,
+        passive: false,
+        // signal: _, // 触发控制器, 可以用 new AbortController 创建
+        ...o,
+      },
+    )
   }
 
   protected abstract 当加载时(): Promise<void>

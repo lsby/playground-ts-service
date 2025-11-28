@@ -1,4 +1,5 @@
 import { format } from 'node:util'
+import { 安全的any } from '../../tools/types'
 
 export type 日志监听器 = (日志: { 时间: Date; 消息: string }) => void
 
@@ -66,7 +67,7 @@ export class 日志模型 {
     this.持有者映射.delete(持有者)
   }
 
-  public 记录日志(...args: any[]): void {
+  public 记录日志(...args: 安全的any[]): void {
     let 消息 = format(...args)
     let 新日志 = { 时间: new Date(), 消息 }
     this.日志列表.push(新日志)

@@ -23,7 +23,7 @@ let 接口逻辑实现 = 接口逻辑
 
       let kysely = 参数.kysely.获得句柄()
 
-      let 结果 = await kysely.executeQuery(
+      let 结果 = await kysely.executeQuery<{ name: string }>(
         CompiledQuery.raw(
           [`SELECT name`, `FROM sqlite_master`, `WHERE type = 'table'`, `AND name NOT LIKE 'sqlite_%';`].join('\n'),
           [],
@@ -31,7 +31,7 @@ let 接口逻辑实现 = 接口逻辑
       )
 
       return new Right({
-        tables: 结果.rows.map((row: any) => row.name),
+        tables: 结果.rows.map((row) => row.name),
       })
     }),
   )

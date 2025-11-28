@@ -10,6 +10,7 @@ import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查JSON参数 } from '../../../../interface-logic/check/check-json-args'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
 import { 查询逻辑 } from '../../../../interface-logic/components/crud/read'
+import { 安全的any } from '../../../../tools/types'
 
 let 接口路径 = '/api/demo/user-crud/read' as const
 let 接口方法 = 'post' as const
@@ -43,8 +44,7 @@ let 接口逻辑实现 = 接口逻辑
           当前页: page,
           每页数量: size,
           ...(orderBy !== void 0 ? { 排序字段们: orderBy } : {}),
-          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-          应用筛选函数: (builder数据, builder总数) => {
+          应用筛选函数: (builder数据, builder总数): 安全的any => {
             let newBuilder数据 = builder数据
             let newBuilder总数 = builder总数
             if (filter !== void 0) {

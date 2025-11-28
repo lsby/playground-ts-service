@@ -186,7 +186,6 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       if (行数据 !== void 0) {
         let 列配置 = this.列配置[this.最后点击的单元格.列]
         if (列配置 !== void 0) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           let 值 = 行数据?.[列配置.字段名]
           内容 = 值 === null || 值 === void 0 ? 'NULL' : String(值)
         }
@@ -200,7 +199,6 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
           if (行数据 !== void 0) {
             let 单元格内容列表: string[] = []
             for (let 列 of this.列配置) {
-              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               let 值 = 行数据?.[列.字段名]
               单元格内容列表.push(值 === null || 值 === void 0 ? 'NULL' : String(值))
             }
@@ -636,7 +634,6 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
         for (let 列索引 = 0; 列索引 < 列配置.length; 列索引++) {
           let 列 = 列配置[列索引]
           if (列 === void 0) continue
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           let 数据 = 数据项?.[列.字段名]
           let 显示值 = 列.格式化 !== void 0 ? 列.格式化(数据) : String(数据)
           let 列最大宽度 = 列.列最大宽度 ?? this.列最大宽度

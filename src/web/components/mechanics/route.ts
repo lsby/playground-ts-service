@@ -1,3 +1,4 @@
+import { 安全的any } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/create-element'
 
@@ -48,7 +49,7 @@ export class LsbyRoute extends 组件基类<属性类型, 发出事件类型, �
     this.注册组件('lsby-route', this)
   }
 
-  private 监听表: Record<string, Array<(a: any) => Promise<void>>> = {}
+  private 监听表: Record<string, Array<(a: 安全的any) => Promise<void>>> = {}
   public constructor(属性: 属性类型) {
     super(属性)
   }

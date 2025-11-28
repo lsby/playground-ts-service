@@ -1,4 +1,5 @@
 import schedule from 'node-schedule'
+import { 安全的any } from '../../tools/types'
 import { 定时任务抽象类 } from './scheduled-job'
 
 export type 定时任务状态 = '未启动' | '运行中' | '已停止'
@@ -40,7 +41,7 @@ export class 定时任务管理器类 {
       let 上下文 = {
         任务名称: 任务.获得名称(),
         执行时间: 开始时间,
-        输出日志: (...args: any[]): void => {
+        输出日志: (...args: 安全的any[]): void => {
           任务.记录日志(...args)
         },
       }

@@ -52,14 +52,13 @@ export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型,
             },
             options,
           )
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        } else if (listener?.handleEvent !== null) {
+        } else if (typeof listener === 'object' && listener !== null && typeof listener.handleEvent === 'function') {
           originalAddEventListener.call(
             this,
             type,
             async (event) => {
               await 组件日志.debug('事件触发: %o <= %O, %O', type, listener, options)
-              return listener?.handleEvent.call(listener, event)
+              return listener.handleEvent.call(listener, event)
             },
             options,
           )

@@ -2,7 +2,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
-import { 从插件类型计算DB, 替换ColumnType, 条件 } from '../../types/types'
+import { 从插件类型计算DB, 安全的any, 替换ColumnType, 条件 } from '../../../tools/types'
 
 export class 更新逻辑<
   表名类型 extends keyof DB,
@@ -33,8 +33,7 @@ export class 更新逻辑<
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
 
-    let kysely = 参数.kysely.获得句柄() as any
-    let 构造 = kysely.updateTable(this.表名).set(参数结果.更新数据)
+    let 构造 = (参数.kysely.获得句柄() as 安全的any).updateTable(this.表名).set(参数结果.更新数据)
 
     if (参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {

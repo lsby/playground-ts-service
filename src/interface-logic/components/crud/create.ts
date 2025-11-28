@@ -2,7 +2,7 @@
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
-import { undefined加可选, 从插件类型计算DB, 替换ColumnType } from '../../types/types'
+import { undefined加可选, 从插件类型计算DB, 安全的any, 替换ColumnType } from '../../../tools/types'
 
 export class 新增逻辑<
   表名类型 extends keyof DB,
@@ -33,8 +33,7 @@ export class 新增逻辑<
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
 
-    let kysely = 参数.kysely.获得句柄() as any
-    await kysely.insertInto(this.表名).values(参数结果.数据).executeTakeFirst()
+    await (参数.kysely.获得句柄() as 安全的any).insertInto(this.表名).values(参数结果.数据).executeTakeFirst()
 
     let 后置行为结果 = await this.后置行为(逻辑附加参数, 参数结果)
 

@@ -100,19 +100,17 @@ function 是否为普通对象(值: unknown): boolean {
   // 只有纯对象才返回 true
   return Object.getPrototypeOf(值) === Object.prototype
 }
-function 智能赋值(目标: any, 键: string, 值: any): void {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+function 智能赋值(目标: Record<string, unknown>, 键: string, 值: unknown): void {
   let 原始值 = 目标[键]
 
   // 如果原始值是对象,并且新值也是普通对象,则递归拷贝
   if (typeof 原始值 === 'object' && 原始值 !== null && 是否为普通对象(值)) {
-    for (let [子键, 子值] of Object.entries(值)) {
+    for (let [子键, 子值] of Object.entries(值 as Record<string, unknown>)) {
       if (子值 === void 0) continue
-      智能赋值(原始值, 子键, 子值)
+      智能赋值(原始值 as Record<string, unknown>, 子键, 子值)
     }
   } else {
     // 否则直接赋值
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     目标[键] = 值
   }
 }
@@ -141,7 +139,7 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
   // 处理所有属性
   for (let [键, 值] of Object.entries(其他属性)) {
     if (值 === void 0) continue
-    智能赋值(元素, 键, 值)
+    智能赋值(元素 as Record<string, unknown>, 键, 值)
   }
 
   // 处理 children
@@ -155,8 +153,9 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
 export function 应用宿主样式(样式对象: CSSStyleDeclaration, 样式?: 增强样式类型): void {
   if (样式 !== void 0) {
     for (let 键 in 样式) {
-      if (样式[键] !== void 0) {
-        ;(样式对象 as any)[键] = 样式[键]
+      let 值 = 样式[键 as keyof 增强样式类型]
+      if (值 !== void 0) {
+        样式对象.setProperty(键, String(值))
       }
     }
   }

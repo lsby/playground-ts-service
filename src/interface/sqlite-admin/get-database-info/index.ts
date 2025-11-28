@@ -23,14 +23,13 @@ let 接口逻辑实现 = 接口逻辑
 
       let kysely = 参数.kysely.获得句柄()
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       let 版本结果: QueryResult<any> = await kysely.executeQuery(
         CompiledQuery.raw('SELECT sqlite_version() as version;', []),
       )
+      let version = 接口正确类型描述.shape.version.parse(版本结果.rows[0].version)
 
       return new Right({
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        version: 版本结果.rows[0].version,
+        version,
       })
     }),
   )

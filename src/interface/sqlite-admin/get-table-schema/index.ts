@@ -28,19 +28,27 @@ let 接口逻辑实现 = 接口逻辑
 
         let 结果 = await kysely.executeQuery(CompiledQuery.raw(`PRAGMA table_info(${参数.tableName});`, []))
 
+        let rowSchema = z.object({
+          name: z.string(),
+          type: z.string(),
+          notnull: z.number(),
+          pk: z.number(),
+          dflt_value: z.union([z.string(), z.null()]),
+        })
+
+        let columns = 结果.rows.map((row) => {
+          let parsed = rowSchema.parse(row)
+          return {
+            name: parsed.name,
+            type: parsed.type,
+            notnull: parsed.notnull,
+            pk: parsed.pk,
+            dflt_value: parsed.dflt_value,
+          }
+        })
+
         return new Right({
-          columns: 结果.rows.map((row: any) => ({
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            name: row.name,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            type: row.type,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            notnull: row.notnull,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            pk: row.pk,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            dflt_value: row.dflt_value,
-          })),
+          columns: 接口正确类型描述.shape.columns.parse(columns),
         })
       },
     ),

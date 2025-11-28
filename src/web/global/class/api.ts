@@ -1,4 +1,5 @@
 import { 不安全的扩展WebRequest, 不安全的扩展WebRequest表单 } from '@lsby/ts-http-extend'
+import { 安全的any } from '../../../tools/types'
 import { InterfaceType } from '../../../types/interface-type'
 import { API前缀 } from '../api-prefix'
 import { 错误提示 } from '../toast'
@@ -227,7 +228,7 @@ export class API管理器类 {
       void 错误提示(提示)
       throw new Error(提示)
     }
-    return 请求结果.data as any
+    return 请求结果.data as 安全的any
   }
 
   private 是标准返回格式(

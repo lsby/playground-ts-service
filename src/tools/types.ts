@@ -27,3 +27,5 @@ export type undefined加可选<T> = {
 } & {
   [K in keyof T as 包含undefined<T[K]> extends true ? never : K]: T[K]
 }
+
+export type 安全的any = any

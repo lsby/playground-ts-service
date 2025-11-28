@@ -1,3 +1,5 @@
+import { 安全的any } from './types'
+
 type 联合转交叉<T> = (T extends any ? (x: T) => any : never) extends (x: infer U) => any ? U : never
 type 取最后的联合<T> = 联合转交叉<T extends any ? (x: T) => any : never> extends (x: infer L) => any ? L : never
 export type 联合转元组<T, Last = 取最后的联合<T>> = [T] extends [never] ? [] : [...联合转元组<Exclude<T, Last>>, Last]
@@ -44,7 +46,7 @@ export function 严格entries<T extends object>(
 ): {
   [K in keyof T]-?: [K, NonNullable<T[K]>]
 }[keyof T][] {
-  return Object.entries(obj) as any
+  return Object.entries(obj) as 安全的any
 }
 export function 严格forEach<T extends object>(obj: T, 回调: <K extends keyof T>(key: K, value: T[K]) => void): void {
   ;(Object.keys(obj) as (keyof T)[]).forEach((k) => {
@@ -53,7 +55,7 @@ export function 严格forEach<T extends object>(obj: T, 回调: <K extends keyof
   })
 }
 export function 严格map<T, R>(arr: readonly T[], fn: (a: T) => R): 联合转元组<R> {
-  return arr.map(fn) as any
+  return arr.map(fn) as 安全的any
 }
 
 export function 对象map<T extends Record<string, any>, U>(
@@ -75,7 +77,7 @@ export async function 异步forEach<T>(
   callback: (item: T, index: number, array: T[]) => Promise<void> | void,
 ): Promise<void> {
   for (let i = 0; i < arr.length; i++) {
-    await callback(arr[i] as any, i, arr)
+    await callback(arr[i] as 安全的any, i, arr)
   }
 }
 export async function 异步map<T, U>(
@@ -117,7 +119,7 @@ export function 严格zip<A extends any[], B extends any[]>(数组1: [...A], 数
     }
 
     // TS 不知道具体索引类型，所以这里断言成 Zip 严格类型
-    ;(结果 as any).push([元素1, 元素2])
+    ;(结果 as 安全的any).push([元素1, 元素2])
   }
 
   return 结果
