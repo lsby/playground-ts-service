@@ -11,7 +11,7 @@ export let 即时任务管理器 = new 即时任务管理器类({ 最大并发�
 export let 定时任务管理器 = new 定时任务管理器类()
 export let 日志模型实例 = new 日志模型()
 export let globalLog = new Log(环境变量.DEBUG_NAME).pipe(async (level, namespace, content) => {
-  if (namespace.includes('webSocket插件')) return
+  if (namespace.includes('webSocket插件')) return // 避免无限循环
   日志模型实例.记录日志(`[${level}] [${namespace}] ${content}`)
 })
 export let kysely管理器 = await (async function (): Promise<Kysely管理器<DB>> {

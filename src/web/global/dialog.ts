@@ -68,11 +68,11 @@ export function 显示对话框(消息: string): Promise<void> {
       }
     }
 
-    遮罩层.onclick = (event: MouseEvent): void => {
-      if (event.target === 遮罩层) {
-        关闭对话框()
-      }
-    }
+    // 遮罩层.onclick = (event: MouseEvent): void => {
+    //   if (event.target === 遮罩层) {
+    //     关闭对话框()
+    //   }
+    // }
 
     // 支持 ESC 键关闭
     document.onkeydown = 键盘处理
@@ -166,11 +166,11 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       }
     }
 
-    遮罩层.onclick = (event: MouseEvent): void => {
-      if (event.target === 遮罩层) {
-        关闭对话框(false)
-      }
-    }
+    // 遮罩层.onclick = (event: MouseEvent): void => {
+    //   if (event.target === 遮罩层) {
+    //     关闭对话框(false)
+    //   }
+    // }
 
     // 支持 ESC 键取消
     document.onkeydown = 键盘处理
@@ -273,11 +273,11 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       }
     }
 
-    遮罩层.onclick = (event: MouseEvent): void => {
-      if (event.target === 遮罩层) {
-        关闭对话框(null)
-      }
-    }
+    // 遮罩层.onclick = (event: MouseEvent): void => {
+    //   if (event.target === 遮罩层) {
+    //     关闭对话框(null)
+    //   }
+    // }
 
     // 支持 ESC 键取消
     document.onkeydown = 键盘处理
