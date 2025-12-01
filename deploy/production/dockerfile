@@ -45,4 +45,4 @@ COPY --from=builder /opt/app/.env /opt/app/.env
 
 EXPOSE 80
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod.db ]; then cp /opt/app/db-default-prod.db /opt/app/db/prod.db; fi && npm run run:service:prod"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod.db /opt/app/db/prod.db; else echo 'Database already exists'; fi && npm run run:service:prod"]

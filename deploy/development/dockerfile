@@ -45,4 +45,4 @@ COPY --from=installer /opt/app/node_modules /opt/app/node_modules
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/dev.db ]; then cp /opt/app/db-default-dev.db /opt/app/db/dev.db; fi && npm run run:service:dev"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/dev.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-dev.db /opt/app/db/dev.db; else echo 'Database already exists'; fi && npm run run:service:dev"]
