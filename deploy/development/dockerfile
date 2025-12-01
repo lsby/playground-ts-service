@@ -1,13 +1,39 @@
+# 构建阶段
+FROM node:22 AS builder
+
+ENV TZ=Asia/Shanghai
+WORKDIR /opt/app
+
+COPY . .
+
+RUN corepack enable && \
+    pnpm install
+RUN export PARCEL_WORKER_BACKEND=process && \
+    npm run _build:all
+
+# 安装阶段
+FROM node:22 AS installer
+
+ENV TZ=Asia/Shanghai
+WORKDIR /opt/app
+
+COPY --from=builder /opt/app/package.json /opt/app/
+COPY --from=builder /opt/app/pnpm-lock.yaml /opt/app/
+
+RUN corepack enable && \
+    pnpm install --prod --ignore-scripts
+
+# 运行阶段
 FROM node:22
 
 ENV TZ=Asia/Shanghai
-COPY . /opt/app
 WORKDIR /opt/app
 
-RUN corepack enable && \
-    pnpm i && \
-    export PARCEL_WORKER_BACKEND=process && \
-    npm run _build:all
+COPY --from=installer /opt/app/node_modules /opt/app/node_modules
+COPY --from=builder /opt/app/package.json /opt/app/
+COPY --from=builder /opt/app/dist /opt/app/dist
+COPY --from=builder /opt/app/prisma /opt/app/prisma
+COPY --from=builder /opt/app/.env /opt/app/.env
 
 EXPOSE 3000
 
