@@ -78,7 +78,6 @@
     "node-schedule": "^2.1.1",
     "node-sqlite3-wasm": "^0.8.50",
     "prisma": "^5.19.1",
-    "prisma-kysely": "^1.8.0",
     "zod": "3.24.2"
   },
   "devDependencies": {
@@ -110,6 +109,7 @@
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-packagejson": "^2.5.19",
+    "prisma-kysely": "^1.8.0",
     "process": "^0.11.10",
     "stream-to-blob": "^2.0.1",
     "tsc-alias": "^1.8.16",

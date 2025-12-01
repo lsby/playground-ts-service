@@ -68,9 +68,6 @@ importers:
       prisma:
         specifier: ^5.19.1
         version: 5.22.0
-      prisma-kysely:
-        specifier: ^1.8.0
-        version: 1.8.0(encoding@0.1.13)
       zod:
         specifier: 3.24.2
         version: 3.24.2
@@ -159,6 +156,9 @@ importers:
       prettier-plugin-packagejson:
         specifier: ^2.5.19
         version: 2.5.19(prettier@3.6.2)
+      prisma-kysely:
+        specifier: ^1.8.0
+        version: 1.8.0(encoding@0.1.13)
       process:
         specifier: ^0.11.10
         version: 0.11.10
