@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { JWT插件 } from '@lsby/net-core-jwt'
 import { Kysely插件 } from '@lsby/net-core-kysely'
@@ -42,6 +41,7 @@ export class 检查登录<
 
     let 参数结果 = this.计算参数(逻辑附加参数)
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let 存在确认 = await (参数.kysely.获得句柄() as 已审阅的any)
       .selectFrom(参数结果.表名)
       .select(参数结果.id字段)

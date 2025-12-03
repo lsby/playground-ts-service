@@ -17,13 +17,10 @@ export class 日志模型 {
     监听器: 日志监听器
   }>(({ 实例引用, 监听器 }) => {
     let 实例 = 实例引用.deref()
-    if (实例 === void 0) {
-      return
-    }
+    if (实例 === void 0) return
+
     let 索引 = 实例.日志监听器列表.indexOf(监听器)
-    if (索引 !== -1) {
-      实例.日志监听器列表.splice(索引, 1)
-    }
+    if (索引 !== -1) 实例.日志监听器列表.splice(索引, 1)
   })
 
   private 日志列表: Array<{ 时间: Date; 消息: string }> = []
@@ -54,9 +51,7 @@ export class 日志模型 {
 
   public 移除日志监听器(持有者: 监听器持有者): void {
     let 监听器 = this.持有者映射.get(持有者)
-    if (监听器 === void 0) {
-      return
-    }
+    if (监听器 === void 0) return
 
     let 索引 = this.日志监听器列表.indexOf(监听器)
     if (索引 !== -1) {
@@ -73,7 +68,7 @@ export class 日志模型 {
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
     while (this.日志列表.length > 日志模型.最大日志数量) {
-      this.日志列表.shift() // 删除最旧的日志
+      this.日志列表.shift()
     }
     // 触发日志监听器
     for (let 监听器 of this.日志监听器列表) {

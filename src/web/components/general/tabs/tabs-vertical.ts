@@ -1,4 +1,4 @@
-import { 联合转元组 } from '../../../../tools/tools'
+import { 联合转元组 } from '../../../../tools/types'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/create-element'
 import { 文本按钮 } from '../base/button'

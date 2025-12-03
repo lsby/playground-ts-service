@@ -12,12 +12,10 @@ export class 即时任务管理器类 {
 
   public constructor(参数: { 最大并发数: number; 历史记录保留天数: number }) {
     let { 最大并发数, 历史记录保留天数 } = 参数
-    if (最大并发数 <= 0) {
-      throw new Error('最大并发数必须大于0')
-    }
-    if (历史记录保留天数 <= 0) {
-      throw new Error('历史记录保留天数必须大于0')
-    }
+
+    if (最大并发数 <= 0) throw new Error('最大并发数必须大于0')
+    if (历史记录保留天数 <= 0) throw new Error('历史记录保留天数必须大于0')
+
     this.最大并发数 = 最大并发数
     this.历史记录保留天数 = 历史记录保留天数
 
@@ -31,36 +29,18 @@ export class 即时任务管理器类 {
   }
 
   private async 尝试执行下一个任务(): Promise<void> {
-    if (this.运行中任务集合.size >= this.最大并发数) {
-      return
-    }
+    if (this.运行中任务集合.size >= this.最大并发数) return
 
     // 获取所有等待中的任务
-    let 等待中任务列表: Array<即时任务抽象类<any>> = []
-    let 所有任务条目 = Array.from(this.任务映射表.entries())
-    for (let i = 0; i < 所有任务条目.length; i = i + 1) {
-      let 条目 = 所有任务条目[i]
-      if (条目 === void 0) {
-        continue
-      }
-      let 任务 = 条目[1]
-      if (任务.获得当前状态() === '等待中') {
-        等待中任务列表.push(任务)
-      }
-    }
-
-    if (等待中任务列表.length === 0) {
-      return
-    }
+    let 等待中任务列表 = Array.from(this.任务映射表.values()).filter((任务) => 任务.获得当前状态() === '等待中')
+    if (等待中任务列表.length === 0) return
 
     // 按优先级排序
     等待中任务列表.sort((a, b) => {
       let a优先级 = a.获得即时任务优先级()
       let b优先级 = b.获得即时任务优先级()
 
-      if (a优先级 !== b优先级) {
-        return b优先级 - a优先级
-      }
+      if (a优先级 !== b优先级) return b优先级 - a优先级
 
       // 优先级相同时,按创建时间排序
       return a.获得创建时间().getTime() - b.获得创建时间().getTime()
@@ -68,18 +48,14 @@ export class 即时任务管理器类 {
 
     // 执行优先级最高的任务
     let 第一个任务 = 等待中任务列表[0]
-    if (第一个任务 !== void 0) {
-      await this.执行任务(第一个任务.获得id())
-    }
+    if (第一个任务 !== void 0) await this.执行任务(第一个任务.获得id())
   }
 
   public 获得最大并发数(): number {
     return this.最大并发数
   }
   public 设置最大并发数(数量: number): void {
-    if (数量 <= 0) {
-      throw new Error('最大并发数必须大于0')
-    }
+    if (数量 <= 0) throw new Error('最大并发数必须大于0')
     this.最大并发数 = 数量
   }
 
@@ -87,9 +63,7 @@ export class 即时任务管理器类 {
     return this.历史记录保留天数
   }
   public 设置历史记录保留天数(天数: number): void {
-    if (天数 <= 0) {
-      throw new Error('历史记录保留天数必须大于0')
-    }
+    if (天数 <= 0) throw new Error('历史记录保留天数必须大于0')
     this.历史记录保留天数 = 天数
 
     // 重新设置定时器
@@ -106,9 +80,7 @@ export class 即时任务管理器类 {
 
   public 提交任务<输出类型>(任务: 即时任务抽象类<输出类型>): string {
     let 任务id = 任务.获得id()
-    if (this.任务映射表.has(任务id) === true) {
-      throw new Error(`任务ID ${任务id} 已存在`)
-    }
+    if (this.任务映射表.has(任务id) === true) throw new Error(`任务ID ${任务id} 已存在`)
 
     this.任务映射表.set(任务id, 任务)
     任务.设置当前状态('等待中')
@@ -123,17 +95,10 @@ export class 即时任务管理器类 {
   }
   public async 执行任务<输出类型>(任务id: string): Promise<void> {
     let 任务 = this.任务映射表.get(任务id)
-    if (任务 === void 0) {
-      throw new Error(`任务ID ${任务id} 不存在`)
-    }
 
-    if (任务.获得当前状态() === '运行中') {
-      throw new Error(`任务ID ${任务id} 正在运行中`)
-    }
-
-    if (任务.获得当前状态() === '已完成') {
-      throw new Error(`任务ID ${任务id} 已经完成`)
-    }
+    if (任务 === void 0) throw new Error(`任务ID ${任务id} 不存在`)
+    if (任务.获得当前状态() === '运行中') throw new Error(`任务ID ${任务id} 正在运行中`)
+    if (任务.获得当前状态() === '已完成') throw new Error(`任务ID ${任务id} 已经完成`)
 
     try {
       任务.设置当前状态('运行中')
@@ -207,15 +172,11 @@ export class 即时任务管理器类 {
     let 所有任务条目 = Array.from(this.任务映射表.entries())
     for (let i = 0; i < 所有任务条目.length; i = i + 1) {
       let 条目 = 所有任务条目[i]
-      if (条目 === void 0) {
-        continue
-      }
+      if (条目 === void 0) continue
+
       let 任务信息 = 条目[1]
       let 任务 = 任务信息
-
-      if (过滤器(任务) === true) {
-        结果列表.push(任务)
-      }
+      if (过滤器(任务) === true) 结果列表.push(任务)
     }
 
     return 结果列表
@@ -230,9 +191,8 @@ export class 即时任务管理器类 {
     let 所有任务条目 = Array.from(this.任务映射表.entries())
     for (let i = 0; i < 所有任务条目.length; i = i + 1) {
       let 条目 = 所有任务条目[i]
-      if (条目 === void 0) {
-        continue
-      }
+      if (条目 === void 0) continue
+
       let 任务id = 条目[0]
       let 任务 = 条目[1]
       let 状态 = 任务.获得当前状态()

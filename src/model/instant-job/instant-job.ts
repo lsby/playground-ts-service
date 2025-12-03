@@ -26,13 +26,10 @@ export abstract class 即时任务抽象类<输出类型> {
     监听器: 即时任务日志监听器
   }>(({ 实例引用, 监听器 }) => {
     let 实例 = 实例引用.deref()
-    if (实例 === void 0) {
-      return
-    }
+    if (实例 === void 0) return
+
     let 索引 = 实例.即时任务日志监听器列表.indexOf(监听器)
-    if (索引 !== -1) {
-      实例.即时任务日志监听器列表.splice(索引, 1)
-    }
+    if (索引 !== -1) 实例.即时任务日志监听器列表.splice(索引, 1)
   })
 
   public static 创建任务<输出类型>(配置: {
@@ -212,7 +209,7 @@ export abstract class 即时任务抽象类<输出类型> {
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
     while (this.日志列表.length > 即时任务抽象类.最大日志数量) {
-      this.日志列表.shift() // 删除最旧的日志
+      this.日志列表.shift()
     }
     // 触发即时任务日志监听器
     for (let 监听器 of this.即时任务日志监听器列表) {
@@ -221,6 +218,7 @@ export abstract class 即时任务抽象类<输出类型> {
   }
 
   public 等待完成(): Promise<输出类型> {
+    let 轮询时间 = 100
     return new Promise((resolve, reject) => {
       let 检查状态 = (): void => {
         let 状态 = this.获得当前状态()
@@ -231,7 +229,7 @@ export abstract class 即时任务抽象类<输出类型> {
           let 错误 = this.获得错误信息()
           reject(错误 ?? new Error('任务失败'))
         } else {
-          setTimeout(检查状态, 100) // 每100ms检查一次
+          setTimeout(检查状态, 轮询时间)
         }
       }
       检查状态()

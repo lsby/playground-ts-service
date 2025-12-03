@@ -10,11 +10,11 @@ import { Left } from '@lsby/ts-fp-data'
 import { Kysely管理器 } from '@lsby/ts-kysely'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
-import { 环境变量 } from '../../../global/env'
-import { kysely插件 } from '../../../global/plugin'
-import { 新增逻辑 } from '../../../interface-logic/components/crud/create'
+import { 环境变量 } from '../../../../global/env'
+import { kysely插件 } from '../../../../global/plugin'
+import { 新增逻辑 } from '../../../../interface-logic/components/crud/create'
 
-let 接口路径 = '/api/demo/new-user' as const
+let 接口路径 = '/api/demo/transaction/rollback-test' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(

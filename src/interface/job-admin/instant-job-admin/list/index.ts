@@ -34,7 +34,6 @@ let 接口逻辑实现 = 接口逻辑
         重试次数: 任务.获得当前重试次数(),
         错误信息: 任务.获得错误信息()?.message ?? null,
         输出结果: 任务.获得输出结果(),
-        日志列表: 任务.获得日志列表().map((日志) => ({ ...日志, 时间: 日志.时间.getTime() })),
       }))
 
       return new Right({ 任务列表 })
@@ -60,12 +59,6 @@ let 接口正确类型描述 = z.object({
       重试次数: z.number(),
       错误信息: z.string().nullable(),
       输出结果: z.unknown(),
-      日志列表: z.array(
-        z.object({
-          时间: z.number(),
-          消息: z.string(),
-        }),
-      ),
     }),
   ),
 })

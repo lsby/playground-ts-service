@@ -58,7 +58,7 @@ export async function init(): Promise<void> {
     await log.debug(`初始化${项目名称}失败: %O`, e)
   }
 
-  await log.debug('初始化完成, 写入初始化标记...')
+  await log.debug('初始化系统配置...')
   await kysely管理器.获得句柄().deleteFrom('system_config').execute()
   await kysely管理器
     .获得句柄()

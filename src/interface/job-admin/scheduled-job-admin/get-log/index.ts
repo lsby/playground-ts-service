@@ -22,20 +22,8 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     接口逻辑.构造(
       [
-        new JSON解析插件(
-          z.object({
-            任务id: z.string(),
-          }),
-          {},
-        ),
-        new WebSocket插件(
-          z.object({
-            新日志: z.object({
-              时间: z.number(),
-              消息: z.string(),
-            }),
-          }),
-        ),
+        new JSON解析插件(z.object({ 任务id: z.string() }), {}),
+        new WebSocket插件(z.object({ 新日志: z.object({ 时间: z.number(), 消息: z.string() }) })),
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
@@ -45,7 +33,6 @@ let 接口逻辑实现 = 接口逻辑
           throw new Error('任务不存在')
         }
 
-        // 监听任务的新日志事件
         let 监听器 = async (日志: { 时间: Date; 消息: string }): Promise<void> => {
           await 参数.ws操作?.发送ws信息({ 新日志: { ...日志, 时间: 日志.时间.getTime() } }).catch(() => {})
         }
@@ -55,7 +42,6 @@ let 接口逻辑实现 = 接口逻辑
           任务.移除定时任务日志监听器(持有者)
         })
 
-        // 返回历史日志列表
         return new Right({ 日志列表: 任务.获得日志列表().map((日志) => ({ ...日志, 时间: 日志.时间.getTime() })) })
       },
     ),

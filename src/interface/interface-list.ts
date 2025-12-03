@@ -14,22 +14,20 @@ import _src_interface_demo_user_crud_delete_index_ts from './demo/user-crud/dele
 import _src_interface_demo_user_crud_create_index_ts from './demo/user-crud/create/index'
 import _src_interface_demo_user_crud_read_index_ts from './demo/user-crud/read/index'
 import _src_interface_demo_user_crud_update_index_ts from './demo/user-crud/update/index'
-import _src_interface_demo_new_user_index_ts from './demo/new-user/index'
+import _src_interface_demo_transaction_rollback_test_index_ts from './demo/transaction/rollback-test/index'
 import _src_interface_demo_electron_set_focus_index_ts from './demo/electron/set-focus/index'
 import _src_interface_demo_electron_dialog_index_ts from './demo/electron/dialog/index'
 import _src_interface_sqlite_admin_execute_query_index_ts from './sqlite-admin/execute-query/index'
-import _src_interface_sqlite_admin_get_database_info_index_ts from './sqlite-admin/get-database-info/index'
-import _src_interface_sqlite_admin_get_indexes_index_ts from './sqlite-admin/get-indexes/index'
-import _src_interface_sqlite_admin_get_table_schema_index_ts from './sqlite-admin/get-table-schema/index'
-import _src_interface_sqlite_admin_get_tables_index_ts from './sqlite-admin/get-tables/index'
-import _src_interface_sqlite_admin_get_triggers_index_ts from './sqlite-admin/get-triggers/index'
 import _src_interface_job_admin_instant_job_admin_get_log_index_ts from './job-admin/instant-job-admin/get-log/index'
 import _src_interface_job_admin_instant_job_admin_list_index_ts from './job-admin/instant-job-admin/list/index'
 import _src_interface_job_admin_scheduled_job_admin_list_index_ts from './job-admin/scheduled-job-admin/list/index'
 import _src_interface_job_admin_scheduled_job_admin_manual_trigger_index_ts from './job-admin/scheduled-job-admin/manual-trigger/index'
 import _src_interface_job_admin_scheduled_job_admin_get_log_index_ts from './job-admin/scheduled-job-admin/get-log/index'
 import _src_interface_log_admin_get_logs_index_ts from './log-admin/get-logs/index'
-import _src_interface_system_config_get_enable_registration_index_ts from './system-config/get-enable-registration/index'
+import _src_interface_sqlite_admin_get_table_schema_index_ts from './sqlite-admin/get-table-schema/index'
+import _src_interface_sqlite_admin_get_tables_index_ts from './sqlite-admin/get-tables/index'
+import _src_interface_sqlite_admin_get_database_info_index_ts from './sqlite-admin/get-database-info/index'
+import _src_interface_system_get_enable_registration_index_ts from './system/get-enable-registration/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_sqlite_admin_backup_database_index_ts,
@@ -45,20 +43,18 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_user_crud_create_index_ts,
   _src_interface_demo_user_crud_read_index_ts,
   _src_interface_demo_user_crud_update_index_ts,
-  _src_interface_demo_new_user_index_ts,
+  _src_interface_demo_transaction_rollback_test_index_ts,
   _src_interface_demo_electron_set_focus_index_ts,
   _src_interface_demo_electron_dialog_index_ts,
   _src_interface_sqlite_admin_execute_query_index_ts,
-  _src_interface_sqlite_admin_get_database_info_index_ts,
-  _src_interface_sqlite_admin_get_indexes_index_ts,
-  _src_interface_sqlite_admin_get_table_schema_index_ts,
-  _src_interface_sqlite_admin_get_tables_index_ts,
-  _src_interface_sqlite_admin_get_triggers_index_ts,
   _src_interface_job_admin_instant_job_admin_get_log_index_ts,
   _src_interface_job_admin_instant_job_admin_list_index_ts,
   _src_interface_job_admin_scheduled_job_admin_list_index_ts,
   _src_interface_job_admin_scheduled_job_admin_manual_trigger_index_ts,
   _src_interface_job_admin_scheduled_job_admin_get_log_index_ts,
   _src_interface_log_admin_get_logs_index_ts,
-  _src_interface_system_config_get_enable_registration_index_ts,
+  _src_interface_sqlite_admin_get_table_schema_index_ts,
+  _src_interface_sqlite_admin_get_tables_index_ts,
+  _src_interface_sqlite_admin_get_database_info_index_ts,
+  _src_interface_system_get_enable_registration_index_ts,
 ]

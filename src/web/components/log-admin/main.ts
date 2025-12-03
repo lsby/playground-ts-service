@@ -1,4 +1,4 @@
-import { 联合转元组 } from '../../../tools/tools'
+import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/api-manager'
 import { LsbyLog } from '../general/log/log'

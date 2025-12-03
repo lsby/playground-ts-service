@@ -23,13 +23,10 @@ export abstract class 定时任务抽象类 {
     监听器: 定时任务日志监听器
   }>(({ 实例引用, 监听器 }) => {
     let 实例 = 实例引用.deref()
-    if (实例 === void 0) {
-      return
-    }
+    if (实例 === void 0) return
+
     let 索引 = 实例.定时任务日志监听器列表.indexOf(监听器)
-    if (索引 !== -1) {
-      实例.定时任务日志监听器列表.splice(索引, 1)
-    }
+    if (索引 !== -1) 实例.定时任务日志监听器列表.splice(索引, 1)
   })
   public static 创建定时任务(配置: {
     名称: string
@@ -102,7 +99,7 @@ export abstract class 定时任务抽象类 {
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
     while (this.日志列表.length > 定时任务抽象类.最大日志数量) {
-      this.日志列表.shift() // 删除最旧的日志
+      this.日志列表.shift()
     }
     // 触发定时任务日志监听器
     for (let 监听器 of this.定时任务日志监听器列表) {

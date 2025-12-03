@@ -20,14 +20,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' })))
   .混合(
     接口逻辑.构造(
-      [
-        new JSON解析插件(
-          z.object({
-            任务id: z.string(),
-          }),
-          {},
-        ),
-      ],
+      [new JSON解析插件(z.object({ 任务id: z.string() }), {})],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
         let 成功 = await 定时任务管理器.手动触发任务(参数.任务id)

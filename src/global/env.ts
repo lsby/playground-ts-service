@@ -8,7 +8,7 @@ export let 环境变量 = await new Env({
     NODE_ENV: z.enum(['development', 'production', 'test']),
     // 调试名称
     DEBUG_NAME: z.string(),
-    // 数据库部分 开始
+    // ========= 数据库部分 开始 =========
     DB_TYPE: z.enum(['sqlite', 'pg', 'mysql']),
     // sqlite
     DB_PATH: z.string(),
@@ -23,7 +23,7 @@ export let 环境变量 = await new Env({
     // DB_PORT: z.coerce.number(),
     // DB_NAME: z.string(),
     // SHADOW_DB_NAME: z.string(),
-    // 数据库部分 结束
+    // ========= 数据库部分 结束 =========
     // 应用端口
     APP_PORT: z.coerce.number(),
     WEB_PORT: z.coerce.number(),

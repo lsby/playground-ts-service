@@ -1,9 +1,4 @@
-import { 已审阅的any } from './types'
-
-type 联合转交叉<T> = (T extends any ? (x: T) => any : never) extends (x: infer U) => any ? U : never
-type 取最后的联合<T> = 联合转交叉<T extends any ? (x: T) => any : never> extends (x: infer L) => any ? L : never
-export type 联合转元组<T, Last = 取最后的联合<T>> = [T] extends [never] ? [] : [...联合转元组<Exclude<T, Last>>, Last]
-export type 元组转联合<T> = T extends any[] ? T[number] : never
+import { 已审阅的any, 联合转元组 } from './types'
 
 type _计算对象严格键类型<obj, k> = k extends []
   ? []

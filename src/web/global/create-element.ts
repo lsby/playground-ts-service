@@ -128,7 +128,7 @@ function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): vo
 
 export function 创建元素<K extends keyof HTMLElementTagNameMap>(
   标签: K,
-  属性?: 元素属性 & Omit<Partial<HTMLElementTagNameMap[K]>, 'style'>,
+  属性?: 元素属性 & Omit<Partial<HTMLElementTagNameMap[K]>, 'style' | 'children'>,
 ): HTMLElementTagNameMap[K] {
   let 元素 = document.createElement(标签)
 

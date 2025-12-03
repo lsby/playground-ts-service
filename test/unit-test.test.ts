@@ -6,7 +6,7 @@ import _src_interface_demo_base_add_t01_test_ts from './../src/interface/demo/ba
 import _src_interface_demo_base_sub_t01_test_ts from './../src/interface/demo/base/sub/t01.test'
 import _src_interface_demo_base_sub_t02_test_ts from './../src/interface/demo/base/sub/t02.test'
 import _src_interface_demo_file_upload_file_t01_test_ts from './../src/interface/demo/file/upload-file/t01.test'
-import _src_interface_demo_new_user_t01_test_ts from './../src/interface/demo/new-user/t01.test'
+import _src_interface_demo_new_user_t01_test_ts from '../src/interface/demo/transaction/rollback-test/t01.test'
 import _src_interface_demo_user_crud_create_t01_test_ts from './../src/interface/demo/user-crud/create/t01.test'
 import _src_interface_demo_user_crud_delete_t01_test_ts from './../src/interface/demo/user-crud/delete/t01.test'
 import _src_interface_demo_user_crud_read_t01_test_ts from './../src/interface/demo/user-crud/read/t01.test'

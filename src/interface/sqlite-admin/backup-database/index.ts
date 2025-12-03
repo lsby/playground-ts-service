@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       [kysely插件, new WebSocket插件(z.object({ message: z.string() }))],
       async (参数, 逻辑附加参数, 请求附加参数) => {
-        let _log = 请求附加参数.log
+        let log = 请求附加参数.log
           .extend(接口路径)
           .pipe(async (level, namespace, content) =>
             参数.ws操作?.发送ws信息({ message: `[${level}] [${namespace}] ${content}` }),
@@ -38,27 +38,26 @@ let 接口逻辑实现 = 接口逻辑
 
         let kysely = 参数.kysely.获得句柄()
 
-        await _log.info('开始备份数据库...')
+        await log.info('开始备份数据库...')
 
-        // 获取备份目录
+        await log.info('获取备份目录...')
         let backupDir = 环境变量.DB_BACKUP_PATH
-        await _log.info(`备份目录: ${backupDir}`)
+        await log.info(`备份目录: ${backupDir}`)
 
-        // 生成备份文件名：前缀_环境_时间
+        await log.info('计算备份文件路径...')
         let envName = 环境变量.NODE_ENV
         let timestamp = new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').split('.')[0]
         let backupFileName = `${环境变量.DB_BACKUP_PREFIX}${逻辑附加参数.isAuto ? 环境变量.DB_BACKUP_AUTO_PREFIX : ''}${envName}_${timestamp}.db`
         let backupPath = path.join(backupDir, backupFileName)
-        await _log.info(`备份文件路径: ${backupPath}`)
+        await log.info(`备份文件路径: ${backupPath}`)
 
-        // 确保备份目录存在
+        await log.info('确保备份目录存在...')
         await fs.promises.mkdir(backupDir, { recursive: true })
-        await _log.info('备份目录已创建或已存在')
+        await log.info('备份目录已创建或已存在')
 
-        // 使用VACUUM INTO进行备份
-        await _log.info('开始执行VACUUM INTO备份...')
+        await log.info('开始执行VACUUM INTO备份...')
         await kysely.executeQuery(CompiledQuery.raw(`VACUUM INTO '${backupPath}';`, []))
-        await _log.info('备份完成')
+        await log.info('备份完成')
 
         return new Right({})
       },

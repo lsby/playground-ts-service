@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
@@ -38,6 +37,7 @@ export class 检查唯一性<
   ): Promise<Either<错误信息类型, {}>> {
     let _log = 请求附加参数.log.extend(检查唯一性.name)
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let 已存在 = await (参数.kysely.获得句柄() as 已审阅的any)
       .selectFrom(this.opt.表名)
       .select(this.opt.数据库字段名)

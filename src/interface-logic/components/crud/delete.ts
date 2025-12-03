@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
@@ -32,6 +31,7 @@ export class 删除逻辑<
 
     let 参数结果 = await this.计算参数(逻辑附加参数)
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let 构造 = (参数.kysely.获得句柄() as 已审阅的any).deleteFrom(this.表名)
     if (参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {
@@ -42,15 +42,19 @@ export class 删除逻辑<
           case '>=':
           case '<':
           case '<=':
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             构造 = 构造.where(条件[0], 条件[1], 条件[2])
             break
           case 'like':
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             构造 = 构造.where(条件[0], 'like', 条件[2])
             break
           case 'in':
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             构造 = 构造.where(条件[0], 'in', 条件[2])
             break
           case 'between':
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             构造 = 构造.where(条件[0], 'between', 条件[2])
             break
         }
