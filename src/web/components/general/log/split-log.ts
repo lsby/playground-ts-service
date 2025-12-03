@@ -12,7 +12,7 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
     this.注册组件('lsby-split-log', this)
   }
 
-  private 日志实例: LsbyLog | null = null
+  public 日志实例: LsbyLog | null = null
 
   protected override async 当加载时(): Promise<void> {
     // 设置宿主元素为 flex 容器，占满父容器
@@ -21,8 +21,6 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
     hostStyle.flexDirection = 'row'
     hostStyle.width = '100%'
     hostStyle.height = '100%'
-    hostStyle.minWidth = '500px'
-    hostStyle.minHeight = '400px'
 
     let 容器 = 创建元素('div', {
       style: {
@@ -39,9 +37,7 @@ export class LsbySplitLog extends 组件基类<属性类型, 发出事件类型,
       },
     })
 
-    let 左侧插槽 = 创建元素('slot', {
-      name: 'left',
-    })
+    let 左侧插槽 = 创建元素('slot')
 
     左侧插槽容器.appendChild(左侧插槽)
 

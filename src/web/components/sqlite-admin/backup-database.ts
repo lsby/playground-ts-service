@@ -76,7 +76,6 @@ export class LsbyBackupDatabase extends 组件基类<属性类型, 发出事件�
         })
 
         左侧内容.appendChild(开始备份按钮)
-        左侧内容.setAttribute('slot', 'left')
         splitLog.appendChild(左侧内容)
 
         await 显示模态框({ 标题: '备份数据库' }, splitLog)

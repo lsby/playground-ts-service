@@ -278,7 +278,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     按钮容器.appendChild(确认按钮)
     内容容器.appendChild(按钮容器)
 
-    await 显示模态框({ 标题: '添加数据', 可关闭: true, 最小宽度: '500px' }, 内容容器)
+    await 显示模态框({ 标题: '添加数据', 可关闭: true, 宽度: '500px' }, 内容容器)
   }
 
   private async 显示编辑模态框(行数据: 数据项): Promise<void> {
@@ -349,7 +349,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     按钮容器.appendChild(确认按钮)
     内容容器.appendChild(按钮容器)
 
-    await 显示模态框({ 标题: '编辑数据', 可关闭: true, 最小宽度: '500px' }, 内容容器)
+    await 显示模态框({ 标题: '编辑数据', 可关闭: true, 宽度: '500px' }, 内容容器)
   }
 
   private async 保存新行(表单实例: 表单): Promise<void> {

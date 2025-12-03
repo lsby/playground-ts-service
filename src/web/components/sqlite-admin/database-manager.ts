@@ -23,7 +23,6 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
   private 表列表组件: LsbyTableList | null = null
   private 表结构组件: LsbyTableStructure | null = null
   private 表数据组件: LsbyTableData | null = null
-  private 当前表名: string | null = null
   private 表名显示元素: HTMLSpanElement | null = null
 
   public constructor(属性: 属性类型) {
@@ -146,7 +145,6 @@ export class LsbyDatabaseManager extends 组件基类<属性类型, 发出事件
     if (this.表结构组件 === null || this.表数据组件 === null || this.右侧容器 === null) return
     let 表结构组件 = this.表结构组件
     let 表数据组件 = this.表数据组件
-    this.当前表名 = 表名
     await 表结构组件.设置属性('表名', 表名)
     await 表数据组件.设置属性('表名', 表名)
 

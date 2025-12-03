@@ -26,6 +26,8 @@ export class LsbyLog extends 组件基类<属性类型, 发出事件类型, 监�
   private 正在加载 = false
 
   protected override async 当加载时(): Promise<void> {
+    this.获得宿主样式().height = '100%'
+
     let 包装器 = 创建元素('div', {
       style: {
         position: 'relative',

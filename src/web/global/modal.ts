@@ -3,10 +3,8 @@ type 模态框选项 = {
   最大化?: boolean
   可关闭?: boolean
   关闭回调?: () => void | Promise<void>
-  最大宽度?: string
-  最大高度?: string
-  最小宽度?: string
-  最小高度?: string
+  宽度?: string
+  高度?: string
 }
 
 import { 文本按钮 } from '../components/general/base/button'
@@ -23,11 +21,10 @@ class 模态框管理器 {
   private 是否最大化 = false
   private 关闭回调: (() => void | Promise<void>) | null = null
   private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
-  private 默认最大宽度 = '60vw'
-  private 默认最大高度 = '80vh'
-  private 默认最小宽度 = '30vw'
-  private 默认最小高度 = '20vh'
   private resize观察器: ResizeObserver | null = null
+  private 头部高度 = 32
+  private 当前宽度 = '60vw'
+  private 当前高度 = '60vh'
 
   private 初始化(): void {
     if (this.遮罩 !== null) {
@@ -54,27 +51,25 @@ class 模态框管理器 {
     this.框 = 创建元素('div', {
       style: {
         position: 'absolute',
-        width: 'auto',
-        height: 'auto',
-        maxWidth: this.默认最大宽度,
-        maxHeight: this.默认最大高度,
         background: 'var(--卡片背景颜色)',
         border: '1px solid var(--边框颜色)',
         borderRadius: '4px',
         boxShadow: '0 4px 12px var(--深阴影颜色)',
         display: 'flex',
         flexDirection: 'column',
+        width: '60vw',
+        height: '60vh',
       },
     })
 
     // 头部
     this.头部 = 创建元素('div', {
       style: {
-        height: '32px',
+        height: `${this.头部高度}px`,
         background: 'var(--按钮背景)',
         display: 'flex',
         alignItems: 'center',
-        padding: '0 8px',
+        padding: '0 6px',
         justifyContent: 'space-between',
         userSelect: 'none',
       },
@@ -136,9 +131,10 @@ class 模态框管理器 {
     // 内容
     this.内容 = 创建元素('div', {
       style: {
-        padding: '8px',
         flex: '1',
         overflow: 'auto',
+        width: '60vw',
+        height: '80vh',
       },
     })
 
@@ -149,7 +145,7 @@ class 模态框管理器 {
   }
 
   private 切换最大化(): void {
-    if (this.框 === null || this.遮罩 === null || this.最大化按钮 === null) {
+    if (this.框 === null || this.遮罩 === null || this.最大化按钮 === null || this.内容 === null) {
       return
     }
 
@@ -158,25 +154,25 @@ class 模态框管理器 {
     if (this.是否最大化 === true) {
       this.框.style.width = '100vw'
       this.框.style.height = '100vh'
-      this.框.style.maxWidth = '100vw'
-      this.框.style.maxHeight = '100vh'
       this.框.style.left = '0'
       this.框.style.top = '0'
       this.框.style.transform = 'none'
       this.遮罩.style.justifyContent = 'flex-start'
       this.遮罩.style.alignItems = 'flex-start'
+      this.内容.style.width = '100%'
+      this.内容.style.height = `calc(100vh - ${this.头部高度}px)`
       this.最大化按钮.设置文本('🗗')
       this.最大化按钮.设置标题('还原')
     } else {
-      this.框.style.width = 'auto'
-      this.框.style.height = 'auto'
-      this.框.style.maxWidth = this.默认最大宽度
-      this.框.style.maxHeight = this.默认最大高度
+      this.框.style.width = this.当前宽度
+      this.框.style.height = this.当前高度
       this.框.style.left = ''
       this.框.style.top = ''
       this.框.style.transform = ''
       this.遮罩.style.justifyContent = 'center'
       this.遮罩.style.alignItems = 'center'
+      this.内容.style.width = this.当前宽度
+      this.内容.style.height = this.当前高度
       this.最大化按钮.设置文本('□')
       this.最大化按钮.设置标题('最大化')
     }
@@ -217,53 +213,36 @@ class 模态框管理器 {
     }
     this.内容.appendChild(内容)
 
-    // 设置自定义最大宽度和高度
-    if (选项.最大宽度 !== void 0) {
-      this.框.style.maxWidth = 选项.最大宽度
-    } else {
-      this.框.style.maxWidth = this.默认最大宽度
-    }
-
-    if (选项.最大高度 !== void 0) {
-      this.框.style.maxHeight = 选项.最大高度
-    } else {
-      this.框.style.maxHeight = this.默认最大高度
-    }
-
-    if (选项.最小宽度 !== void 0) {
-      this.框.style.minWidth = 选项.最小宽度
-    } else {
-      this.框.style.minWidth = this.默认最小宽度
-    }
-
-    if (选项.最小高度 !== void 0) {
-      this.框.style.minHeight = 选项.最小高度
-    } else {
-      this.框.style.minHeight = this.默认最小高度
-    }
+    // 保存当前宽度和高度
+    this.当前宽度 = 选项.宽度 ?? '60vw'
+    this.当前高度 = 选项.高度 ?? '60vh'
 
     // 设置是否最大化
     if (选项.最大化 === true) {
       this.框.style.width = '100vw'
       this.框.style.height = '100vh'
-      this.框.style.maxWidth = '100vw'
-      this.框.style.maxHeight = '100vh'
       this.框.style.left = '0'
       this.框.style.top = '0'
       this.框.style.transform = 'none'
       this.遮罩.style.justifyContent = 'flex-start'
       this.遮罩.style.alignItems = 'flex-start'
+      this.内容.style.width = '100%'
+      this.内容.style.height = `calc(100vh - ${this.头部高度}px)`
       this.最大化按钮.设置文本('🗗')
       this.最大化按钮.设置标题('还原')
       this.是否最大化 = true
     } else {
-      this.框.style.width = 'auto'
-      this.框.style.height = 'auto'
+      let 宽度 = 选项.宽度 ?? '60vw'
+      let 高度 = 选项.高度 ?? '60vh'
+      this.框.style.width = 宽度
+      this.框.style.height = 高度
       this.框.style.left = ''
       this.框.style.top = ''
       this.框.style.transform = ''
       this.遮罩.style.justifyContent = 'center'
       this.遮罩.style.alignItems = 'center'
+      this.内容.style.width = 宽度
+      this.内容.style.height = 高度
       this.最大化按钮.设置文本('□')
       this.最大化按钮.设置标题('最大化')
       this.是否最大化 = false
