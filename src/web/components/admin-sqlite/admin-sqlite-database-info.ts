@@ -65,7 +65,7 @@ export class 数据库信息组件 extends 组件基类<属性类型, 发出事�
     if (this.版本标签 === null) return
     let 版本标签 = this.版本标签
     try {
-      let 结果 = await API管理器.请求post接口('/api/sqlite-admin/get-database-info', {})
+      let 结果 = await API管理器.请求post接口('/api/admin-sqlite/get-database-info', {})
       if (结果.status === 'success') {
         版本标签.textContent = `SQLite版本: ${结果.data.version}`
       } else {

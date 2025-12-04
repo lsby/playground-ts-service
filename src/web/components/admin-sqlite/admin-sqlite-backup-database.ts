@@ -59,7 +59,7 @@ export class 数据库备份组件 extends 组件基类<属性类型, 发出事�
             splitLog.日志组件.添加日志('开始备份数据库...')
             try {
               await API管理器.请求post接口并处理错误(
-                '/api/sqlite-admin/backup-database',
+                '/api/admin-sqlite/backup-database',
                 {},
                 async (data: { message: string }) => {
                   splitLog.日志组件.添加日志(data.message)

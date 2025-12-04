@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import { 环境变量 } from '../../global/env'
 import { globalLog, kysely管理器 } from '../../global/global'
-import { 备份数据库 } from '../../interface/sqlite-admin/backup-database'
+import { 备份数据库 } from '../../interface/admin-sqlite/backup-database'
 import { 定时任务上下文, 定时任务抽象类 } from '../../model/scheduled-job/scheduled-job'
 
 class 定时任务实现 extends 定时任务抽象类 {
