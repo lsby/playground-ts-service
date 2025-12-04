@@ -365,7 +365,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     for (let [列名, 值] of Object.entries(数据)) {
       let 列 = this.列列表.find((c) => c.name === 列名)
       if (列 !== void 0 && 列.notnull === 1 && 列.dflt_value === null && 值 === '') {
-        await 警告提示(`${列名} 不能为空`)
+        警告提示(`${列名} 不能为空`)
         return
       }
       列列表.push(`\`${列名}\``)
@@ -386,7 +386,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
     } catch (错误) {
       console.error('插入失败:', 错误)
-      await 警告提示('添加失败')
+      警告提示('添加失败')
     }
   }
 
@@ -395,7 +395,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     if (表名 === void 0 || 表名 === null) return
 
     if (this.主键列.length === 0) {
-      await 警告提示('无法找到主键列')
+      警告提示('无法找到主键列')
       return
     }
 
@@ -432,7 +432,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
     } catch (错误) {
       console.error('更新失败:', 错误)
-      await 警告提示('保存失败')
+      警告提示('保存失败')
     }
   }
 
@@ -441,7 +441,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     if (表名 === void 0 || 表名 === null) return
 
     if (this.主键列.length === 0) {
-      await 警告提示('无法找到主键列')
+      警告提示('无法找到主键列')
       return
     }
 
@@ -468,7 +468,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
     } catch (错误) {
       console.error('删除失败:', 错误)
-      await 警告提示('删除失败')
+      警告提示('删除失败')
     }
   }
 
