@@ -9,16 +9,14 @@ import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../global/plugin'
-import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
-import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
+import { 检查JSON参数 } from '../../../interface-logic/check/check-json-args'
 
 let 接口路径 = '/api/user/login' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(new 检查用户名('userName'))
-  .混合(new 检查密码('userPassword'))
+  .混合(new 检查JSON参数(z.object({ userName: z.string(), userPassword: z.string() })))
   .混合(
     接口逻辑.构造([jwt插件.签名器, kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
@@ -42,17 +40,7 @@ type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑�
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
-let 接口错误类型描述 = z.enum([
-  '用户不存在或密码错误',
-  '用户名不能包含空格',
-  '用户名不能为空',
-  '用户名过短',
-  '用户名过长',
-  '密码不能包含空格',
-  '密码不能为空',
-  '密码过短',
-  '密码过长',
-])
+let 接口错误类型描述 = z.enum(['用户不存在或密码错误'])
 let 接口正确类型描述 = z.object({
   token: z.string(),
 })
