@@ -39,8 +39,8 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
   protected override async 当加载时(): Promise<void> {
     // 获取注册启用状态
     try {
-      let 响应 = await API管理器.请求post接口并处理错误('/api/system/get-enable-registration', {})
-      this.enableRegister = 响应.enable_register === 1
+      let 响应 = await API管理器.请求post接口并处理错误('/api/project/get-enable-registration', {})
+      this.enableRegister = 响应.enable_register
     } catch (_e) {
       this.enableRegister = false
     }
