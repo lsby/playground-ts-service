@@ -65,6 +65,7 @@ let 接口逻辑实现 = 接口逻辑
           .values({
             id: randomUUID(),
             user_id: userId,
+            theme: '系统',
           })
           .execute()
         return new Right({})

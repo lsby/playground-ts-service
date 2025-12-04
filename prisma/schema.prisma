@@ -24,7 +24,7 @@ model system_config {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  is_initialized Boolean @default(false) // 是否已初始化
+  is_initialized  Boolean @default(false) // 是否已初始化
   enable_register Boolean // 启用注册
 }
 
@@ -36,6 +36,8 @@ model user_config {
 
   user_id String @unique // 所属用户id
   user    user   @relation(fields: [user_id], references: [id], onUpdate: Restrict, onDelete: Restrict)
+
+  theme String // 主题颜色: 系统 | 亮色 | 暗色
 }
 
 // 用户

@@ -50,6 +50,7 @@ export async function init(): Promise<void> {
         .values({
           id: randomUUID(),
           user_id: 初始用户id,
+          theme: '系统',
         })
         .execute()
     })

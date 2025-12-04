@@ -17,6 +17,8 @@ type 单选框组配置 = {
   变化处理函数?: (值: string) => void | Promise<void>
   宿主样式?: 增强样式类型
   元素样式?: 增强样式类型
+  方向?: '横' | '竖'
+  标签?: string
 }
 
 class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 监听单选框组事件> implements 表单元素<string> {
@@ -31,10 +33,23 @@ class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 
   protected async 当加载时(): Promise<void> {
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
+    if (this.配置.标签 !== void 0) {
+      let 标签元素 = 创建元素('label', {
+        textContent: this.配置.标签,
+        style: {
+          display: 'block',
+          marginBottom: '8px',
+          fontSize: '14px',
+          color: 'var(--文字颜色)',
+        },
+      })
+      this.shadow.appendChild(标签元素)
+    }
+
     let 容器 = 创建元素('div', {
       style: {
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: this.配置.方向 === '横' ? 'row' : 'column',
         gap: '8px',
       },
     })

@@ -1,3 +1,4 @@
+import { 已审阅的any } from '../../../../tools/types'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../global/create-element'
 
@@ -22,21 +23,17 @@ type 表单事件<数据类型 extends Record<string, 基础值结构> = Record<
 }
 type 监听表单事件 = {}
 
-type 表单配置<_数据类型 extends Record<string, 基础值结构> = Record<string, 基础值结构>> = {
+type 表单配置<_数据类型 extends Record<string, 基础值结构>> = {
   项列表: 表单项配置[]
   宿主样式?: 增强样式类型
   元素样式?: 增强样式类型
 }
 
-class 表单<数据类型 extends Record<string, 基础值结构> = Record<string, 基础值结构>> extends 组件基类<
-  表单属性,
-  表单事件<数据类型>,
-  监听表单事件
-> {
+class 表单<数据类型 extends Record<string, 基础值结构>> extends 组件基类<表单属性, 表单事件<数据类型>, 监听表单事件> {
   private 配置: 表单配置<数据类型>
   private 项映射: Map<string, 表单元素> = new Map()
 
-  public constructor(配置: 表单配置) {
+  public constructor(配置: 表单配置<已审阅的any>) {
     super({})
     this.配置 = 配置
     for (let 项 of 配置.项列表) {

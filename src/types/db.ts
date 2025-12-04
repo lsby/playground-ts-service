@@ -24,6 +24,7 @@ export type user_config = {
     created_at: Generated<string>;
     updated_at: Generated<string>;
     user_id: string;
+    theme: string;
 };
 export type DB = {
     system_config: system_config;

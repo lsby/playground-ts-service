@@ -243,7 +243,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     }
 
     // 创建表单
-    let 表单实例 = new 表单({
+    let 表单实例 = new 表单<数据项>({
       项列表: 表单项列表,
     })
 
@@ -314,7 +314,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     }
 
     // 创建表单
-    let 表单实例 = new 表单({
+    let 表单实例 = new 表单<数据项>({
       项列表: 表单项列表,
     })
 
@@ -352,7 +352,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     await 显示模态框({ 标题: '编辑数据', 可关闭: true, 宽度: '500px' }, 内容容器)
   }
 
-  private async 保存新行(表单实例: 表单): Promise<void> {
+  private async 保存新行(表单实例: 表单<数据项>): Promise<void> {
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
@@ -370,7 +370,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
       }
       列列表.push(`\`${列名}\``)
       值列表.push('?')
-      参数列表.push(值 as string | number)
+      参数列表.push(值)
     }
 
     let sql = `INSERT INTO \`${表名}\` (${列列表.join(', ')}) VALUES (${值列表.join(', ')})`
@@ -390,7 +390,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
     }
   }
 
-  private async 保存编辑行(行数据: 数据项, 表单实例: 表单): Promise<void> {
+  private async 保存编辑行(行数据: 数据项, 表单实例: 表单<数据项>): Promise<void> {
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
@@ -407,7 +407,7 @@ export class LsbyTableData extends 组件基类<属性类型, 发出事件类型
 
     for (let [列名, 值] of Object.entries(数据)) {
       设置条件列表.push(`\`${列名}\` = ?`)
-      参数列表.push(值 as string | number)
+      参数列表.push(值)
     }
 
     // 构建 WHERE 语句

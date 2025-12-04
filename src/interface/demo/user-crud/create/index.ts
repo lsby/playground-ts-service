@@ -51,6 +51,7 @@ let 接口逻辑实现 = 接口逻辑
                   数据: {
                     id: crypto.randomUUID(),
                     user_id: userId,
+                    theme: '系统',
                   },
                 }),
                 async () => ({}),

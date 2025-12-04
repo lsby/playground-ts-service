@@ -28,6 +28,11 @@ import _src_interface_sqlite_admin_get_table_schema_index_ts from './sqlite-admi
 import _src_interface_sqlite_admin_get_tables_index_ts from './sqlite-admin/get-tables/index'
 import _src_interface_sqlite_admin_get_database_info_index_ts from './sqlite-admin/get-database-info/index'
 import _src_interface_system_get_enable_registration_index_ts from './system/get-enable-registration/index'
+import _src_interface_user_get_current_user_index_ts from './user/get-current-user/index'
+import _src_interface_system_get_system_config_index_ts from './system/get-system-config/index'
+import _src_interface_system_get_user_config_index_ts from './system/get-user-config/index'
+import _src_interface_system_update_system_config_index_ts from './system/update-system-config/index'
+import _src_interface_system_update_user_config_index_ts from './system/update-user-config/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_sqlite_admin_backup_database_index_ts,
@@ -57,4 +62,9 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_sqlite_admin_get_tables_index_ts,
   _src_interface_sqlite_admin_get_database_info_index_ts,
   _src_interface_system_get_enable_registration_index_ts,
+  _src_interface_user_get_current_user_index_ts,
+  _src_interface_system_get_system_config_index_ts,
+  _src_interface_system_get_user_config_index_ts,
+  _src_interface_system_update_system_config_index_ts,
+  _src_interface_system_update_user_config_index_ts,
 ]
