@@ -4,7 +4,7 @@ type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbySetHtmlFull extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 设置网页全屏组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-set-html-full', this)

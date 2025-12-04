@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base'
-import { 主要按钮 } from '../general/base/button'
+import { 主要按钮 } from '../general/base/base-button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

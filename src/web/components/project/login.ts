@@ -1,9 +1,9 @@
 import { 组件基类 } from '../../base/base'
-import { API管理器 } from '../../global/api-manager'
-import { 创建元素 } from '../../global/create-element'
-import { 主要按钮, 链接按钮 } from '../general/base/button'
+import { API管理器 } from '../../global/manager/api-manager'
+import { 创建元素 } from '../../global/tools/create-element'
+import { 主要按钮, 链接按钮 } from '../general/base/base-button'
 import { 表单 } from '../general/form/form'
-import { 密码输入框, 普通输入框 } from '../general/form/input'
+import { 密码输入框, 普通输入框 } from '../general/form/form-input'
 
 type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}
@@ -20,7 +20,7 @@ type 注册表单数据 = {
   confirmPassword: string
 }
 
-export class LsbyLogin extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 登录组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = ['username', 'password', 'confirmPassword', 'mode']
   static {
     this.注册组件('lsby-login', this)

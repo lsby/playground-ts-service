@@ -1,5 +1,5 @@
 import { 组件基类 } from '../../base/base.js'
-import { globalWebLog } from '../../global/log.js'
+import { globalWebLog } from '../../global/manager/log-manager.js'
 
 type 属性类型 = {
   排除事件?: string
@@ -7,7 +7,7 @@ type 属性类型 = {
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class LsbySetDebug extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 设置调试组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-set-debug', this)

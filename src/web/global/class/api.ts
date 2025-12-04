@@ -1,9 +1,10 @@
 import { 不安全的扩展WebRequest, 不安全的扩展WebRequest表单 } from '@lsby/ts-http-extend'
 import { 已审阅的any } from '../../../tools/types'
 import { InterfaceType } from '../../../types/interface-type'
-import { API前缀 } from '../api-prefix'
-import { 错误提示 } from '../toast'
+import { 错误提示 } from '../manager/toast-manager'
 import { 不安全的通过路径获得接口定义, 获得对象属性 } from '../types/types'
+
+let API前缀 = ''
 
 export class API管理器类 {
   private 本地存储名称 = 'lsby-api-component-base-token'

@@ -1,6 +1,6 @@
 import { 已审阅的any } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 创建元素 } from '../../global/tools/create-element'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
   `LsbyRoute-发出`,
@@ -43,7 +43,7 @@ type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = 路由事件派发类型<string, any> & 路由事件监听类型
 
-export class LsbyRoute extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 路由组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
   static {
     this.注册组件('lsby-route', this)

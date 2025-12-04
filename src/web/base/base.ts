@@ -1,4 +1,4 @@
-import { globalWebLog } from '../global/log'
+import { globalWebLog } from '../global/manager/log-manager'
 
 export abstract class 组件基类<
   属性类型 extends Record<string, string>,

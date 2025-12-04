@@ -1,12 +1,12 @@
 import { 组件基类 } from '../../base/base'
-import { API管理器 } from '../../global/api-manager'
-import { 创建元素 } from '../../global/create-element'
-import { 主题管理器 } from '../../global/theme-manager'
-import { 成功提示 } from '../../global/toast'
-import { 主要按钮 } from '../general/base/button'
-import { 复选框 } from '../general/form/checkbox'
+import { API管理器 } from '../../global/manager/api-manager'
+import { 主题管理器 } from '../../global/manager/theme-manager'
+import { 成功提示 } from '../../global/manager/toast-manager'
+import { 创建元素 } from '../../global/tools/create-element'
+import { 主要按钮 } from '../general/base/base-button'
 import { 表单, 表单项配置 } from '../general/form/form'
-import { 单选框组 } from '../general/form/radio-group'
+import { 复选框 } from '../general/form/form-checkbox'
+import { 单选框组 } from '../general/form/form-radio-group'
 
 type 设置属性 = {}
 type 设置事件 = {}
@@ -15,7 +15,7 @@ type 监听设置事件 = {}
 type 系统配置数据 = { id: string; enable_register: boolean; is_initialized: boolean }
 type 用户配置数据 = { id: string; theme: '系统' | '亮色' | '暗色' }
 
-export class 设置 extends 组件基类<设置属性, 设置事件, 监听设置事件> {
+export class 用户设置组件 extends 组件基类<设置属性, 设置事件, 监听设置事件> {
   private 用户信息?: { id: string; name: string; is_admin: boolean }
   private 系统配置表单?: 表单<系统配置数据>
   private 用户配置表单?: 表单<用户配置数据>
@@ -141,8 +141,6 @@ export class 设置 extends 组件基类<设置属性, 设置事件, 监听设�
   private async 保存用户配置(): Promise<void> {
     if (this.用户配置表单 === void 0) return
     let 数据 = this.用户配置表单.获得数据()
-    await API管理器.请求post接口并处理错误('/api/system/update-user-config', 数据)
-    // 更新主题管理器
     await 主题管理器.设置主题(数据.theme)
   }
 

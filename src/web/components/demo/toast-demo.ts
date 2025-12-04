@@ -1,17 +1,17 @@
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
-import { 信息提示, 成功提示, 警告提示, 错误提示 } from '../../global/toast'
-import { 主要按钮, 危险按钮, 成功按钮, 普通按钮, 警告按钮 } from '../general/base/button'
+import { 信息提示, 成功提示, 警告提示, 错误提示 } from '../../global/manager/toast-manager'
+import { 创建元素 } from '../../global/tools/create-element'
+import { 主要按钮, 危险按钮, 成功按钮, 普通按钮, 警告按钮 } from '../general/base/base-button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 吐司演示组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 演示吐司消息组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
-    this.注册组件('lsby-demo-toast', this)
+    this.注册组件('lsby-toast-demo', this)
   }
 
   protected override async 当加载时(): Promise<void> {

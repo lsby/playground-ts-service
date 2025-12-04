@@ -49,8 +49,9 @@
   - 机制组件: `src/web/components/mechanics`
   - 流程控制: `src/web/components/process`
   - 项目组件: `src/web/components/project`
-- 前端全局对象: `src/web/global`
-  - 包含提示框, 对话框, 吐司消息, API 管理器, 全局 CSS 样式等
+- 前端全局样式: `src/web/global/style`
+- 前端全局管理器: `src/web/global/manager`
+  - 包含提示框管理器, 对话框管理器, 吐司消息管理器, API 管理器, 日志管理器等
 - 前端页面入口: `src/web/page`
   - 包含多个 html 入口, 每个 html 文件对应一个 url
   - 演示页面: `src/web/page/demo.html`
@@ -81,7 +82,7 @@
 - 尽可能复用基础通用组件: `src/web/components/general/base`, 便于统一样式和行为
 - 尽可能复用基础表单组件: `src/web/components/general/form`, 便于统一样式和行为
 - 尽可能复用常用布局: `src/web/components/layout`
-- 尽可能使用工厂函数创建元素: `src/web/global/create-element.ts`
+- 尽可能使用工厂函数创建元素: `src/web/global/tools/create-element.ts`
 - 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接new出来
 - 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 CSS 变量
 - 使用路由机制处理兄弟组件通信:

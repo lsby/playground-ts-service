@@ -1,17 +1,17 @@
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
-import { 显示对话框, 显示确认对话框, 显示输入对话框 } from '../../global/dialog'
-import { 主要按钮 } from '../general/base/button'
+import { 显示对话框, 显示确认对话框, 显示输入对话框 } from '../../global/manager/dialog-manager'
+import { 创建元素 } from '../../global/tools/create-element'
+import { 主要按钮 } from '../general/base/base-button'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 对话框演示组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 演示对话框组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
 
   static {
-    this.注册组件('lsby-demo-dialog', this)
+    this.注册组件('lsby-dialog-demo', this)
   }
 
   protected override async 当加载时(): Promise<void> {

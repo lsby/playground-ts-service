@@ -1,7 +1,7 @@
 import { 联合转元组 } from '../../../../tools/types'
 import { 组件基类 } from '../../../base/base'
-import { 创建元素 } from '../../../global/create-element'
-import { 文本按钮 } from '../base/button'
+import { 创建元素 } from '../../../global/tools/create-element'
+import { 文本按钮 } from '../base/base-button'
 
 type 属性类型 = {}
 export type tabVertical发出事件类型 = {
@@ -9,7 +9,7 @@ export type tabVertical发出事件类型 = {
 }
 type 监听事件类型 = {}
 
-export class LsbyTabsVertical extends 组件基类<属性类型, tabVertical发出事件类型, 监听事件类型> {
+export class 纵向tab组件 extends 组件基类<属性类型, tabVertical发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
     this.注册组件('lsby-tabs-vertical', this)

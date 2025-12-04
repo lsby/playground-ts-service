@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <lsby-theme-init></lsby-theme-init>
+    <set-theme></set-theme>
     <lsby-set-debug 排除事件="mousemove,mouseenter,mouseleave,scroll"></lsby-set-debug>
     <lsby-set-html-full></lsby-set-html-full>
     <lsby-login-check></lsby-login-check>
@@ -18,24 +18,24 @@
         <lsby-row>
           <lsby-flex-item-container>
             todo测试
-            <lsby-demo-todo-list></lsby-demo-todo-list>
+            <lsby-todo-list-demo></lsby-todo-list-demo>
           </lsby-flex-item-container>
         </lsby-row>
         <lsby-row>
           <lsby-flex-item-container>
             加法测试
-            <lsby-demo-add a="1" b="2"></lsby-demo-add>
+            <lsby-add-demo a="1" b="2"></lsby-add-demo>
           </lsby-flex-item-container>
           <lsby-flex-item-container>
             ws测试
-            <lsby-demo-ws-test></lsby-demo-ws-test>
+            <lsby-ws-demo></lsby-ws-demo>
           </lsby-flex-item-container>
           <lsby-flex-item-container>
             路由测试
             <lsby-route>
               <lsby-container>
-                <lsby-demo-ping></lsby-demo-ping>
-                <lsby-demo-pong></lsby-demo-pong>
+                <lsby-ping-demo></lsby-ping-demo>
+                <lsby-pong-demo></lsby-pong-demo>
               </lsby-container>
             </lsby-route>
           </lsby-flex-item-container>
@@ -44,24 +44,24 @@
       <lsby-container 标签="表格测试" style="justify-content: space-around">
         <lsby-flex-item-container>
           表格测试
-          <lsby-demo-user-table-management></lsby-demo-user-table-management>
+          <lsby-user-management-demo></lsby-user-management-demo>
         </lsby-flex-item-container>
       </lsby-container>
       <div 标签="提示框测试">
         <lsby-row style="align-items: flex-start">
           <lsby-flex-item-container>
-            <lsby-demo-toast></lsby-demo-toast>
+            <lsby-toast-demo></lsby-toast-demo>
           </lsby-flex-item-container>
           <lsby-flex-item-container>
-            <lsby-demo-dialog></lsby-demo-dialog>
+            <lsby-dialog-demo></lsby-dialog-demo>
           </lsby-flex-item-container>
         </lsby-row>
       </div>
       <div 标签="capacitor测试">
-        <lsby-demo-capacitor></lsby-demo-capacitor>
+        <lsby-capacitor-demo></lsby-capacitor-demo>
       </div>
       <div 标签="electron测试">
-        <lsby-demo-electron></lsby-demo-electron>
+        <lsby-electron-demo></lsby-electron-demo>
       </div>
     </lsby-tabs-horizontal>
   </body>

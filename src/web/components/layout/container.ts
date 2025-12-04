@@ -1,6 +1,6 @@
 import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/create-element'
+import { 创建元素 } from '../../global/tools/create-element'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -10,7 +10,7 @@ type 监听事件类型 = {}
  * 容器
  * 需要一个占满横纵的空间时使用
  */
-export class LsbyContainer extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class 一般容器 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
   static {
     this.注册组件('lsby-container', this)
