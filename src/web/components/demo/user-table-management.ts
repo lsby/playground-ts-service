@@ -28,8 +28,8 @@ export class 测试表格组件 extends 组件基类<属性类型, 发出事件�
     super()
     this.表格组件 = new LsbyDataTable<数据项>({
       列配置: [
-        { 字段名: 'id', 显示名: 'ID', 可排序: true },
-        { 字段名: 'name', 显示名: '名称', 可排序: true },
+        { 字段名: 'id', 显示名: 'ID', 可排序: true, 可筛选: true },
+        { 字段名: 'name', 显示名: '名称', 可排序: true, 可筛选: true },
       ],
       每页数量: 5,
       顶部操作列表: [
