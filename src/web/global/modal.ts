@@ -7,32 +7,37 @@ type 模态框选项 = {
   高度?: string
 }
 
+type 模态框栈项 = {
+  选项: 模态框选项
+  内容: HTMLElement
+  框: HTMLDivElement
+  遮罩: HTMLDivElement
+  内容容器: HTMLDivElement
+  是否最大化: boolean
+  当前宽度: string
+  当前高度: string
+  最大化按钮: 文本按钮
+}
+
 import { 文本按钮 } from '../components/general/base/button'
 import { 创建元素 } from './create-element'
 
 class 模态框管理器 {
-  private 遮罩: HTMLDivElement | null = null
-  private 框: HTMLDivElement | null = null
-  private 头部: HTMLDivElement | null = null
-  private 内容: HTMLDivElement | null = null
-  private 最大化按钮: 文本按钮 | null = null
-  private 关闭按钮: 文本按钮 | null = null
-  private 标题元素: HTMLSpanElement | null = null
-  private 是否最大化 = false
-  private 关闭回调: (() => void | Promise<void>) | null = null
-  private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
-  private resize观察器: ResizeObserver | null = null
+  private 模态框栈: 模态框栈项[] = []
   private 头部高度 = 32
-  private 当前宽度 = '60vw'
-  private 当前高度 = '60vh'
+  private 键盘处理器: ((e: KeyboardEvent) => void) | null = null
 
-  private 初始化(): void {
-    if (this.遮罩 !== null) {
-      return
-    }
-
+  private 创建模态框框架(): {
+    遮罩: HTMLDivElement
+    框: HTMLDivElement
+    头部: HTMLDivElement
+    内容: HTMLDivElement
+    最大化按钮: 文本按钮
+    关闭按钮: 文本按钮
+    标题元素: HTMLSpanElement
+  } {
     // 遮罩
-    this.遮罩 = 创建元素('div', {
+    let 遮罩 = 创建元素('div', {
       style: {
         position: 'fixed',
         left: '0',
@@ -43,12 +48,12 @@ class 模态框管理器 {
         display: 'none',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: '9999',
+        zIndex: (9999 + this.模态框栈.length).toString(),
       },
     })
 
     // 框
-    this.框 = 创建元素('div', {
+    let 框 = 创建元素('div', {
       style: {
         position: 'absolute',
         background: 'var(--卡片背景颜色)',
@@ -63,7 +68,7 @@ class 模态框管理器 {
     })
 
     // 头部
-    this.头部 = 创建元素('div', {
+    let 头部 = 创建元素('div', {
       style: {
         height: `${this.头部高度}px`,
         background: 'var(--按钮背景)',
@@ -80,8 +85,7 @@ class 模态框管理器 {
         color: 'var(--文字颜色)',
       },
     })
-    this.头部.appendChild(标题元素)
-    this.标题元素 = 标题元素
+    头部.appendChild(标题元素)
 
     // 右侧按钮容器
     let 右侧按钮容器 = 创建元素('div', {
@@ -93,7 +97,7 @@ class 模态框管理器 {
     })
 
     // 最大化按钮
-    this.最大化按钮 = new 文本按钮({
+    let 最大化按钮 = new 文本按钮({
       文本: '□',
       元素样式: {
         border: 'none',
@@ -104,13 +108,13 @@ class 模态框管理器 {
       },
       标题: '最大化',
       点击处理函数: (): void => {
-        this.切换最大化()
+        this.切换最大化(this.模态框栈.length - 1)
       },
     })
-    右侧按钮容器.appendChild(this.最大化按钮)
+    右侧按钮容器.appendChild(最大化按钮)
 
     // 关闭按钮
-    this.关闭按钮 = new 文本按钮({
+    let 关闭按钮 = new 文本按钮({
       文本: '✕',
       元素样式: {
         padding: '0',
@@ -124,12 +128,12 @@ class 模态框管理器 {
         await this.关闭()
       },
     })
-    右侧按钮容器.appendChild(this.关闭按钮)
+    右侧按钮容器.appendChild(关闭按钮)
 
-    this.头部.appendChild(右侧按钮容器)
+    头部.appendChild(右侧按钮容器)
 
     // 内容
-    this.内容 = 创建元素('div', {
+    let 内容 = 创建元素('div', {
       style: {
         flex: '1',
         overflow: 'auto',
@@ -138,166 +142,155 @@ class 模态框管理器 {
       },
     })
 
-    this.框.appendChild(this.头部)
-    this.框.appendChild(this.内容)
-    this.遮罩.appendChild(this.框)
-    document.body.appendChild(this.遮罩)
+    框.appendChild(头部)
+    框.appendChild(内容)
+    遮罩.appendChild(框)
+
+    return { 遮罩, 框, 头部, 内容, 最大化按钮, 关闭按钮, 标题元素 }
   }
 
-  private 切换最大化(): void {
-    if (this.框 === null || this.遮罩 === null || this.最大化按钮 === null || this.内容 === null) {
-      return
-    }
+  private 切换最大化(栈索引: number): void {
+    let 栈项 = this.模态框栈[栈索引]
+    if (栈项 === void 0) return
 
-    this.是否最大化 = this.是否最大化 === false
+    栈项.是否最大化 = 栈项.是否最大化 === false
 
-    if (this.是否最大化 === true) {
-      this.框.style.width = '100vw'
-      this.框.style.height = '100vh'
-      this.框.style.left = '0'
-      this.框.style.top = '0'
-      this.框.style.transform = 'none'
-      this.遮罩.style.justifyContent = 'flex-start'
-      this.遮罩.style.alignItems = 'flex-start'
-      this.内容.style.width = '100%'
-      this.内容.style.height = `calc(100vh - ${this.头部高度}px)`
-      this.最大化按钮.设置文本('🗗')
-      this.最大化按钮.设置标题('还原')
+    let { 框, 内容容器, 遮罩, 最大化按钮 } = 栈项
+
+    if (栈项.是否最大化 === true) {
+      框.style.width = '100vw'
+      框.style.height = '100vh'
+      框.style.left = '0'
+      框.style.top = '0'
+      框.style.transform = 'none'
+      遮罩.style.justifyContent = 'flex-start'
+      遮罩.style.alignItems = 'flex-start'
+      内容容器.style.width = '100%'
+      内容容器.style.height = `calc(100vh - ${this.头部高度}px)`
+      最大化按钮.设置文本('🗗')
+      最大化按钮.设置标题('还原')
     } else {
-      this.框.style.width = this.当前宽度
-      this.框.style.height = this.当前高度
-      this.框.style.left = ''
-      this.框.style.top = ''
-      this.框.style.transform = ''
-      this.遮罩.style.justifyContent = 'center'
-      this.遮罩.style.alignItems = 'center'
-      this.内容.style.width = this.当前宽度
-      this.内容.style.height = this.当前高度
-      this.最大化按钮.设置文本('□')
-      this.最大化按钮.设置标题('最大化')
+      框.style.width = 栈项.当前宽度
+      框.style.height = 栈项.当前高度
+      框.style.left = ''
+      框.style.top = ''
+      框.style.transform = ''
+      遮罩.style.justifyContent = 'center'
+      遮罩.style.alignItems = 'center'
+      内容容器.style.width = 栈项.当前宽度
+      内容容器.style.height = 栈项.当前高度
+      最大化按钮.设置文本('□')
+      最大化按钮.设置标题('最大化')
     }
   }
 
   public async 显示(选项: 模态框选项, 内容: HTMLElement): Promise<void> {
-    this.初始化()
-
-    if (
-      this.遮罩 === null ||
-      this.框 === null ||
-      this.头部 === null ||
-      this.内容 === null ||
-      this.关闭按钮 === null ||
-      this.最大化按钮 === null
-    ) {
-      return
-    }
+    let { 遮罩, 框, 内容: 内容容器, 标题元素, 关闭按钮, 最大化按钮 } = this.创建模态框框架()
 
     // 设置标题
-    if (this.标题元素 !== null) {
-      this.标题元素.textContent = 选项.标题
-    }
+    标题元素.textContent = 选项.标题
 
     // 设置是否可关闭
     if (选项.可关闭 === false) {
-      this.关闭按钮.获得宿主样式().display = 'none'
+      关闭按钮.获得宿主样式().display = 'none'
     } else {
-      this.关闭按钮.获得宿主样式().display = ''
+      关闭按钮.获得宿主样式().display = ''
     }
 
-    // 设置关闭回调
-    this.关闭回调 = 选项.关闭回调 ?? null
+    // 设置内容
+    内容容器.appendChild(内容)
 
-    // 清空并设置内容
-    while (this.内容.firstChild !== null) {
-      this.内容.removeChild(this.内容.firstChild)
+    let 当前宽度 = 选项.宽度 ?? '60vw'
+    let 当前高度 = 选项.高度 ?? '60vh'
+
+    // 创建栈项
+    let 栈项: 模态框栈项 = {
+      选项,
+      内容,
+      框,
+      遮罩,
+      内容容器,
+      是否最大化: 选项.最大化 ?? false,
+      当前宽度,
+      当前高度,
+      最大化按钮,
     }
-    this.内容.appendChild(内容)
 
-    // 保存当前宽度和高度
-    this.当前宽度 = 选项.宽度 ?? '60vw'
-    this.当前高度 = 选项.高度 ?? '60vh'
+    // 添加到栈
+    this.模态框栈.push(栈项)
 
     // 设置是否最大化
     if (选项.最大化 === true) {
-      this.框.style.width = '100vw'
-      this.框.style.height = '100vh'
-      this.框.style.left = '0'
-      this.框.style.top = '0'
-      this.框.style.transform = 'none'
-      this.遮罩.style.justifyContent = 'flex-start'
-      this.遮罩.style.alignItems = 'flex-start'
-      this.内容.style.width = '100%'
-      this.内容.style.height = `calc(100vh - ${this.头部高度}px)`
-      this.最大化按钮.设置文本('🗗')
-      this.最大化按钮.设置标题('还原')
-      this.是否最大化 = true
+      框.style.width = '100vw'
+      框.style.height = '100vh'
+      框.style.left = '0'
+      框.style.top = '0'
+      框.style.transform = 'none'
+      遮罩.style.justifyContent = 'flex-start'
+      遮罩.style.alignItems = 'flex-start'
+      内容容器.style.width = '100%'
+      内容容器.style.height = `calc(100vh - ${this.头部高度}px)`
+      最大化按钮.设置文本('🗗')
+      最大化按钮.设置标题('还原')
     } else {
-      let 宽度 = 选项.宽度 ?? '60vw'
-      let 高度 = 选项.高度 ?? '60vh'
-      this.框.style.width = 宽度
-      this.框.style.height = 高度
-      this.框.style.left = ''
-      this.框.style.top = ''
-      this.框.style.transform = ''
-      this.遮罩.style.justifyContent = 'center'
-      this.遮罩.style.alignItems = 'center'
-      this.内容.style.width = 宽度
-      this.内容.style.height = 高度
-      this.最大化按钮.设置文本('□')
-      this.最大化按钮.设置标题('最大化')
-      this.是否最大化 = false
+      框.style.width = 当前宽度
+      框.style.height = 当前高度
+      框.style.left = ''
+      框.style.top = ''
+      框.style.transform = ''
+      遮罩.style.justifyContent = 'center'
+      遮罩.style.alignItems = 'center'
+      内容容器.style.width = 当前宽度
+      内容容器.style.height = 当前高度
+      最大化按钮.设置文本('□')
+      最大化按钮.设置标题('最大化')
     }
+
+    // 将遮罩添加到DOM
+    document.body.appendChild(遮罩)
 
     // 显示遮罩
-    this.遮罩.style.display = 'flex'
+    遮罩.style.display = 'flex'
 
-    // 绑定键盘事件
-    this.键盘处理器 = async (e: KeyboardEvent): Promise<void> => {
-      if (e.key === 'Escape' && 选项.可关闭 !== false) {
-        await this.关闭()
+    // 如果是第一个模态框，绑定键盘事件
+    if (this.模态框栈.length === 1) {
+      this.键盘处理器 = async (e: KeyboardEvent): Promise<void> => {
+        let 当前模态框 = this.模态框栈[this.模态框栈.length - 1]
+        if (当前模态框 !== void 0 && e.key === 'Escape' && 当前模态框.选项.可关闭 !== false) {
+          await this.关闭()
+        }
       }
+      document.onkeydown = this.键盘处理器
     }
-    document.onkeydown = this.键盘处理器
   }
 
   public async 关闭(): Promise<void> {
-    if (this.遮罩 === null) {
+    if (this.模态框栈.length === 0) {
       return
     }
 
+    let 栈项 = this.模态框栈.pop()
+    if (栈项 === void 0) return
+
     // 执行关闭回调
-    if (this.关闭回调 !== null) {
-      await this.关闭回调()
+    if (栈项.选项.关闭回调 !== void 0) {
+      await 栈项.选项.关闭回调()
     }
 
-    // 隐藏遮罩
-    this.遮罩.style.display = 'none'
-
-    // 清空内容
-    if (this.内容 !== null) {
-      while (this.内容.firstChild !== null) {
-        this.内容.removeChild(this.内容.firstChild)
-      }
+    // 从DOM中移除遮罩
+    if (栈项.遮罩.parentNode !== null) {
+      栈项.遮罩.parentNode.removeChild(栈项.遮罩)
     }
 
-    // 移除键盘事件
-    if (this.键盘处理器 !== null) {
+    // 如果栈为空，移除键盘事件
+    if (this.模态框栈.length === 0 && this.键盘处理器 !== null) {
       document.removeEventListener('keydown', this.键盘处理器)
       this.键盘处理器 = null
     }
-
-    // 停止观察
-    if (this.resize观察器 !== null) {
-      this.resize观察器.disconnect()
-      this.resize观察器 = null
-    }
-
-    // 重置关闭回调
-    this.关闭回调 = null
   }
 
   public 是否显示(): boolean {
-    return this.遮罩 !== null && this.遮罩.style.display !== 'none'
+    return this.模态框栈.length > 0
   }
 }
 
