@@ -294,6 +294,9 @@ export class LsbyDataTable<数据项> extends 组件基类<属性类型, 发出�
       await this.渲染()
     } finally {
       this.是否加载中 = false
+      if (this.分页组件 !== null) {
+        this.分页组件.更新配置(this.分页配置, this.是否加载中)
+      }
     }
   }
 
