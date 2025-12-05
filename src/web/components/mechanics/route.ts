@@ -1,5 +1,6 @@
 import { 已审阅的any } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
+import { globalWebLog } from '../../global/manager/log-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
@@ -55,11 +56,13 @@ export class 路由组件 extends 组件基类<属性类型, 发出事件类型,
   }
 
   protected override async 当加载时(): Promise<void> {
+    await globalWebLog.info('路由组件开始加载')
     let 插槽: HTMLSlotElement = 创建元素('slot')
     this.shadow.appendChild(插槽)
 
     this.监听冒泡事件('lsby-route-listen', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
+      await globalWebLog.debug(`路由组件注册监听器: ${事件名称}`)
       if (this.监听表[事件名称] === void 0) {
         this.监听表[事件名称] = []
       }
@@ -67,20 +70,28 @@ export class 路由组件 extends 组件基类<属性类型, 发出事件类型,
     })
     this.监听冒泡事件('lsby-route-send', async (data: CustomEvent<路由事件派发对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
+      await globalWebLog.debug(`路由组件接收到发送事件: ${事件名称}`)
       let 函数列表 = this.监听表[事件名称]
       if (函数列表 !== void 0) {
+        await globalWebLog.debug(`路由组件找到 ${函数列表.length} 个监听器`)
         for (let 函数 of 函数列表) {
           try {
             await 函数(data.detail.获得事件数据())
+            await globalWebLog.debug(`路由组件成功执行监听器回调`)
           } catch (错误) {
-            console.error(`[LsbyRoute] 事件 ${事件名称} 处理失败:`, 错误)
+            await globalWebLog.error(`路由组件事件 ${事件名称} 处理失败:`, 错误)
           }
         }
+      } else {
+        await globalWebLog.warn(`路由组件未找到监听器: ${事件名称}`)
       }
     })
+    await globalWebLog.info('路由组件加载完成')
   }
 
   protected override async 当卸载时(): Promise<void> {
+    await globalWebLog.info('路由组件开始卸载')
     this.监听表 = {}
+    await globalWebLog.info('路由组件卸载完成')
   }
 }
