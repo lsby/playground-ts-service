@@ -4,7 +4,7 @@ import { API管理器 } from '../../global/manager/api-manager'
 import { 显示模态框 } from '../../global/manager/modal-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 import { 普通按钮 } from '../general/base/base-button'
-import { 日志分栏组件 } from '../general/log/split-log'
+import { 日志分栏组件 } from '../general/log/log-split'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
