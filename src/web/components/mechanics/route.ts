@@ -3,12 +3,12 @@ import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/tools/create-element'
 
 export type 路由事件派发类型<事件名称 extends string, 事件数据> = Record<
-  `LsbyRoute-发出`,
+  `lsby-route-send`,
   路由事件派发对象<事件名称, 事件数据>
 >
 
 export type 路由事件监听类型<发出类型 extends 路由事件派发类型<any, any> = 路由事件派发类型<string, any>> = Record<
-  `LsbyRoute-监听`,
+  `lsby-route-listen`,
   发出类型 extends 路由事件派发类型<infer 事件名称, infer 事件数据> ? 路由事件监听对象<事件名称, 事件数据> : never
 >
 
@@ -58,21 +58,29 @@ export class 路由组件 extends 组件基类<属性类型, 发出事件类型,
     let 插槽: HTMLSlotElement = 创建元素('slot')
     this.shadow.appendChild(插槽)
 
-    this.监听冒泡事件('LsbyRoute-监听', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
+    this.监听冒泡事件('lsby-route-listen', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
       if (this.监听表[事件名称] === void 0) {
         this.监听表[事件名称] = []
       }
       this.监听表[事件名称].push(data.detail.获得回调函数())
     })
-    this.监听冒泡事件('LsbyRoute-发出', async (data: CustomEvent<路由事件派发对象<string, any>>) => {
+    this.监听冒泡事件('lsby-route-send', async (data: CustomEvent<路由事件派发对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
       let 函数列表 = this.监听表[事件名称]
       if (函数列表 !== void 0) {
         for (let 函数 of 函数列表) {
-          await 函数(data.detail.获得事件数据())
+          try {
+            await 函数(data.detail.获得事件数据())
+          } catch (错误) {
+            console.error(`[LsbyRoute] 事件 ${事件名称} 处理失败:`, 错误)
+          }
         }
       }
     })
+  }
+
+  protected override async 当卸载时(): Promise<void> {
+    this.监听表 = {}
   }
 }

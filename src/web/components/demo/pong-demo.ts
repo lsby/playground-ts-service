@@ -18,7 +18,7 @@ export class 演示pong组件 extends 组件基类<属性类型, 发出事件类
     this.shadow.append(结果)
 
     this.派发事件(
-      'LsbyRoute-监听',
+      'lsby-route-listen',
       new 路由事件监听对象('ping', async (data) => {
         结果.textContent = data.toString()
       }),

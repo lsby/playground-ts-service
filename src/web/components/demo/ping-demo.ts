@@ -17,7 +17,7 @@ export class 演示ping组件 extends 组件基类<属性类型, 发出事件类
     let 按钮 = new 主要按钮({
       文本: '开始测试',
       点击处理函数: async (): Promise<void> => {
-        this.派发事件('LsbyRoute-发出', new 路由事件派发对象('ping', Math.random()))
+        this.派发事件('lsby-route-send', new 路由事件派发对象('ping', Math.random()))
       },
     })
     this.shadow.append(按钮)
