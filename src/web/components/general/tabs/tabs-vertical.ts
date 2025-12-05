@@ -88,6 +88,7 @@ export class 纵向tab组件 extends 组件基类<属性类型, tabVertical发�
           textAlign: 'left',
           userSelect: 'none',
           color: 'var(--文字颜色)',
+          width: '100%',
         },
         点击处理函数: (): void => this.切换标签(idx),
       })
