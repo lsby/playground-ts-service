@@ -143,7 +143,6 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
   }
 
   public async 刷新数据(): Promise<void> {
-    this.分页配置.当前页码 = 1
     await this.加载数据()
   }
 
@@ -289,8 +288,25 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
         筛选条件: this.筛选条件,
       })
 
-      this.数据列表 = 数据
       this.分页配置.总数量 = 总数
+      let 总页数 = Math.ceil(总数 / this.分页配置.每页数量)
+      if (总页数 === 0) {
+        this.分页配置.当前页码 = 1
+        this.数据列表 = 数据
+      } else if (this.分页配置.当前页码 > 总页数) {
+        this.分页配置.当前页码 = 总页数
+        // 重新加载数据以获取正确页的数据
+        let { 数据: 新数据, 总数: 新总数 } = await this.加载数据回调({
+          页码: this.分页配置.当前页码,
+          每页数量: this.分页配置.每页数量,
+          排序列表: this.排序列表,
+          筛选条件: this.筛选条件,
+        })
+        this.数据列表 = 新数据
+        this.分页配置.总数量 = 新总数
+      } else {
+        this.数据列表 = 数据
+      }
 
       await this.渲染()
     } finally {
@@ -440,7 +456,6 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
           点击处理函数: async (event: Event): Promise<void> => {
             event.stopPropagation()
             delete this.筛选条件[字段名]
-            this.分页配置.当前页码 = 1
             await this.加载数据()
           },
         })
@@ -464,7 +479,6 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
               } else {
                 this.筛选条件[字段名] = 筛选值
               }
-              this.分页配置.当前页码 = 1
               await this.加载数据()
             }
           },
@@ -518,7 +532,6 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
           } else {
             this.排序列表.push({ field: 字段名, direction: 'asc' })
           }
-          this.分页配置.当前页码 = 1
           await this.加载数据()
         }
 
