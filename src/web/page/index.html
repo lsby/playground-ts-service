@@ -13,23 +13,27 @@
     <lsby-set-html-full></lsby-set-html-full>
     <lsby-login-check></lsby-login-check>
 
-    <lsby-tabs-vertical>
+    <lsby-tabs-horizontal>
       <lsby-container 标签="开始">
         <div>你好世界</div>
       </lsby-container>
       <lsby-container 标签="演示">
         <lsby-to-demo></lsby-to-demo>
       </lsby-container>
-      <lsby-container 标签="设置">
-        <lsby-settings></lsby-settings>
+      <lsby-container 标签="系统">
+        <lsby-tabs-vertical>
+          <lsby-container 标签="设置">
+            <lsby-settings></lsby-settings>
+          </lsby-container>
+          <lsby-container 标签="用户">
+            <lsby-user-profile></lsby-user-profile>
+          </lsby-container>
+          <lsby-container 标签="关于">
+            <lsby-app-version></lsby-app-version>
+          </lsby-container>
+        </lsby-tabs-vertical>
       </lsby-container>
-      <lsby-container 标签="用户">
-        <lsby-user-profile></lsby-user-profile>
-      </lsby-container>
-      <lsby-container 标签="关于">
-        <lsby-app-version></lsby-app-version>
-      </lsby-container>
-    </lsby-tabs-vertical>
+    </lsby-tabs-horizontal>
     <management-float></management-float>
   </body>
 </html>
