@@ -11,6 +11,9 @@ importers:
       '@capacitor/android':
         specifier: ^7.4.3
         version: 7.4.3(@capacitor/core@7.4.3)
+      '@capacitor/core':
+        specifier: ^7.4.0
+        version: 7.4.3
       '@capacitor/dialog':
         specifier: ^7.0.2
         version: 7.0.2(@capacitor/core@7.4.3)
@@ -53,6 +56,9 @@ importers:
       dotenv-cli:
         specifier: ^8.0.0
         version: 8.0.0
+      express:
+        specifier: ^4.21.2
+        version: 4.21.2
       kysely:
         specifier: ^0.28.8
         version: 0.28.8
@@ -90,6 +96,9 @@ importers:
       '@types/eslint':
         specifier: ^9.6.1
         version: 9.6.1
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.23
       '@types/node':
         specifier: ^22.6.1
         version: 22.18.2
