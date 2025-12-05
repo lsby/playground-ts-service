@@ -138,11 +138,8 @@
     "win": {
       "signAndEditExecutable": false,
       "target": [
-        "portable"
+        "dir"
       ]
-    },
-    "portable": {
-      "artifactName": "lsby-playground-ts-service.exe"
     }
   },
   "targets": {
