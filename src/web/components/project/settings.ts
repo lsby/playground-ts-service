@@ -72,13 +72,21 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
     容器.appendChild(this.用户配置表单)
 
     // 添加统一的保存按钮
+    let 保存按钮容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '16px',
+      },
+    })
     let 保存按钮 = new 主要按钮({
       文本: '保存',
       点击处理函数: async (): Promise<void> => {
         await this.保存所有配置()
       },
     })
-    容器.appendChild(保存按钮)
+    保存按钮容器.appendChild(保存按钮)
+    容器.appendChild(保存按钮容器)
 
     this.shadow.appendChild(容器)
 
