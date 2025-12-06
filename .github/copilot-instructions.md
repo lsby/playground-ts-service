@@ -24,6 +24,7 @@
 - 通用接口抽象: `src/interface-logic`
 - 系统会自动生成接口列表: `src/interface/interface-list.ts`
 - 系统会自动生成接口类型: `src/types/interface-type.ts`
+- 接口可以在内部被调用, 参考 `src/interface/demo/base/sub/index.ts` 对 `src/interface/demo/base/add/index.ts` 的调用
 
 3. **任务系统**
 

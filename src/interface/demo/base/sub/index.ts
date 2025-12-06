@@ -6,10 +6,11 @@ import {
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
-import { Right } from '@lsby/ts-fp-data'
+import { Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查登录 } from '../../../../interface-logic/check/check-login-jwt'
+import { 加法示例接口 } from '../add'
 
 let 接口路径 = '/api/demo/base/sub' as const
 let 接口方法 = 'post' as const
@@ -21,8 +22,10 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       [new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})],
       async (参数, 逻辑附加参数, 请求附加参数) => {
-        let _log = 请求附加参数.log.extend(接口路径)
-        return new Right({ res: 参数.a - 参数.b })
+        let log = 请求附加参数.log.extend(接口路径)
+        let 调用结果 = await 加法示例接口.实现({ a: 参数.a, b: 参数.b * -1 }, 逻辑附加参数, { log })
+        if (调用结果.isLeft()) return new Left(调用结果.assertLeft().getLeft())
+        return new Right(调用结果.assertRight().getRight())
       },
     ),
   )
