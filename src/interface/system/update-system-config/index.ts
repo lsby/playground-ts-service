@@ -26,7 +26,7 @@ let 接口逻辑实现 = 接口逻辑
         await 参数.kysely
           .获得句柄()
           .updateTable('system_config')
-          .set({ enable_register: 参数.enable_register ? 1 : 0 })
+          .set({ enable_register: 参数.body.enable_register ? 1 : 0 })
           .execute()
         return new Right({})
       },

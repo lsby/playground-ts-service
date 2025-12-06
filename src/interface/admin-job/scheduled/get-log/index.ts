@@ -28,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
 
-        let 任务 = 定时任务管理器.通过id获得任务(参数.任务id)
+        let 任务 = 定时任务管理器.通过id获得任务(参数.body.任务id)
         if (任务 === null) {
           throw new Error('任务不存在')
         }

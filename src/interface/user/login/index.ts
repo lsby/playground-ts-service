@@ -40,7 +40,7 @@ type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑�
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
-let 接口错误类型描述 = z.enum(['用户不存在或密码错误'])
+let 接口错误类型描述 = z.enum(['验证JSON参数失败', '用户不存在或密码错误'])
 let 接口正确类型描述 = z.object({
   token: z.string(),
 })

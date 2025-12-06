@@ -27,7 +27,7 @@ let 接口逻辑实现 = 接口逻辑
           .获得句柄()
           .updateTable('user_config')
           .set({
-            theme: 参数.theme,
+            theme: 参数.body.theme,
           })
           .where('user_id', '=', 逻辑附加参数.userId)
           .execute()

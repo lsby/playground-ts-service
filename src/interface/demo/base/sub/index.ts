@@ -23,7 +23,7 @@ let 接口逻辑实现 = 接口逻辑
       [new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let log = 请求附加参数.log.extend(接口路径)
-        let 调用结果 = await 加法示例接口.实现({ a: 参数.a, b: 参数.b * -1 }, 逻辑附加参数, { log })
+        let 调用结果 = await 加法示例接口.实现({ body: { a: 参数.body.a, b: 参数.body.b * -1 } }, 逻辑附加参数, { log })
         if (调用结果.isLeft()) return new Left(调用结果.assertLeft().getLeft())
         return new Right(调用结果.assertRight().getRight())
       },

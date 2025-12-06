@@ -1,13 +1,13 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
-import { 请求用例 } from '../../../../tools/request'
+import { POST请求用例 } from '../../../../tools/request'
 import 接口 from './index'
 
 export default new 接口测试(
   async (): Promise<void> => {},
 
   async (): Promise<object> => {
-    return 请求用例(接口, {
+    return POST请求用例(接口, {
       a: 1,
       b: 2,
     })

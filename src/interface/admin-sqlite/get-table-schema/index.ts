@@ -26,7 +26,7 @@ let 接口逻辑实现 = 接口逻辑
 
         let kysely = 参数.kysely.获得句柄()
 
-        let 结果 = await kysely.executeQuery(CompiledQuery.raw(`PRAGMA table_info(${参数.tableName});`, []))
+        let 结果 = await kysely.executeQuery(CompiledQuery.raw(`PRAGMA table_info(${参数.body.tableName});`, []))
 
         let rowSchema = z.object({
           name: z.string(),

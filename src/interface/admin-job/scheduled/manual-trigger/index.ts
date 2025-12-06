@@ -23,7 +23,7 @@ let 接口逻辑实现 = 接口逻辑
       [new JSON解析插件(z.object({ 任务id: z.string() }), {})],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
-        let 成功 = await 定时任务管理器.手动触发任务(参数.任务id)
+        let 成功 = await 定时任务管理器.手动触发任务(参数.body.任务id)
 
         return new Right({ 成功 })
       },

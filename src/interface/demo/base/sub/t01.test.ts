@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../../script/db/clean-db'
 import { 环境变量 } from '../../../../global/env'
 import { kysely管理器 } from '../../../../global/global'
-import { 请求用例 } from '../../../../tools/request'
+import { POST请求用例 } from '../../../../tools/request'
 import 接口 from './index'
 
 let name = 'admin'
@@ -22,7 +22,7 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    return 请求用例(
+    return POST请求用例(
       接口,
       {
         a: 2,

@@ -29,7 +29,7 @@ let 接口逻辑实现 = 接口逻辑
         let _log = 请求附加参数.log.extend(接口路径)
         let 任务管理器 = 即时任务管理器
 
-        let 任务 = 任务管理器.获得所有任务列表().find((t) => t.获得id() === 参数.任务id)
+        let 任务 = 任务管理器.获得所有任务列表().find((t) => t.获得id() === 参数.body.任务id)
         if (任务 === void 0) {
           throw new Error('任务不存在')
         }

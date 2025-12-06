@@ -9,7 +9,6 @@ import _src_interface_demo_ws_ws_test_index_ts from './demo/ws/ws-test/index'
 import _src_interface_user_is_login_index_ts from './user/is-login/index'
 import _src_interface_user_login_index_ts from './user/login/index'
 import _src_interface_user_register_index_ts from './user/register/index'
-import _src_interface_demo_file_get_file_index_ts from './demo/file/get-file/index'
 import _src_interface_demo_user_crud_delete_index_ts from './demo/user-crud/delete/index'
 import _src_interface_demo_user_crud_create_index_ts from './demo/user-crud/create/index'
 import _src_interface_demo_user_crud_read_index_ts from './demo/user-crud/read/index'
@@ -33,6 +32,7 @@ import _src_interface_admin_sqlite_get_database_info_index_ts from './admin-sqli
 import _src_interface_admin_sqlite_get_table_schema_index_ts from './admin-sqlite/get-table-schema/index'
 import _src_interface_admin_sqlite_get_tables_index_ts from './admin-sqlite/get-tables/index'
 import _src_interface_project_get_enable_registration_index_ts from './project/get-enable-registration/index'
+import _src_interface_demo_file_get_file_index_ts from './demo/file/get-file/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_backup_database_index_ts,
@@ -43,7 +43,6 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_user_is_login_index_ts,
   _src_interface_user_login_index_ts,
   _src_interface_user_register_index_ts,
-  _src_interface_demo_file_get_file_index_ts,
   _src_interface_demo_user_crud_delete_index_ts,
   _src_interface_demo_user_crud_create_index_ts,
   _src_interface_demo_user_crud_read_index_ts,
@@ -67,4 +66,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_get_table_schema_index_ts,
   _src_interface_admin_sqlite_get_tables_index_ts,
   _src_interface_project_get_enable_registration_index_ts,
+  _src_interface_demo_file_get_file_index_ts,
 ]

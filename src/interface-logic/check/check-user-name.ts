@@ -2,7 +2,7 @@ import { JSON解析插件, 合并插件结果, 接口逻辑, 构造对象, 请�
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
-type 逻辑错误类型 = '用户名不能包含空格' | '用户名不能为空' | '用户名过短' | '用户名过长'
+type 逻辑错误类型 = '用户名不能包含空格' | '用户名不能为空' | '用户名过短' | '用户名过长' | '缺少必要参数'
 type 逻辑正确类型<字段类型 extends string> = Record<字段类型, string>
 
 export class 检查用户名<逻辑附加参数类型 extends {}, 字段类型 extends string> extends 接口逻辑<
@@ -36,11 +36,14 @@ export class 检查用户名<逻辑附加参数类型 extends {}, 字段类型 e
   ): Promise<Either<逻辑错误类型, 逻辑正确类型<字段类型>>> {
     let _log = 请求附加参数.log.extend(检查用户名.name)
 
-    if (参数[this.字段名].includes(' ')) return new Left('用户名不能包含空格')
-    if (参数[this.字段名] === '') return new Left('用户名不能为空')
-    if (参数[this.字段名].length < 5) return new Left('用户名过短')
-    if (参数[this.字段名].length > 20) return new Left('用户名过长')
+    let body = 参数.body
+    if (body === void 0) return new Left('缺少必要参数')
 
-    return new Right(构造对象(this.字段名, 参数[this.字段名]))
+    if (body[this.字段名].includes(' ')) return new Left('用户名不能包含空格')
+    if (body[this.字段名] === '') return new Left('用户名不能为空')
+    if (body[this.字段名].length < 5) return new Left('用户名过短')
+    if (body[this.字段名].length > 20) return new Left('用户名过长')
+
+    return new Right(构造对象(this.字段名, body[this.字段名]))
   }
 }
