@@ -21,7 +21,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(
     [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
     async (参数, 逻辑附加参数, 请求附加参数) => {
-      let _log = 请求附加参数.log.extend(接口路径)
+      let log = 请求附加参数.log.extend(接口路径)
 
       return 参数.kysely.执行事务Either(async (trx) => {
         let userId = crypto.randomUUID()
@@ -66,7 +66,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
               return new Left('就要失败' as const)
             }),
           )
-          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, 逻辑附加参数, 请求附加参数)
+          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, 逻辑附加参数, { log })
       })
     },
   ),

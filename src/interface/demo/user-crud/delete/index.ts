@@ -15,7 +15,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查JSON参数(z.object({ id: z.string() })))
   .混合(
     接口逻辑.构造([kysely插件], async (参数, 逻辑附加参数, 请求附加参数) => {
-      let _log = 请求附加参数.log.extend(删除逻辑.name)
+      let log = 请求附加参数.log.extend(删除逻辑.name)
 
       return 参数.kysely.执行事务Either(async (trx) => {
         return 接口逻辑
@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑
               条件们: [['id', '=', 逻辑附加参数.id]],
             })),
           )
-          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, 请求附加参数)
+          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, { log })
       })
     }),
   )

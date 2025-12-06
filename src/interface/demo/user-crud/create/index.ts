@@ -24,6 +24,7 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
       async (参数, 逻辑附加参数, 请求附加参数) => {
+        let log = 请求附加参数.log
         return 参数.kysely.执行事务Either(async (trx) => {
           let userId = crypto.randomUUID()
           return 接口逻辑
@@ -57,7 +58,7 @@ let 接口逻辑实现 = 接口逻辑
                 async () => ({}),
               ),
             )
-            .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, 请求附加参数)
+            .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, { log })
         })
       },
     ),
