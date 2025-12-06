@@ -2,6 +2,7 @@ import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
+import { version } from '../../../app/meta-info'
 import { kysely管理器 } from '../../../global/global'
 import { POST请求用例 } from '../../../tools/request'
 import 接口 from './index'
@@ -10,7 +11,10 @@ export default new 接口测试(
   async (): Promise<void> => {
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
-    await db.insertInto('system_config').values({ id: randomUUID(), is_initialized: 1, enable_register: 1 }).execute()
+    await db
+      .insertInto('system_config')
+      .values({ id: randomUUID(), is_initialized: 1, enable_register: 1, version: version })
+      .execute()
   },
 
   async (): Promise<object> => {

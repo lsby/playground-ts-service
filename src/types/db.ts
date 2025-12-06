@@ -10,6 +10,7 @@ export type system_config = {
     updated_at: Generated<string>;
     is_initialized: Generated<number>;
     enable_register: number;
+    version: string;
 };
 export type user = {
     id: string;
