@@ -44,20 +44,13 @@ let 接口逻辑实现 = 接口逻辑
           当前页: page,
           每页数量: size,
           ...(orderBy !== void 0 ? { 排序字段们: orderBy } : {}),
-          应用筛选函数: (builder数据, builder总数): 已审阅的any => {
-            let newBuilder数据 = builder数据
-            let newBuilder总数 = builder总数
+          应用筛选函数: (builder): 已审阅的any => {
+            let newBuilder = builder
             if (filter !== void 0) {
-              if (filter.id !== void 0) {
-                newBuilder数据 = newBuilder数据.where('id', 'like', `%${filter.id}%`)
-                newBuilder总数 = newBuilder总数.where('id', 'like', `%${filter.id}%`)
-              }
-              if (filter.name !== void 0) {
-                newBuilder数据 = newBuilder数据.where('name', 'like', `%${filter.name}%`)
-                newBuilder总数 = newBuilder总数.where('name', 'like', `%${filter.name}%`)
-              }
+              if (filter.id !== void 0) newBuilder = newBuilder.where('id', 'like', `%${filter.id}%`)
+              if (filter.name !== void 0) newBuilder = newBuilder.where('name', 'like', `%${filter.name}%`)
             }
-            return { builder数据: newBuilder数据, builder总数: newBuilder总数 }
+            return newBuilder
           },
         }
       },

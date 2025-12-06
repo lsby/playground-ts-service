@@ -21,10 +21,7 @@ export class 查询逻辑<
       每页数量: number
       排序字段们?: { field: keyof DB[表名类型]; direction: 'asc' | 'desc' }[]
       条件们?: 条件<DB[表名类型]>[]
-      应用筛选函数?: (
-        builder数据: SelectQueryBuilder<DB, 表名类型, any>,
-        builder总数: SelectQueryBuilder<DB, 表名类型, any>,
-      ) => { builder数据: SelectQueryBuilder<DB, 表名类型, any>; builder总数: SelectQueryBuilder<DB, 表名类型, any> }
+      应用筛选函数?: (builder: SelectQueryBuilder<DB, 表名类型, any>) => SelectQueryBuilder<DB, 表名类型, any>
     }>,
     private 后置处理: (
       data: 替换ColumnType<Pick<DB[表名类型], 选择的字段们类型>, '__select__'>[],
@@ -47,24 +44,7 @@ export class 查询逻辑<
     if (参数结果.当前页 <= 0) throw new Error('当前页从1开始')
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    let builder总数 = (参数.kysely.获得句柄() as 已审阅的any)
-      .selectFrom(this.表名)
-      .distinct()
-      .select((eb: { fn: { countAll: () => { as: (a: string) => string } } }) => eb.fn.countAll().as('total'))
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    let builder数据 = (参数.kysely.获得句柄() as 已审阅的any)
-      .selectFrom(this.表名)
-      .distinct()
-      .select(参数结果.选择的字段们)
-      .limit(参数结果.每页数量)
-      .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
-
-    if (参数结果.排序字段们 !== void 0) {
-      for (let 排序项 of 参数结果.排序字段们) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        builder数据 = builder数据.orderBy(排序项.field, 排序项.direction)
-      }
-    }
+    let 基础builder = (参数.kysely.获得句柄() as 已审阅的any).selectFrom(this.表名).distinct()
 
     if (参数结果.条件们 !== void 0 && 参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {
@@ -75,37 +55,37 @@ export class 查询逻辑<
           case '>=':
           case '<':
           case '<=':
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder总数 = builder总数.where(条件[0], 条件[1], 条件[2])
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder数据 = builder数据.where(条件[0], 条件[1], 条件[2])
-            break
           case 'like':
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder总数 = builder总数.where(条件[0], 'like', 条件[2])
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder数据 = builder数据.where(条件[0], 'like', 条件[2])
-            break
           case 'in':
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder总数 = builder总数.where(条件[0], 'in', 条件[2])
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder数据 = builder数据.where(条件[0], 'in', 条件[2])
-            break
           case 'between':
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder总数 = builder总数.where(条件[0], 'between', 条件[2])
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            builder数据 = builder数据.where(条件[0], 'between', 条件[2])
+            基础builder = 基础builder.where(条件[0], 条件[1], 条件[2])
             break
+          default:
+            let _类型验证: never = 条件[1]
         }
       }
     }
 
     if (参数结果.应用筛选函数 !== void 0) {
-      let newBuilders = 参数结果.应用筛选函数(builder数据, builder总数)
-      builder数据 = newBuilders.builder数据
-      builder总数 = newBuilders.builder总数
+      基础builder = 参数结果.应用筛选函数(基础builder)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    let builder总数 = 基础builder.select((eb: { fn: { countAll: () => { as: (a: string) => string } } }) =>
+      eb.fn.countAll().as('total'),
+    )
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    let builder数据 = 基础builder
+      .select(参数结果.选择的字段们)
+      .limit(参数结果.每页数量)
+      .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
+
+    if (参数结果.排序字段们 !== void 0) {
+      for (let 排序项 of 参数结果.排序字段们) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        builder数据 = builder数据.orderBy(排序项.field, 排序项.direction)
+      }
     }
 
     let 查询总数 = (await builder总数.executeTakeFirst()) as { total: string }
