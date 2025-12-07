@@ -26,38 +26,35 @@ export async function init(): Promise<void> {
       .where('name', '=', 环境变量.DEFAULT_SYSTEM_USER)
       .where('pwd', '=', await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS))
       .executeTakeFirst()
-
-    if (用户存在判定 !== void 0) {
-      初始用户id = 用户存在判定.id
-    } else {
+    if (用户存在判定 === void 0) {
       初始用户id = randomUUID()
-    }
 
-    项目名称 = '用户'
-    try {
-      await log.debug(`初始化${项目名称}...`)
-      await kysely管理器.执行事务(async (trx) => {
-        await trx
-          .insertInto('user')
-          .values({
-            id: 初始用户id,
-            name: 环境变量.DEFAULT_SYSTEM_USER,
-            pwd: await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS),
-            is_admin: 1,
-          })
-          .execute()
-        await trx
-          .insertInto('user_config')
-          .values({
-            id: randomUUID(),
-            user_id: 初始用户id,
-            theme: '系统',
-          })
-          .execute()
-      })
-      await log.debug(`初始化${项目名称}完成`)
-    } catch (e) {
-      await log.debug(`初始化${项目名称}失败: %O`, e)
+      项目名称 = '用户'
+      try {
+        await log.debug(`初始化${项目名称}...`)
+        await kysely管理器.执行事务(async (trx) => {
+          await trx
+            .insertInto('user')
+            .values({
+              id: 初始用户id,
+              name: 环境变量.DEFAULT_SYSTEM_USER,
+              pwd: await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS),
+              is_admin: 1,
+            })
+            .execute()
+          await trx
+            .insertInto('user_config')
+            .values({
+              id: randomUUID(),
+              user_id: 初始用户id,
+              theme: '系统',
+            })
+            .execute()
+        })
+        await log.debug(`初始化${项目名称}完成`)
+      } catch (e) {
+        await log.debug(`初始化${项目名称}失败: %O`, e)
+      }
     }
 
     await log.debug('初始化系统配置...')
