@@ -1,5 +1,5 @@
 import { globalLog } from '../../global/global'
-import { 定时任务上下文, 定时任务抽象类 } from '../../model/scheduled-job/scheduled-job'
+import { 定时任务上下文, 定时任务抽象类 } from '../../model/job-scheduled/scheduled-job'
 
 class 定时任务实现 extends 定时任务抽象类 {
   public override 获得名称(): string {

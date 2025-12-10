@@ -1,36 +1,21 @@
 import { randomUUID } from 'node:crypto'
 import { format } from 'node:util'
 import { 已审阅的any } from '../../tools/types'
+import { 集线器模型, 集线器监听器持有者 } from '../hub/hub-model'
 
 export type 即时任务状态 = '等待中' | '运行中' | '已完成' | '已失败'
 export type 即时任务优先级 = number // 数字越大 优先级越高
 
-export type 即时任务日志监听器 = (日志: { 时间: Date; 消息: string }) => void
+export type 日志类型 = { 时间: Date; 消息: string }
+export type 即时任务日志监听器 = (日志: 日志类型) => Promise<void>
 export type 即时任务上下文 = {
   任务id: string
   开始时间: Date
-  输出日志: (...args: 已审阅的any[]) => void
-}
-
-// 监听器持有者，用于在外部持有生命周期
-export class 监听器持有者 {
-  public constructor(public readonly 监听器: 即时任务日志监听器) {}
+  输出日志: (...args: 已审阅的any[]) => Promise<void>
 }
 
 export abstract class 即时任务抽象类<输出类型> {
   private static readonly 最大日志数量 = 1000 // 限制日志最大数量，避免内存溢出
-
-  // 使用 WeakRef + FinalizationRegistry 防止"反向持有" this
-  private static 清理注册器 = new FinalizationRegistry<{
-    实例引用: WeakRef<即时任务抽象类<any>>
-    监听器: 即时任务日志监听器
-  }>(({ 实例引用, 监听器 }) => {
-    let 实例 = 实例引用.deref()
-    if (实例 === void 0) return
-
-    let 索引 = 实例.即时任务日志监听器列表.indexOf(监听器)
-    if (索引 !== -1) 实例.即时任务日志监听器列表.splice(索引, 1)
-  })
 
   public static 创建任务<输出类型>(配置: {
     任务名称: string
@@ -90,9 +75,8 @@ export abstract class 即时任务抽象类<输出类型> {
   private 错误: Error | null = null
   private 重试次数: number = 0
   private 输出结果: 输出类型 | null = null
-  private 日志列表: Array<{ 时间: Date; 消息: string }> = []
-  private 即时任务日志监听器列表: 即时任务日志监听器[] = []
-  private 持有者映射: WeakMap<监听器持有者, 即时任务日志监听器> = new WeakMap()
+  private 日志列表: Array<日志类型> = []
+  private 集线器 = new 集线器模型<日志类型>()
 
   public abstract 获得任务名称(): string
   public abstract 获得即时任务优先级(): 即时任务优先级
@@ -165,7 +149,7 @@ export abstract class 即时任务抽象类<输出类型> {
     this.输出结果 = 结果
   }
 
-  public 获得日志列表(): Array<{ 时间: Date; 消息: string }> {
+  public 获得日志列表(): Array<日志类型> {
     return [...this.日志列表]
   }
 
@@ -175,46 +159,24 @@ export abstract class 即时任务抽象类<输出类型> {
    * ⚠️ 自动清理是非确定性的，不能依赖它实现实时释放。
    * 如果需要确定性清理，必须手动调用 `移除即时任务日志监听器`。
    */
-  public 添加即时任务日志监听器(监听器: 即时任务日志监听器): 监听器持有者 {
-    this.即时任务日志监听器列表.push(监听器)
-
-    let 持有者 = new 监听器持有者(监听器)
-    this.持有者映射.set(持有者, 监听器)
-
-    // 创建弱引用避免闭包保活 this
-    let 实例弱引用 = new WeakRef(this)
-    即时任务抽象类.清理注册器.register(持有者, { 实例引用: 实例弱引用, 监听器 }, 持有者)
-
-    return 持有者
+  public 添加即时任务日志监听器(监听器: 即时任务日志监听器): 集线器监听器持有者<日志类型> {
+    return this.集线器.添加监听器(监听器)
   }
 
-  public 移除即时任务日志监听器(持有者: 监听器持有者): void {
-    let 监听器 = this.持有者映射.get(持有者)
-    if (监听器 === void 0) {
-      return
-    }
-
-    let 索引 = this.即时任务日志监听器列表.indexOf(监听器)
-    if (索引 !== -1) {
-      this.即时任务日志监听器列表.splice(索引, 1)
-    }
-
-    即时任务抽象类.清理注册器.unregister(持有者)
-    this.持有者映射.delete(持有者)
+  public 移除即时任务日志监听器(持有者: 集线器监听器持有者<日志类型>): void {
+    this.集线器.移除监听器(持有者)
   }
 
-  public 记录日志(...args: 已审阅的any[]): void {
+  public async 记录日志(...args: 已审阅的any[]): Promise<void> {
     let 消息 = format(...args)
-    let 新日志 = { 时间: new Date(), 消息 }
+    let 新日志: 日志类型 = { 时间: new Date(), 消息 }
     this.日志列表.push(新日志)
     // 限制日志数量，避免内存溢出
     while (this.日志列表.length > 即时任务抽象类.最大日志数量) {
       this.日志列表.shift()
     }
     // 触发即时任务日志监听器
-    for (let 监听器 of this.即时任务日志监听器列表) {
-      监听器(新日志)
-    }
+    await this.集线器.广播(新日志)
   }
 
   public 等待完成(): Promise<输出类型> {
