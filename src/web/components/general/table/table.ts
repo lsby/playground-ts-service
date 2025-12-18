@@ -81,6 +81,8 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
   private shift选择起点: number = -1
   private 表格行元素映射: Map<number, HTMLTableRowElement> = new Map()
   private 表格单元格元素映射: Map<string, HTMLTableCellElement> = new Map()
+  private 表头元素映射: Map<number, HTMLElement> = new Map()
+  private 列单元格映射: Map<number, HTMLElement[]> = new Map()
   private 分页组件: 分页组件 | null = null
   private 宿主样式: 增强样式类型 | undefined
 
@@ -89,24 +91,22 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
     let 差值 = event.clientX - this.拖动起始X
     let 新宽度 = Math.max(50, this.拖动起始宽度 + 差值)
     let 列索引 = this.拖动列索引
-    let ths = this.shadow.querySelectorAll(`th[data-col-index="${列索引}"]`)
-    let tds = this.shadow.querySelectorAll(`tbody td[data-col-index="${列索引}"]`)
-    for (let th of ths) {
-      let 元素 = th as HTMLElement
-      元素.style.width = `${新宽度}px`
+    let th = this.表头元素映射.get(列索引)
+    let tds = this.列单元格映射.get(列索引) ?? []
+    if (th !== void 0) {
+      th.style.width = `${新宽度}px`
       if (差值 > 0) {
-        元素.style.maxWidth = `${新宽度}px`
+        th.style.maxWidth = `${新宽度}px`
       } else if (差值 < 0) {
-        元素.style.minWidth = `${新宽度}px`
+        th.style.minWidth = `${新宽度}px`
       }
     }
     for (let td of tds) {
-      let 元素 = td as HTMLElement
-      元素.style.width = `${新宽度}px`
+      td.style.width = `${新宽度}px`
       if (差值 > 0) {
-        元素.style.maxWidth = `${新宽度}px`
+        td.style.maxWidth = `${新宽度}px`
       } else if (差值 < 0) {
-        元素.style.minWidth = `${新宽度}px`
+        td.style.minWidth = `${新宽度}px`
       }
     }
   }
@@ -318,6 +318,12 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
   }
 
   private async 渲染(): Promise<void> {
+    // 清除元素映射
+    this.表格行元素映射.clear()
+    this.表格单元格元素映射.clear()
+    this.表头元素映射.clear()
+    this.列单元格映射.clear()
+
     let 列配置 = this.列配置
     let 数据列表 = this.数据列表
     let 操作列表 = this.操作列表
@@ -413,6 +419,9 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
         },
       })
       th.setAttribute('data-col-index', 列索引.toString())
+
+      // 保存表头元素引用
+      this.表头元素映射.set(列索引, th)
 
       // 创建表头内容容器
       let 表头内容 = 创建元素('div', {
@@ -702,6 +711,11 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
 
           // 保存单元格元素引用
           this.表格单元格元素映射.set(`${行索引}-${列索引}`, td)
+
+          // 保存到列单元格映射
+          let 列单元格列表 = this.列单元格映射.get(列索引) ?? []
+          列单元格列表.push(td)
+          this.列单元格映射.set(列索引, 列单元格列表)
 
           行.appendChild(td)
         }

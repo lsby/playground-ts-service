@@ -21,6 +21,7 @@ type 按钮配置 = {
 abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监听按钮事件> {
   protected 配置: 按钮配置
   private 按钮元素?: HTMLButtonElement
+  private 文本元素?: HTMLSpanElement
 
   public constructor(配置: 按钮配置 = {}) {
     super({})
@@ -41,6 +42,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
     if (this.配置.文本 !== void 0) {
       let 文本元素 = 创建元素('span', { textContent: this.配置.文本 })
       按钮元素.appendChild(文本元素)
+      this.文本元素 = 文本元素
     }
     if (this.配置.标题 !== void 0) {
       按钮元素.title = this.配置.标题
@@ -83,11 +85,8 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
 
   public 设置文本(文本: string): void {
     this.配置.文本 = 文本
-    if (this.按钮元素 !== void 0) {
-      let span = this.按钮元素.querySelector('span')
-      if (span !== null) {
-        span.textContent = 文本
-      }
+    if (this.文本元素 !== void 0) {
+      this.文本元素.textContent = 文本
     }
   }
 
