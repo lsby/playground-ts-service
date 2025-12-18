@@ -110,5 +110,10 @@ export class 纵向tab组件 extends 组件基类<属性类型, tabVertical发�
     if (this.当前索引 === index) return
     this.当前索引 = index
     this.更新UI()
+    this.派发事件('切换', { 当前索引: index })
+  }
+
+  public 设置当前索引(index: number): void {
+    this.切换标签(index)
   }
 }
