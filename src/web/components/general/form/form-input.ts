@@ -75,17 +75,21 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
     输入框元素.oninput = async (e: Event): Promise<void> => {
       let 值 = (e.target as HTMLInputElement).value
       await this.配置.输入处理函数?.(值)
+      this.派发事件('输入', 值)
     }
     输入框元素.onchange = async (e: Event): Promise<void> => {
       let 值 = (e.target as HTMLInputElement).value
       await this.配置.变化处理函数?.(值)
+      this.派发事件('变化', 值)
     }
     输入框元素.onfocus = async (): Promise<void> => {
       await this.配置.焦点处理函数?.()
+      this.派发事件('焦点', void 0)
     }
     输入框元素.onblur = async (): Promise<void> => {
       let 值 = 输入框元素.value
       await this.配置.失焦处理函数?.(值)
+      this.派发事件('失焦', void 0)
     }
     输入框元素.onkeydown = async (e: KeyboardEvent): Promise<void> => {
       if (e.key === 'Enter') {
