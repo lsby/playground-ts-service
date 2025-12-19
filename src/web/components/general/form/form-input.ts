@@ -4,12 +4,7 @@ import type { 表单元素 } from './form'
 
 type 输入框属性 = {}
 
-type 输入框事件 = {
-  输入: string
-  变化: string
-  焦点: void
-  失焦: void
-}
+type 输入框事件 = { 输入: string; 变化: string; 焦点: void; 失焦: void }
 
 type 监听输入框事件 = {}
 
@@ -41,12 +36,7 @@ abstract class 输入框基类 extends 组件基类<输入框属性, 输入框�
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
     let 容器 = 创建元素('div', {
-      style: {
-        position: 'relative',
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-      },
+      style: { position: 'relative', display: 'flex', alignItems: 'center', width: '100%' },
     })
 
     let 输入框样式 = this.获得输入框样式对象()

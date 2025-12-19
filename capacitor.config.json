@@ -1,5 +1,1 @@
-{
-  "appId": "lsby.playground.ts.service",
-  "appName": "lsby-playground-ts-service",
-  "webDir": "dist/web"
-}
+{ "appId": "lsby.playground.ts.service", "appName": "lsby-playground-ts-service", "webDir": "dist/web" }

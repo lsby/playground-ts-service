@@ -4,21 +4,13 @@ import { 环境变量 } from '../global/env'
 
 async function 获取请求信息(
   接口类型描述: 任意接口,
-  登录?: {
-    接口: string
-    用户名: string
-    密码: string
-    凭据属性: string
-  },
+  登录?: { 接口: string; 用户名: string; 密码: string; 凭据属性: string },
 ): Promise<{ token: string | null; url: string }> {
   let token: string | null = null
   if (typeof 登录 !== 'undefined') {
     let login: { data: { data: { [key: string]: string } } } = await axios.post(
       `http://127.0.0.1:${环境变量.APP_PORT}${登录.接口}`,
-      {
-        userName: 登录.用户名,
-        userPassword: 登录.密码,
-      },
+      { userName: 登录.用户名, userPassword: 登录.密码 },
     )
     token = login.data.data[登录.凭据属性] ?? null
   }
@@ -36,12 +28,7 @@ export async function POST请求用例<接口类型 extends 任意接口>(
       ? 参数['body']
       : {}
     : never,
-  登录?: {
-    接口: string
-    用户名: string
-    密码: string
-    凭据属性: string
-  },
+  登录?: { 接口: string; 用户名: string; 密码: string; 凭据属性: string },
 ): Promise<object> {
   let { token, url } = await 获取请求信息(接口类型描述, 登录)
 
@@ -54,12 +41,7 @@ export async function GET请求用例<接口类型 extends 任意接口>(
       ? 参数['query']
       : {}
     : never,
-  登录?: {
-    接口: string
-    用户名: string
-    密码: string
-    凭据属性: string
-  },
+  登录?: { 接口: string; 用户名: string; 密码: string; 凭据属性: string },
 ): Promise<object> {
   let { token, url } = await 获取请求信息(接口类型描述, 登录)
 

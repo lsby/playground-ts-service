@@ -16,21 +16,10 @@ export class 演示吐司消息组件 extends 组件基类<属性类型, 发出�
 
   protected override async 当加载时(): Promise<void> {
     let 容器 = 创建元素('div', {
-      style: {
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        maxWidth: '400px',
-      },
+      style: { padding: '20px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' },
     })
 
-    let 标题 = 创建元素('h2', {
-      textContent: '吐司消息演示',
-      style: {
-        marginBottom: '10px',
-      },
-    })
+    let 标题 = 创建元素('h2', { textContent: '吐司消息演示', style: { marginBottom: '10px' } })
 
     let 成功按钮实例 = new 成功按钮({
       文本: '显示成功消息',

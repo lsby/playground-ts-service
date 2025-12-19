@@ -36,11 +36,7 @@ export function 严格keys<T extends object>(obj: T): (keyof T)[] {
 export function 严格values<T extends object>(obj: T): T[keyof T][] {
   return Object.values(obj) as T[keyof T][]
 }
-export function 严格entries<T extends object>(
-  obj: T,
-): {
-  [K in keyof T]-?: [K, NonNullable<T[K]>]
-}[keyof T][] {
+export function 严格entries<T extends object>(obj: T): { [K in keyof T]-?: [K, NonNullable<T[K]>] }[keyof T][] {
   return Object.entries(obj) as 已审阅的any
 }
 export function 严格forEach<T extends object>(obj: T, 回调: <K extends keyof T>(key: K, value: T[K]) => void): void {
@@ -120,6 +116,4 @@ export function 严格zip<A extends any[], B extends any[]>(数组1: [...A], 数
   return 结果
 }
 
-export type 去除只读<对象> = {
-  -readonly [键 in keyof 对象]: 对象[键]
-}
+export type 去除只读<对象> = { -readonly [键 in keyof 对象]: 对象[键] }

@@ -46,9 +46,7 @@ export let 主题管理器 = {
 
     // 更新数据库中的用户配置
     try {
-      await API管理器.请求post接口并处理错误('/api/system/update-user-config', {
-        theme: 主题,
-      })
+      await API管理器.请求post接口并处理错误('/api/system/update-user-config', { theme: 主题 })
     } catch (_e) {
       // 如果更新失败，回滚到之前的主题
       await this.初始化()

@@ -4,9 +4,7 @@ import type { 表单元素 } from './form'
 
 type 复选框属性 = {}
 
-type 复选框事件 = {
-  变化: boolean
-}
+type 复选框事件 = { 变化: boolean }
 
 type 监听复选框事件 = {}
 
@@ -45,10 +43,7 @@ class 复选框 extends 组件基类<复选框属性, 复选框事件, 监听复
       type: 'checkbox',
       checked: this.配置.值 ?? false,
       disabled: this.配置.禁用 ?? false,
-      style: {
-        width: '20px',
-        height: '20px',
-      },
+      style: { width: '20px', height: '20px' },
     })
 
     复选框元素.onchange = async (): Promise<void> => {
@@ -60,9 +55,7 @@ class 复选框 extends 组件基类<复选框属性, 复选框事件, 监听复
     容器.appendChild(复选框元素)
 
     if (this.配置.标签 !== void 0) {
-      let 标签元素 = 创建元素('span', {
-        textContent: this.配置.标签,
-      })
+      let 标签元素 = 创建元素('span', { textContent: this.配置.标签 })
       容器.appendChild(标签元素)
     }
 

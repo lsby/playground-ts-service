@@ -63,11 +63,7 @@ async function 创建主窗口(): Promise<void> {
 
   let 窗口配置: Electron.BrowserWindowConstructorOptions = {
     show: false,
-    webPreferences: {
-      preload: 预加载脚本路径,
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
+    webPreferences: { preload: 预加载脚本路径, nodeIntegration: false, contextIsolation: true },
   }
 
   let 使用保存的位置 = false

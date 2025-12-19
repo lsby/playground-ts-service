@@ -30,11 +30,7 @@ export class 数据库备份组件 extends 组件基类<属性类型, 发出事�
 
     let 标题 = 创建元素('h2', {
       textContent: '备份数据库',
-      style: {
-        fontSize: '20px',
-        fontWeight: 'bold',
-        margin: '0 0 16px 0',
-      },
+      style: { fontSize: '20px', fontWeight: 'bold', margin: '0 0 16px 0' },
     })
 
     let 备份按钮 = new 普通按钮({

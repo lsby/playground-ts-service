@@ -4,19 +4,11 @@ import { API管理器 } from '../../global/manager/api-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 import { 数据表加载数据参数, 表格组件 } from '../general/table/table'
 
-type 属性类型 = {
-  表名?: string
-}
+type 属性类型 = { 表名?: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-type 表结构数据项 = {
-  列名: string
-  类型: string
-  可空: string
-  主键: string
-  默认值: string
-}
+type 表结构数据项 = { 列名: string; 类型: string; 可空: string; 主键: string; 默认值: string }
 
 export class 数据库结构组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['表名']
@@ -40,14 +32,7 @@ export class 数据库结构组件 extends 组件基类<属性类型, 发出事�
     style.minWidth = '0'
     style.overflow = 'hidden'
 
-    this.结构容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        overflow: 'auto',
-        padding: '10px',
-        minWidth: '0',
-      },
-    })
+    this.结构容器 = 创建元素('div', { style: { flex: '1', overflow: 'auto', padding: '10px', minWidth: '0' } })
 
     this.shadow.appendChild(this.结构容器)
 

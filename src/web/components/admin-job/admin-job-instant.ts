@@ -132,11 +132,7 @@ export class 即时任务管理组件 extends 组件基类<属性类型, 发出�
     window.history.pushState(null, '', `?type=instant&id=${任务.id}`)
 
     // 创建详情内容容器
-    let 详情内容 = 创建元素('div', {
-      style: {
-        height: '100%',
-      },
-    })
+    let 详情内容 = 创建元素('div', { style: { height: '100%' } })
 
     // 创建日志组件
     let 日志组件实例 = new 日志组件({})
@@ -206,23 +202,10 @@ export class 即时任务管理组件 extends 组件基类<属性类型, 发出�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 主容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '16px',
-        gap: '16px',
-      },
-    })
+    let 主容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', padding: '16px', gap: '16px' } })
 
     // 顶部操作区
-    let 操作区 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-      },
-    })
+    let 操作区 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
     let 刷新按钮 = new 普通按钮({
       文本: '刷新',

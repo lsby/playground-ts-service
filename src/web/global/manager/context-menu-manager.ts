@@ -1,9 +1,6 @@
 import { 创建元素 } from '../tools/create-element'
 
-export type 右键菜单项 = {
-  文本: string
-  回调: () => Promise<void>
-}
+export type 右键菜单项 = { 文本: string; 回调: () => Promise<void> }
 
 export class 右键菜单管理器 {
   private static 实例: 右键菜单管理器 | null = null
@@ -38,11 +35,7 @@ export class 右键菜单管理器 {
     for (let 菜单项 of 菜单项列表) {
       let 项元素 = 创建元素('div', {
         textContent: 菜单项.文本,
-        style: {
-          padding: '8px 16px',
-          cursor: 'pointer',
-          color: 'var(--文字颜色)',
-        },
+        style: { padding: '8px 16px', cursor: 'pointer', color: 'var(--文字颜色)' },
         onmouseenter: (): void => {
           项元素.style.backgroundColor = 'var(--次要背景颜色)'
         },

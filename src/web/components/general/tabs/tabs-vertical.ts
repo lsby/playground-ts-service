@@ -4,9 +4,7 @@ import { 创建元素 } from '../../../global/tools/create-element'
 import { 文本按钮 } from '../base/base-button'
 
 type 属性类型 = {}
-export type tabVertical发出事件类型 = {
-  切换: { 当前索引: number }
-}
+export type tabVertical发出事件类型 = { 切换: { 当前索引: number } }
 type 监听事件类型 = {}
 
 export class 纵向tab组件 extends 组件基类<属性类型, tabVertical发出事件类型, 监听事件类型> {

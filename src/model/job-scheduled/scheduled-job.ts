@@ -5,11 +5,7 @@ import { 集线器模型, 集线器监听器持有者 } from '../hub/hub-model'
 export type 日志类型 = { 时间: Date; 消息: string }
 export type 定时任务日志监听器 = (日志: 日志类型) => Promise<void>
 
-export type 定时任务上下文 = {
-  任务名称: string
-  执行时间: Date
-  输出日志: (...args: 已审阅的any[]) => Promise<void>
-}
+export type 定时任务上下文 = { 任务名称: string; 执行时间: Date; 输出日志: (...args: 已审阅的any[]) => Promise<void> }
 
 export abstract class 定时任务抽象类 {
   private static readonly 最大日志数量 = 1000

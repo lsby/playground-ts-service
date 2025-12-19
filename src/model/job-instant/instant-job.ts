@@ -8,11 +8,7 @@ export type 即时任务优先级 = number // 数字越大 优先级越高
 
 export type 日志类型 = { 时间: Date; 消息: string }
 export type 即时任务日志监听器 = (日志: 日志类型) => Promise<void>
-export type 即时任务上下文 = {
-  任务id: string
-  开始时间: Date
-  输出日志: (...args: 已审阅的any[]) => Promise<void>
-}
+export type 即时任务上下文 = { 任务id: string; 开始时间: Date; 输出日志: (...args: 已审阅的any[]) => Promise<void> }
 
 export abstract class 即时任务抽象类<输出类型> {
   private static readonly 最大日志数量 = 1000 // 限制日志最大数量，避免内存溢出

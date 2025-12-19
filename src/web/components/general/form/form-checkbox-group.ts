@@ -4,9 +4,7 @@ import type { 表单元素 } from './form'
 
 type 复选框组属性 = {}
 
-type 复选框组事件 = {
-  变化: string[]
-}
+type 复选框组事件 = { 变化: string[] }
 
 type 监听复选框组事件 = {}
 
@@ -31,13 +29,7 @@ class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 
   protected async 当加载时(): Promise<void> {
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
-    let 容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px',
-      },
-    })
+    let 容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } })
 
     if (this.配置.选项列表 !== void 0) {
       for (let 选项 of this.配置.选项列表) {
@@ -54,14 +46,10 @@ class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 
           value: 选项,
           checked: this.配置.选中值列表?.includes(选项) ?? false,
           disabled: this.配置.禁用 ?? false,
-          style: {
-            marginRight: '8px',
-          },
+          style: { marginRight: '8px' },
         })
 
-        let 文本 = 创建元素('span', {
-          textContent: 选项,
-        })
+        let 文本 = 创建元素('span', { textContent: 选项 })
 
         复选框.onchange = async (): Promise<void> => {
           let 选中值列表 = this.获得选中值列表()

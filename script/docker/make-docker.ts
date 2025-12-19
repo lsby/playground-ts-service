@@ -15,12 +15,7 @@ console.log('项目名称: %O, 项目版本: %O', projectName, packageJson.versi
 
 // 用户选择镜像名称
 const { customName } = await inquirer.prompt([
-  {
-    type: 'input',
-    name: 'customName',
-    message: '请输入镜像名称（默认: ' + projectName + '）:',
-    default: projectName,
-  },
+  { type: 'input', name: 'customName', message: '请输入镜像名称（默认: ' + projectName + '）:', default: projectName },
 ])
 
 // 二次确认用户输入的镜像名称

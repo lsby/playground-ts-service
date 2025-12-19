@@ -15,7 +15,9 @@ export class 查询逻辑<
   public constructor(
     private kysely插件: 插件类型,
     private 表名: 表名类型,
-    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
+    private 计算参数: (
+      data: 逻辑附加参数类型,
+    ) => Promise<{
       选择的字段们: 选择的字段们类型[]
       当前页: number
       每页数量: number

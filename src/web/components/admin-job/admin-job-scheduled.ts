@@ -53,9 +53,7 @@ export class 定时任务管理组件 extends 组件基类<属性类型, 发出�
           名称: '手动触发',
           回调: async (任务: 定时任务数据项): Promise<void> => {
             try {
-              await API管理器.请求post接口并处理错误('/api/admin-job/scheduled/manual-trigger', {
-                任务id: 任务.id,
-              })
+              await API管理器.请求post接口并处理错误('/api/admin-job/scheduled/manual-trigger', { 任务id: 任务.id })
               await this.刷新任务列表()
             } catch (错误) {
               console.error('手动触发任务失败:', 错误)
@@ -139,11 +137,7 @@ export class 定时任务管理组件 extends 组件基类<属性类型, 发出�
     window.history.pushState(null, '', `?type=scheduled&id=${任务.id}`)
 
     // 创建详情内容容器
-    let 详情内容 = 创建元素('div', {
-      style: {
-        height: '100%',
-      },
-    })
+    let 详情内容 = 创建元素('div', { style: { height: '100%' } })
 
     // 创建日志组件
     let 日志组件实例 = new 日志组件({})
@@ -232,23 +226,10 @@ export class 定时任务管理组件 extends 组件基类<属性类型, 发出�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 主容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '16px',
-        gap: '16px',
-      },
-    })
+    let 主容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', padding: '16px', gap: '16px' } })
 
     // 顶部操作区
-    let 操作区 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-      },
-    })
+    let 操作区 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
     let 刷新按钮 = new 普通按钮({
       文本: '刷新',

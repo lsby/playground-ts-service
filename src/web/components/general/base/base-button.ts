@@ -3,9 +3,7 @@ import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../g
 
 type 按钮属性 = {}
 
-type 按钮事件 = {
-  点击: void
-}
+type 按钮事件 = { 点击: void }
 
 type 监听按钮事件 = {}
 
@@ -36,9 +34,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
       按钮样式 = { ...按钮样式, ...this.配置.元素样式 }
     }
 
-    let 按钮元素 = 创建元素('button', {
-      style: 按钮样式,
-    })
+    let 按钮元素 = 创建元素('button', { style: 按钮样式 })
     if (this.配置.文本 !== void 0) {
       let 文本元素 = 创建元素('span', { textContent: this.配置.文本 })
       按钮元素.appendChild(文本元素)

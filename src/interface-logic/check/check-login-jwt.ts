@@ -18,10 +18,7 @@ export class 检查登录<
 > extends 接口逻辑<插件类型, 逻辑附加参数类型, 逻辑错误类型, { userId: string }> {
   public constructor(
     private 插件们: 插件类型,
-    private 计算参数: (data: 逻辑附加参数类型) => {
-      表名: 表名类型
-      id字段: keyof DB[表名类型]
-    },
+    private 计算参数: (data: 逻辑附加参数类型) => { 表名: 表名类型; id字段: keyof DB[表名类型] },
   ) {
     super()
   }

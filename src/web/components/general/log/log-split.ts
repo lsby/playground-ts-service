@@ -22,32 +22,15 @@ export class 日志分栏组件 extends 组件基类<属性类型, 发出事件�
     hostStyle.width = '100%'
     hostStyle.height = '100%'
 
-    let 容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        width: '100%',
-        gap: '10px',
-      },
-    })
+    let 容器 = 创建元素('div', { style: { display: 'flex', width: '100%', gap: '10px' } })
 
-    let 左侧插槽容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        overflow: 'auto',
-      },
-    })
+    let 左侧插槽容器 = 创建元素('div', { style: { flex: '1', overflow: 'auto' } })
 
     let 左侧插槽 = 创建元素('slot')
 
     左侧插槽容器.appendChild(左侧插槽)
 
-    let 右侧日志容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        display: 'flex',
-        flexDirection: 'column',
-      },
-    })
+    let 右侧日志容器 = 创建元素('div', { style: { flex: '1', display: 'flex', flexDirection: 'column' } })
 
     this.日志实例 = new 日志组件()
     this.日志实例.style.flex = '1'

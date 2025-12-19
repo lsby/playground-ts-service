@@ -8,9 +8,7 @@ import { 数据库结构组件 } from './admin-sqlite-table-structure'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
-type 监听事件类型 = {
-  选择表: { 表名: string }
-}
+type 监听事件类型 = { 选择表: { 表名: string } }
 
 export class 数据库管理组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
@@ -38,22 +36,12 @@ export class 数据库管理组件 extends 组件基类<属性类型, 发出事�
 
     // 左侧：表列表
     this.左侧容器 = 创建元素('div', {
-      style: {
-        flex: '0 0 250px',
-        borderRight: '1px solid var(--边框颜色)',
-        display: 'flex',
-        flexDirection: 'column',
-      },
+      style: { flex: '0 0 250px', borderRight: '1px solid var(--边框颜色)', display: 'flex', flexDirection: 'column' },
     })
 
     let 左侧标题 = 创建元素('h3', {
       textContent: '表列表',
-      style: {
-        margin: '0',
-        padding: '10px',
-        borderBottom: '1px solid var(--边框颜色)',
-        fontSize: '16px',
-      },
+      style: { margin: '0', padding: '10px', borderBottom: '1px solid var(--边框颜色)', fontSize: '16px' },
     })
 
     this.表列表组件 = new 数据库列表组件({})
@@ -64,13 +52,7 @@ export class 数据库管理组件 extends 组件基类<属性类型, 发出事�
 
     // 右侧:表详细信息
     this.右侧容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        display: 'flex',
-        flexDirection: 'column',
-        minWidth: '0',
-        overflow: 'hidden',
-      },
+      style: { flex: '1', display: 'flex', flexDirection: 'column', minWidth: '0', overflow: 'hidden' },
     })
 
     let 右侧标题容器 = 创建元素('div', {
@@ -83,20 +65,11 @@ export class 数据库管理组件 extends 组件基类<属性类型, 发出事�
       },
     })
 
-    let 右侧标题 = 创建元素('h3', {
-      textContent: '表详细信息',
-      style: {
-        margin: '0',
-        fontSize: '16px',
-      },
-    })
+    let 右侧标题 = 创建元素('h3', { textContent: '表详细信息', style: { margin: '0', fontSize: '16px' } })
 
     let 表名显示 = 创建元素('span', {
       textContent: '未选择表',
-      style: {
-        fontSize: '14px',
-        color: 'var(--次要文字颜色)',
-      },
+      style: { fontSize: '14px', color: 'var(--次要文字颜色)' },
     })
 
     右侧标题容器.appendChild(右侧标题)
@@ -106,13 +79,7 @@ export class 数据库管理组件 extends 组件基类<属性类型, 发出事�
 
     // 右侧内容tabs
     let 内容容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '0',
-        overflow: 'hidden',
-      },
+      style: { flex: '1', display: 'flex', flexDirection: 'column', minHeight: '0', overflow: 'hidden' },
     })
 
     let tabs容器 = new 横向tab组件({})

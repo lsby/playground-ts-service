@@ -50,10 +50,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
               警告提示('未输入数据')
               return
             }
-            await API管理器.请求post接口并处理错误('/api/demo/user-crud/update', {
-              newName: name,
-              userId: 数据项.id,
-            })
+            await API管理器.请求post接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
           },
         },
         {
@@ -80,14 +77,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'
 
-    let 容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        padding: '16px',
-        gap: '16px',
-      },
-    })
+    let 容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', padding: '16px', gap: '16px' } })
 
     容器.appendChild(this.表格组件)
 
@@ -96,50 +86,24 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
 
   private async 显示添加用户模态框(): Promise<void> {
     // 创建表单元素
-    let 用户名输入框 = new 普通输入框({
-      占位符: '请输入用户名',
-    })
+    let 用户名输入框 = new 普通输入框({ 占位符: '请输入用户名' })
 
-    let 密码框 = new 密码输入框({
-      占位符: '请输入密码',
-    })
+    let 密码框 = new 密码输入框({ 占位符: '请输入密码' })
 
     // 创建表单
     let 表单实例 = new 表单<{ username: string; password: string }>({
       项列表: [
-        {
-          键: 'username',
-          组件: 用户名输入框,
-          宽度: 2,
-          标签: '用户名',
-        },
-        {
-          键: 'password',
-          组件: 密码框,
-          宽度: 2,
-          标签: '密码',
-        },
+        { 键: 'username', 组件: 用户名输入框, 宽度: 2, 标签: '用户名' },
+        { 键: 'password', 组件: 密码框, 宽度: 2, 标签: '密码' },
       ],
       元素样式: { gap: '12px' },
     })
 
     // 创建模态框内容容器
-    let 内容容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-        height: '100%',
-      },
-    })
+    let 内容容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' } })
 
     // 添加表单到容器
-    let 表单容器 = 创建元素('div', {
-      style: {
-        flex: '1',
-        overflow: 'auto',
-      },
-    })
+    let 表单容器 = 创建元素('div', { style: { flex: '1', overflow: 'auto' } })
     表单容器.appendChild(表单实例)
     内容容器.appendChild(表单容器)
 

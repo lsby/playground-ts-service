@@ -15,15 +15,9 @@ export type 数据表列配置<数据项> = {
   列最大宽度?: string
 }
 
-export type 数据表操作配置<数据项> = {
-  名称: string
-  回调: (数据项: 数据项) => Promise<void>
-}
+export type 数据表操作配置<数据项> = { 名称: string; 回调: (数据项: 数据项) => Promise<void> }
 
-export type 顶部操作配置 = {
-  名称: string
-  回调: () => Promise<void>
-}
+export type 顶部操作配置 = { 名称: string; 回调: () => Promise<void> }
 
 export type 数据表加载数据参数<数据项> = {
   页码: number
@@ -45,10 +39,7 @@ export type 数据表格选项<数据项> = {
 
 type 属性类型 = {}
 
-type 发出事件类型<数据项> = {
-  操作点击: { 操作名: string; 数据项: 数据项 }
-  页码变化: { 页码: number }
-}
+type 发出事件类型<数据项> = { 操作点击: { 操作名: string; 数据项: 数据项 }; 页码变化: { 页码: number } }
 
 type 监听事件类型 = {}
 
@@ -127,11 +118,7 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
     this.列最小宽度 = 选项.列最小宽度 ?? '50px'
     this.列最大宽度 = 选项.列最大宽度
     this.宿主样式 = 选项.宿主样式
-    this.分页配置 = {
-      当前页码: 1,
-      每页数量: 选项.每页数量 ?? 10,
-      总数量: 0,
-    }
+    this.分页配置 = { 当前页码: 1, 每页数量: 选项.每页数量 ?? 10, 总数量: 0 }
   }
 
   public 获得当前页码(): number {
@@ -336,14 +323,8 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
     for (let 操作 of 操作列表) {
       let 临时按钮 = new 普通按钮({
         文本: 操作.名称,
-        宿主样式: {
-          visibility: 'hidden',
-          position: 'absolute',
-          top: '-1000px',
-        },
-        元素样式: {
-          padding: '4px 12px',
-        },
+        宿主样式: { visibility: 'hidden', position: 'absolute', top: '-1000px' },
+        元素样式: { padding: '4px 12px' },
       })
       document.body.appendChild(临时按钮)
       await new Promise((resolve) => setTimeout(resolve, 0))
@@ -352,29 +333,14 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
       document.body.removeChild(临时按钮)
     }
 
-    let 容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      },
-    })
+    let 容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } })
 
     // 渲染顶部操作区
     if (顶部操作列表.length > 0) {
-      let 操作区 = 创建元素('div', {
-        style: {
-          display: 'flex',
-          justifyContent: 'flex-end',
-          gap: '8px',
-        },
-      })
+      let 操作区 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
       for (let 操作 of 顶部操作列表) {
-        let 按钮 = new 普通按钮({
-          文本: 操作.名称,
-          点击处理函数: 操作.回调,
-        })
+        let 按钮 = new 普通按钮({ 文本: 操作.名称, 点击处理函数: 操作.回调 })
         操作区.appendChild(按钮)
       }
 
@@ -425,36 +391,19 @@ export class 表格组件<数据项> extends 组件基类<属性类型, 发出�
 
       // 创建表头内容容器
       let 表头内容 = 创建元素('div', {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '8px',
-        },
+        style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' },
       })
 
-      let 标签文本 = 创建元素('span', {
-        textContent: 列.显示名,
-      })
+      let 标签文本 = 创建元素('span', { textContent: 列.显示名 })
       表头内容.appendChild(标签文本)
 
       // 如果有筛选值，显示筛选值
       if (有筛选值) {
-        let 筛选值容器 = 创建元素('div', {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-          },
-        })
+        let 筛选值容器 = 创建元素('div', { style: { display: 'flex', alignItems: 'center', gap: '4px' } })
 
         let 筛选值显示 = 创建元素('span', {
           textContent: `筛选: ${筛选值}`,
-          style: {
-            fontSize: '12px',
-            color: 'var(--color-text-secondary)',
-            fontWeight: 'bold',
-          },
+          style: { fontSize: '12px', color: 'var(--color-text-secondary)', fontWeight: 'bold' },
         })
         筛选值容器.appendChild(筛选值显示)
 

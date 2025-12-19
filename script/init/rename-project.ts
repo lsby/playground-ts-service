@@ -77,16 +77,8 @@ async function 主函数(): Promise<void> {
   console.log('====================\n')
 
   // 询问用户输入
-  let 回答_步骤1: {
-    作者名: string
-    项目名: string
-  } = await 询问器.prompt([
-    {
-      type: 'input',
-      name: '作者名',
-      message: '请输入新的作者名 (例如: mycompany):',
-      default: 'lsby',
-    },
+  let 回答_步骤1: { 作者名: string; 项目名: string } = await 询问器.prompt([
+    { type: 'input', name: '作者名', message: '请输入新的作者名 (例如: mycompany):', default: 'lsby' },
     {
       type: 'input',
       name: '项目名',
@@ -114,9 +106,7 @@ async function 主函数(): Promise<void> {
   }
 
   // 询问确认
-  let 回答_步骤2: {
-    确认: boolean
-  } = await 询问器.prompt([
+  let 回答_步骤2: { 确认: boolean } = await 询问器.prompt([
     {
       type: 'confirm',
       name: '确认',

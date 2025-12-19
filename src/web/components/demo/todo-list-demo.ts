@@ -25,11 +25,7 @@ export class 演示todo组件 extends 组件基类<属性类型, 发出事件类
   }
   private 输入框 = new 普通输入框({
     占位符: '请输入任务内容',
-    元素样式: {
-      padding: '0.5em',
-      fontSize: '1em',
-      borderColor: 'var(--边框颜色)',
-    },
+    元素样式: { padding: '0.5em', fontSize: '1em', borderColor: 'var(--边框颜色)' },
     回车处理函数: (): void => {
       this.添加任务()
     },
@@ -61,13 +57,7 @@ export class 演示todo组件 extends 组件基类<属性类型, 发出事件类
 
       let 删除按钮 = new 文本按钮({
         文本: '❌',
-        元素样式: {
-          background: 'transparent',
-          border: 'none',
-          color: 'red',
-          fontSize: '1.2em',
-          cursor: 'pointer',
-        },
+        元素样式: { background: 'transparent', border: 'none', color: 'red', fontSize: '1.2em', cursor: 'pointer' },
         点击处理函数: (): void => {
           this.todo列表.splice(index, 1)
           this.刷新列表()

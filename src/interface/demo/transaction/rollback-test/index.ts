@@ -48,13 +48,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
             new 新增逻辑(
               kysely插件,
               'user_config',
-              async () => ({
-                数据: {
-                  id: crypto.randomUUID(),
-                  user_id: userId,
-                  theme: '系统',
-                },
-              }),
+              async () => ({ 数据: { id: crypto.randomUUID(), user_id: userId, theme: '系统' } }),
               async () => {
                 return {}
               },

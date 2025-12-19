@@ -47,9 +47,7 @@ let 接口逻辑实现 = 接口逻辑
           }
         })
 
-        return new Right({
-          columns: 接口正确类型描述.shape.columns.parse(columns),
-        })
+        return new Right({ columns: 接口正确类型描述.shape.columns.parse(columns) })
       },
     ),
   )

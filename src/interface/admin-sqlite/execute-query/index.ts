@@ -22,10 +22,7 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       [
         new JSON解析插件(
-          z.object({
-            sql: z.string(),
-            parameters: z.array(z.union([z.string(), z.number(), z.boolean(), z.null()])),
-          }),
+          z.object({ sql: z.string(), parameters: z.array(z.union([z.string(), z.number(), z.boolean(), z.null()])) }),
           {},
         ),
         kysely插件,

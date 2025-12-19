@@ -42,14 +42,7 @@ export async function init(): Promise<void> {
               is_admin: 1,
             })
             .execute()
-          await trx
-            .insertInto('user_config')
-            .values({
-              id: randomUUID(),
-              user_id: 初始用户id,
-              theme: '系统',
-            })
-            .execute()
+          await trx.insertInto('user_config').values({ id: randomUUID(), user_id: 初始用户id, theme: '系统' }).execute()
         })
         await log.debug(`初始化${项目名称}完成`)
       } catch (e) {
@@ -62,12 +55,7 @@ export async function init(): Promise<void> {
     await kysely管理器
       .获得句柄()
       .insertInto('system_config')
-      .values({
-        id: randomUUID(),
-        is_initialized: 1,
-        enable_register: 0,
-        version: version,
-      })
+      .values({ id: randomUUID(), is_initialized: 1, enable_register: 0, version: version })
       .execute()
     await log.debug('写入初始化标记完成')
 

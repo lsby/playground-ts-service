@@ -23,9 +23,7 @@ export type 替换ColumnType<T, Mode extends '__select__' | '__insert__' | '__up
 type 包含undefined<T> = undefined extends T ? true : false
 export type undefined加可选<T> = {
   [K in keyof T as 包含undefined<T[K]> extends true ? K : never]?: Exclude<T[K], undefined>
-} & {
-  [K in keyof T as 包含undefined<T[K]> extends true ? never : K]: T[K]
-}
+} & { [K in keyof T as 包含undefined<T[K]> extends true ? never : K]: T[K] }
 
 // 常用类型计算
 type 联合转交叉<T> = (T extends any ? (x: T) => any : never) extends (x: infer U) => any ? U : never

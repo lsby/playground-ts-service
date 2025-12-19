@@ -28,13 +28,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().height = '100%'
 
-    let 包装器 = 创建元素('div', {
-      style: {
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-      },
-    })
+    let 包装器 = 创建元素('div', { style: { position: 'relative', width: '100%', height: '100%' } })
 
     let 容器 = 创建元素('div', {
       style: {
@@ -416,11 +410,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
       if (日志 !== void 0) {
         let 日志行 = 创建元素('div', {
           textContent: 日志,
-          style: {
-            marginBottom: '2px',
-            wordBreak: 'break-word',
-            cursor: 'default',
-          },
+          style: { marginBottom: '2px', wordBreak: 'break-word', cursor: 'default' },
         })
         this.日志容器.appendChild(日志行)
       }

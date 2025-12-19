@@ -89,20 +89,10 @@ export function 显示吐司(消息: string, 选项: 吐司选项 = {}): void {
     },
   })
 
-  let 图标元素 = 创建元素('span', {
-    style: {
-      fontSize: '16px',
-      fontWeight: 'bold',
-      flexShrink: '0',
-    },
-  })
+  let 图标元素 = 创建元素('span', { style: { fontSize: '16px', fontWeight: 'bold', flexShrink: '0' } })
   图标元素.textContent = 样式.图标
 
-  let 消息元素 = 创建元素('span', {
-    style: {
-      flex: '1',
-    },
-  })
+  let 消息元素 = 创建元素('span', { style: { flex: '1' } })
   消息元素.textContent = 消息
 
   吐司元素.appendChild(图标元素)

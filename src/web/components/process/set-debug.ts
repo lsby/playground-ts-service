@@ -1,9 +1,7 @@
 import { 组件基类 } from '../../base/base.js'
 import { globalWebLog } from '../../global/manager/log-manager.js'
 
-type 属性类型 = {
-  排除事件?: string
-}
+type 属性类型 = { 排除事件?: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 

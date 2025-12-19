@@ -22,14 +22,7 @@ export default new 接口测试(
   },
 
   async (): Promise<object> => {
-    return POST请求用例(
-      接口,
-      {
-        a: 2,
-        b: 1,
-      },
-      { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
-    )
+    return POST请求用例(接口, { a: 2, b: 1 }, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
   },
 
   async (中置结果: object): Promise<void> => {

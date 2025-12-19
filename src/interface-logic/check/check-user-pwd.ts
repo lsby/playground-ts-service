@@ -15,14 +15,7 @@ export class 检查密码<逻辑附加参数类型 extends {}, 字段类型 exte
 
   public constructor(private 字段名: 字段类型) {
     super()
-    this.插件 = [
-      new JSON解析插件(
-        z.object({
-          ...构造对象(this.字段名, z.string()),
-        }),
-        {},
-      ),
-    ]
+    this.插件 = [new JSON解析插件(z.object({ ...构造对象(this.字段名, z.string()) }), {})]
   }
 
   public override 获得插件们(): [JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>] {

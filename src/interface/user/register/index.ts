@@ -18,11 +18,7 @@ import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
 let 接口路径 = '/api/user/register' as const
 let 接口方法 = 'post' as const
 
-let 用户表 = z.object({
-  id: z.string(),
-  name: z.string(),
-  pwd: z.string(),
-})
+let 用户表 = z.object({ id: z.string(), name: z.string(), pwd: z.string() })
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
@@ -60,14 +56,7 @@ let 接口逻辑实现 = 接口逻辑
             is_admin: 0,
           })
           .execute()
-        await trx
-          .insertInto('user_config')
-          .values({
-            id: randomUUID(),
-            user_id: userId,
-            theme: '系统',
-          })
-          .execute()
+        await trx.insertInto('user_config').values({ id: randomUUID(), user_id: userId, theme: '系统' }).execute()
         return new Right({})
       })
     }),

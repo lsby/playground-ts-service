@@ -32,24 +32,13 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
     // 获取用户信息
     this.用户信息 = await API管理器.请求post接口并处理错误('/api/user/get-current-user', {})
 
-    let 容器 = 创建元素('div', {
-      style: {
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      },
-    })
+    let 容器 = 创建元素('div', { style: { padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' } })
 
     // 如果是管理员，显示系统配置
     if (this.用户信息.is_admin) {
       let 系统配置标题 = 创建元素('h2', {
         textContent: '系统配置',
-        style: {
-          margin: '0',
-          fontSize: '18px',
-          color: 'var(--文字颜色)',
-        },
+        style: { margin: '0', fontSize: '18px', color: 'var(--文字颜色)' },
       })
       容器.appendChild(系统配置标题)
 
@@ -60,11 +49,7 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
     // 用户配置
     let 用户配置标题 = 创建元素('h2', {
       textContent: '用户配置',
-      style: {
-        margin: '0',
-        fontSize: '18px',
-        color: 'var(--文字颜色)',
-      },
+      style: { margin: '0', fontSize: '18px', color: 'var(--文字颜色)' },
     })
     容器.appendChild(用户配置标题)
 
@@ -72,13 +57,7 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
     容器.appendChild(this.用户配置表单)
 
     // 添加统一的保存按钮
-    let 保存按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '16px',
-      },
-    })
+    let 保存按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '16px' } })
     let 保存按钮 = new 主要按钮({
       文本: '保存',
       点击处理函数: async (): Promise<void> => {
@@ -95,35 +74,19 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
   }
 
   private 创建系统配置表单(): 表单<系统配置数据> {
-    let 项列表: 表单项配置[] = [
-      {
-        键: 'enable_register',
-        组件: new 复选框({ 标签: '启用注册' }),
-        宽度: 1,
-      },
-    ]
+    let 项列表: 表单项配置[] = [{ 键: 'enable_register', 组件: new 复选框({ 标签: '启用注册' }), 宽度: 1 }]
 
-    let 表单实例 = new 表单<系统配置数据>({
-      项列表,
-      元素样式: { gridTemplateColumns: '1fr' },
-    })
+    let 表单实例 = new 表单<系统配置数据>({ 项列表, 元素样式: { gridTemplateColumns: '1fr' } })
 
     return 表单实例
   }
 
   private 创建用户配置表单(): 表单<用户配置数据> {
     let 项列表: 表单项配置[] = [
-      {
-        键: 'theme',
-        组件: new 单选框组({ 选项列表: ['系统', '亮色', '暗色'], 方向: '横', 标签: '主题' }),
-        宽度: 1,
-      },
+      { 键: 'theme', 组件: new 单选框组({ 选项列表: ['系统', '亮色', '暗色'], 方向: '横', 标签: '主题' }), 宽度: 1 },
     ]
 
-    let 表单实例 = new 表单<用户配置数据>({
-      项列表,
-      元素样式: { gridTemplateColumns: '1fr' },
-    })
+    let 表单实例 = new 表单<用户配置数据>({ 项列表, 元素样式: { gridTemplateColumns: '1fr' } })
 
     return 表单实例
   }

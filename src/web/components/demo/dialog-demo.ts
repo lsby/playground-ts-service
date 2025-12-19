@@ -16,21 +16,10 @@ export class 演示对话框组件 extends 组件基类<属性类型, 发出事�
 
   protected override async 当加载时(): Promise<void> {
     let 容器 = 创建元素('div', {
-      style: {
-        padding: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '10px',
-        maxWidth: '400px',
-      },
+      style: { padding: '20px', display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' },
     })
 
-    let 标题 = 创建元素('h2', {
-      textContent: '对话框演示',
-      style: {
-        marginBottom: '10px',
-      },
-    })
+    let 标题 = 创建元素('h2', { textContent: '对话框演示', style: { marginBottom: '10px' } })
 
     let 简单对话框按钮 = new 主要按钮({
       文本: '显示简单对话框',

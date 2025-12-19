@@ -18,9 +18,7 @@ interface 表单项配置<值类型 extends 基础值结构 = 基础值结构> {
 }
 
 type 表单属性 = {}
-type 表单事件<数据类型 extends Record<string, 基础值结构> = Record<string, 基础值结构>> = {
-  变化: 数据类型
-}
+type 表单事件<数据类型 extends Record<string, 基础值结构> = Record<string, 基础值结构>> = { 变化: 数据类型 }
 type 监听表单事件 = {}
 
 type 表单配置<_数据类型 extends Record<string, 基础值结构>> = {
@@ -44,52 +42,31 @@ class 表单<数据类型 extends Record<string, 基础值结构>> extends 组�
   protected async 当加载时(): Promise<void> {
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
 
-    let 容器样式: 增强样式类型 = {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(2, 1fr)',
-      gap: '16px',
-    }
+    let 容器样式: 增强样式类型 = { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }
     if (this.配置.元素样式 !== void 0) {
       容器样式 = { ...容器样式, ...this.配置.元素样式 }
     }
 
-    let 容器 = 创建元素('div', {
-      style: 容器样式,
-    })
+    let 容器 = 创建元素('div', { style: 容器样式 })
 
     for (let 项配置 of this.配置.项列表) {
       // 创建项包装器，使用 flex 布局
       let 宽度 = 项配置.宽度 ?? 1
       let 项包装器 = 创建元素('div', {
-        style: {
-          gridColumn: `span ${宽度}`,
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: '0',
-        },
+        style: { gridColumn: `span ${宽度}`, display: 'flex', flexDirection: 'column', minWidth: '0' },
       })
 
       // 如果有标签，添加标签
       if (项配置.标签 !== void 0) {
         let 标签元素 = 创建元素('span', {
           textContent: 项配置.标签,
-          style: {
-            fontSize: '14px',
-            color: 'var(--文字颜色)',
-            whiteSpace: 'nowrap',
-            marginBottom: '4px',
-          },
+          style: { fontSize: '14px', color: 'var(--文字颜色)', whiteSpace: 'nowrap', marginBottom: '4px' },
         })
         项包装器.appendChild(标签元素)
       }
 
       // 添加组件
-      let 组件包装器 = 创建元素('div', {
-        style: {
-          minWidth: '0',
-          flex: '1',
-        },
-      })
+      let 组件包装器 = 创建元素('div', { style: { minWidth: '0', flex: '1' } })
 
       let 组件元素 = 项配置.组件
       组件包装器.appendChild(组件元素)

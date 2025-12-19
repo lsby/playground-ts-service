@@ -85,10 +85,7 @@ export type 增强样式类型 = Omit<
 
 type 子元素类型 = HTMLElement | string | number | 子元素类型[]
 
-type 元素属性 = {
-  style?: 增强样式类型
-  children?: 子元素类型
-}
+type 元素属性 = { style?: 增强样式类型; children?: 子元素类型 }
 
 function 是否为普通对象(值: unknown): boolean {
   if (值 === null || 值 === void 0) {

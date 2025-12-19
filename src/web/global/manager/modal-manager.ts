@@ -80,21 +80,11 @@ class 模态框管理器 {
       },
     })
 
-    let 标题元素 = 创建元素('span', {
-      style: {
-        color: 'var(--文字颜色)',
-      },
-    })
+    let 标题元素 = 创建元素('span', { style: { color: 'var(--文字颜色)' } })
     头部.appendChild(标题元素)
 
     // 右侧按钮容器
-    let 右侧按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-      },
-    })
+    let 右侧按钮容器 = 创建元素('div', { style: { display: 'flex', alignItems: 'center', gap: '4px' } })
 
     // 最大化按钮
     let 最大化按钮 = new 文本按钮({
@@ -133,14 +123,7 @@ class 模态框管理器 {
     头部.appendChild(右侧按钮容器)
 
     // 内容
-    let 内容 = 创建元素('div', {
-      style: {
-        flex: '1',
-        overflow: 'auto',
-        width: '60vw',
-        height: '80vh',
-      },
-    })
+    let 内容 = 创建元素('div', { style: { flex: '1', overflow: 'auto', width: '60vw', height: '80vh' } })
 
     框.appendChild(头部)
     框.appendChild(内容)

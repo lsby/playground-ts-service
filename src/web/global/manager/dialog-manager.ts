@@ -36,20 +36,10 @@ export function 显示对话框(消息: string): Promise<void> {
 
     let 消息元素 = 创建元素('div', {
       textContent: 消息,
-      style: {
-        fontSize: '14px',
-        lineHeight: '1.5',
-        color: 'var(--文字颜色)',
-        whiteSpace: 'pre-wrap',
-      },
+      style: { fontSize: '14px', lineHeight: '1.5', color: 'var(--文字颜色)', whiteSpace: 'pre-wrap' },
     })
 
-    let 按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-      },
-    })
+    let 按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end' } })
 
     let 关闭对话框 = (): void => {
       document.body.removeChild(遮罩层)
@@ -57,10 +47,7 @@ export function 显示对话框(消息: string): Promise<void> {
       resolve()
     }
 
-    let 确定按钮 = new 主要按钮({
-      文本: '确定',
-      点击处理函数: 关闭对话框,
-    })
+    let 确定按钮 = new 主要按钮({ 文本: '确定', 点击处理函数: 关闭对话框 })
 
     let 键盘处理 = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
@@ -124,21 +111,10 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
 
     let 消息元素 = 创建元素('div', {
       textContent: 消息,
-      style: {
-        fontSize: '14px',
-        lineHeight: '1.5',
-        color: 'var(--文字颜色)',
-        whiteSpace: 'pre-wrap',
-      },
+      style: { fontSize: '14px', lineHeight: '1.5', color: 'var(--文字颜色)', whiteSpace: 'pre-wrap' },
     })
 
-    let 按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-      },
-    })
+    let 按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
     let 关闭对话框 = (结果: boolean): void => {
       document.body.removeChild(遮罩层)
@@ -223,12 +199,7 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
 
     let 消息元素 = 创建元素('div', {
       textContent: 消息,
-      style: {
-        fontSize: '14px',
-        lineHeight: '1.5',
-        color: 'var(--文字颜色)',
-        whiteSpace: 'pre-wrap',
-      },
+      style: { fontSize: '14px', lineHeight: '1.5', color: 'var(--文字颜色)', whiteSpace: 'pre-wrap' },
     })
 
     let 输入框 = new 普通输入框({
@@ -237,13 +208,7 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       ...(默认值 !== void 0 ? { 值: 默认值 } : {}),
     })
 
-    let 按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-      },
-    })
+    let 按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
     let 关闭对话框 = (结果: string | null): void => {
       document.body.removeChild(遮罩层)

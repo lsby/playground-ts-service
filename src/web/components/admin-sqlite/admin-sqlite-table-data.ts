@@ -10,9 +10,7 @@ import { 表单, 表单项配置 } from '../general/form/form'
 import { 数字输入框, 普通输入框 } from '../general/form/form-input'
 import { 数据表加载数据参数, 表格组件 } from '../general/table/table'
 
-type 属性类型 = {
-  表名?: string
-}
+type 属性类型 = { 表名?: string }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
@@ -26,13 +24,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
 
   private 表格组件: 表格组件<数据项> | null = null
   private 消息容器: HTMLDivElement | null = null
-  private 列列表: {
-    type: string
-    name: string
-    notnull: number
-    pk: number
-    dflt_value: string | null
-  }[] = []
+  private 列列表: { type: string; name: string; notnull: number; pk: number; dflt_value: string | null }[] = []
   private 主键列: string[] = []
 
   public constructor(属性?: 属性类型) {
@@ -114,12 +106,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
 
     // 创建表格
     this.表格组件 = new 表格组件<数据项>({
-      列配置: this.列列表.map((列) => ({
-        字段名: 列.name,
-        显示名: 列.name,
-        可排序: true,
-        可筛选: true,
-      })),
+      列配置: this.列列表.map((列) => ({ 字段名: 列.name, 显示名: 列.name, 可排序: true, 可筛选: true })),
       每页数量: 20,
       操作列表: [
         {
@@ -192,10 +179,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
           let sql = `SELECT * FROM \`${表名}\`` + 筛选语句 + 排序语句 + ` LIMIT ? OFFSET ?`
           筛选参数.push(参数.每页数量, 偏移)
 
-          let 结果 = await API管理器.请求post接口('/api/admin-sqlite/execute-query', {
-            sql,
-            parameters: 筛选参数,
-          })
+          let 结果 = await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 筛选参数 })
 
           if (结果.status === 'success') {
             return { 数据: 结果.data.rows, 总数 }
@@ -217,13 +201,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
-    let 内容容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-      },
-    })
+    let 内容容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } })
 
     // 创建表单项列表
     let 表单项列表: 表单项配置[] = []
@@ -236,17 +214,11 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
           ? new 数字输入框({ 占位符: `请输入 ${列名}` })
           : new 普通输入框({ 占位符: `请输入 ${列名}` })
 
-      表单项列表.push({
-        键: 列名,
-        组件: 输入框,
-        标签: 列名,
-      })
+      表单项列表.push({ 键: 列名, 组件: 输入框, 标签: 列名 })
     }
 
     // 创建表单
-    let 表单实例 = new 表单<数据项>({
-      项列表: 表单项列表,
-    })
+    let 表单实例 = new 表单<数据项>({ 项列表: 表单项列表 })
 
     内容容器.appendChild(表单实例)
 
@@ -286,13 +258,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let 表名 = await this.获得属性('表名')
     if (表名 === void 0 || 表名 === null) return
 
-    let 内容容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-      },
-    })
+    let 内容容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } })
 
     // 创建表单项列表
     let 表单项列表: 表单项配置[] = []
@@ -307,17 +273,11 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
           ? new 数字输入框({ 值: String(当前值 ?? '') })
           : new 普通输入框({ 值: String(当前值 ?? '') })
 
-      表单项列表.push({
-        键: 列名,
-        组件: 输入框,
-        标签: 列名,
-      })
+      表单项列表.push({ 键: 列名, 组件: 输入框, 标签: 列名 })
     }
 
     // 创建表单
-    let 表单实例 = new 表单<数据项>({
-      项列表: 表单项列表,
-    })
+    let 表单实例 = new 表单<数据项>({ 项列表: 表单项列表 })
 
     内容容器.appendChild(表单实例)
 
@@ -377,10 +337,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `INSERT INTO \`${表名}\` (${列列表.join(', ')}) VALUES (${值列表.join(', ')})`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', {
-        sql,
-        parameters: 参数列表,
-      })
+      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       await 关闭模态框()
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
@@ -423,10 +380,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `UPDATE \`${表名}\` SET ${设置条件列表.join(', ')} WHERE ${where条件列表.join(' AND ')}`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', {
-        sql,
-        parameters: 参数列表,
-      })
+      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       await 关闭模态框()
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
@@ -460,10 +414,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `DELETE FROM \`${表名}\` WHERE ${where条件列表.join(' AND ')}`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', {
-        sql,
-        parameters: 参数列表,
-      })
+      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
       }

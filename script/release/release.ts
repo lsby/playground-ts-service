@@ -7,11 +7,7 @@ const 项目根目录 = resolve(import.meta.dirname, '../../')
 const 执行命令 = (命令: string, 描述: string): void => {
   console.log(`\n📦 ${描述}...`)
   try {
-    execSync(命令, {
-      cwd: 项目根目录,
-      stdio: 'inherit',
-      shell: process.platform === 'win32' ? 'cmd.exe' : 'bash',
-    })
+    execSync(命令, { cwd: 项目根目录, stdio: 'inherit', shell: process.platform === 'win32' ? 'cmd.exe' : 'bash' })
     console.log(`✅ ${描述}完成`)
   } catch (错误) {
     console.error(`❌ ${描述}失败:`, 错误)

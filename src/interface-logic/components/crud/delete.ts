@@ -12,9 +12,7 @@ export class 删除逻辑<
   public constructor(
     private kysely插件: 插件类型,
     private 表名: 表名类型,
-    private 计算参数: (data: 逻辑附加参数类型) => Promise<{
-      条件们: 条件<DB[表名类型]>[]
-    }>,
+    private 计算参数: (data: 逻辑附加参数类型) => Promise<{ 条件们: 条件<DB[表名类型]>[] }>,
   ) {
     super()
   }

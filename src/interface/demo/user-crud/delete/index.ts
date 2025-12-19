@@ -20,16 +20,8 @@ let 接口逻辑实现 = 接口逻辑
       return 参数.kysely.执行事务Either(async (trx) => {
         return 接口逻辑
           .空逻辑()
-          .混合(
-            new 删除逻辑(kysely插件, 'user_config', async () => ({
-              条件们: [['user_id', '=', 逻辑附加参数.id]],
-            })),
-          )
-          .混合(
-            new 删除逻辑(kysely插件, 'user', async () => ({
-              条件们: [['id', '=', 逻辑附加参数.id]],
-            })),
-          )
+          .混合(new 删除逻辑(kysely插件, 'user_config', async () => ({ 条件们: [['user_id', '=', 逻辑附加参数.id]] })))
+          .混合(new 删除逻辑(kysely插件, 'user', async () => ({ 条件们: [['id', '=', 逻辑附加参数.id]] })))
           .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, { log })
       })
     }),

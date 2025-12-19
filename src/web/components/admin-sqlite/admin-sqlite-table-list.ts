@@ -4,9 +4,7 @@ import { API管理器 } from '../../global/manager/api-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 
 type 属性类型 = {}
-type 发出事件类型 = {
-  选择表: { 表名: string }
-}
+type 发出事件类型 = { 选择表: { 表名: string } }
 type 监听事件类型 = {}
 
 export class 数据库列表组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
@@ -29,13 +27,7 @@ export class 数据库列表组件 extends 组件基类<属性类型, 发出事�
     style.height = '100%'
 
     this.表列表容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '2px',
-        overflowY: 'auto',
-        flex: '1',
-      },
+      style: { display: 'flex', flexDirection: 'column', gap: '2px', overflowY: 'auto', flex: '1' },
     })
 
     this.shadow.appendChild(this.表列表容器)
@@ -52,17 +44,13 @@ export class 数据库列表组件 extends 组件基类<属性类型, 发出事�
         this.渲染表列表(结果.data.tables)
       } else {
         表列表容器.innerHTML = ''
-        let 错误消息 = 创建元素('div', {
-          textContent: '获取表列表失败',
-        })
+        let 错误消息 = 创建元素('div', { textContent: '获取表列表失败' })
         表列表容器.appendChild(错误消息)
       }
     } catch (错误) {
       console.error('获取表列表失败:', 错误)
       表列表容器.innerHTML = ''
-      let 错误消息 = 创建元素('div', {
-        textContent: '获取表列表失败',
-      })
+      let 错误消息 = 创建元素('div', { textContent: '获取表列表失败' })
       表列表容器.appendChild(错误消息)
     }
   }
@@ -72,9 +60,7 @@ export class 数据库列表组件 extends 组件基类<属性类型, 发出事�
     let 表列表容器 = this.表列表容器
     表列表容器.innerHTML = ''
     if (表列表.length === 0) {
-      let 无表消息 = 创建元素('div', {
-        textContent: '没有找到表',
-      })
+      let 无表消息 = 创建元素('div', { textContent: '没有找到表' })
       表列表容器.appendChild(无表消息)
       return
     }

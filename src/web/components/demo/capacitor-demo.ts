@@ -18,10 +18,7 @@ export class 演示capacitor组件 extends 组件基类<属性类型, 发出事�
       文本: '点我',
       禁用: false,
       点击处理函数: async (): Promise<void> => {
-        await Dialog.alert({
-          title: '提示',
-          message: '你好世界',
-        })
+        await Dialog.alert({ title: '提示', message: '你好世界' })
       },
     })
 

@@ -4,9 +4,7 @@ import type { 表单元素 } from './form'
 
 type 单选框组属性 = {}
 
-type 单选框组事件 = {
-  变化: string
-}
+type 单选框组事件 = { 变化: string }
 
 type 监听单选框组事件 = {}
 
@@ -36,22 +34,13 @@ class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 
     if (this.配置.标签 !== void 0) {
       let 标签元素 = 创建元素('label', {
         textContent: this.配置.标签,
-        style: {
-          display: 'block',
-          marginBottom: '8px',
-          fontSize: '14px',
-          color: 'var(--文字颜色)',
-        },
+        style: { display: 'block', marginBottom: '8px', fontSize: '14px', color: 'var(--文字颜色)' },
       })
       this.shadow.appendChild(标签元素)
     }
 
     let 容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: this.配置.方向 === '横' ? 'row' : 'column',
-        gap: '8px',
-      },
+      style: { display: 'flex', flexDirection: this.配置.方向 === '横' ? 'row' : 'column', gap: '8px' },
     })
 
     if (this.配置.选项列表 !== void 0) {
@@ -70,14 +59,10 @@ class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 
           value: 选项,
           checked: this.配置.值 === 选项,
           disabled: this.配置.禁用 ?? false,
-          style: {
-            marginRight: '8px',
-          },
+          style: { marginRight: '8px' },
         })
 
-        let 文本 = 创建元素('span', {
-          textContent: 选项,
-        })
+        let 文本 = 创建元素('span', { textContent: 选项 })
 
         单选框.onchange = async (): Promise<void> => {
           let 值 = 单选框.value

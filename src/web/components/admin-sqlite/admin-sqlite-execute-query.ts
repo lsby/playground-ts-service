@@ -9,17 +9,9 @@ type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-type 选项卡数据 = {
-  id: string
-  标题: string
-  sql: string
-}
+type 选项卡数据 = { id: string; 标题: string; sql: string }
 
-type 查询结果数据 = {
-  rows: Record<string, any>[]
-  numAffectedRows?: number | undefined
-  insertId?: number | undefined
-}
+type 查询结果数据 = { rows: Record<string, any>[]; numAffectedRows?: number | undefined; insertId?: number | undefined }
 
 export class 数据库执行查询组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
@@ -288,10 +280,7 @@ export class 数据库执行查询组件 extends 组件基类<属性类型, 发�
         },
       })
 
-      let 文本 = 创建元素('div', {
-        textContent: '查询无结果',
-        style: { color: 'var(--次要文字颜色)' },
-      })
+      let 文本 = 创建元素('div', { textContent: '查询无结果', style: { color: 'var(--次要文字颜色)' } })
       消息容器.appendChild(文本)
 
       if (数据.numAffectedRows !== void 0) {
@@ -310,11 +299,7 @@ export class 数据库执行查询组件 extends 组件基类<属性类型, 发�
     let 第一行 = 数据.rows[0]
     if (第一行 === void 0) return
 
-    let 列配置 = Object.keys(第一行).map((列名) => ({
-      字段名: 列名,
-      显示名: 列名,
-      可排序: false,
-    }))
+    let 列配置 = Object.keys(第一行).map((列名) => ({ 字段名: 列名, 显示名: 列名, 可排序: false }))
 
     // 每次都重新创建表格以确保数据更新
     内容.表格组件 = new 表格组件<Record<string, any>>({
@@ -326,10 +311,7 @@ export class 数据库执行查询组件 extends 组件基类<属性类型, 发�
         // 在内存中分页
         let 开始 = (参数.页码 - 1) * 参数.每页数量
         let 结束 = 开始 + 参数.每页数量
-        return {
-          数据: 数据.rows.slice(开始, 结束),
-          总数: 数据.rows.length,
-        }
+        return { 数据: 数据.rows.slice(开始, 结束), 总数: 数据.rows.length }
       },
     })
 
@@ -348,11 +330,7 @@ export class 数据库执行查询组件 extends 组件基类<属性类型, 发�
     内容.结果容器.innerHTML = ''
     let 消息元素 = 创建元素('div', {
       textContent: 消息,
-      style: {
-        padding: '20px',
-        textAlign: 'center',
-        color: 'var(--次要文字颜色)',
-      },
+      style: { padding: '20px', textAlign: 'center', color: 'var(--次要文字颜色)' },
     })
 
     内容.结果容器.appendChild(消息元素)

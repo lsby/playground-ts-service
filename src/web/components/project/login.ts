@@ -9,16 +9,9 @@ type 属性类型 = { username: string; password: string; confirmPassword: strin
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-type 登录表单数据 = {
-  username: string
-  password: string
-}
+type 登录表单数据 = { username: string; password: string }
 
-type 注册表单数据 = {
-  username: string
-  password: string
-  confirmPassword: string
-}
+type 注册表单数据 = { username: string; password: string; confirmPassword: string }
 
 export class 登录组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = ['username', 'password', 'confirmPassword', 'mode']
@@ -168,21 +161,10 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       },
     })
 
-    let 提示区域 = 创建元素('div', {
-      style: {
-        minHeight: '24px',
-        textAlign: 'center',
-      },
-    })
+    let 提示区域 = 创建元素('div', { style: { minHeight: '24px', textAlign: 'center' } })
     提示区域.append(this.结果)
 
-    let 表单容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '16px',
-      },
-    })
+    let 表单容器 = 创建元素('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } })
 
     this.登录表单容器.style.display = 'block'
     this.登录表单容器.appendChild(this.登录表单)
@@ -193,13 +175,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
     表单容器.appendChild(this.登录表单容器)
     表单容器.appendChild(this.注册表单容器)
 
-    let 按钮容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        gap: '8px',
-        marginTop: '8px',
-      },
-    })
+    let 按钮容器 = 创建元素('div', { style: { display: 'flex', gap: '8px', marginTop: '8px' } })
     this.登录按钮 = new 主要按钮({
       文本: '登录',
       元素样式: { flex: '1', padding: '12px', fontSize: '16px', width: '100%' },
@@ -215,13 +191,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
     按钮容器.appendChild(this.登录按钮)
     按钮容器.appendChild(this.注册按钮)
 
-    let 切换容器 = 创建元素('div', {
-      style: {
-        display: 'flex',
-        justifyContent: 'center',
-        marginTop: '8px',
-      },
-    })
+    let 切换容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'center', marginTop: '8px' } })
     this.切换按钮 = new 链接按钮({
       文本: '还没有账号？立即注册',
       元素样式: { fontSize: '14px' },
@@ -307,10 +277,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
         this.结果.textContent = '密码和确认密码不匹配'
         return
       }
-      await API管理器.请求post接口并处理错误('/api/user/register', {
-        userName: 用户名,
-        userPassword: 密码,
-      })
+      await API管理器.请求post接口并处理错误('/api/user/register', { userName: 用户名, userPassword: 密码 })
       this.结果.textContent = '注册成功，请登录'
       await this.设置属性('mode', 'login')
       await this.更新UI()
@@ -320,10 +287,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       let 用户名 = 表单数据.username
       let 密码 = 表单数据.password
 
-      let 调用结果 = await API管理器.请求post接口并处理错误('/api/user/login', {
-        userName: 用户名,
-        userPassword: 密码,
-      })
+      let 调用结果 = await API管理器.请求post接口并处理错误('/api/user/login', { userName: 用户名, userPassword: 密码 })
       API管理器.设置token(调用结果.token)
       // 检查 URL 参数中是否有重定向路径
       let urlParams = new URLSearchParams(window.location.search)
