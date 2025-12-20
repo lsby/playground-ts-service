@@ -12,7 +12,7 @@ export class App {
     let log = globalLog.extend('service')
     await 定时任务管理器.执行([onTimeAlarm, databaseBackupCron])
 
-    let 静态文件目录 = resolve(import.meta.dirname, '../../web')
+    let 静态文件目录 = resolve(import.meta.dirname, '../web')
     let 服务 = new 服务器({
       接口们: interfaceApiList,
       端口: 环境变量.APP_PORT,

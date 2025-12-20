@@ -11,9 +11,10 @@
     "dist"
   ],
   "scripts": {
-    "_build:all": "npm run _build:web && npm run _build:service",
+    "_build:all": "npm run _build:service && npm run _build:web",
     "_build:service": "tsc && tsc-alias -f",
-    "_build:web": "npm run _clean:web && parcel build --no-cache --no-source-maps src/web/page/**/*.html --dist-dir dist/web",
+    "_build:web": "npm run _clean:web && parcel build --no-cache --no-source-maps src/web/page/**/*.html --dist-dir dist/src/web",
+    "_build:web:no-scope-hoist": "npm run _clean:web && parcel build --no-cache --no-source-maps --no-scope-hoist src/web/page/**/*.html --dist-dir dist/src/web",
     "_check:all": "npm run _check:format && npm run _check:lint && npm run _check:type",
     "_check:format": "prettier --write .",
     "_check:lint": "eslint . --fix",

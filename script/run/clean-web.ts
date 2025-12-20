@@ -2,7 +2,7 @@ import { existsSync, rmSync } from 'fs'
 
 function 清理Web目录(): void {
   const 路径们 = [
-    'dist/web',
+    'dist/src/web',
     // '.parcel-cache',
   ]
 

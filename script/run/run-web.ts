@@ -15,7 +15,7 @@ function 启动任务(): void {
       [
         '--no-cache',
         '--dist-dir',
-        'dist/web',
+        'dist/src/web',
         '--watch-for-stdin',
         '--port',
         '4000',
