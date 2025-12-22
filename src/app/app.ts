@@ -17,8 +17,9 @@ export class App {
       接口们: interfaceApiList,
       端口: 环境变量.APP_PORT,
       静态资源路径: 静态文件目录,
-      接口log: globalLog,
-      系统log: globalLog,
+      日志回调: async (level, namespace, content): Promise<void> => {
+        await globalLog.log(level, `[${namespace}] ${content}`)
+      },
     })
     let 服务信息 = await 服务.run()
 
