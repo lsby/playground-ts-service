@@ -86,8 +86,8 @@
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@lsby/eslint-config": "^0.2.31",
-    "@lsby/eslint-plugin": "^0.0.15",
+    "@lsby/eslint-config": "^0.3.14",
+    "@lsby/eslint-plugin": "^0.0.29",
     "@types/bcrypt": "^6.0.0",
     "@types/eslint": "^9.6.1",
     "@types/express": "^4.17.21",

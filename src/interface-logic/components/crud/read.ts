@@ -63,8 +63,6 @@ export class 查询逻辑<
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             基础builder = 基础builder.where(条件[0], 条件[1], 条件[2])
             break
-          default:
-            let _类型验证: never = 条件[1]
         }
       }
     }

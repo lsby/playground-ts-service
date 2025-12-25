@@ -66,13 +66,17 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
 
     try {
       let 结果 = await API管理器.请求post接口('/api/admin-sqlite/get-table-schema', { tableName: 表名 })
-      if (结果.status === 'success') {
-        this.主键列 = 结果.data.columns.filter((列) => 列.pk === 1).map((列) => 列.name)
-        this.列列表 = 结果.data.columns
-      } else {
-        console.error('获取表结构失败:', 结果)
-        this.主键列 = []
-        this.列列表 = []
+      switch (结果.status) {
+        case 'success':
+          this.主键列 = 结果.data.columns.filter((列) => 列.pk === 1).map((列) => 列.name)
+          this.列列表 = 结果.data.columns
+          break
+        case 'fail':
+        case 'unexpected':
+          console.error('获取表结构失败:', 结果)
+          this.主键列 = []
+          this.列列表 = []
+          break
       }
     } catch (错误) {
       console.error('获取表结构失败:', 错误)

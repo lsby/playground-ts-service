@@ -31,12 +31,16 @@ export let 主题管理器 = {
   },
 
   应用主题(): void {
-    if (this.当前主题 === '系统') {
-      // 移除 data-theme 属性，让 CSS 使用媒体查询
-      document.documentElement.removeAttribute('data-theme')
-    } else {
-      // 设置 data-theme 属性为具体的主题
-      document.documentElement.setAttribute('data-theme', this.当前主题 === '亮色' ? 'light' : 'dark')
+    switch (this.当前主题) {
+      case '系统':
+        document.documentElement.removeAttribute('data-theme')
+        break
+      case '亮色':
+        document.documentElement.setAttribute('data-theme', 'light')
+        break
+      case '暗色':
+        document.documentElement.setAttribute('data-theme', 'dark')
+        break
     }
   },
 

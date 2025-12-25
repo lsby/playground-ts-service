@@ -176,18 +176,23 @@ export abstract class 即时任务抽象类<输出类型> {
   }
 
   public 等待完成(): Promise<输出类型> {
-    let 轮询时间 = 100
+    let _轮询时间 = 100
     return new Promise((resolve, reject) => {
       let 检查状态 = (): void => {
         let 状态 = this.获得当前状态()
-        if (状态 === '已完成') {
-          let 结果 = this.获得输出结果() as 输出类型
-          resolve(结果)
-        } else if (状态 === '已失败') {
-          let 错误 = this.获得错误信息()
-          reject(错误 ?? new Error('任务失败'))
-        } else {
-          setTimeout(检查状态, 轮询时间)
+        switch (状态) {
+          case '已完成':
+            let 结果 = this.获得输出结果() as 输出类型
+            resolve(结果)
+            break
+          case '已失败':
+            let 错误 = this.获得错误信息()
+            reject(错误 ?? new Error('任务失败'))
+            break
+          case '等待中':
+          case '运行中':
+            setTimeout(检查状态, _轮询时间)
+            break
         }
       }
       检查状态()

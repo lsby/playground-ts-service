@@ -40,12 +40,16 @@ export class 数据库列表组件 extends 组件基类<属性类型, 发出事�
     let 表列表容器 = this.表列表容器
     try {
       let 结果 = await API管理器.请求post接口('/api/admin-sqlite/get-tables', {})
-      if (结果.status === 'success') {
-        this.渲染表列表(结果.data.tables)
-      } else {
-        表列表容器.innerHTML = ''
-        let 错误消息 = 创建元素('div', { textContent: '获取表列表失败' })
-        表列表容器.appendChild(错误消息)
+      switch (结果.status) {
+        case 'success':
+          this.渲染表列表(结果.data.tables)
+          break
+        case 'fail':
+        case 'unexpected':
+          表列表容器.innerHTML = ''
+          let 错误消息 = 创建元素('div', { textContent: '获取表列表失败' })
+          表列表容器.appendChild(错误消息)
+          break
       }
     } catch (错误) {
       console.error('获取表列表失败:', 错误)
