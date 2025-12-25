@@ -437,11 +437,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     let 文本 = 选中的日志.join('\n')
 
     // 优先使用execCommand方法，这在非HTTPS环境下也能工作
-    let 文本区域 = document.createElement('textarea')
-    文本区域.value = 文本
-    文本区域.style.position = 'fixed'
-    文本区域.style.left = '-9999px'
-    文本区域.style.top = '-9999px'
+    let 文本区域 = 创建元素('textarea', { value: 文本, style: { position: 'fixed', left: '-9999px', top: '-9999px' } })
     document.body.appendChild(文本区域)
     文本区域.focus()
     文本区域.select()
