@@ -267,7 +267,7 @@ class 模态框管理器 {
 
     // 如果栈为空，移除键盘事件
     if (this.模态框栈.length === 0 && this.键盘处理器 !== null) {
-      document.removeEventListener('keydown', this.键盘处理器)
+      document.onkeydown = null
       this.键盘处理器 = null
     }
   }
