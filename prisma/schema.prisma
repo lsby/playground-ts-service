@@ -1,12 +1,10 @@
 datasource db {
   // sqlite
   provider = "sqlite"
-  url      = env("DB_PATH_PRISMA")
 
   // pg/mysql
   // provider          = "postgresql"
   // provider          = "mysql"
-  // url               = env("DB_URL")
   // shadowDatabaseUrl = env("SHADOW_DB_URL")
 }
 

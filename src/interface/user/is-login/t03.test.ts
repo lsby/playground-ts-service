@@ -1,6 +1,5 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
-import axios from 'axios'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
@@ -24,7 +23,12 @@ export default new 接口测试(
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
 
-    return (await axios.post(url, {}, { headers: { authorization: '' } })).data
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', authorization: '' },
+      body: JSON.stringify({}),
+    })
+    return await response.json()
   },
 
   async (中置结果: object): Promise<void> => {
