@@ -1,7 +1,7 @@
 import { 服务器 } from '@lsby/net-core'
 import { resolve } from 'path'
 import { 环境变量 } from '../global/env'
-import { globalLog, 即时任务管理器, 定时任务管理器 } from '../global/global'
+import { globalLog, syncLogCallBack, 即时任务管理器, 定时任务管理器 } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
 import { 报告系统情况任务 } from '../job/instant-job/report-system-status'
 import { databaseBackupCron } from '../job/scheduled-job/database-backup'
@@ -17,9 +17,7 @@ export class App {
       接口们: interfaceApiList,
       端口: 环境变量.APP_PORT,
       静态资源路径: 静态文件目录,
-      日志回调: async (level, namespace, content): Promise<void> => {
-        await globalLog.log(level, `[${namespace}] ${content}`)
-      },
+      日志回调: syncLogCallBack,
     })
     let 服务信息 = await 服务.run()
 

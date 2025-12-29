@@ -10,10 +10,11 @@ import { 环境变量 } from './env'
 export let 即时任务管理器 = new 即时任务管理器类({ 最大并发数: 10, 历史记录保留天数: 7 })
 export let 定时任务管理器 = new 定时任务管理器类()
 export let 日志模型实例 = new 日志模型()
-export let globalLog = new Log(环境变量.DEBUG_NAME).pipe(async (level, namespace, content) => {
-  if (namespace.includes('webSocket插件')) return // 避免无限循环
+export let syncLogCallBack = async (level: string, namespace: string, content: string): Promise<void> => {
+  if (content.includes('WebSocket 未打开，无法发送消息')) return // 避免无限循环
   await 日志模型实例.记录日志(`[${level}] [${namespace}] ${content}`)
-})
+}
+export let globalLog = new Log(环境变量.DEBUG_NAME).pipe(syncLogCallBack)
 export let kysely管理器 = await (async function (): Promise<Kysely管理器<DB>> {
   return Kysely管理器.从适配器创建<DB>(
     await 创建sqlite数据库适配器(环境变量.DB_PATH),
