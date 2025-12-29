@@ -33,6 +33,7 @@ import _src_interface_admin_sqlite_get_table_schema_index_ts from './admin-sqlit
 import _src_interface_admin_sqlite_get_tables_index_ts from './admin-sqlite/get-tables/index'
 import _src_interface_project_get_enable_registration_index_ts from './project/get-enable-registration/index'
 import _src_interface_demo_file_get_file_index_ts from './demo/file/get-file/index'
+import _src_interface_user_update_password_index_ts from './user/update-password/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_backup_database_index_ts,
@@ -67,4 +68,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_get_tables_index_ts,
   _src_interface_project_get_enable_registration_index_ts,
   _src_interface_demo_file_get_file_index_ts,
+  _src_interface_user_update_password_index_ts,
 ]
