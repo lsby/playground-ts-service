@@ -24,6 +24,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
   private 发生了拖动 = false
   private 上一个选中的索引: number | null = null
   private 正在加载 = false
+  private 滚动到底部按钮: 普通按钮 | null = null
 
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().height = '100%'
@@ -63,6 +64,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
         fontSize: '16px',
         fontWeight: 'bold',
         boxShadow: '0 2px 4px var(--深阴影颜色)',
+        opacity: '0.7',
       },
       点击处理函数: (): void => {
         if (this.日志容器 !== null) {
@@ -71,28 +73,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
       },
     })
 
-    let 清空日志按钮 = new 普通按钮({
-      文本: '🗑️',
-      元素样式: {
-        position: 'absolute',
-        bottom: '10px',
-        right: '60px',
-        width: '32px',
-        height: '32px',
-        padding: '0',
-        backgroundColor: 'var(--按钮背景)',
-        color: 'var(--按钮文字)',
-        border: 'none',
-        borderRadius: '50%',
-        cursor: 'pointer',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        boxShadow: '0 2px 4px var(--深阴影颜色)',
-      },
-      点击处理函数: (): void => {
-        this.清空日志()
-      },
-    })
+    this.滚动到底部按钮 = 滚动到底部按钮
 
     // 创建右键菜单
     let 右键菜单 = 创建元素('div', {
@@ -126,7 +107,26 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
       },
     })
 
+    let 清空日志按钮 = new 文本按钮({
+      文本: '清空日志',
+      元素样式: {
+        width: '100%',
+        padding: '8px 16px',
+        backgroundColor: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        textAlign: 'left',
+        fontSize: '14px',
+        color: 'var(--文字颜色)',
+      },
+      点击处理函数: (): void => {
+        this.清空日志()
+        this.隐藏右键菜单()
+      },
+    })
+
     右键菜单.appendChild(复制按钮)
+    右键菜单.appendChild(清空日志按钮)
 
     this.右键菜单 = 右键菜单
     包装器.appendChild(右键菜单)
@@ -134,7 +134,6 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     this.日志容器 = 容器
     包装器.appendChild(容器)
     包装器.appendChild(滚动到底部按钮)
-    包装器.appendChild(清空日志按钮)
     this.shadow.appendChild(包装器)
 
     // 监听滚动事件
@@ -142,6 +141,13 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
       if (this.日志容器 !== null) {
         let 滚动到底部距离 = this.日志容器.scrollHeight - this.日志容器.scrollTop - this.日志容器.clientHeight
         this.自动滚动 = 滚动到底部距离 <= this.滚动阈值
+        if (this.滚动到底部按钮 !== null) {
+          if (滚动到底部距离 <= this.滚动阈值) {
+            this.滚动到底部按钮.style.display = 'none'
+          } else {
+            this.滚动到底部按钮.style.display = 'block'
+          }
+        }
       }
     }
 
@@ -248,7 +254,15 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     // 监听右键菜单
     容器.oncontextmenu = (事件: MouseEvent): void => {
       事件.preventDefault()
-      if (this.选中的索引集合.size > 0 && this.右键菜单 !== null) {
+      let 索引 = this.获取日志行索引(事件.target as HTMLElement)
+      if (索引 !== null && this.选中的索引集合.has(索引) === false) {
+        // 如果点击的项没有被选中，则选中它
+        this.选中的索引集合.clear()
+        this.选中的索引集合.add(索引)
+        this.上一个选中的索引 = 索引
+        this.更新选中状态()
+      }
+      if (this.右键菜单 !== null) {
         let 包装器矩形 = 包装器.getBoundingClientRect()
         this.右键菜单.style.left = `${事件.clientX - 包装器矩形.left}px`
         this.右键菜单.style.top = `${事件.clientY - 包装器矩形.top}px`
