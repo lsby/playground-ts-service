@@ -30,10 +30,13 @@ export class API管理器类 {
   public async 请求post接口<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -41,15 +44,18 @@ export class API管理器类 {
     | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
     | { status: 'unexpected'; data: string }
   > {
-    return await this.执行通用接口请求(接口路径, 'POST', 参数, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
+    return await this.执行通用接口请求(接口路径, 'POST', 参数, ws输出回调, ws连接回调, ws关闭回调, ws错误回调)
   }
   public async 请求get接口<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -57,16 +63,19 @@ export class API管理器类 {
     | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
     | { status: 'unexpected'; data: string }
   > {
-    return await this.执行通用接口请求(接口路径, 'GET', 参数, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
+    return await this.执行通用接口请求(接口路径, 'GET', 参数, ws输出回调, ws连接回调, ws关闭回调, ws错误回调)
   }
 
   public async 请求post接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -74,16 +83,19 @@ export class API管理器类 {
   > {
     return await this.执行接口请求并处理错误(
       接口路径,
-      async () => await this.请求post接口(接口路径, 参数, ws信息回调, ws连接回调, ws关闭回调, ws错误回调),
+      async () => await this.请求post接口(接口路径, 参数, ws输出回调, ws连接回调, ws关闭回调, ws错误回调),
     )
   }
   public async 请求get接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     参数: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'>,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -91,17 +103,20 @@ export class API管理器类 {
   > {
     return await this.执行接口请求并处理错误(
       接口路径,
-      async () => await this.请求get接口(接口路径, 参数, ws信息回调, ws连接回调, ws关闭回调, ws错误回调),
+      async () => await this.请求get接口(接口路径, 参数, ws输出回调, ws连接回调, ws关闭回调, ws错误回调),
     )
   }
 
   public async 请求post表单接口<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     表单数据: FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -109,15 +124,18 @@ export class API管理器类 {
     | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
     | { status: 'unexpected'; data: string }
   > {
-    return await this.执行通用接口请求(接口路径, 'POST', 表单数据, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
+    return await this.执行通用接口请求(接口路径, 'POST', 表单数据, ws输出回调, ws连接回调, ws关闭回调, ws错误回调)
   }
   public async 请求get表单接口<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     表单数据: FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -125,16 +143,19 @@ export class API管理器类 {
     | 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'successOutput'>
     | { status: 'unexpected'; data: string }
   > {
-    return await this.执行通用接口请求(接口路径, 'GET', 表单数据, ws信息回调, ws连接回调, ws关闭回调, ws错误回调)
+    return await this.执行通用接口请求(接口路径, 'GET', 表单数据, ws输出回调, ws连接回调, ws关闭回调, ws错误回调)
   }
 
   public async 请求post表单接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     表单数据: FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -142,16 +163,19 @@ export class API管理器类 {
   > {
     return await this.执行接口请求并处理错误(
       接口路径,
-      async () => await this.请求post表单接口(接口路径, 表单数据, ws信息回调, ws连接回调, ws关闭回调, ws错误回调),
+      async () => await this.请求post表单接口(接口路径, 表单数据, ws输出回调, ws连接回调, ws关闭回调, ws错误回调),
     )
   }
   public async 请求get表单接口并处理错误<接口路径 extends InterfaceType[number]['path']>(
     接口路径: 接口路径,
     表单数据: FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -159,7 +183,7 @@ export class API管理器类 {
   > {
     return await this.执行接口请求并处理错误(
       接口路径,
-      async () => await this.请求get表单接口(接口路径, 表单数据, ws信息回调, ws连接回调, ws关闭回调, ws错误回调),
+      async () => await this.请求get表单接口(接口路径, 表单数据, ws输出回调, ws连接回调, ws关闭回调, ws错误回调),
     )
   }
 
@@ -167,10 +191,13 @@ export class API管理器类 {
     接口路径: 接口路径,
     方法: 'POST' | 'GET',
     数据: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'input'> | FormData,
-    ws信息回调?: (
-      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'webSocketData'>,
+    ws输出回调?: (
+      data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsOutput'>,
     ) => Promise<void>,
-    ws连接回调?: (ws: WebSocket) => Promise<void>,
+    ws连接回调?: (
+      ws: WebSocket,
+      发送消息: (data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>) => void,
+    ) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -184,10 +211,21 @@ export class API管理器类 {
         头['authorization'] = this.token
       }
       let ws回调选项: Record<string, any> = {
-        ...(ws信息回调 !== void 0 ? { ws信息回调: ws信息回调 } : {}),
+        ...(ws输出回调 !== void 0 ? { ws信息回调: ws输出回调 } : {}),
         ...(ws关闭回调 !== void 0 ? { ws关闭回调: ws关闭回调 } : {}),
         ...(ws错误回调 !== void 0 ? { ws错误回调: ws错误回调 } : {}),
-        ...(ws连接回调 !== void 0 ? { ws连接回调: ws连接回调 } : {}),
+        ...(ws连接回调 !== void 0
+          ? {
+              ws连接回调: async (ws: WebSocket): Promise<void> => {
+                let 发送消息 = (
+                  data: 获得对象属性<不安全的通过路径获得接口定义<接口路径, InterfaceType>, 'wsInput'>,
+                ): void => {
+                  ws.send(JSON.stringify(data))
+                }
+                await ws连接回调(ws, 发送消息)
+              },
+            }
+          : {}),
       }
 
       if (数据 instanceof FormData) {

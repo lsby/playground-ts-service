@@ -46,7 +46,12 @@ class 定时任务实现 extends 定时任务抽象类 {
       await 备份数据库.实现(
         {
           kysely: kysely管理器,
-          ws操作: { 关闭ws连接: async () => {}, 发送ws信息: async () => {}, 设置清理函数: async () => {} },
+          ws操作: {
+            关闭ws连接: async () => {},
+            发送ws信息: async () => {},
+            设置清理函数: async () => {},
+            监听ws信息: async () => {},
+          },
         },
         { isAuto: true, userId: 管理员用户.id },
         { log, 请求id: '定时任务' },

@@ -23,7 +23,7 @@ let 接口逻辑实现 = 接口逻辑
     接口逻辑.构造(
       [
         new JSON解析插件(z.object({ 任务id: z.string() }), {}),
-        new WebSocket插件(z.object({ 新日志: z.object({ 时间: z.number(), 消息: z.string() }) })),
+        new WebSocket插件(z.object({ 新日志: z.object({ 时间: z.number(), 消息: z.string() }) }), z.object({})),
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)

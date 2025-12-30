@@ -28,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑
   )
   .混合(
     接口逻辑.构造(
-      [kysely插件, new WebSocket插件(z.object({ message: z.string() }))],
+      [kysely插件, new WebSocket插件(z.object({ message: z.string() }), z.object({}))],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let log = 请求附加参数.log
           .extend(接口路径)
