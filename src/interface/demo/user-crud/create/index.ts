@@ -1,5 +1,5 @@
 import {
-  JSON解析插件,
+  JSON参数解析插件,
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
@@ -22,7 +22,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' })))
   .混合(
     接口逻辑.构造(
-      [new JSON解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
+      [new JSON参数解析插件(z.object({ name: z.string(), pwd: z.string() }), {}), kysely插件],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let log = 请求附加参数.log
         return 参数.kysely.执行事务Either(async (trx) => {

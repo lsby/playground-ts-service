@@ -1,5 +1,5 @@
 import {
-  JSON解析插件,
+  JSON参数解析插件,
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
@@ -14,7 +14,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().混合(
   接口逻辑.构造(
-    [new JSON解析插件(z.object({ a: z.number(), b: z.number() }), {})],
+    [new JSON参数解析插件(z.object({ a: z.number(), b: z.number() }), {})],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
       return new Right({ res: 参数.body.a + 参数.body.b })

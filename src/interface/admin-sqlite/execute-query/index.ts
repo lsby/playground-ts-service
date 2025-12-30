@@ -1,5 +1,5 @@
 import {
-  JSON解析插件,
+  JSON参数解析插件,
   常用形式接口封装,
   接口逻辑,
   计算接口逻辑JSON参数,
@@ -21,7 +21,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     接口逻辑.构造(
       [
-        new JSON解析插件(
+        new JSON参数解析插件(
           z.object({ sql: z.string(), parameters: z.array(z.union([z.string(), z.number(), z.boolean(), z.null()])) }),
           {},
         ),

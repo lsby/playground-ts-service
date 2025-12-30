@@ -1,5 +1,5 @@
 import {
-  JSON解析插件,
+  JSON参数解析插件,
   WebSocket插件,
   常用形式接口封装,
   接口逻辑,
@@ -22,7 +22,7 @@ let 接口逻辑实现 = 接口逻辑
   .混合(
     接口逻辑.构造(
       [
-        new JSON解析插件(z.object({ 任务id: z.string() }), {}),
+        new JSON参数解析插件(z.object({ 任务id: z.string() }), {}),
         new WebSocket插件(z.object({ 新日志: z.object({ 时间: z.number(), 消息: z.string() }) }), z.object({})),
       ],
       async (参数, 逻辑附加参数, 请求附加参数) => {

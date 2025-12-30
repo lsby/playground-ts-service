@@ -62,7 +62,7 @@
     "@capacitor/android": "^7.4.3",
     "@capacitor/core": "^7.4.0",
     "@capacitor/dialog": "^7.0.2",
-    "@lsby/net-core": "^0.12.0",
+    "@lsby/net-core": "^0.12.3",
     "@lsby/net-core-file-upload": "^0.3.0",
     "@lsby/net-core-jwt": "^0.3.0",
     "@lsby/net-core-kysely": "^0.2.0",

@@ -1,4 +1,4 @@
-import { JSON解析插件, 合并插件结果, 接口逻辑, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
+import { JSON参数解析插件, 合并插件结果, 接口逻辑, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
@@ -6,24 +6,24 @@ type 逻辑错误类型 = '用户名不能包含空格' | '用户名不能为空
 type 逻辑正确类型<字段类型 extends string> = Record<字段类型, string>
 
 export class 检查用户名<逻辑附加参数类型 extends {}, 字段类型 extends string> extends 接口逻辑<
-  [JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>],
+  [JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>],
   逻辑附加参数类型,
   逻辑错误类型,
   逻辑正确类型<字段类型>
 > {
-  private 插件: [JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]
+  private 插件: [JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]
 
   public constructor(private 字段名: 字段类型) {
     super()
-    this.插件 = [new JSON解析插件(z.object({ ...构造对象(this.字段名, z.string()) }), {})]
+    this.插件 = [new JSON参数解析插件(z.object({ ...构造对象(this.字段名, z.string()) }), {})]
   }
 
-  public override 获得插件们(): [JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>] {
+  public override 获得插件们(): [JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>] {
     return this.插件
   }
 
   public override async 实现(
-    参数: 合并插件结果<[JSON解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]>,
+    参数: 合并插件结果<[JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
   ): Promise<Either<逻辑错误类型, 逻辑正确类型<字段类型>>> {
