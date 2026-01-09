@@ -25,7 +25,6 @@ export default new 接口测试(
       .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 0 })
       .execute()
   },
-
   async () => {
     let base64Image = 'data:image/png;base64,iVBORw0KGgo...'
     let base64Data = base64Image.replace(/^data:image\/\w+;base64,/, '')
@@ -53,6 +52,5 @@ export default new 接口测试(
     let headers: Record<string, string> = { authorization: token }
     return (await fetch(url, { method: 'POST', headers, body: formData })).json()
   },
-
   async (_解析结果) => {},
 )

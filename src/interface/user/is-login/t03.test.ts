@@ -20,7 +20,6 @@ export default new 接口测试(
       .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 0 })
       .execute()
   },
-
   async (): Promise<object> => {
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
@@ -32,7 +31,6 @@ export default new 接口测试(
     })
     return await response.json()
   },
-
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data.isLogin, false)
   },

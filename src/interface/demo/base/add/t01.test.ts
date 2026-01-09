@@ -7,11 +7,9 @@ export default new 接口测试(
   接口,
   '成功',
   async (): Promise<void> => {},
-
   async (): Promise<object> => {
     return POST请求用例(接口, { a: 1, b: 2 })
   },
-
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data.res, 3)
   },

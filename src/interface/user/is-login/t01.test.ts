@@ -12,11 +12,9 @@ export default new 接口测试(
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
   },
-
   async (): Promise<object> => {
     return POST请求用例(接口, {})
   },
-
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data.isLogin, false)
   },

@@ -18,11 +18,9 @@ export default new 接口测试(
       .values({ id: randomUUID(), is_initialized: 1, enable_register: 1, version: version })
       .execute()
   },
-
   async (): Promise<object> => {
     return POST请求用例(接口, { userName: 'admin', userPassword: '123456' })
   },
-
   async (_解析结果): Promise<void> => {
     let db = kysely管理器.获得句柄()
     let r = await db.selectFrom('user').select('id').execute()

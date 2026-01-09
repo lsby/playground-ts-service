@@ -22,7 +22,6 @@ export default new 接口测试(
       .values({ id: id, name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 1 })
       .execute()
   },
-
   async (): Promise<object> => {
     return POST请求用例(
       接口,
@@ -30,6 +29,5 @@ export default new 接口测试(
       { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
     )
   },
-
   async (_解析结果): Promise<void> => {},
 )

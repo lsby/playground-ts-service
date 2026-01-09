@@ -14,11 +14,9 @@ export default new 接口测试(
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
   },
-
   async (): Promise<object> => {
     return POST请求用例(接口, { name: name, pwd: pwd })
   },
-
   async (_解析结果): Promise<void> => {
     let db = kysely管理器.获得句柄()
     let userRow = await db.selectFrom('user').select('id').where('name', '=', name).executeTakeFirst()
