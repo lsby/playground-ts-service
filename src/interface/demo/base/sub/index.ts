@@ -22,7 +22,7 @@ let 接口逻辑实现 = 接口逻辑
       [new JSON参数解析插件(z.object({ a: z.number(), b: z.number() }), {})],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let log = 请求附加参数.log.extend(接口路径)
-        let 调用结果 = await 加法示例接口.实现({ body: { a: 参数.body.a, b: 参数.body.b * -1 } }, 逻辑附加参数, {
+        let 调用结果 = await 加法示例接口.调用({ body: { a: 参数.body.a, b: 参数.body.b * -1 } }, 逻辑附加参数, {
           ...请求附加参数,
           log,
         })

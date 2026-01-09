@@ -59,7 +59,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
               return new Left('就要失败' as const)
             }),
           )
-          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, 逻辑附加参数, { ...请求附加参数, log })
+          .调用({ kysely: Kysely管理器.从句柄创建(trx) }, 逻辑附加参数, { ...请求附加参数, log })
       })
     },
   ),

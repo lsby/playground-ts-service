@@ -22,7 +22,7 @@ let 接口逻辑实现 = 接口逻辑
           .空逻辑()
           .绑定(new 删除逻辑(kysely插件, 'user_config', async () => ({ 条件们: [['user_id', '=', 逻辑附加参数.id]] })))
           .绑定(new 删除逻辑(kysely插件, 'user', async () => ({ 条件们: [['id', '=', 逻辑附加参数.id]] })))
-          .实现({ kysely: Kysely管理器.从句柄创建(trx) }, {}, { ...请求附加参数, log })
+          .调用({ kysely: Kysely管理器.从句柄创建(trx) }, {}, { ...请求附加参数, log })
       })
     }),
   )

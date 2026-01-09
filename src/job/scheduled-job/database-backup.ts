@@ -44,7 +44,7 @@ class 定时任务实现 extends 定时任务抽象类 {
       await log.info(`备份路径：${环境变量.DB_BACKUP_PATH}`)
 
       await log.info('开始备份数据库')
-      await 备份数据库.实现(
+      await 备份数据库.调用(
         {
           kysely: kysely管理器,
           ws操作: {
