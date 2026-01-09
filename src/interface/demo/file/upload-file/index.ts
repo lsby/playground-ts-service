@@ -1,10 +1,4 @@
-import {
-  常用形式接口封装,
-  接口逻辑,
-  计算接口逻辑JSON参数,
-  计算接口逻辑正确结果,
-  计算接口逻辑错误结果,
-} from '@lsby/net-core'
+import { 接口逻辑, 计算接口逻辑JSON参数, 计算接口逻辑正确结果, 计算接口逻辑错误结果 } from '@lsby/net-core'
 import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
@@ -17,8 +11,8 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(new 检查登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id' })))
-  .混合(
+  .绑定(new 检查登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id' })))
+  .绑定(
     接口逻辑.构造(
       [new 文件上传插件({ 文件最大大小: 环境变量.UPLOAD_MAX_FILE_SIZE * 1024 * 1024 })],
       async (参数, 逻辑附加参数, 请求附加参数) => {
@@ -41,4 +35,5 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.enum(['未登录'])
 let 接口正确类型描述 = z.object({})
 
-export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)
+import { 常用接口返回器, 接口 } from '@lsby/net-core'
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

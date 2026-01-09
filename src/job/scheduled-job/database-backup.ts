@@ -1,3 +1,4 @@
+import { 默认请求附加参数 } from '@lsby/net-core'
 import { Log } from '@lsby/ts-log'
 import fs from 'fs'
 import path from 'path'
@@ -50,11 +51,11 @@ class 定时任务实现 extends 定时任务抽象类 {
             关闭ws连接: async () => {},
             发送ws信息: async () => {},
             设置清理函数: async () => {},
-            监听ws信息: async () => {},
+            监听ws信息: async () => null,
           },
         },
         { isAuto: true, userId: 管理员用户.id },
-        { log, 请求id: '定时任务' },
+        { ...默认请求附加参数, log, 请求id: '定时任务' },
       )
       await log.info('数据库备份完成')
 

@@ -1,10 +1,4 @@
-import {
-  常用形式接口封装,
-  接口逻辑,
-  计算接口逻辑JSON参数,
-  计算接口逻辑正确结果,
-  计算接口逻辑错误结果,
-} from '@lsby/net-core'
+import { 接口逻辑, 计算接口逻辑JSON参数, 计算接口逻辑正确结果, 计算接口逻辑错误结果 } from '@lsby/net-core'
 import { Left, Right } from '@lsby/ts-fp-data'
 import bcrypt from 'bcrypt'
 import { randomUUID } from 'crypto'
@@ -22,7 +16,7 @@ let 用户表 = z.object({ id: z.string(), name: z.string(), pwd: z.string() })
 
 let 接口逻辑实现 = 接口逻辑
   .空逻辑()
-  .混合(
+  .绑定(
     接口逻辑.构造([kysely插件], async (参数, _逻辑附加参数, _请求附加参数) => {
       let 配置 = await 参数.kysely.获得句柄().selectFrom('system_config').select('enable_register').executeTakeFirst()
       if ((配置?.enable_register ?? 0) !== 1) {
@@ -31,9 +25,9 @@ let 接口逻辑实现 = 接口逻辑
       return new Right({})
     }),
   )
-  .混合(new 检查用户名('userName'))
-  .混合(new 检查密码('userPassword'))
-  .混合(
+  .绑定(new 检查用户名('userName'))
+  .绑定(new 检查密码('userPassword'))
+  .绑定(
     new 检查唯一性({
       表名: 'user',
       表结构zod: 用户表,
@@ -43,7 +37,7 @@ let 接口逻辑实现 = 接口逻辑
       kysely插件: kysely插件,
     }),
   )
-  .混合(
+  .绑定(
     接口逻辑.构造([kysely插件], async (参数, 逻辑附加参数, _请求附加参数) => {
       return 参数.kysely.执行事务Either(async (trx) => {
         let userId = randomUUID()
@@ -81,4 +75,5 @@ let 接口错误类型描述 = z.enum([
 ])
 let 接口正确类型描述 = z.object({})
 
-export default new 常用形式接口封装(接口路径, 接口方法, 接口逻辑实现, 接口错误类型描述, 接口正确类型描述)
+import { 常用接口返回器, 接口 } from '@lsby/net-core'
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

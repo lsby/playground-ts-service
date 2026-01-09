@@ -6,6 +6,8 @@ export let 环境变量 = await new Env({
   环境描述: z.object({
     // 环境名称
     NODE_ENV: z.enum(['development', 'production', 'test']),
+    // 运行模式
+    RUN_MODE: z.enum(['tsx', 'dist']),
     // 调试名称
     DEBUG_NAME: z.string(),
     // ========= 数据库部分 开始 =========
