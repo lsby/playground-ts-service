@@ -81,7 +81,7 @@ export class 数据库结构组件 extends 组件基类<属性类型, 发出事�
         }
 
         try {
-          let 结果 = await API管理器.请求post接口('/api/admin-sqlite/get-table-schema', { tableName: 表名 })
+          let 结果 = await API管理器.请求postJson('/api/admin-sqlite/get-table-schema', { tableName: 表名 })
           if (结果.status === 'success') {
             let 数据: 表结构数据项[] = (
               结果.data.columns as Array<{

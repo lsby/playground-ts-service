@@ -1,4 +1,4 @@
-import { JSON参数解析插件, 合并插件结果, 接口逻辑, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
+import { JSON参数解析插件, 合并插件正确结果, 接口逻辑, 构造对象, 请求附加参数类型 } from '@lsby/net-core'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
@@ -23,13 +23,13 @@ export class 检查密码<逻辑附加参数类型 extends {}, 字段类型 exte
   }
 
   public override async 实现(
-    参数: 合并插件结果<[JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]>,
+    参数: 合并插件正确结果<[JSON参数解析插件<z.ZodObject<{ [K in 字段类型]: z.ZodString }>>]>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
   ): Promise<Either<逻辑错误类型, 逻辑正确类型<字段类型>>> {
     let _log = 请求附加参数.log.extend(检查密码.name)
 
-    let body = 参数.body
+    let body = 参数.json
     if (body === void 0) return new Left('缺少必要参数')
 
     if (body[this.字段名].includes(' ')) return new Left('密码不能包含空格')

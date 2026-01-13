@@ -244,7 +244,7 @@ export class 数据库执行查询组件 extends 组件基类<属性类型, 发�
     }
 
     try {
-      let 结果 = await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: [] })
+      let 结果 = await API管理器.请求postJson('/api/admin-sqlite/execute-query', { sql, parameters: [] })
       switch (结果.status) {
         case 'success':
           this.选项卡结果映射.set(tabId, 结果.data)

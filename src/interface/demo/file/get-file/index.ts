@@ -1,8 +1,8 @@
 import {
   接口,
   接口逻辑,
-  文件下载返回器,
-  计算接口逻辑GET参数,
+  文件流式下载返回器,
+  计算接口逻辑Query参数,
   计算接口逻辑正确结果,
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
@@ -19,8 +19,8 @@ let 接口逻辑实现 = 接口逻辑.构造([], async (_参数, _逻辑附加�
   return new Right({ data: fileStream, filename: 'data.txt', mimeType: 'application/octet-stream' })
 })
 
-type _接口逻辑GET参数 = 计算接口逻辑GET参数<typeof 接口逻辑实现>
+type _接口逻辑Query参数 = 计算接口逻辑Query参数<typeof 接口逻辑实现>
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
-export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 文件下载返回器(z.never()))
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 文件流式下载返回器(z.never()))

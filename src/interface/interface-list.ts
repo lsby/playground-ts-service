@@ -27,13 +27,13 @@ import _src_interface_admin_job_scheduled_get_log_index_ts from './admin-job/sch
 import _src_interface_admin_job_scheduled_list_index_ts from './admin-job/scheduled/list/index'
 import _src_interface_admin_job_scheduled_manual_trigger_index_ts from './admin-job/scheduled/manual-trigger/index'
 import _src_interface_admin_system_log_get_logs_index_ts from './admin-system-log/get-logs/index'
-import _src_interface_admin_sqlite_execute_query_index_ts from './admin-sqlite/execute-query/index'
 import _src_interface_admin_sqlite_get_database_info_index_ts from './admin-sqlite/get-database-info/index'
 import _src_interface_admin_sqlite_get_table_schema_index_ts from './admin-sqlite/get-table-schema/index'
 import _src_interface_admin_sqlite_get_tables_index_ts from './admin-sqlite/get-tables/index'
 import _src_interface_project_get_enable_registration_index_ts from './project/get-enable-registration/index'
 import _src_interface_demo_file_get_file_index_ts from './demo/file/get-file/index'
 import _src_interface_user_update_password_index_ts from './user/update-password/index'
+import _src_interface_admin_sqlite_execute_query_index_ts from './admin-sqlite/execute-query/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_backup_database_index_ts,
@@ -62,11 +62,11 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_job_scheduled_list_index_ts,
   _src_interface_admin_job_scheduled_manual_trigger_index_ts,
   _src_interface_admin_system_log_get_logs_index_ts,
-  _src_interface_admin_sqlite_execute_query_index_ts,
   _src_interface_admin_sqlite_get_database_info_index_ts,
   _src_interface_admin_sqlite_get_table_schema_index_ts,
   _src_interface_admin_sqlite_get_tables_index_ts,
   _src_interface_project_get_enable_registration_index_ts,
   _src_interface_demo_file_get_file_index_ts,
   _src_interface_user_update_password_index_ts,
+  _src_interface_admin_sqlite_execute_query_index_ts,
 ]

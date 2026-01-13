@@ -1,5 +1,7 @@
 import {
   JSON参数解析插件,
+  常用接口返回器,
+  接口,
   接口逻辑,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
@@ -33,7 +35,7 @@ let 接口逻辑实现 = 接口逻辑
 
         try {
           let 结果 = await kysely.executeQuery<{ rows: Record<any, any> }>(
-            CompiledQuery.raw(参数.body.sql, 参数.body.parameters),
+            CompiledQuery.raw(参数.json.sql, 参数.json.parameters),
           )
           return new Right({
             rows: 结果.rows,
@@ -58,5 +60,4 @@ let 接口正确类型描述 = z.object({
   insertId: z.number().optional(),
 })
 
-import { 常用接口返回器, 接口 } from '@lsby/net-core'
 export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

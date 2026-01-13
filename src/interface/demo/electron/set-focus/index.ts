@@ -1,5 +1,7 @@
 import {
   JSON参数解析插件,
+  常用接口返回器,
+  接口,
   接口逻辑,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
@@ -17,7 +19,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
       let { 主窗口 } = await import('../../../../electron')
-      主窗口?.setFocusable(参数.body.value)
+      主窗口?.setFocusable(参数.json.value)
       return new Right({})
     },
   ),
@@ -30,5 +32,4 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.never()
 let 接口正确类型描述 = z.object({})
 
-import { 常用接口返回器, 接口 } from '@lsby/net-core'
 export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

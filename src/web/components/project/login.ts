@@ -32,7 +32,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
   protected override async 当加载时(): Promise<void> {
     // 获取注册启用状态
     try {
-      let 响应 = await API管理器.请求post接口并处理错误('/api/project/get-enable-registration', {})
+      let 响应 = await API管理器.请求postJson并处理错误('/api/project/get-enable-registration', {})
       this.enableRegister = 响应.enable_register
     } catch (_e) {
       this.enableRegister = false
@@ -278,7 +278,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
         this.结果.textContent = '密码和确认密码不匹配'
         return
       }
-      await API管理器.请求post接口并处理错误('/api/user/register', { userName: 用户名, userPassword: 密码 })
+      await API管理器.请求postJson并处理错误('/api/user/register', { userName: 用户名, userPassword: 密码 })
       this.结果.textContent = '注册成功，请登录'
       await this.设置属性('mode', 'login')
       await this.更新UI()
@@ -288,7 +288,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       let 用户名 = 表单数据.username
       let 密码 = 表单数据.password
 
-      let 调用结果 = await API管理器.请求post接口并处理错误('/api/user/login', { userName: 用户名, userPassword: 密码 })
+      let 调用结果 = await API管理器.请求postJson并处理错误('/api/user/login', { userName: 用户名, userPassword: 密码 })
       API管理器.设置token(调用结果.token)
       // 检查 URL 参数中是否有重定向路径
       let urlParams = new URLSearchParams(window.location.search)

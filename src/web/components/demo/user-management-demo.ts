@@ -50,7 +50,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
               警告提示('未输入数据')
               return
             }
-            await API管理器.请求post接口并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
+            await API管理器.请求postJson并处理错误('/api/demo/user-crud/update', { newName: name, userId: 数据项.id })
           },
         },
         {
@@ -58,7 +58,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
           回调: async (数据项: 数据项): Promise<void> => {
             let 确认结果 = await 显示确认对话框('你确定要删除这条数据吗？')
             if (确认结果 === false) return
-            await API管理器.请求post接口并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
+            await API管理器.请求postJson并处理错误('/api/demo/user-crud/delete', { id: 数据项.id })
           },
         },
         {
@@ -69,7 +69,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
         },
       ],
       加载数据: async (参数: 数据表加载数据参数<数据项>): Promise<{ 数据: 数据项[]; 总数: number }> => {
-        let { data, total } = await API管理器.请求post接口并处理错误('/api/demo/user-crud/read', {
+        let { data, total } = await API管理器.请求postJson并处理错误('/api/demo/user-crud/read', {
           page: 参数.页码,
           size: 参数.每页数量,
           ...(参数.排序列表 !== void 0 && 参数.排序列表.length > 0 ? { orderBy: 参数.排序列表 } : {}),
@@ -140,7 +140,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
         }
 
         // 调用 API
-        await API管理器.请求post接口并处理错误('/api/demo/user-crud/create', {
+        await API管理器.请求postJson并处理错误('/api/demo/user-crud/create', {
           name: 表单数据.username,
           pwd: 表单数据.password,
         })
@@ -209,7 +209,7 @@ export class 演示用户管理组件 extends 组件基类<属性类型, 发出�
         }
 
         // 调用 API
-        await API管理器.请求post接口并处理错误('/api/user/update-password', {
+        await API管理器.请求postJson并处理错误('/api/user/update-password', {
           userId: 数据项.id,
           newPassword: 表单数据.newPassword,
         })

@@ -1,4 +1,4 @@
-import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
+import { 合并插件正确结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Right } from '@lsby/ts-fp-data'
 import { undefined加可选, 从插件类型计算DB, 已审阅的any, 替换ColumnType } from '../../tools/types'
@@ -21,7 +21,7 @@ export class 注册逻辑<
     return [this.kysely插件]
   }
   public override async 实现(
-    参数: 合并插件结果<[插件类型]>,
+    参数: 合并插件正确结果<[插件类型]>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
   ): Promise<Either<never, {}>> {

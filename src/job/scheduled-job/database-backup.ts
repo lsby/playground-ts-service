@@ -46,6 +46,7 @@ class 定时任务实现 extends 定时任务抽象类 {
       await log.info('开始备份数据库')
       await 备份数据库.调用(
         {
+          json: {},
           kysely: kysely管理器,
           ws操作: {
             关闭ws连接: async () => {},

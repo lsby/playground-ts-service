@@ -1,5 +1,7 @@
 import {
   JSON参数解析插件,
+  常用接口返回器,
+  接口,
   接口逻辑,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
@@ -25,7 +27,7 @@ let 接口逻辑实现 = 接口逻辑
         await 参数.kysely
           .获得句柄()
           .updateTable('system_config')
-          .set({ enable_register: 参数.body.enable_register ? 1 : 0 })
+          .set({ enable_register: 参数.json.enable_register ? 1 : 0 })
           .execute()
         return new Right({})
       },
@@ -39,5 +41,4 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.enum(['未登录', '非管理员', '输入参数错误'])
 let 接口正确类型描述 = z.object({})
 
-import { 常用接口返回器, 接口 } from '@lsby/net-core'
 export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

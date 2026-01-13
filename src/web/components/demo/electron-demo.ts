@@ -17,7 +17,7 @@ export class 演示electron组件 extends 组件基类<属性类型, 发出事�
     let 提示框测试 = new 主要按钮({
       文本: '提示框测试',
       点击处理函数: async (): Promise<void> => {
-        await API管理器.请求post接口并处理错误('/api/demo/electron/dialog', {})
+        await API管理器.请求postJson并处理错误('/api/demo/electron/dialog', {})
       },
     })
     this.shadow.append(提示框测试)
@@ -25,7 +25,7 @@ export class 演示electron组件 extends 组件基类<属性类型, 发出事�
     let 允许焦点 = new 主要按钮({
       文本: '允许焦点',
       点击处理函数: async (): Promise<void> => {
-        await API管理器.请求post接口并处理错误('/api/demo/electron/set-focus', { value: true })
+        await API管理器.请求postJson并处理错误('/api/demo/electron/set-focus', { value: true })
       },
     })
     this.shadow.append(允许焦点)
@@ -33,7 +33,7 @@ export class 演示electron组件 extends 组件基类<属性类型, 发出事�
     let 不允许焦点 = new 主要按钮({
       文本: '不允许焦点',
       点击处理函数: async (): Promise<void> => {
-        await API管理器.请求post接口并处理错误('/api/demo/electron/set-focus', { value: false })
+        await API管理器.请求postJson并处理错误('/api/demo/electron/set-focus', { value: false })
       },
     })
     this.shadow.append(不允许焦点)

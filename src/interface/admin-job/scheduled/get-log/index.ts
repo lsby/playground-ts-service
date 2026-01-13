@@ -1,6 +1,8 @@
 import {
   JSON参数解析插件,
   WebSocket插件,
+  常用接口返回器,
+  接口,
   接口逻辑,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
@@ -27,7 +29,7 @@ let 接口逻辑实现 = 接口逻辑
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
 
-        let 任务 = 定时任务管理器.通过id获得任务(参数.body.任务id)
+        let 任务 = 定时任务管理器.通过id获得任务(参数.json.任务id)
         if (任务 === null) {
           throw new Error('任务不存在')
         }
@@ -53,5 +55,4 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.enum(['未登录', '非管理员'])
 let 接口正确类型描述 = z.object({ 日志列表: z.array(z.object({ 时间: z.number(), 消息: z.string() })) })
 
-import { 常用接口返回器, 接口 } from '@lsby/net-core'
 export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

@@ -65,7 +65,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     if (表名 === void 0 || 表名 === null) return
 
     try {
-      let 结果 = await API管理器.请求post接口('/api/admin-sqlite/get-table-schema', { tableName: 表名 })
+      let 结果 = await API管理器.请求postJson('/api/admin-sqlite/get-table-schema', { tableName: 表名 })
       switch (结果.status) {
         case 'success':
           this.主键列 = 结果.data.columns.filter((列) => 列.pk === 1).map((列) => 列.name)
@@ -168,7 +168,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
 
           // 查询总数
           let 总数sql = `SELECT COUNT(*) as count FROM \`${表名}\`` + 筛选语句
-          let 总数结果 = await API管理器.请求post接口('/api/admin-sqlite/execute-query', {
+          let 总数结果 = await API管理器.请求postJson('/api/admin-sqlite/execute-query', {
             sql: 总数sql,
             parameters: 筛选参数,
           })
@@ -183,7 +183,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
           let sql = `SELECT * FROM \`${表名}\`` + 筛选语句 + 排序语句 + ` LIMIT ? OFFSET ?`
           筛选参数.push(参数.每页数量, 偏移)
 
-          let 结果 = await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 筛选参数 })
+          let 结果 = await API管理器.请求postJson('/api/admin-sqlite/execute-query', { sql, parameters: 筛选参数 })
 
           if (结果.status === 'success') {
             return { 数据: 结果.data.rows, 总数 }
@@ -341,7 +341,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `INSERT INTO \`${表名}\` (${列列表.join(', ')}) VALUES (${值列表.join(', ')})`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
+      await API管理器.请求postJson('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       await 关闭模态框()
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
@@ -384,7 +384,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `UPDATE \`${表名}\` SET ${设置条件列表.join(', ')} WHERE ${where条件列表.join(' AND ')}`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
+      await API管理器.请求postJson('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       await 关闭模态框()
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
@@ -418,7 +418,7 @@ export class 数据库数据组件 extends 组件基类<属性类型, 发出事�
     let sql = `DELETE FROM \`${表名}\` WHERE ${where条件列表.join(' AND ')}`
 
     try {
-      await API管理器.请求post接口('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
+      await API管理器.请求postJson('/api/admin-sqlite/execute-query', { sql, parameters: 参数列表 })
       if (this.表格组件 !== null) {
         await this.表格组件.刷新数据()
       }

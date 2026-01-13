@@ -1,4 +1,4 @@
-import { 合并插件结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
+import { 合并插件正确结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
 import { JWT插件 } from '@lsby/net-core-jwt'
 import { Kysely插件 } from '@lsby/net-core-kysely'
 import { Either, Left, Right } from '@lsby/ts-fp-data'
@@ -27,7 +27,7 @@ export class 检查登录<
     return this.插件们
   }
   public override async 实现(
-    参数: 合并插件结果<插件类型>,
+    参数: 合并插件正确结果<插件类型>,
     逻辑附加参数: 逻辑附加参数类型,
     请求附加参数: 请求附加参数类型,
   ): Promise<Either<逻辑错误类型, { userId: string }>> {

@@ -14,7 +14,7 @@ export class 用户信息组件 extends 组件基类<属性类型, 发出事件�
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 用户信息 = await API管理器.请求post接口并处理错误('/api/user/get-current-user', {})
+    let 用户信息 = await API管理器.请求postJson并处理错误('/api/user/get-current-user', {})
 
     let 容器 = 创建元素('div')
     容器.style.display = 'flex'

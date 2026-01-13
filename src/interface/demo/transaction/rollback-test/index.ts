@@ -1,5 +1,7 @@
 import {
   JSON参数解析插件,
+  常用接口返回器,
+  接口,
   接口逻辑,
   计算接口逻辑JSON参数,
   计算接口逻辑正确结果,
@@ -33,8 +35,8 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
               async () => ({
                 数据: {
                   id: userId,
-                  name: 参数.body.name,
-                  pwd: await bcrypt.hash(参数.body.pwd, 环境变量.BCRYPT_ROUNDS),
+                  name: 参数.json.name,
+                  pwd: await bcrypt.hash(参数.json.pwd, 环境变量.BCRYPT_ROUNDS),
                   is_admin: 0,
                 },
               }),
@@ -72,5 +74,4 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.enum(['就要失败'])
 let 接口正确类型描述 = z.object({})
 
-import { 常用接口返回器, 接口 } from '@lsby/net-core'
 export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))

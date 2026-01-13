@@ -12,9 +12,8 @@ export class 检查登录组件 extends 组件基类<属性类型, 发出事件�
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 结果 = await API管理器.请求post接口并处理错误('/api/user/is-login', {})
+    let 结果 = await API管理器.请求postJson并处理错误('/api/user/is-login', {})
     if (结果.isLogin === true) return
-    API管理器.清除token()
     // 将当前页面路径作为 URL 参数传递给登录页
     let 当前路径 = encodeURIComponent(window.location.pathname + window.location.search)
     window.location.assign(`/login.html?redirect=${当前路径}`)

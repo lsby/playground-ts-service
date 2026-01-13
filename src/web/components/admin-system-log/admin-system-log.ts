@@ -36,7 +36,7 @@ export class 系统日志管理组件 extends 组件基类<属性类型, 发出�
       // 设置加载状态
       this.日志组件.设置加载状态(true)
 
-      let 响应 = await API管理器.请求post接口并处理错误(
+      let 响应 = await API管理器.请求postJson并处理错误(
         '/api/admin-log/get-logs',
         {},
         async (ws数据: { 新日志: { 时间: string; 消息: string } }) => {

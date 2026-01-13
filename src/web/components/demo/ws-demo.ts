@@ -18,7 +18,7 @@ export class 演示ws组件 extends 组件基类<属性类型, 发出事件类�
   private 按钮 = new 主要按钮({
     文本: '开始测试',
     点击处理函数: async (): Promise<void> => {
-      await API管理器.请求post接口并处理错误(
+      await API管理器.请求postJson并处理错误(
         '/api/demo/ws/ws-test',
         {},
         async (data) => {

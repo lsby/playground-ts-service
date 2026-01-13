@@ -30,7 +30,7 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
 
   protected async 当加载时(): Promise<void> {
     // 获取用户信息
-    this.用户信息 = await API管理器.请求post接口并处理错误('/api/user/get-current-user', {})
+    this.用户信息 = await API管理器.请求postJson并处理错误('/api/user/get-current-user', {})
 
     let 容器 = 创建元素('div', { style: { padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px' } })
 
@@ -93,12 +93,12 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
 
   private async 加载数据(): Promise<void> {
     if (this.用户信息 !== void 0 && this.用户信息.is_admin && this.系统配置表单 !== void 0) {
-      let 系统配置 = await API管理器.请求post接口并处理错误('/api/system/get-system-config', {})
+      let 系统配置 = await API管理器.请求postJson并处理错误('/api/system/get-system-config', {})
       this.系统配置表单.设置数据(系统配置)
     }
 
     if (this.用户配置表单 !== void 0) {
-      let 用户配置 = await API管理器.请求post接口并处理错误('/api/system/get-user-config', {})
+      let 用户配置 = await API管理器.请求postJson并处理错误('/api/system/get-user-config', {})
       this.用户配置表单.设置数据(用户配置)
     }
   }
@@ -106,7 +106,7 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
   private async 保存系统配置(): Promise<void> {
     if (this.系统配置表单 === void 0) return
     let 数据 = this.系统配置表单.获得数据()
-    await API管理器.请求post接口并处理错误('/api/system/update-system-config', 数据)
+    await API管理器.请求postJson并处理错误('/api/system/update-system-config', 数据)
   }
 
   private async 保存用户配置(): Promise<void> {

@@ -18,7 +18,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
     [new JSON参数解析插件(z.object({ a: z.number(), b: z.number() }), {})],
     async (参数, 逻辑附加参数, 请求附加参数) => {
       let _log = 请求附加参数.log.extend(接口路径)
-      return new Right({ res: 参数.body.a + 参数.body.b })
+      return new Right({ res: 参数.json.a + 参数.json.b })
     },
   ),
 )

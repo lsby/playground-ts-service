@@ -106,7 +106,7 @@ export class 即时任务管理组件 extends 组件基类<属性类型, 发出�
 
   private async 刷新任务列表(): Promise<void> {
     try {
-      let 结果 = await API管理器.请求post接口并处理错误('/api/admin-job/instant/list', {})
+      let 结果 = await API管理器.请求postJson并处理错误('/api/admin-job/instant/list', {})
       this.所有任务数据 = 结果.任务列表.map((任务) => ({
         id: 任务.id,
         名称: 任务.名称,
@@ -172,7 +172,7 @@ export class 即时任务管理组件 extends 组件基类<属性类型, 发出�
 
     // 直接用一个请求同时获取历史日志并建立WebSocket连接
     this.api管理器
-      .请求post接口并处理错误(
+      .请求postJson并处理错误(
         '/api/admin-job/instant/get-log',
         { 任务id: 任务.id },
         async (ws数据) => {
