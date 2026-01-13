@@ -9,6 +9,6 @@ export default defineConfig({
     url: env('DB_PATH_PRISMA'),
     // pg/mysql
     // url: env('DB_URL'),
-    shadowDatabaseUrl: process.env.SHADOW_DB_URL,
+    // shadowDatabaseUrl: process.env.SHADOW_DB_URL,
   },
 })
