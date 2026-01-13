@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
 import { 环境变量 } from '../../../global/env'
 import { kysely管理器 } from '../../../global/global'
-import { POST请求用例 } from '../../../tools/request'
+import { POST_JSON请求用例 } from '../../../tools/request'
 import 接口 from './index'
 
 let name = 'admin'
@@ -23,7 +23,7 @@ export default new 接口测试(
       .execute()
   },
   async (): Promise<object> => {
-    return POST请求用例(接口, { userName: 'aaabbbccc', userPassword: 'bbbcccddd' })
+    return POST_JSON请求用例(接口, { userName: 'aaabbbccc', userPassword: 'bbbcccddd' })
   },
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data, '用户不存在或密码错误')

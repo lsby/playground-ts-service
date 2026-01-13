@@ -28,11 +28,11 @@ async function 获取请求信息(
   return { token, url }
 }
 
-export async function POST请求用例<接口类型 extends 任意接口>(
+export async function POST_JSON请求用例<接口类型 extends 任意接口>(
   接口类型描述: 接口类型,
   参数: 合并JSON插件结果<获得接口逻辑插件类型<获得接口逻辑类型<接口类型>>> extends infer 参数
-    ? 'body' extends keyof 参数
-      ? 参数['body']
+    ? 'json' extends keyof 参数
+      ? 参数['json']
       : {}
     : never,
   登录?: { 接口: string; 用户名: string; 密码: string; 凭据属性: string },

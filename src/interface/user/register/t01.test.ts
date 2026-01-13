@@ -4,7 +4,7 @@ import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../script/db/clean-db'
 import { version } from '../../../app/meta-info'
 import { kysely管理器 } from '../../../global/global'
-import { POST请求用例 } from '../../../tools/request'
+import { POST_JSON请求用例 } from '../../../tools/request'
 import 接口 from './index'
 
 export default new 接口测试(
@@ -19,7 +19,7 @@ export default new 接口测试(
       .execute()
   },
   async (): Promise<object> => {
-    return POST请求用例(接口, { userName: 'admin', userPassword: '123456' })
+    return POST_JSON请求用例(接口, { userName: 'admin', userPassword: '123456' })
   },
   async (_解析结果): Promise<void> => {
     let db = kysely管理器.获得句柄()

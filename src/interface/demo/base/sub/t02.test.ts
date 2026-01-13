@@ -1,6 +1,6 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
-import { POST请求用例 } from '../../../../tools/request'
+import { POST_JSON请求用例 } from '../../../../tools/request'
 import 接口 from './index'
 
 export default new 接口测试(
@@ -8,7 +8,7 @@ export default new 接口测试(
   '失败',
   async (): Promise<void> => {},
   async (): Promise<object> => {
-    return POST请求用例(接口, { a: 2, b: 1 })
+    return POST_JSON请求用例(接口, { a: 2, b: 1 })
   },
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data, '未登录')
