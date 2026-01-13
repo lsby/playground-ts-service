@@ -1,4 +1,5 @@
 import {
+  Query参数解析插件,
   接口,
   接口逻辑,
   文件流式下载返回器,
@@ -14,7 +15,7 @@ import { z } from 'zod'
 let 接口路径 = '/api/demo/file/get-file' as const
 let 接口方法 = 'get' as const
 
-let 接口逻辑实现 = 接口逻辑.构造([], async (_参数, _逻辑附加参数, _请求附加参数) => {
+let 接口逻辑实现 = 接口逻辑.构造([new Query参数解析插件(z.object({}))], async (_参数, _逻辑附加参数, _请求附加参数) => {
   let fileStream = createReadStream(path.resolve(import.meta.dirname, 'data.txt'))
   return new Right({ data: fileStream, filename: 'data.txt', mimeType: 'application/octet-stream' })
 })

@@ -1,11 +1,4 @@
-import {
-  常用接口返回器,
-  接口,
-  接口逻辑,
-  计算接口逻辑JSON参数,
-  计算接口逻辑正确结果,
-  计算接口逻辑错误结果,
-} from '@lsby/net-core'
+import { 常用接口返回器, 接口, 接口逻辑, 计算接口逻辑正确结果, 计算接口逻辑错误结果 } from '@lsby/net-core'
 import { 文件上传插件 } from '@lsby/net-core-file-upload'
 import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
@@ -35,7 +28,6 @@ let 接口逻辑实现 = 接口逻辑
     ),
   )
 
-type _接口逻辑JSON参数 = 计算接口逻辑JSON参数<typeof 接口逻辑实现>
 type _接口逻辑错误返回 = 计算接口逻辑错误结果<typeof 接口逻辑实现>
 type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻辑实现>
 
