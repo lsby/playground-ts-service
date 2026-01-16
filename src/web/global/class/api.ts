@@ -55,7 +55,7 @@ export class API管理器类 {
     接口路径: 接口路径,
     参数: 取json输入<取接口<接口路径>>,
     ws输出回调?: (data: 取ws输出<取接口<接口路径>>) => Promise<void>,
-    ws连接回调?: (ws: WebSocket, 发送消息: (data: 取ws输入<取接口<接口路径>>) => void) => Promise<void>,
+    ws连接回调?: (发送消息: (data: 取ws输入<取接口<接口路径>>) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<
@@ -76,7 +76,7 @@ export class API管理器类 {
     接口路径: 接口路径,
     参数: 取json输入<取接口<接口路径>>,
     ws输出回调?: (data: 取ws输出<取接口<接口路径>>) => Promise<void>,
-    ws连接回调?: (ws: WebSocket, 发送消息: (data: 取ws输入<取接口<接口路径>>) => void) => Promise<void>,
+    ws连接回调?: (发送消息: (data: 取ws输入<取接口<接口路径>>) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<取http正确输出数据<取接口<接口路径>>> {
@@ -93,7 +93,7 @@ export class API管理器类 {
     方法: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS',
     数据: 已审阅的any,
     ws输出回调?: (data: 已审阅的any) => Promise<void>,
-    ws连接回调?: (ws: WebSocket, 发送消息: (data: 已审阅的any) => void) => Promise<void>,
+    ws连接回调?: (发送消息: (data: 已审阅的any) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
     ws错误回调?: (e: Event) => Promise<void>,
   ): Promise<object | { status: 'unexpected'; data: string }> {
@@ -112,7 +112,7 @@ export class API管理器类 {
                 let 发送消息 = (data: 已审阅的any): void => {
                   ws.send(JSON.stringify(data))
                 }
-                await ws连接回调(ws, 发送消息)
+                await ws连接回调(发送消息, ws)
               },
             }
           : {}),

@@ -24,7 +24,7 @@ export class 演示ws组件 extends 组件基类<属性类型, 发出事件类�
         async (data) => {
           this.结果.textContent = data.data
         },
-        async (ws, 发送消息) => {
+        async (发送消息, _ws) => {
           this.发送消息函数 = 发送消息
         },
       )

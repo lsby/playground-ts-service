@@ -195,7 +195,7 @@ export class 定时任务管理组件 extends 组件基类<属性类型, 发出�
             ws数据缓存.push(ws数据.新日志)
           }
         },
-        async (ws) => {
+        async (_, ws) => {
           // WS连接成功时存储WS对象
           this.当前任务详情WS = ws
         },
