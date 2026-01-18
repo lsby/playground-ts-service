@@ -11,8 +11,11 @@ function getAllTSFiles(dir: string, baseDir: string = dir): string[] {
 
     if (stat && stat.isDirectory()) {
       results = results.concat(getAllTSFiles(fullPath, baseDir))
-    } else if (stat && stat.isFile() && fullPath.endsWith('.ts')) {
-      const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, '/').replace(/\.ts$/, '')
+    } else if (stat && stat.isFile() && (fullPath.endsWith('.ts') || fullPath.endsWith('.tsx'))) {
+      const relativePath = path
+        .relative(baseDir, fullPath)
+        .replace(/\\/g, '/')
+        .replace(/\.(ts|tsx)$/, '')
       results.push(relativePath)
     }
   }

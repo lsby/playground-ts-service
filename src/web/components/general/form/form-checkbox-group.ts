@@ -1,5 +1,6 @@
+import { 增强样式类型 } from 'src/web/global/types/style'
 import { 组件基类 } from '../../../base/base'
-import { 创建元素, 增强样式类型, 应用宿主样式 } from '../../../global/tools/create-element'
+import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
 import type { 表单元素 } from './form'
 
 type 复选框组属性 = {}

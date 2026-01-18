@@ -1,7 +1,8 @@
+import { 增强样式类型 } from 'src/web/global/types/style'
 import { 组件基类 } from '../../../base/base'
 import { 右键菜单管理器 } from '../../../global/manager/context-menu-manager'
 import { 显示输入对话框 } from '../../../global/manager/dialog-manager'
-import { 创建元素, 增强样式类型 } from '../../../global/tools/create-element'
+import { 创建元素 } from '../../../global/tools/create-element'
 import { 普通按钮 } from '../base/base-button'
 import { 分页组件, 数据表分页配置 } from '../pagination/pagination'
 
