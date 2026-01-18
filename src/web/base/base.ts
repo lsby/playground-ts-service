@@ -22,6 +22,7 @@ export abstract class 组件基类<
   private 初始化完成事件: Promise<void> | null = null
   private 初始化完成解析器: (() => void) | null = null
   private 变化队列: { name: keyof 属性类型; oldValue: string; newValue: string }[] = []
+  private 监听器列表: Array<{ type: string; handler: EventListener; options?: AddEventListenerOptions }> = []
 
   public constructor(属性?: Partial<属性类型> | undefined) {
     super()
@@ -32,12 +33,12 @@ export abstract class 组件基类<
   }
 
   public async 设置属性<K extends keyof 属性类型>(k: K, v: 属性类型[K]): Promise<void> {
-    await this.log.debug('设置属性: %o = %o, 对象: %O', k, v, this)
+    void this.log.debug('设置属性: %o = %o, 对象: %O', k, v, this)
     this.setAttribute(k.toString(), v)
   }
-  public async 获得属性<K extends keyof 属性类型>(k: K): Promise<属性类型[K] | null> {
+  public async 获得属性<K extends keyof 属性类型>(k: K): Promise<(属性类型[K] & string) | null> {
     let r = this.getAttribute(k.toString())
-    await this.log.debug('获得属性: %o = %o, 对象: %O', k, r, this)
+    void this.log.debug('获得属性: %o = %o, 对象: %O', k, r, this)
     return r as 属性类型[K]
   }
 
@@ -83,6 +84,7 @@ export abstract class 组件基类<
     v: 发出事件类型[K],
     o?: Omit<CustomEventInit<发出事件类型[K]>, 'detail'>,
   ): boolean {
+    void this.log.debug('派发事件: %o, 数据: %O', k, v)
     return this.dispatchEvent(
       new CustomEvent(k.toString(), {
         detail: v, // 附加数据
@@ -101,20 +103,19 @@ export abstract class 组件基类<
     f: (e: CustomEvent<监听事件类型[K]>) => Promise<void>,
     o?: AddEventListenerOptions,
   ): void {
-    this.addEventListener(
-      k.toString(),
-      (event: Event): void => {
-        // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
-        void f(event as CustomEvent<监听事件类型[K]>)
-      },
-      {
-        capture: false, // 是否在捕获阶段响应, true: 在捕获阶段响应, false: 在冒泡阶段响应
-        once: false, // 是否只触发一次
-        passive: false, // 是否阻止默认行为
-        // signal: _, // 触发控制器, 可以用 new AbortController 创建
-        ...o,
-      },
-    )
+    let handler = (event: Event): void => {
+      // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
+      void f(event as CustomEvent<监听事件类型[K]>)
+    }
+    let options = {
+      capture: false, // 是否在捕获阶段响应, true: 在捕获阶段响应, false: 在冒泡阶段响应
+      once: false, // 是否只触发一次
+      passive: false, // 是否阻止默认行为
+      // signal: _, // 触发控制器, 可以用 new AbortController 创建
+      ...o,
+    }
+    this.addEventListener(k.toString(), handler, options)
+    this.监听器列表.push({ type: k.toString(), handler, options })
   }
   /**
    * 监听这个组件发出的事件 (外部监听组件派发的事件)
@@ -124,20 +125,26 @@ export abstract class 组件基类<
     f: (e: CustomEvent<发出事件类型[K]>) => Promise<void>,
     o?: AddEventListenerOptions,
   ): void {
-    this.addEventListener(
-      k.toString(),
-      (event: Event): void => {
-        // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
-        void f(event as CustomEvent<发出事件类型[K]>)
-      },
-      {
-        capture: false,
-        once: false,
-        passive: false,
-        // signal: _, // 触发控制器, 可以用 new AbortController 创建
-        ...o,
-      },
-    )
+    let handler = (event: Event): void => {
+      // 有意让 Promise 浮动，因为事件监听器无法等待异步回调
+      void f(event as CustomEvent<发出事件类型[K]>)
+    }
+    let options = {
+      capture: false,
+      once: false,
+      passive: false,
+      // signal: _, // 触发控制器, 可以用 new AbortController 创建
+      ...o,
+    }
+    this.addEventListener(k.toString(), handler, options)
+    this.监听器列表.push({ type: k.toString(), handler, options })
+  }
+
+  private 清理所有监听器(): void {
+    for (let listener of this.监听器列表) {
+      this.removeEventListener(listener.type, listener.handler, listener.options)
+    }
+    this.监听器列表 = []
   }
 
   protected abstract 当加载时(): Promise<void>
@@ -146,7 +153,7 @@ export abstract class 组件基类<
   protected 当变化时?(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void>
 
   private async connectedCallback(): Promise<void> {
-    await this.log.debug('connectedCallback, 对象: %O', this)
+    void this.log.debug('connectedCallback, 对象: %O', this)
 
     // 备份初始样式
     let 宿主样式 = this.获得宿主样式()
@@ -178,24 +185,33 @@ export abstract class 组件基类<
     while (true) {
       let 变化 = this.变化队列.shift()
       if (变化 === void 0) break
-      await this.当变化时?.(变化.name, 变化.oldValue, 变化.newValue)
+      try {
+        await this.当变化时?.(变化.name, 变化.oldValue, 变化.newValue)
+      } catch (e) {
+        void this.log.error('属性变化处理异常: %O, 变化: %O', e, 变化)
+      }
     }
   }
   private async disconnectedCallback(): Promise<void> {
-    if (this.当卸载时 !== void 0) await this.log.debug('disconnectedCallback, 对象: %O', this)
+    if (this.当卸载时 !== void 0) void this.log.debug('disconnectedCallback, 对象: %O', this)
+    this.清理所有监听器()
     await this.当卸载时?.()
   }
   private async adoptedCallback(): Promise<void> {
-    if (this.当转移时 !== void 0) await this.log.debug('adoptedCallback, 对象: %O', this)
+    if (this.当转移时 !== void 0) void this.log.debug('adoptedCallback, 对象: %O', this)
     await this.当转移时?.()
   }
   private async attributeChangedCallback(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void> {
     if (this.当变化时 !== void 0)
-      await this.log.debug('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
+      void this.log.debug('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
     if (this.初始化完毕 === false) {
       this.变化队列.push({ name: name, oldValue, newValue })
     } else {
-      await this.当变化时?.(name, oldValue, newValue)
+      try {
+        await this.当变化时?.(name, oldValue, newValue)
+      } catch (e) {
+        void this.log.error('属性变化处理异常: %O, 属性: %O', e, name)
+      }
     }
   }
 }
