@@ -84,14 +84,16 @@
 - 尽可能复用基础表单组件: `src/web/components/general/form`, 便于统一样式和行为
 - 尽可能复用常用布局: `src/web/components/layout`
 - 尽可能使用工厂函数创建元素: `src/web/global/tools/create-element.ts`
-- 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接new出来
-- 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 CSS 变量
+- 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接 new 出来
+- 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 css 变量
 - 使用路由机制处理兄弟组件通信:
   - 路由模型: `src/web/components/mechanics/route.ts`
   - 示例组件: `src/web/components/demo/pong.ts`, `src/web/components/demo/pong.ts`
   - 在html层组合: `src/web/page/demo.html`
 - 使用 `src/web/global/api-manager.ts` 来请求后端
-  这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端ws的推送信息
+  这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端 ws 的推送信息
+- 支持 TSX 语法: 可以使用 `.tsx` 文件编写组件, 参考 `src/web/components/demo/tsx-demo.tsx`
+  函数组件和类组件都可以作为 tsx 语法的标签
 
 3. **其他**
 
