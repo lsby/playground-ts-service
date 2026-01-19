@@ -45,7 +45,11 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
   for (let 键 in 其他属性) {
     let 值 = 其他属性[键 as keyof typeof 其他属性]
     if (值 !== void 0) {
-      ;(元素 as any)[键] = 值
+      if (键.includes('-') || 键.includes(':')) {
+        元素.setAttribute(键, String(值))
+      } else {
+        ;(元素 as any)[键] = 值
+      }
     }
   }
 
