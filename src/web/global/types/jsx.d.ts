@@ -4,10 +4,12 @@ declare global {
 
     type 元素子节点 = string | number | boolean | null | undefined | HTMLElement | 元素子节点[]
 
-    type HTML元素基础属性<T> = { style?: import('./style').增强样式类型; children?: 元素子节点 } & Omit<
-      Partial<T>,
-      'style' | 'children'
-    >
+    type HTML元素基础属性<T> = {
+      style?: import('./style').增强样式类型
+      children?: 元素子节点
+      ref?: import('../tools/jsx-runtime').Ref引用<HTMLElement> | ((元素: HTMLElement) => void)
+      key?: string | number
+    } & Omit<Partial<T>, 'style' | 'children'>
 
     interface IntrinsicElements {
       div: HTML元素基础属性<HTMLDivElement>

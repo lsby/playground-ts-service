@@ -1,11 +1,22 @@
 import { 增强样式类型 } from '../types/style'
 import { 创建元素 } from './create-element'
 
-export type JSX属性基础类型 = { style?: 增强样式类型; children?: JSX子元素 }
+export type Ref引用<T> = { current: T | null }
+
+export type JSX属性基础类型 = {
+  style?: 增强样式类型
+  children?: JSX子元素
+  ref?: Ref引用<HTMLElement> | ((元素: HTMLElement) => void)
+  key?: string | number
+}
 
 export type JSX子元素 = HTMLElement | string | number | boolean | null | undefined | JSX子元素[]
 
 export type JSX有效返回值 = HTMLElement | DocumentFragment
+
+export function 创建引用<T = HTMLElement>(): Ref引用<T> {
+  return { current: null }
+}
 
 type 组件类型<K extends keyof HTMLElementTagNameMap> =
   | K
@@ -20,29 +31,77 @@ function 处理组件<K extends keyof HTMLElementTagNameMap>(
   类型: 组件类型<K>,
   属性: JSX属性基础类型 & Partial<Omit<HTMLElementTagNameMap[K], 'style' | 'children'>>,
 ): JSX有效返回值 {
-  if (typeof 类型 === 'string') {
-    return 创建元素(类型, 属性 as Parameters<typeof 创建元素<K>>[1])
+  let { ref, key, ...剩余属性 } = 属性
+
+  let 元素: JSX有效返回值
+  let 类型类别 = typeof 类型
+
+  switch (类型类别) {
+    case 'string':
+      元素 = 创建元素(类型 as K, 剩余属性 as Parameters<typeof 创建元素<K>>[1])
+      break
+    case 'function':
+      if (是类组件(类型)) {
+        元素 = new (类型 as new (属性: any) => JSX有效返回值)(剩余属性)
+      } else {
+        元素 = (类型 as (属性: any) => JSX有效返回值)(剩余属性)
+      }
+      break
+    case 'number':
+    case 'bigint':
+    case 'boolean':
+    case 'symbol':
+    case 'undefined':
+    case 'object':
+      元素 = 创建元素(类型 as K, 剩余属性 as Parameters<typeof 创建元素<K>>[1])
+      break
   }
-  if (typeof 类型 === 'function') {
-    if (是类组件(类型)) {
-      return new (类型 as any)(属性)
+
+  if (元素 instanceof HTMLElement) {
+    if (typeof key === 'string' || typeof key === 'number') {
+      元素.dataset['key'] = String(key)
     }
-    return (类型 as any)(属性)
+
+    if (ref !== void 0) {
+      switch (typeof ref) {
+        case 'function':
+          ref(元素)
+          break
+        case 'string':
+        case 'number':
+        case 'bigint':
+        case 'boolean':
+        case 'symbol':
+        case 'undefined':
+        case 'object':
+          ref.current = 元素
+          break
+      }
+    }
   }
-  return 创建元素(类型 as K, 属性 as Parameters<typeof 创建元素<K>>[1])
+
+  return 元素
 }
 
 export function jsx<K extends keyof HTMLElementTagNameMap>(
   类型: 组件类型<K>,
   属性: JSX属性基础类型 & Partial<Omit<HTMLElementTagNameMap[K], 'style' | 'children'>>,
+  key?: string | number,
 ): JSX有效返回值 {
+  if (key !== void 0) {
+    return 处理组件(类型, { ...属性, key })
+  }
   return 处理组件(类型, 属性)
 }
 
 export function jsxs<K extends keyof HTMLElementTagNameMap>(
   类型: 组件类型<K>,
   属性: JSX属性基础类型 & Partial<Omit<HTMLElementTagNameMap[K], 'style' | 'children'>>,
+  key?: string | number,
 ): JSX有效返回值 {
+  if (key !== void 0) {
+    return 处理组件(类型, { ...属性, key })
+  }
   return 处理组件(类型, 属性)
 }
 
