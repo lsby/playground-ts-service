@@ -16,13 +16,12 @@ export abstract class 组件基类<
   }
 
   protected log = globalWebLog.extend(this.constructor.name)
-  protected shadow = this.attachShadow({ mode: 'open' })
-
   private 初始化完毕 = false
   private 初始化完成事件: Promise<void> | null = null
   private 初始化完成解析器: (() => void) | null = null
   private 变化队列: { name: keyof 属性类型; oldValue: string; newValue: string }[] = []
   private 监听器列表: Array<{ type: string; handler: EventListener; options?: AddEventListenerOptions }> = []
+  private _shadow = this.attachShadow({ mode: 'open' })
 
   public constructor(属性?: Partial<属性类型> | undefined) {
     super()
@@ -30,6 +29,10 @@ export abstract class 组件基类<
     Object.entries(属性).forEach(([k, v]) => {
       if (typeof v === 'string') this.setAttribute(k, v)
     })
+  }
+
+  protected get shadow(): ShadowRoot {
+    return this._shadow
   }
 
   public async 设置属性<K extends keyof 属性类型>(k: K, v: 属性类型[K]): Promise<void> {
@@ -43,7 +46,7 @@ export abstract class 组件基类<
   }
 
   public 获得宿主样式(): CSSStyleDeclaration {
-    let host = this.shadow.host
+    let host = this._shadow.host
     if (host instanceof HTMLElement) {
       return host.style
     }
@@ -56,8 +59,8 @@ export abstract class 组件基类<
     }
   }
   public 清空影子dom(): void {
-    while (this.shadow.firstChild !== null) {
-      this.shadow.removeChild(this.shadow.firstChild)
+    while (this._shadow.firstChild !== null) {
+      this._shadow.removeChild(this._shadow.firstChild)
     }
   }
 
