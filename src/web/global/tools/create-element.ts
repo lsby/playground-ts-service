@@ -1,6 +1,6 @@
 import { 增强样式类型 } from '../types/style'
 
-type 子元素类型 = HTMLElement | string | number | boolean | null | undefined | 子元素类型[]
+type 子元素类型 = HTMLElement | DocumentFragment | string | number | boolean | null | undefined | 子元素类型[]
 
 type 元素属性 = { style?: 增强样式类型; children?: 子元素类型 }
 
@@ -16,6 +16,10 @@ function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): vo
   }
   if (typeof 子元素 === 'string' || typeof 子元素 === 'number') {
     父元素.appendChild(document.createTextNode(String(子元素)))
+    return
+  }
+  if (子元素 instanceof DocumentFragment) {
+    父元素.appendChild(子元素)
     return
   }
   if (子元素 instanceof HTMLElement) {
