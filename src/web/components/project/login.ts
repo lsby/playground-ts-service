@@ -220,6 +220,12 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       登录元素.password.onkeydown = 处理回车键
     }
 
+    // 检查 URL 参数是否指定注册模式
+    let urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('register') === 'true' && this.enableRegister) {
+      await this.设置属性('mode', 'register')
+    }
+
     await this.更新UI()
   }
 
@@ -237,6 +243,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       }
       if (this.切换按钮 !== null) {
         this.切换按钮.获得宿主样式().display = this.enableRegister ? 'block' : 'none'
+        this.切换按钮.设置文本('还没有账号？立即注册')
       }
     } else {
       this.结果.textContent = '创建您的账号'
@@ -250,6 +257,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       }
       if (this.切换按钮 !== null) {
         this.切换按钮.获得宿主样式().display = 'block'
+        this.切换按钮.设置文本('已经有账号？立即登录')
       }
     }
   }
@@ -261,6 +269,14 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
     }
     let 新模式: 'login' | 'register' = 当前模式 === 'login' ? 'register' : 'login'
     await this.设置属性('mode', 新模式)
+    // 更新 URL 参数
+    let url = new URL(window.location.href)
+    if (新模式 === 'register') {
+      url.searchParams.set('register', 'true')
+    } else {
+      url.searchParams.delete('register')
+    }
+    window.history.replaceState(null, '', url.toString())
     await this.更新UI()
   }
 
