@@ -17,6 +17,8 @@ export class 设置网页全屏组件 extends 组件基类<属性类型, 发出�
   protected override async 当加载时(): Promise<void> {
     document.body.style.margin = '0px'
     document.body.style.height = '100%'
+    document.body.style.minHeight = '100%'
     document.documentElement.style.height = '100%'
+    document.documentElement.style.minHeight = '100%'
   }
 }
