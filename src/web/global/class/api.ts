@@ -12,7 +12,8 @@ type 取接口<P extends string, T extends readonly 已审阅的any[] = Interfac
     : 取接口<P, Rest>
   : never
 
-type 取json输入<I> = I extends { input: { json: infer 输入 } } ? 输入 : never
+type 取JSON输入<I> = I extends { input: { json: infer 输入 } } ? 输入 : never
+type 取FORM输入<I> = I extends { input: { form: infer 输入 } } ? 输入 : never
 
 type 取http错误输出<I> = I extends { errorOutput: infer 输出 } ? 输出 : never
 type 取http正确输出<I> = I extends { successOutput: infer 输出 } ? 输出 : never
@@ -26,6 +27,11 @@ type 所有POST_JSON路径 = InterfaceType extends readonly (infer Item)[]
     ? json extends never
       ? never
       : P
+    : never
+  : never
+type 所有FORM路径 = InterfaceType extends readonly (infer Item)[]
+  ? Item extends { method: 'post'; path: infer P }
+    ? P
     : never
   : never
 
@@ -53,7 +59,7 @@ export class API管理器类 {
 
   public async 请求postJson<接口路径 extends 所有POST_JSON路径>(
     接口路径: 接口路径,
-    参数: 取json输入<取接口<接口路径>>,
+    参数: 取JSON输入<取接口<接口路径>>,
     ws输出回调?: (data: 取ws输出<取接口<接口路径>>) => Promise<void>,
     ws连接回调?: (发送消息: (data: 取ws输入<取接口<接口路径>>) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
@@ -65,7 +71,7 @@ export class API管理器类 {
       接口路径,
       { 'Content-Type': 'application/json' },
       'POST',
-      参数,
+      JSON.stringify(参数),
       ws输出回调,
       ws连接回调,
       ws关闭回调,
@@ -74,7 +80,7 @@ export class API管理器类 {
   }
   public async 请求postJson并处理错误<接口路径 extends 所有POST_JSON路径>(
     接口路径: 接口路径,
-    参数: 取json输入<取接口<接口路径>>,
+    参数: 取JSON输入<取接口<接口路径>>,
     ws输出回调?: (data: 取ws输出<取接口<接口路径>>) => Promise<void>,
     ws连接回调?: (发送消息: (data: 取ws输入<取接口<接口路径>>) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
@@ -87,11 +93,44 @@ export class API管理器类 {
     )) as 已审阅的any
   }
 
+  public async 请求form<P extends 所有FORM路径>(
+    路径: P,
+    formData: 取FORM输入<取接口<P>>,
+    ws输出回调?: (data: 取ws输出<取接口<P>>) => Promise<void>,
+    ws连接回调?: (发送消息: (data: 取ws输入<取接口<P>>) => void, ws: WebSocket) => Promise<void>,
+    ws关闭回调?: (e: CloseEvent) => Promise<void>,
+    ws错误回调?: (e: Event) => Promise<void>,
+  ): Promise<取http错误输出<取接口<P>> | 取http正确输出<取接口<P>> | { status: 'unexpected'; data: string }> {
+    return (await this.通用请求(
+      路径,
+      {},
+      'POST',
+      formData,
+      ws输出回调,
+      ws连接回调,
+      ws关闭回调,
+      ws错误回调,
+    )) as 已审阅的any
+  }
+  public async 请求form并处理错误<P extends 所有FORM路径>(
+    路径: P,
+    formData: 取FORM输入<取接口<P>>,
+    ws输出回调?: (data: 取ws输出<取接口<P>>) => Promise<void>,
+    ws连接回调?: (发送消息: (data: 取ws输入<取接口<P>>) => void, ws: WebSocket) => Promise<void>,
+    ws关闭回调?: (e: CloseEvent) => Promise<void>,
+    ws错误回调?: (e: Event) => Promise<void>,
+  ): Promise<取http正确输出数据<取接口<P>>> {
+    return (await this.通用请求并处理错误(
+      路径,
+      async () => (await this.请求form(路径, formData, ws输出回调, ws连接回调, ws关闭回调, ws错误回调)) as 已审阅的any,
+    )) as 已审阅的any
+  }
+
   private async 通用请求(
     接口路径: string,
     头: { [key: string]: string },
     方法: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD' | 'OPTIONS',
-    数据: 已审阅的any,
+    body: string | FormData,
     ws输出回调?: (data: 已审阅的any) => Promise<void>,
     ws连接回调?: (发送消息: (data: 已审阅的any) => void, ws: WebSocket) => Promise<void>,
     ws关闭回调?: (e: CloseEvent) => Promise<void>,
@@ -118,10 +157,10 @@ export class API管理器类 {
           : {}),
       }
 
-      // console.log('请求:\n路径: %o\n头: %o\n方法: %o\n参数: %o\n结果: %o', 接口路径, 头, 方法, 数据, 请求结果)
+      // console.log('请求:\n路径: %o\n头: %o\n方法: %o\nbody: %o\n结果: %o', 接口路径, 头, 方法, body, 请求结果)
       请求结果 = await web请求({
         url: API前缀 + 接口路径,
-        body: JSON.stringify(数据),
+        body: body,
         headers: 头,
         method: 方法,
         ws路径: '/ws',
@@ -131,7 +170,7 @@ export class API管理器类 {
       })
       return JSON.parse(请求结果)
     } catch (e) {
-      console.error('请求错误:\n路径: %o\n头: %o\n方法: %o\n参数: %o\n结果: %o', 接口路径, 头, 方法, 数据, 请求结果)
+      console.error('请求错误:\n路径: %o\n头: %o\n方法: %o\nbody: %o\n结果: %o', 接口路径, 头, 方法, body, 请求结果)
       return { status: 'unexpected', data: String(e) }
     }
   }

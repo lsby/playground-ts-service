@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑
         await log.debug(
           'userId为%o的用户, 上传的文件信息: %j, 负载信息是: %o',
           逻辑附加参数.userId,
-          参数.form.files,
+          参数.form.files.map((a) => a.originalname).join(', '),
           参数.form.data,
         )
 
