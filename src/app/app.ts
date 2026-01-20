@@ -17,7 +17,7 @@ export class App {
       接口们: [
         ...interfaceApiList,
         new 接口(
-          new RegExp('/*'),
+          new RegExp('/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
