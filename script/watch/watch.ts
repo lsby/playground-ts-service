@@ -16,7 +16,6 @@ function 任务() {
     execSync(`${cmd}`, { stdio: 'inherit' })
   } catch (e: unknown) {
     console.error(`错误: ${String(e)}`)
-    console.log('========生成结束========')
   }
   console.log('========生成结束========')
 }

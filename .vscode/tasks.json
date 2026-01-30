@@ -82,6 +82,37 @@
       "group": { "kind": "build", "isDefault": true }
     },
     {
+      "label": "_持续ESLint检查",
+      "type": "npm",
+      "script": "check:lint:watch",
+      "problemMatcher": {
+        "owner": "eslint",
+        "source": "eslint",
+        "pattern": [
+          {
+            "regexp": "^(.+)$",
+            "file": 1
+          },
+          {
+            "regexp": "^\\s+(\\d+):(\\d+)\\s+(error|warning|info)\\s+(.*?)\\s+(.+)$",
+            "line": 1,
+            "column": 2,
+            "severity": 3,
+            "message": 4,
+            "code": 5
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^========生成开始========$",
+          "endsPattern": "^========生成结束========$"
+        }
+      },
+      "isBackground": true,
+      "presentation": { "reveal": "never" },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
       "label": "_运行web后端",
       "type": "npm",
       "script": "run:service:watch",
@@ -108,13 +139,13 @@
     {
       "label": "运行web开发套件",
       "dependsOrder": "parallel",
-      "dependsOn": ["_持续类型检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行web后端", "_运行前端"],
+      "dependsOn": ["_持续类型检查", "_持续ESLint检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行web后端", "_运行前端"],
       "problemMatcher": []
     },
     {
       "label": "运行electron开发套件",
       "dependsOrder": "parallel",
-      "dependsOn": ["_持续类型检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行electron后端", "_运行前端"],
+      "dependsOn": ["_持续类型检查", "_持续ESLint检查", "_持续生成API接口列表", "_持续生成API接口类型", "_持续生成web组件索引", "_运行electron后端", "_运行前端"],
       "problemMatcher": []
     }
   ]

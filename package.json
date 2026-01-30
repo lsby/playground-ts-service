@@ -47,6 +47,7 @@
     "run:web:dev": "tsx script/run/run-web.ts",
     "test:unit": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test.ts",
     "test:unit:coverage": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test tsx script/test/run-test-coverage.ts && open-cli ./coverage/index.html",
+    "watch:check:lint": "tsx script/watch/watch.ts src \"eslint .\"",
     "watch:check:type": "tsc --noEmit -w",
     "watch:gen:api:list": "cross-env DEBUG=@lsby:* tsx script/watch/watch.ts ./src/interface/ \"npm run _gen:api:list\"",
     "watch:gen:api:type": "cross-env DEBUG=@lsby:* tsx script/watch/watch.ts ./src/interface/ \"npm run _gen:api:type\"",
