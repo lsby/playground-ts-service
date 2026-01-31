@@ -50,7 +50,7 @@ nodeWatch(
         return
       case '等待稍后执行':
         console.log('正在等待稍后执行, 本次事件将会在稍后与当前事件一并执行')
-        clearTimeout(定时器句柄)
+        if (定时器句柄) clearTimeout(定时器句柄)
         break
       case '空闲中':
         console.log('正在空闲中, 本次事件将会在稍后执行')
@@ -66,7 +66,7 @@ nodeWatch(
       状态 = '空闲中'
       if (执行堆积) {
         执行堆积 = false
-        f()
+        setTimeout(() => f(), 0)
       }
     }, 延时)
   },
