@@ -84,7 +84,7 @@
     {
       "label": "_持续ESLint检查",
       "type": "npm",
-      "script": "check:lint:watch",
+      "script": "watch:check:lint",
       "problemMatcher": {
         "owner": "eslint",
         "source": "eslint",
