@@ -10,7 +10,7 @@ export type JSX属性基础类型 = {
   key?: string | number
 }
 
-export type JSX子元素 = HTMLElement | string | number | boolean | null | undefined | JSX子元素[]
+export type JSX子元素 = HTMLElement | string | number | boolean | null | undefined | SVGElement | JSX子元素[]
 
 export type JSX有效返回值 = HTMLElement | DocumentFragment
 

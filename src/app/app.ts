@@ -1,6 +1,7 @@
-import { 接口, 接口逻辑, 服务器, 路径解析插件, 静态文件返回器 } from '@lsby/net-core'
+import { 接口, 接口逻辑, 服务器, 自定义接口返回器, 路径解析插件, 静态文件返回器 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
 import path from 'path'
+import { z } from 'zod'
 import { 环境变量 } from '../global/env'
 import { globalLog, syncLogCallBack, 即时任务管理器, 定时任务管理器 } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
@@ -16,6 +17,25 @@ export class App {
     let 服务 = new 服务器({
       接口们: [
         ...interfaceApiList,
+        new 接口(
+          '/favicon.ico',
+          'get',
+          接口逻辑.构造([], async () => new Right({})),
+          new 自定义接口返回器(z.never(), z.object({}), z.string(), z.object({}), (req, res, _data) => {
+            res.statusCode = 404
+            return res.end()
+          }),
+        ),
+        new 接口(
+          new RegExp('/__parcel_source_root/.*'),
+          'get',
+          接口逻辑.构造([new 路径解析插件()], async (参数) => {
+            let 相对路径 = 参数.path.rawPath.replace(/^\/__parcel_source_root\//, '')
+            let 文件路径 = path.join(import.meta.dirname, '../../', 相对路径)
+            return new Right({ filePath: 文件路径 })
+          }),
+          new 静态文件返回器({}),
+        ),
         new 接口(
           new RegExp('/.*'),
           'get',

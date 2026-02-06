@@ -2,7 +2,7 @@ declare global {
   namespace JSX {
     interface Element extends HTMLElement {}
 
-    type 元素子节点 = string | number | boolean | null | undefined | HTMLElement | 元素子节点[]
+    type 元素子节点 = string | number | boolean | null | undefined | HTMLElement | SVGElement | 元素子节点[]
 
     type HTML元素基础属性<T> = {
       style?: import('./style').增强样式类型
@@ -27,6 +27,17 @@ declare global {
       audio: HTML元素基础属性<HTMLAudioElement>
       canvas: HTML元素基础属性<HTMLCanvasElement>
       svg: HTML元素基础属性<SVGSVGElement>
+      rect: HTML元素基础属性<SVGRectElement>
+      circle: HTML元素基础属性<SVGCircleElement>
+      line: HTML元素基础属性<SVGLineElement>
+      path: HTML元素基础属性<SVGPathElement>
+      text: HTML元素基础属性<SVGTextElement>
+      g: HTML元素基础属性<SVGGElement>
+      defs: HTML元素基础属性<SVGDefsElement>
+      clipPath: HTML元素基础属性<SVGClipPathElement>
+      polygon: HTML元素基础属性<SVGPolygonElement>
+      polyline: HTML元素基础属性<SVGPolylineElement>
+      ellipse: HTML元素基础属性<SVGEllipseElement>
       table: HTML元素基础属性<HTMLTableElement>
       thead: HTML元素基础属性<HTMLTableSectionElement>
       tbody: HTML元素基础属性<HTMLTableSectionElement>
