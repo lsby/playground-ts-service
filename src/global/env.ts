@@ -29,6 +29,7 @@ export let 环境变量 = await new Env({
     // 应用端口
     APP_PORT: z.coerce.number(),
     WEB_PORT: z.coerce.number(),
+    WEB_HMR_PORT: z.coerce.number(),
     // 系统用户
     DEFAULT_SYSTEM_USER: z.string(),
     DEFAULT_SYSTEM_PWD: z.string(),

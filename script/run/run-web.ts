@@ -1,4 +1,8 @@
 import { spawn } from 'child_process'
+import { config } from 'dotenv'
+
+// 加载环境变量
+config({ path: '.env/.env.development' })
 
 function 启动任务(): void {
   const 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
@@ -18,9 +22,9 @@ function 启动任务(): void {
         'dist/src/web',
         '--watch-for-stdin',
         '--port',
-        '4000',
+        process.env['WEB_PORT'] || '4000',
         '--hmr-port',
-        '4001',
+        process.env['WEB_HMR_PORT'] || '4001',
         'src/web/page/**/*.html',
       ],
       { stdio: 'inherit', shell: true },
