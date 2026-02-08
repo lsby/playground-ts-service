@@ -108,7 +108,7 @@
 ## 代码风格
 
 - 除非指定, 否则默认为ts代码
-- 对于变量名, 函数名, 类名, 方法名等, 都尽可能使用中文(没错, 是中文)
+- 对于变量名, 函数名, 类名, 方法名等, 都尽可能使用中文(没错, 是中文), 但文件名总是使用英文
 - 禁止浮动的 Promise: no-floating-promises, 不要使用 void 忽略悬空的 promise
 - 必须写函数返回类型: explicit-function-return-type
 - 必须写类成员访问修饰符: explicit-member-accessibility
