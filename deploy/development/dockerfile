@@ -40,7 +40,7 @@ WORKDIR /opt/app
 COPY --from=builder /opt/app/db/dev.db /opt/app/db-default-dev.db
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
-COPY --from=builder /opt/app/.env.development /opt/app/.env
+COPY --from=builder /opt/app/.env/.env.development /opt/app/.env/.env.development
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
 
 EXPOSE 3000
