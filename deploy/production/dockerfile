@@ -41,7 +41,7 @@ COPY --from=builder /opt/app/db/prod.db /opt/app/db-default-prod.db
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
-COPY --from=builder /opt/app/.env /opt/app/.env
+COPY --from=builder /opt/app/.env.production /opt/app/.env
 
 EXPOSE 80
 
