@@ -26,6 +26,7 @@ function 启动任务(): void {
         '--hmr-port',
         process.env['WEB_HMR_PORT'] || '4001',
         'src/web/page/**/*.html',
+        // '--lazy',
       ],
       { stdio: 'inherit', shell: true },
     )
