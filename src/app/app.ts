@@ -27,16 +27,6 @@ export class App {
           }),
         ),
         new 接口(
-          new RegExp('/__parcel_source_root/.*'),
-          'get',
-          接口逻辑.构造([new 路径解析插件()], async (参数) => {
-            let 相对路径 = 参数.path.rawPath.replace(/^\/__parcel_source_root\//, '')
-            let 文件路径 = path.join(import.meta.dirname, '../../', 相对路径)
-            return new Right({ filePath: 文件路径 })
-          }),
-          new 静态文件返回器({}),
-        ),
-        new 接口(
           new RegExp('/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
