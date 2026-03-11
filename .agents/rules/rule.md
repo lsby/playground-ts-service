@@ -132,3 +132,4 @@ trigger: always_on
 - 写类型时, 尽可能写 type 而不是 interface
 - 尽可能不要用 addEventListener, 而是用 onxxx, 避免回调函数被一直持有造成内存泄漏
 - 尽可能不要用 dom 查询, 例如 querySelector, 而是用对象引用, 避免 dom 结构变化导致代码失效
+- 数据库里永远存UTC时间
