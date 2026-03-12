@@ -44,7 +44,7 @@ export class 右键菜单管理器 {
         },
         onclick: async (): Promise<void> => {
           try {
-            await 菜单项.回调()
+            void 菜单项.回调()
           } finally {
             this.隐藏菜单()
           }
