@@ -5,7 +5,8 @@ import { 显示模态框 } from '../../global/manager/modal-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 import { 普通按钮 } from '../general/base/base-button'
 import { 日志组件 } from '../general/log/log'
-import { 数据表加载数据参数, 表格组件 } from '../general/table/table'
+import { 表格组件 } from '../general/table/table'
+import { 数据表加载数据参数 } from '../general/table/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

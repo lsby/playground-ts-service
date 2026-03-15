@@ -7,7 +7,8 @@ import { 创建元素 } from '../../global/tools/create-element'
 import { 主要按钮, 普通按钮 } from '../general/base/base-button'
 import { 表单 } from '../general/form/form'
 import { 密码输入框, 普通输入框 } from '../general/form/form-input'
-import { 数据表加载数据参数, 表格组件 } from '../general/table/table'
+import { 表格组件 } from '../general/table/table'
+import { 数据表加载数据参数 } from '../general/table/types'
 
 type 属性类型 = {}
 type 发出事件类型 = {}

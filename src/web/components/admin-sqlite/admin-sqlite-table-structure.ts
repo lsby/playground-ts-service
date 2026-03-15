@@ -2,7 +2,8 @@ import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/manager/api-manager'
 import { 创建元素 } from '../../global/tools/create-element'
-import { 数据表加载数据参数, 表格组件 } from '../general/table/table'
+import { 表格组件 } from '../general/table/table'
+import { 数据表加载数据参数 } from '../general/table/types'
 
 type 属性类型 = { 表名?: string }
 type 发出事件类型 = {}
