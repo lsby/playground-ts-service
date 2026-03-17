@@ -13,6 +13,7 @@ import { z } from 'zod'
 import { 定时任务管理器 } from '../../../../global/global'
 import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
+import { 集线器监听器宿主 } from '../../../../model/hub/hub-model'
 
 let 接口路径 = '/api/admin-job/scheduled/get-logs' as const
 let 接口方法 = 'post' as const
@@ -37,10 +38,11 @@ let 接口逻辑实现 = 接口逻辑
         let 监听器 = async (日志: { 时间: Date; 消息: string }): Promise<void> => {
           await 参数.ws操作?.发送ws信息({ 新日志: { ...日志, 时间: 日志.时间.getTime() } }).catch(() => {})
         }
-        let 持有者 = 任务.添加定时任务日志监听器(监听器)
+        let 宿主 = new 集线器监听器宿主()
+        任务.添加定时任务日志监听器(监听器, 宿主)
 
         await 参数.ws操作?.设置清理函数(async () => {
-          任务.移除定时任务日志监听器(持有者)
+          宿主.解绑()
         })
 
         return new Right({ 日志列表: 任务.获得日志列表().map((日志) => ({ ...日志, 时间: 日志.时间.getTime() })) })

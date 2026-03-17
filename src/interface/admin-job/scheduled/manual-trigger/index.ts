@@ -12,6 +12,7 @@ import { z } from 'zod'
 import { 定时任务管理器 } from '../../../../global/global'
 import { jwt插件, kysely插件 } from '../../../../global/plugin'
 import { 检查管理员登录 } from '../../../../interface-logic/check/check-login-jwt-admin'
+import { 集线器监听器宿主 } from '../../../../model/hub/hub-model'
 
 let 接口路径 = '/api/admin-job/scheduled/manual-trigger' as const
 let 接口方法 = 'post' as const
@@ -28,14 +29,15 @@ let 接口逻辑实现 = 接口逻辑
         if (任务 === null) {
           return new Right({ 成功: false })
         }
-        let 持有者 = 任务.添加定时任务日志监听器(async (日志) => {
+        let 宿主 = new 集线器监听器宿主()
+        任务.添加定时任务日志监听器(async (日志) => {
           await log.debug(日志.消息)
-        })
+        }, 宿主)
         try {
           let 成功 = await 定时任务管理器.手动触发任务(参数.json.任务id)
           return new Right({ 成功 })
         } finally {
-          任务.移除定时任务日志监听器(持有者)
+          宿主.解绑()
         }
       },
     ),

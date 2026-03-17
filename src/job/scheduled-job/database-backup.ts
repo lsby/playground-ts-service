@@ -52,7 +52,7 @@ class 定时任务实现 extends 定时任务抽象类 {
             关闭ws连接: async () => {},
             发送ws信息: async () => {},
             设置清理函数: async () => {},
-            监听ws信息: async () => null,
+            监听ws信息: async () => {},
           },
         },
         { isAuto: true, userId: 管理员用户.id },
