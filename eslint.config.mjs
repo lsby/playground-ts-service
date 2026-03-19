@@ -15,7 +15,6 @@ export default [
     rules: {
       // ..
       'project/no-dom-query': 'error',
-      'max-lines': ['error', { max: 500, skipBlankLines: true, skipComments: true }],
     },
   },
 ]

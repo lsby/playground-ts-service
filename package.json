@@ -86,7 +86,7 @@
   "devDependencies": {
     "@capacitor/cli": "^7.4.3",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@lsby/eslint-config": "^0.5.3",
+    "@lsby/eslint-config": "^0.5.4",
     "@lsby/eslint-plugin": "^0.2.1",
     "@parcel/config-default": "^2.16.3",
     "@parcel/transformer-css": "^2.16.3",

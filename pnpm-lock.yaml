@@ -82,8 +82,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(prettier@3.7.4)
       '@lsby/eslint-config':
-        specifier: ^0.5.3
-        version: 0.5.3(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)
+        specifier: ^0.5.4
+        version: 0.5.4(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)
       '@lsby/eslint-plugin':
         specifier: ^0.2.1
         version: 0.2.1(eslint@9.39.2(jiti@2.6.1))
@@ -983,8 +983,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@lsby/eslint-config@0.5.3':
-    resolution: {integrity: sha512-L/RI5ckTaWGl/rlvicU1byrINzvsqko5dlLpYsRU7WZeyw9a7nvgR/ErM2uKNt56xOdnO/RU1R4WeJn3rMRwQg==}
+  '@lsby/eslint-config@0.5.4':
+    resolution: {integrity: sha512-6bWcRvg3JmdO4XzShd+8nXxYFk5/iZe+lnCsJb+P7xPmd3K/k5PuuTeV2B0eTRbLTWOsUUu8rq5jFhE9lU38Jw==}
     peerDependencies:
       '@lsby/eslint-plugin': ^0.2.1
       '@types/eslint': ^9.6.1
@@ -6331,7 +6331,7 @@ snapshots:
   '@lmdb/lmdb-win32-x64@2.8.5':
     optional: true
 
-  '@lsby/eslint-config@0.5.3(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)':
+  '@lsby/eslint-config@0.5.4(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@lsby/eslint-plugin': 0.2.1(eslint@9.39.2(jiti@2.6.1))
       '@types/eslint': 9.6.1
