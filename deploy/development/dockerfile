@@ -11,7 +11,8 @@ COPY . .
 RUN corepack enable && \
     pnpm install
 RUN export PARCEL_WORKER_BACKEND=process && \
-    npm run _build:all && \
+    npm run _build:all
+
 # 初始化默认数据库
 RUN echo "\n" | npm run db:push:dev
 
@@ -40,6 +41,7 @@ WORKDIR /opt/app
 COPY --from=builder /opt/app/db/dev.db /opt/app/db-default-dev.db
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
+COPY --from=builder /opt/app/public /opt/app/public
 COPY --from=builder /opt/app/.env/.env.development /opt/app/.env/.env.development
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
 
