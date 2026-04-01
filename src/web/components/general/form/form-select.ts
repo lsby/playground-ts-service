@@ -1,7 +1,6 @@
 import { 增强样式类型 } from 'src/web/global/types/style'
-import { 组件基类 } from '../../../base/base'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
-import type { 表单元素 } from './form'
+import { 表单组件基类 } from './form'
 
 type 下拉框属性 = {}
 
@@ -23,7 +22,7 @@ type 下拉框配置 = {
   元素样式?: 增强样式类型
 }
 
-abstract class 下拉框基类 extends 组件基类<下拉框属性, 下拉框事件, 监听下拉框事件> implements 表单元素<string> {
+abstract class 下拉框基类 extends 表单组件基类<下拉框属性, 下拉框事件, 监听下拉框事件, string> {
   protected 配置: 下拉框配置
   private 下拉框元素?: HTMLSelectElement
 

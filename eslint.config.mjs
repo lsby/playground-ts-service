@@ -1,8 +1,8 @@
 import * as eslintConfig from '@lsby/eslint-config'
 import projectRules from './script/eslint/project-rules.js'
 
-var 常用忽略域 = [...eslintConfig.常用忽略域, 'android', 'package']
-var 忽略常见文件夹 = { ignores: 常用忽略域 }
+let 常用忽略域 = [...eslintConfig.常用忽略域, 'android', 'package']
+let 忽略常见文件夹 = { ignores: 常用忽略域 }
 
 export default [
   // ..

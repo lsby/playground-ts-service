@@ -1,6 +1,7 @@
 version: '3'
 services:
   app:
+    image: lsby-playground-ts-service-prod
     build:
       context: ../../
       dockerfile: ./deploy/production/dockerfile

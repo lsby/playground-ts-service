@@ -36,7 +36,7 @@ function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): vo
   }
 }
 
-function 应用样式(元素: HTMLElement, 样式: 增强样式类型): void {
+export function 应用样式(元素: HTMLElement, 样式: 增强样式类型): void {
   for (let 键 in 样式) {
     let 值 = 样式[键 as keyof 增强样式类型]
     if (值 !== void 0) {

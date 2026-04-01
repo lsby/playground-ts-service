@@ -151,7 +151,22 @@ async function 主函数(): Promise<void> {
   let 所有文件 = 递归读取文件(项目根目录, 排除目录)
 
   // 只处理文本文件
-  let 文本文件扩展名 = ['.ts', '.js', '.json', '.md', '.html', '.css', '.txt', '.yml', '.yaml', '.env']
+  let 文本文件扩展名 = [
+    '.ts',
+    '.js',
+    '.json',
+    '.md',
+    '.html',
+    '.css',
+    '.txt',
+    '.yml',
+    '.yaml',
+    '.env',
+    '.gitignore',
+    '.dockerignore',
+    '.prettierignore',
+    '.prettierrc',
+  ]
   let 当前脚本路径 = 路径.relative(项目根目录, import.meta.filename)
   let 需要处理的文件 = 所有文件.filter((文件) => {
     let 扩展名 = 路径.extname(文件)

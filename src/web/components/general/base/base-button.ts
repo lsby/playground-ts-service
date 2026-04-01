@@ -1,6 +1,6 @@
 import { 增强样式类型 } from 'src/web/global/types/style'
 import { 组件基类 } from '../../../base/base'
-import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
+import { 创建元素, 应用宿主样式, 应用样式 } from '../../../global/tools/create-element'
 
 type 按钮属性 = {}
 
@@ -9,12 +9,14 @@ type 按钮事件 = { 点击: void }
 type 监听按钮事件 = {}
 
 type 按钮配置 = {
+  id?: string
   文本?: string
   标题?: string
   禁用?: boolean
   点击处理函数?: (e: Event) => void | Promise<void>
   宿主样式?: 增强样式类型
   元素样式?: 增强样式类型
+  ref?: (el: 按钮基类) => void
 }
 
 abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监听按钮事件> {
@@ -29,6 +31,9 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
 
   protected async 当加载时(): Promise<void> {
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
+    if (this.配置.id !== void 0) {
+      this.id = this.配置.id
+    }
 
     let 按钮样式 = this.获得按钮样式对象()
     if (this.配置.元素样式 !== void 0) {
@@ -63,6 +68,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
     this.配置.禁用 = 值
     if (this.按钮元素 !== void 0) {
       this.按钮元素.disabled = 值
+      应用样式(this.按钮元素, this.获得按钮样式对象())
     }
   }
 

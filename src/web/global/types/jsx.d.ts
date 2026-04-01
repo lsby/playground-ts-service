@@ -74,6 +74,17 @@ declare global {
       nav: HTML元素基础属性<HTMLElement>
       aside: HTML元素基础属性<HTMLElement>
       main: HTML元素基础属性<HTMLElement>
+      details: HTML元素基础属性<HTMLDetailsElement>
+      summary: HTML元素基础属性<HTMLElement>
+      strong: HTML元素基础属性<HTMLElement>
+      em: HTML元素基础属性<HTMLElement>
+      i: HTML元素基础属性<HTMLElement>
+      b: HTML元素基础属性<HTMLElement>
+      u: HTML元素基础属性<HTMLElement>
+      mark: HTML元素基础属性<HTMLElement>
+      small: HTML元素基础属性<HTMLElement>
+      sub: HTML元素基础属性<HTMLElement>
+      sup: HTML元素基础属性<HTMLElement>
     }
 
     interface ElementChildrenAttribute {

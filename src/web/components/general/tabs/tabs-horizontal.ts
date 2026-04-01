@@ -3,12 +3,12 @@ import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/tools/create-element'
 import { 文本按钮 } from '../base/base-button'
 
-type 属性类型 = {}
+type 属性类型 = { 路由键?: string }
 export type tabHorizontal发出事件类型 = { 切换: { 当前索引: number } }
 type 监听事件类型 = {}
 
 export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
+  protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['路由键']
   static {
     this.注册组件('lsby-tabs-horizontal', this)
   }
@@ -22,6 +22,20 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
   }
 
   protected override async 当加载时(): Promise<void> {
+    let 路由键 = await this.获得属性('路由键')
+    if (typeof 路由键 === 'string') {
+      let params = new URLSearchParams(window.location.search)
+      let 索引字符串 = params.get(路由键)
+      if (索引字符串 !== null) {
+        let 索引 = parseInt(索引字符串)
+        let 子元素 = Array.from(this.children).filter((子): 子 is HTMLElement => 子 instanceof HTMLElement)
+        let 标签元素数量 = 子元素.filter((el) => el.hasAttribute('标签')).length
+        if (Number.isNaN(索引) === false && 索引 >= 0 && 索引 < 标签元素数量) {
+          this.当前索引 = 索引
+        }
+      }
+    }
+
     let style = this.获得宿主样式()
     style.display = 'flex'
     style.flexDirection = 'column'
@@ -107,6 +121,16 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
   private 切换标签(index: number): void {
     if (this.当前索引 === index) return
     this.当前索引 = index
+
+    void this.获得属性('路由键').then((路由键) => {
+      if (typeof 路由键 === 'string') {
+        let params = new URLSearchParams(window.location.search)
+        params.set(路由键, index.toString())
+        let newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`
+        window.history.replaceState(null, '', newUrl)
+      }
+    })
+
     this.更新UI()
     this.派发事件('切换', { 当前索引: index })
   }

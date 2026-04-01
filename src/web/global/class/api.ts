@@ -3,14 +3,10 @@ import { 已审阅的any } from '../../../tools/types'
 import { InterfaceType } from '../../../types/interface-type'
 import { 错误提示 } from '../manager/toast-manager'
 
-type 取接口<P extends string, T extends readonly 已审阅的any[] = InterfaceType> = T extends readonly [
-  infer F,
-  ...infer Rest,
-]
-  ? F extends { path: P }
-    ? F
-    : 取接口<P, Rest>
-  : never
+export type 取接口<
+  P extends InterfaceType[number]['path'],
+  T extends readonly 已审阅的any[] = InterfaceType,
+> = T extends readonly [infer F, ...infer Rest] ? (F extends { path: P } ? F : 取接口<P, Rest>) : never
 
 type 取JSON输入<I> = I extends { input: { json: infer 输入 } } ? 输入 : never
 type 取FORM输入<I> = I extends { input: { form: infer 输入 } } ? 输入 : never

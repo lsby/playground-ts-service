@@ -1,7 +1,6 @@
 import { 增强样式类型 } from 'src/web/global/types/style'
-import { 组件基类 } from '../../../base/base'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
-import type { 表单元素 } from './form'
+import { 表单组件基类 } from './form'
 
 type 复选框组属性 = {}
 
@@ -18,7 +17,7 @@ type 复选框组配置 = {
   元素样式?: 增强样式类型
 }
 
-class 复选框组 extends 组件基类<复选框组属性, 复选框组事件, 监听复选框组事件> implements 表单元素<string[]> {
+class 复选框组 extends 表单组件基类<复选框组属性, 复选框组事件, 监听复选框组事件, string[]> {
   protected 配置: 复选框组配置
   private 复选框元素们: HTMLInputElement[] = []
 

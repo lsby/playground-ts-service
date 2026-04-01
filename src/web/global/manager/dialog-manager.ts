@@ -77,7 +77,7 @@ export function 显示对话框(消息: string): Promise<void> {
   })
 }
 
-export function 显示确认对话框(消息: string): Promise<boolean> {
+export function 显示确认对话框(消息: string, 提示?: string): Promise<boolean> {
   return new Promise((resolve) => {
     let 遮罩层 = 创建元素('div', {
       style: {
@@ -113,6 +113,16 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
       textContent: 消息,
       style: { fontSize: '14px', lineHeight: '1.5', color: 'var(--文字颜色)', whiteSpace: 'pre-wrap' },
     })
+
+    对话框.appendChild(消息元素)
+
+    if (提示 !== void 0) {
+      let 提示元素 = 创建元素('div', {
+        textContent: 提示,
+        style: { fontSize: '12px', lineHeight: '1.5', color: 'var(--次要文字颜色)', whiteSpace: 'pre-wrap' },
+      })
+      对话框.appendChild(提示元素)
+    }
 
     let 按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
@@ -153,7 +163,6 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
 
     按钮容器.appendChild(取消按钮)
     按钮容器.appendChild(确定按钮)
-    对话框.appendChild(消息元素)
     对话框.appendChild(按钮容器)
     遮罩层.appendChild(对话框)
     document.body.appendChild(遮罩层)
@@ -165,7 +174,7 @@ export function 显示确认对话框(消息: string): Promise<boolean> {
   })
 }
 
-export function 显示输入对话框(消息: string, 默认值?: string): Promise<string | null> {
+export function 显示输入对话框(消息: string, 默认值?: string, 提示?: string): Promise<string | null> {
   return new Promise((resolve) => {
     let 遮罩层 = 创建元素('div', {
       style: {
@@ -202,11 +211,23 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
       style: { fontSize: '14px', lineHeight: '1.5', color: 'var(--文字颜色)', whiteSpace: 'pre-wrap' },
     })
 
+    对话框.appendChild(消息元素)
+
+    if (提示 !== void 0) {
+      let 提示元素 = 创建元素('div', {
+        textContent: 提示,
+        style: { fontSize: '12px', lineHeight: '1.5', color: 'var(--次要文字颜色)', whiteSpace: 'pre-wrap' },
+      })
+      对话框.appendChild(提示元素)
+    }
+
     let 输入框 = new 普通输入框({
       占位符: '请输入内容',
       元素样式: { width: '100%' },
       ...(默认值 !== void 0 ? { 值: 默认值 } : {}),
     })
+
+    对话框.appendChild(输入框)
 
     let 按钮容器 = 创建元素('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '8px' } })
 
@@ -249,8 +270,6 @@ export function 显示输入对话框(消息: string, 默认值?: string): Promi
 
     按钮容器.appendChild(取消按钮)
     按钮容器.appendChild(确定按钮)
-    对话框.appendChild(消息元素)
-    对话框.appendChild(输入框)
     对话框.appendChild(按钮容器)
     遮罩层.appendChild(对话框)
     document.body.appendChild(遮罩层)

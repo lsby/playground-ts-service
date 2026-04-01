@@ -1,7 +1,6 @@
 import { 增强样式类型 } from 'src/web/global/types/style'
-import { 组件基类 } from '../../../base/base'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
-import type { 表单元素 } from './form'
+import { 表单组件基类 } from './form'
 
 type 单选框组属性 = {}
 
@@ -20,7 +19,7 @@ type 单选框组配置 = {
   标签?: string
 }
 
-class 单选框组 extends 组件基类<单选框组属性, 单选框组事件, 监听单选框组事件> implements 表单元素<string> {
+class 单选框组 extends 表单组件基类<单选框组属性, 单选框组事件, 监听单选框组事件, string> {
   protected 配置: 单选框组配置
   private 单选框元素们: HTMLInputElement[] = []
 
