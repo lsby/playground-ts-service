@@ -12,9 +12,10 @@ let 密码 = 'xxx'
 // ============= 配置区 =============
 
 // 读取项目名称
-let { name: 项目名称 } = JSON.parse(
+let { name: 原始项目名称 } = JSON.parse(
   fs.readFileSync(path.join(path.resolve(import.meta.dirname, '../', '../'), 'package.json'), 'utf8'),
 )
+let 项目名称 = 原始项目名称.replace('@', '').replace(/\//g, '-')
 
 // 本地
 let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
