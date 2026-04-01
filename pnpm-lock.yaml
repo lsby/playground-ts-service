@@ -12,7 +12,7 @@ importers:
         specifier: ^7.4.3
         version: 7.4.3(@capacitor/core@7.4.3)
       '@capacitor/core':
-        specifier: ^7.4.0
+        specifier: ^7.4.1
         version: 7.4.3
       '@capacitor/dialog':
         specifier: ^7.0.2
@@ -120,12 +120,6 @@ importers:
       '@types/node-schedule':
         specifier: ^2.1.8
         version: 2.1.8
-      '@types/ssh2':
-        specifier: ^1.15.5
-        version: 1.15.5
-      '@types/ssh2-sftp-client':
-        specifier: ^9.0.6
-        version: 9.0.6
       '@types/stream-to-blob':
         specifier: ^2.0.0
         version: 2.0.0
@@ -198,12 +192,6 @@ importers:
       process:
         specifier: ^0.11.10
         version: 0.11.10
-      ssh2:
-        specifier: ^1.17.0
-        version: 1.17.0
-      ssh2-sftp-client:
-        specifier: ^12.1.1
-        version: 12.1.1
       stream-to-blob:
         specifier: ^2.0.1
         version: 2.0.1
@@ -1947,9 +1935,6 @@ packages:
   '@types/node-schedule@2.1.8':
     resolution: {integrity: sha512-k00g6Yj/oUg/CDC+MeLHUzu0+OFxWbIqrFfDiLi6OPKxTujvpv29mHGM8GtKr7B+9Vv92FcK/8mRqi1DK5f3hA==}
 
-  '@types/node@18.19.130':
-    resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
-
   '@types/node@22.18.2':
     resolution: {integrity: sha512-lif9hF9afNk39jMUVYk5eyYEojLZQqaYX61LfuwUJJ1+qiQbh7jVaZXskYgzyjAIFDFQRf5Sd6MVM7EyXkfiRw==}
 
@@ -1988,12 +1973,6 @@ packages:
 
   '@types/slice-ansi@4.0.0':
     resolution: {integrity: sha512-+OpjSaq85gvlZAYINyzKpLeiFkSC4EsC6IIiT6v6TLSU5k5U83fHGj9Lel8oKEXM0HqgrMVCjXPDPVICtxF7EQ==}
-
-  '@types/ssh2-sftp-client@9.0.6':
-    resolution: {integrity: sha512-4+KvXO/V77y9VjI2op2T8+RCGI/GXQAwR0q5Qkj/EJ5YSeyKszqZP6F8i3H3txYoBqjc7sgorqyvBP3+w1EHyg==}
-
-  '@types/ssh2@1.15.5':
-    resolution: {integrity: sha512-N1ASjp/nXH3ovBHddRJpli4ozpk6UdDYIX4RJWFa9L1YKnzdhTlVmiGHm4DZnj/jLbqZpes4aeR30EFGQtvhQQ==}
 
   '@types/stream-to-blob@2.0.0':
     resolution: {integrity: sha512-tZpPRVwoUMe4ZHr0xt2+RyvkqKFoKzdyCUuzW3NxC4HKxbNEwCMLZiumMuZ+FaizAQJx3rUXVJNXpMCnnOffAw==}
@@ -5086,10 +5065,6 @@ packages:
     resolution: {integrity: sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==}
     engines: {node: '>= 0.6'}
 
-  ssh2-sftp-client@12.1.1:
-    resolution: {integrity: sha512-wYVDgwkpcKG2iPGQQ+QR33xkWqLFIaVrYvA+uON4pmxTPaPuB81f1aooUEPN75e/9DCK6rrKYXb6zR6zP3+EtA==}
-    engines: {node: '>=18.20.4'}
-
   ssh2@1.17.0:
     resolution: {integrity: sha512-wPldCk3asibAjQ/kziWQQt1Wh3PgDFpC0XpwclzKcdT1vql6KeYxf5LIt4nlFkUeR8WuphYMKqUA56X4rjbfgQ==}
     engines: {node: '>=10.16.0'}
@@ -5422,9 +5397,6 @@ packages:
 
   undefsafe@2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}
-
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
@@ -7849,10 +7821,6 @@ snapshots:
     dependencies:
       '@types/node': 25.0.6
 
-  '@types/node@18.19.130':
-    dependencies:
-      undici-types: 5.26.5
-
   '@types/node@22.18.2':
     dependencies:
       undici-types: 6.21.0
@@ -7898,14 +7866,6 @@ snapshots:
       '@types/node': 25.0.6
 
   '@types/slice-ansi@4.0.0': {}
-
-  '@types/ssh2-sftp-client@9.0.6':
-    dependencies:
-      '@types/ssh2': 1.15.5
-
-  '@types/ssh2@1.15.5':
-    dependencies:
-      '@types/node': 18.19.130
 
   '@types/stream-to-blob@2.0.0':
     dependencies:
@@ -11344,11 +11304,6 @@ snapshots:
 
   sqlstring@2.3.3: {}
 
-  ssh2-sftp-client@12.1.1:
-    dependencies:
-      concat-stream: 2.0.0
-      ssh2: 1.17.0
-
   ssh2@1.17.0:
     dependencies:
       asn1: 0.2.6
@@ -11685,8 +11640,6 @@ snapshots:
   typescript@5.9.3: {}
 
   undefsafe@2.0.5: {}
-
-  undici-types@5.26.5: {}
 
   undici-types@6.21.0: {}
 
