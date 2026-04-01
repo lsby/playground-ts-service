@@ -24,6 +24,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
   private 发生了拖动 = false
   private 上一个选中的索引: number | null = null
   private 正在加载 = false
+  private 上一次滚动位置 = 0
   private 滚动到底部按钮: 普通按钮 | null = null
 
   protected override async 当加载时(): Promise<void> {
@@ -139,8 +140,15 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     // 监听滚动事件
     容器.onscroll = (): void => {
       if (this.日志容器 !== null) {
-        let 滚动到底部距离 = this.日志容器.scrollHeight - this.日志容器.scrollTop - this.日志容器.clientHeight
-        this.自动滚动 = 滚动到底部距离 <= this.滚动阈值
+        let 当前滚动位置 = this.日志容器.scrollTop
+        let 向上滚动 = 当前滚动位置 < this.上一次滚动位置
+        let 滚动到底部距离 = this.日志容器.scrollHeight - 当前滚动位置 - this.日志容器.clientHeight
+        if (向上滚动 === true) {
+          this.自动滚动 = false
+        } else if (滚动到底部距离 <= this.滚动阈值) {
+          this.自动滚动 = true
+        }
+        this.上一次滚动位置 = 当前滚动位置
         if (this.滚动到底部按钮 !== null) {
           if (滚动到底部距离 <= this.滚动阈值) {
             this.滚动到底部按钮.style.display = 'none'
@@ -322,6 +330,8 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     if (this.日志容器 !== null) {
       this.日志容器.innerHTML = ''
     }
+    this.自动滚动 = true
+    this.上一次滚动位置 = 0
   }
 
   private 获取日志行索引(元素: HTMLElement): number | null {
@@ -361,8 +371,16 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
   private 渲染日志(): void {
     if (this.日志容器 === null) return
 
-    // 清空容器
-    this.日志容器.innerHTML = ''
+    // 清空特殊状态提示
+    if (this.日志容器.children.length === 1) {
+      let 第一个子元素 = this.日志容器.children[0]
+      if (
+        第一个子元素 instanceof HTMLDivElement &&
+        (第一个子元素.textContent === '正在加载日志...' || 第一个子元素.textContent === '暂无日志')
+      ) {
+        this.日志容器.innerHTML = ''
+      }
+    }
 
     if (this.正在加载 === true) {
       // 显示加载指示器
