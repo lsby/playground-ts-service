@@ -141,7 +141,8 @@
     "appId": "lsby.playground.ts.service",
     "productName": "lsby-playground-ts-service",
     "files": [
-      "dist/**/*"
+      "dist/**/*",
+      "public/**/*"
     ],
     "directories": {
       "output": "package"
