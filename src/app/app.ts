@@ -30,7 +30,15 @@ export class App {
           new RegExp('/public/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
-            let 文件路径 = path.join(import.meta.dirname, '../../public/', 参数.path.file)
+            let 文件路径
+            switch (环境变量.RUN_MODE) {
+              case 'tsx':
+                文件路径 = path.join(import.meta.dirname, '../../public/', 参数.path.file)
+                break
+              case 'dist':
+                文件路径 = path.join(import.meta.dirname, '../../../public', 参数.path.file)
+                break
+            }
             return new Right({ filePath: 文件路径 })
           }),
           new 静态文件返回器({}),
