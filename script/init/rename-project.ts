@@ -171,7 +171,10 @@ async function 主函数(): Promise<void> {
   let 需要处理的文件 = 所有文件.filter((文件) => {
     let 扩展名 = 路径.extname(文件)
     let 相对路径 = 路径.relative(项目根目录, 文件)
-    let 是文本文件 = 文本文件扩展名.includes(扩展名) === true || 路径.basename(文件).startsWith('.env') === true
+    let 是文本文件 =
+      文本文件扩展名.includes(扩展名) === true ||
+      文本文件扩展名.includes(路径.basename(文件)) === true ||
+      路径.basename(文件).startsWith('.env') === true
     let 不是当前脚本 = 相对路径 !== 当前脚本路径
     return 是文本文件 === true && 不是当前脚本 === true
   })
