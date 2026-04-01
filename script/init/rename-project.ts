@@ -144,7 +144,7 @@ async function 主函数(): Promise<void> {
   console.log(`  ${配置.旧项目名_短横线} → ${配置.新项目名_短横线}\n`)
 
   // 需要排除的目录
-  let 排除目录 = ['node_modules', 'dist', 'coverage', 'package', 'db', 'deploy', 'android', '.parcel-cache']
+  let 排除目录 = ['node_modules', 'dist', 'coverage', 'package', 'db', 'android', '.parcel-cache']
 
   // 获取所有需要处理的文件
   let 项目根目录 = 获取项目根目录()
