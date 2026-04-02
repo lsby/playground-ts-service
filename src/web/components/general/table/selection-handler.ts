@@ -1,3 +1,4 @@
+import { 成功提示, 错误提示 } from '../../../global/manager/toast-manager'
 import { 数据表列配置 } from './types'
 
 export type 选择处理器上下文<数据项> = {
@@ -105,9 +106,13 @@ export class 表格选择管理器<数据项> {
     if (内容 !== '') {
       try {
         await navigator.clipboard.writeText(内容)
+        成功提示('已复制到剪贴板')
       } catch (错误) {
         console.error('复制失败:', 错误)
+        错误提示('复制失败，请重试')
       }
+    } else {
+      错误提示('没有选中的内容')
     }
   }
 
