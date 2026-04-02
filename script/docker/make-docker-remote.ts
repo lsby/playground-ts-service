@@ -21,18 +21,6 @@ let 项目名称 = 原始项目名称.replace('@', '').replace(/\//g, '-')
 let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
 let 本地压缩包路径: string = path.join(本地根目录, `${项目名称}.tar.gz`)
 
-// 远程
-let 远程根目录 = `/root/${项目名称}`
-// 远程-上传
-let 远程上传目录 = path.posix.resolve(远程根目录, 'upload')
-let 远程压缩包路径: string = path.posix.resolve(远程上传目录, `${项目名称}.tar.gz`)
-// 远程-构建
-let 远程构建目录 = path.posix.resolve(远程根目录, 'build')
-let 远程构建docker目录: string = path.posix.resolve(远程构建目录, 'deploy')
-// 远程-运行
-let 远程运行目录 = path.posix.resolve(远程根目录, 'run')
-let 远程运行部署目录: string = path.posix.resolve(远程运行目录, 'deploy')
-
 async function 主函数(): Promise<void> {
   let { 模式, 环境 } = await inquirer.prompt([
     {
@@ -58,34 +46,52 @@ async function 主函数(): Promise<void> {
     },
   ])
 
-  if (模式 === 'run') {
-    let { 确认运行 } = await inquirer.prompt([
-      {
-        type: 'confirm',
-        name: '确认运行',
-        message: [
-          `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
-          '这通常是预期的, 但请确保您了解后果:',
-          '- 打包内容会覆盖运行目录中的同名文件',
-          '- 远程新生成的文件及外部持久化数据不受影响',
-          '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
-          '您确定要继续吗?',
-        ].join('\n'),
-        default: false,
-      },
-    ])
-    if (确认运行 === false) {
-      return
-    }
-  }
-
   let 日志 = new 日志类()
   let sshClient = new NodeSSH()
 
   try {
-    日志.打印(`🚀 [${模式}] [${环境}] 开始处理...`)
+    日志.打印(`🚀 [${模式}] [${环境}] 开始连接服务器...`)
     await sshClient.connect({ host: 服务器地址, username: 用户名, password: 密码 })
     日志.打印(`✅ 已连接到 服务器`)
+
+    // 获取远程家目录并初始化路径
+    let 远程家目录 = (await 执行远程命令(sshClient, 'echo $HOME', { 打印输出: false })).stdout.trim()
+    let 远程根目录 = path.posix.join(远程家目录, 项目名称)
+    let 远程上传目录 = path.posix.resolve(远程根目录, 'upload')
+    let 远程压缩包路径: string = path.posix.resolve(远程上传目录, `${项目名称}.tar.gz`)
+    let 远程构建目录 = path.posix.resolve(远程根目录, 'build')
+    let 远程构建docker目录: string = path.posix.resolve(远程构建目录, 'deploy')
+    let 远程运行目录 = path.posix.resolve(远程根目录, 'run')
+    let 远程运行部署目录: string = path.posix.resolve(远程运行目录, 'deploy')
+
+    日志.打印(`📂 远程路径初始化完成:`)
+    日志.打印(`- 远程家目录: ${远程家目录}`)
+    日志.打印(`- 远程根目录: ${远程根目录}`)
+    日志.打印(`- 远程上传目录: ${远程上传目录}`)
+    日志.打印(`- 远程构建目录: ${远程构建目录}`)
+    日志.打印(`- 远程运行目录: ${远程运行目录}`)
+
+    // 运行确认
+    if (模式 === 'run') {
+      let { 确认运行 } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: '确认运行',
+          message: [
+            `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
+            '这通常是预期的, 但请确保您了解后果:',
+            '- 打包内容会覆盖运行目录中的同名文件',
+            '- 远程新生成的文件及外部持久化数据不受影响',
+            '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
+            '您确定要继续吗?',
+          ].join('\n'),
+          default: false,
+        },
+      ])
+      if (确认运行 === false) {
+        return
+      }
+    }
 
     // ====================
     // 步骤: 打包并上传 (仅 build 和 run 模式需要)
