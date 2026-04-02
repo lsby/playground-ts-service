@@ -3,7 +3,15 @@ import inquirer from 'inquirer'
 import { NodeSSH } from 'node-ssh'
 import * as path from 'path'
 import { 日志类 } from './model'
-import { 上传文件, 压缩项目, 执行远程命令, 清理旧镜像, 获取Compose镜像列表, 获取完整忽略名单 } from './tools'
+import {
+  上传文件,
+  压缩项目,
+  执行远程命令,
+  清理旧镜像,
+  获取Compose镜像列表,
+  获取完整忽略名单,
+  远程路径是否存在,
+} from './tools'
 
 // ============= 配置区 =============
 let 服务器地址 = '0.0.0.0'
@@ -31,8 +39,12 @@ async function 主函数(): Promise<void> {
         { name: '打包镜像 (build)', value: 'build' },
         { name: '运行项目 (run)', value: 'run' },
         { name: '查看日志 (logs)', value: 'logs' },
+        { name: '重启项目 (restart)', value: 'restart' },
+        { name: '重新部署 (redeploy)', value: 'redeploy' },
+        { name: '停止运行 (stop)', value: 'stop' },
+        { name: '删除项目 (delete)', value: 'delete' },
       ],
-      default: 'build',
+      default: 'run',
     },
     {
       type: 'list',
@@ -43,6 +55,7 @@ async function 主函数(): Promise<void> {
         { name: '生产环境 (production)', value: 'production' },
       ],
       default: 'development',
+      when: (answers: any) => answers.模式 !== 'delete',
     },
   ])
 
@@ -72,31 +85,79 @@ async function 主函数(): Promise<void> {
     日志.打印(`- 远程运行目录: ${远程运行目录}`)
 
     // 运行确认
-    if (模式 === 'run') {
+    if (模式 === 'run' || 模式 === 'redeploy') {
+      let message = [
+        `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
+        '这通常是预期的, 但请确保您了解后果:',
+        '- 打包内容会覆盖运行目录中的同名文件',
+        '- 远程新生成的文件及外部持久化数据不受影响',
+        '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
+      ]
+
+      if (模式 === 'redeploy') {
+        message = [
+          `彻底重部署模式将完全删除远程运行目录 (${远程运行目录})`,
+          '这将导致:',
+          '- 强制停止并移除当前容器和关联镜像',
+          '- 删除运行目录下的所有文件 (包括不在项目仓库中的数据/持久化文件等)',
+          '- 之后从零开始重新部署',
+          '🚨 警告: 这是一个不可逆的操作, 远程未备份的数据将永久丢失!',
+        ]
+      }
+
       let { 确认运行 } = await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: '确认运行',
-          message: [
-            `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
-            '这通常是预期的, 但请确保您了解后果:',
-            '- 打包内容会覆盖运行目录中的同名文件',
-            '- 远程新生成的文件及外部持久化数据不受影响',
-            '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
-            '您确定要继续吗?',
-          ].join('\n'),
-          default: false,
-        },
+        { type: 'confirm', name: '确认运行', message: message.join('\n') + '\n您确定要继续吗?', default: false },
       ])
       if (确认运行 === false) {
         return
       }
     }
 
+    // 运行确认
+    if (模式 === 'delete') {
+      let { 确认删除 } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: '确认删除',
+          message:
+            [
+              `🚨 警告: 此操作将从服务器彻底删除该项目的所有痕迹!`,
+              `项目根目录: ${远程根目录}`,
+              '操作包含:',
+              '- 停止所有运行中的容器 (跨环境)',
+              '- 清理所有关联镜像',
+              '- 彻底删除远程目录 (build, run, upload)',
+              '这是一个极其危险的操作, 不可撤销!',
+            ].join('\n') + '\n您确认要这么做吗?',
+          default: false,
+        },
+      ])
+      if (确认删除 === false) {
+        return
+      }
+    }
+
     // ====================
-    // 步骤: 打包并上传 (仅 build 和 run 模式需要)
+    // 特殊流程: 彻底重部署的前置清理
     // ====================
-    if (模式 === 'build' || 模式 === 'run') {
+    if (模式 === 'redeploy') {
+      let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
+
+      if (await 远程路径是否存在(sshClient, docker文件目录)) {
+        日志.打印(`🛑 [redeploy] 正在停止容器并准备清理...`)
+        let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录)
+        await 执行远程命令(sshClient, `docker-compose down --remove-orphans`, { 工作目录: docker文件目录 })
+        await 清理旧镜像(sshClient, 待清理镜像列表, [], 日志)
+      }
+
+      日志.打印(`🧹 [redeploy] 彻底删除远程目录: ${远程运行目录}`)
+      await 执行远程命令(sshClient, `rm -rf ${远程运行目录}`)
+    }
+
+    // ====================
+    // 步骤: 打包并上传 (仅 build, run, rededeploy 模式需要)
+    // ====================
+    if (模式 === 'build' || 模式 === 'run' || 模式 === 'redeploy') {
       日志.打印(`🧹 清理旧的本地压缩包`)
       if (fs.existsSync(本地压缩包路径) === true) {
         fs.unlinkSync(本地压缩包路径)
@@ -118,7 +179,7 @@ async function 主函数(): Promise<void> {
     }
 
     // ====================
-    // 模式 1: 构建镜像
+    // 模式: 构建镜像
     // ====================
     if (模式 === 'build') {
       日志.打印(`🧹 清理并创建远程构建目录: ${远程构建目录}`)
@@ -133,9 +194,9 @@ async function 主函数(): Promise<void> {
     }
 
     // ====================
-    // 模式 2: 运行
+    // 模式: 运行项目 (run/redeploy)
     // ====================
-    if (模式 === 'run') {
+    if (模式 === 'run' || 模式 === 'redeploy') {
       let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
 
       日志.打印(`📂 确保远程运行目录存在: ${远程运行目录}`)
@@ -164,9 +225,82 @@ async function 主函数(): Promise<void> {
     }
 
     // ====================
-    // 模式 3: 查看日志
+    // 模式: 停止运行
     // ====================
-    if (模式 === 'logs' || 模式 === 'run') {
+    if (模式 === 'stop') {
+      let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
+
+      if ((await 远程路径是否存在(sshClient, docker文件目录)) === false) {
+        日志.打印(`⚠️ 远程部署目录不存在: ${docker文件目录}, 无需停止`)
+        return
+      }
+
+      日志.打印(`🔍 停止前的镜像 ID...`)
+      let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录)
+      日志.打印(`📊 待清理的镜像 ID 列表: [${待清理镜像列表.join(', ') || '无'}]`)
+
+      日志.打印(`🛑 正在停止并移除容器...`)
+      await 执行远程命令(sshClient, `docker-compose down --remove-orphans`, { 工作目录: docker文件目录 })
+
+      日志.打印(`🧹 正在清理相关镜像...`)
+      await 清理旧镜像(sshClient, 待清理镜像列表, [], 日志)
+
+      日志.打印(`✨ 停止并清理完成`)
+    }
+
+    // ====================
+    // 模式: 重启项目
+    // ====================
+    if (模式 === 'restart') {
+      let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
+
+      if ((await 远程路径是否存在(sshClient, docker文件目录)) === false) {
+        日志.打印(`⚠️ 远程部署目录不存在: ${docker文件目录}, 无法重启`)
+        return
+      }
+
+      日志.打印(`🔄 正在重启容器...`)
+      await 执行远程命令(sshClient, `docker-compose restart`, { 工作目录: docker文件目录 })
+
+      日志.打印(`✨ 重启指令已发送`)
+    }
+
+    // ====================
+    // 模式: 删除项目
+    // ====================
+    if (模式 === 'delete') {
+      let deploy目录 = path.posix.resolve(远程运行部署目录)
+      if (await 远程路径是否存在(sshClient, deploy目录)) {
+        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器和镜像...`)
+        let 环境列表 = (await 执行远程命令(sshClient, `ls -1 ${deploy目录}`, { 打印输出: false })).stdout
+          .split('\n')
+          .map((s) => s.trim())
+          .filter((s) => s.length > 0)
+
+        for (let 某个环境 of 环境列表) {
+          let 环境目录 = path.posix.resolve(deploy目录, 某个环境)
+          if (await 远程路径是否存在(sshClient, 环境目录)) {
+            日志.打印(`🛑 正在停止并清理环境: ${某个环境} ...`)
+            let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 环境目录)
+            await 执行远程命令(sshClient, `docker-compose down --remove-orphans`, {
+              工作目录: 环境目录,
+              抛出错误: false,
+            })
+            await 清理旧镜像(sshClient, 镜像ID列表, [], 日志)
+          }
+        }
+      }
+
+      日志.打印(`🧹 正在从远程物理删除整个项目根目录: ${远程根目录}`)
+      await 执行远程命令(sshClient, `rm -rf ${远程根目录}`)
+      日志.打印(`✨ 项目已彻底从服务器删除`)
+      return
+    }
+
+    // ====================
+    // 模式: 查看日志
+    // ====================
+    if (模式 === 'logs' || 模式 === 'run' || 模式 === 'restart' || 模式 === 'redeploy') {
       let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
       console.log('--- 正在同步服务器实时日志 (按 Ctrl+C 退出) ---')
       await 执行远程命令(sshClient, 'docker-compose logs -f --tail 500', { 工作目录: docker文件目录 })
