@@ -33,7 +33,7 @@ model user_config {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  user_id String @unique // 所属用户id
+  user_id String @unique // 所属用户id(唯一)
   user    user   @relation(fields: [user_id], references: [id], onUpdate: Restrict, onDelete: Restrict)
 
   theme String // 主题颜色: 系统 | 亮色 | 暗色
