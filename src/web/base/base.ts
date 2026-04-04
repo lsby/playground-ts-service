@@ -65,6 +65,7 @@ export abstract class 组件基类<
   }
 
   public async 刷新(): Promise<void> {
+    this.清理所有监听器()
     this.清空影子dom()
     await this.当加载时()
   }
