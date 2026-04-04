@@ -254,7 +254,7 @@ export function 显示输入对话框(消息: string, 默认值?: string, 提示
     let 键盘处理 = (event: KeyboardEvent): void => {
       if (event.key === 'Escape') {
         关闭对话框(null)
-      } else if (event.key === 'Enter') {
+      } else if (event.key === 'Enter' && !event.isComposing) {
         关闭对话框(输入框.获得值())
       }
     }

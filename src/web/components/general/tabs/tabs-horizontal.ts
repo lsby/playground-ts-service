@@ -21,6 +21,18 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
     super(属性)
   }
 
+  public override async 刷新(): Promise<void> {
+    await super.刷新()
+    let 标签元素列表 = Array.from(this.children).filter(
+      (子): 子 is HTMLElement => 子 instanceof HTMLElement && 子.hasAttribute('标签'),
+    )
+    let 目标元素 = 标签元素列表[this.当前索引]
+    if (目标元素 !== void 0) {
+      if (目标元素 instanceof 组件基类) await 目标元素.刷新()
+      for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) await 子.刷新()
+    }
+  }
+
   protected override async 当加载时(): Promise<void> {
     let 路由键 = await this.获得属性('路由键')
     if (typeof 路由键 === 'string') {
@@ -64,6 +76,12 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
     this.标签头容器.style.display = 'flex'
     this.标签头容器.style.borderBottom = '1px solid var(--边框颜色)'
     this.标签头容器.style.gap = '10px'
+    this.标签头容器.style.overflowX = 'auto'
+    this.标签头容器.style.flexShrink = '0'
+    // 隐藏滚动条但保留滚动功能
+    this.标签头容器.style.scrollbarWidth = 'none' // Firefox
+    // @ts-ignore
+    this.标签头容器.style.msOverflowStyle = 'none' // IE/Edge
 
     this.插槽容器.style.flex = '1'
     this.插槽容器.style.display = 'flex'
@@ -98,7 +116,9 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
           userSelect: 'none',
           color: 'var(--文字颜色)',
         },
-        点击处理函数: (): void => this.切换标签(idx),
+        点击处理函数: async (): Promise<void> => {
+          await this.切换标签(idx)
+        },
       })
 
       this.标签头容器.appendChild(按钮)
@@ -118,24 +138,33 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
     })
   }
 
-  private 切换标签(index: number): void {
-    if (this.当前索引 === index) return
-    this.当前索引 = index
+  private async 切换标签(index: number): Promise<void> {
+    let 标签元素列表 = Array.from(this.children).filter(
+      (子): 子 is HTMLElement => 子 instanceof HTMLElement && 子.hasAttribute('标签'),
+    )
+    let 目标元素 = 标签元素列表[index]
 
-    void this.获得属性('路由键').then((路由键) => {
+    if (this.当前索引 !== index) {
+      this.当前索引 = index
+      this.更新UI()
+
+      let 路由键 = await this.获得属性('路由键')
       if (typeof 路由键 === 'string') {
         let params = new URLSearchParams(window.location.search)
         params.set(路由键, index.toString())
         let newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`
         window.history.replaceState(null, '', newUrl)
       }
-    })
+      this.派发事件('切换', { 当前索引: index })
+    }
 
-    this.更新UI()
-    this.派发事件('切换', { 当前索引: index })
+    if (目标元素 !== void 0) {
+      if (目标元素 instanceof 组件基类) await 目标元素.刷新()
+      for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) await 子.刷新()
+    }
   }
 
-  public 设置当前索引(index: number): void {
-    this.切换标签(index)
+  public async 设置当前索引(index: number): Promise<void> {
+    await this.切换标签(index)
   }
 }

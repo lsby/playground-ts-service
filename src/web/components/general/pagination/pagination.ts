@@ -12,6 +12,7 @@ type 监听事件类型 = {}
 
 export class 分页组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
   protected static override 观察的属性: Array<keyof 属性类型> = []
+  public on页码变化?: (数据: { 页码: number }) => void | Promise<void>
 
   static {
     this.注册组件('lsby-pagination', this)
@@ -47,7 +48,9 @@ export class 分页组件 extends 组件基类<属性类型, 发出事件类型,
       禁用: 当前页码 <= 1 || 禁用,
       点击处理函数: async (): Promise<void> => {
         if (当前页码 > 1) {
-          this.派发事件('页码变化', { 页码: 当前页码 - 1 })
+          let 新页码 = 当前页码 - 1
+          await this.on页码变化?.({ 页码: 新页码 })
+          this.派发事件('页码变化', { 页码: 新页码 })
         }
       },
     })
@@ -66,7 +69,9 @@ export class 分页组件 extends 组件基类<属性类型, 发出事件类型,
       禁用: 当前页码 >= 总页数 || 禁用,
       点击处理函数: async (): Promise<void> => {
         if (当前页码 < 总页数) {
-          this.派发事件('页码变化', { 页码: 当前页码 + 1 })
+          let 新页码 = 当前页码 + 1
+          await this.on页码变化?.({ 页码: 新页码 })
+          this.派发事件('页码变化', { 页码: 新页码 })
         }
       },
     })

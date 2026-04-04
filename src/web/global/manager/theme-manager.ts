@@ -31,16 +31,15 @@ export let 主题管理器 = {
   },
 
   应用主题(): void {
-    switch (this.当前主题) {
-      case '系统':
-        document.documentElement.removeAttribute('data-theme')
-        break
-      case '亮色':
-        document.documentElement.setAttribute('data-theme', 'light')
-        break
-      case '暗色':
-        document.documentElement.setAttribute('data-theme', 'dark')
-        break
+    let 实际应用主题 = this.当前主题
+    if (实际应用主题 === '系统') {
+      实际应用主题 = window.matchMedia('(prefers-color-scheme: dark)').matches ? '暗色' : '亮色'
+    }
+
+    if (实际应用主题 === '暗色') {
+      document.documentElement.setAttribute('data-theme', 'dark')
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light')
     }
   },
 

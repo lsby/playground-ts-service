@@ -8,6 +8,7 @@ export type JSX属性基础类型 = {
   children?: JSX子元素
   ref?: Ref引用<HTMLElement> | ((元素: HTMLElement) => void)
   key?: string | number
+  slot?: string
 }
 
 export type JSX子元素 = HTMLElement | string | number | boolean | null | undefined | SVGElement | JSX子元素[]

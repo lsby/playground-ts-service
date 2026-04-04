@@ -31,6 +31,7 @@ export class 右键菜单管理器 {
         zIndex: '10000',
         minWidth: '160px',
         backdropFilter: 'blur(8px)',
+        userSelect: 'none',
       },
     })
 
@@ -47,11 +48,9 @@ export class 右键菜单管理器 {
         className: 'context-menu-item',
         textContent: 菜单项.文本,
         onclick: async (): Promise<void> => {
-          try {
-            await 菜单项.回调()
-          } finally {
-            this.隐藏菜单()
-          }
+          let 回调 = 菜单项.回调
+          this.隐藏菜单()
+          await 回调()
         },
       })
       菜单容器.appendChild(项元素)

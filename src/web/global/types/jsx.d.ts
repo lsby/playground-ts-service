@@ -9,6 +9,7 @@ declare global {
       children?: 元素子节点
       ref?: import('../tools/jsx-runtime').Ref引用<HTMLElement> | ((元素: HTMLElement) => void)
       key?: string | number
+      slot?: string
     } & Omit<Partial<T>, 'style' | 'children'>
 
     interface IntrinsicElements {
@@ -85,6 +86,7 @@ declare global {
       small: HTML元素基础属性<HTMLElement>
       sub: HTML元素基础属性<HTMLElement>
       sup: HTML元素基础属性<HTMLElement>
+      slot: HTML元素基础属性<HTMLSlotElement>
     }
 
     interface ElementChildrenAttribute {

@@ -8,6 +8,7 @@ export type 数据表列配置<数据项> = {
   可筛选?: boolean
   列最小宽度?: string
   列最大宽度?: string
+  渲染函数?: (值: any, 行: 数据项) => HTMLElement | string
 }
 
 export type 数据表操作配置<数据项> = { 名称: string; 回调: (数据项: 数据项) => Promise<void> }
