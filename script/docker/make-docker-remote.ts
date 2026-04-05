@@ -140,14 +140,14 @@ async function 主函数(): Promise<void> {
     // ====================
     // 特殊流程: 彻底重部署的前置清理
     // ====================
+    let 重部署前镜像列表: string[] = []
     if (模式 === 'redeploy') {
       let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
 
       if (await 远程路径是否存在(sshClient, docker文件目录)) {
-        日志.打印(`🛑 [redeploy] 正在停止容器并准备清理...`)
-        let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录)
-        await 执行远程命令(sshClient, `docker-compose down --remove-orphans`, { 工作目录: docker文件目录 })
-        await 清理旧镜像(sshClient, 待清理镜像列表, [], 日志)
+        // 在 redeploy 模式下，为了最小化停机时间，我们不再提前停止容器
+        // 我们只需记录旧项目使用的镜像 ID，以便在部署完成后进行清理
+        重部署前镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录)
       }
 
       日志.打印(`🧹 [redeploy] 彻底删除远程目录: ${远程运行目录}`)
@@ -209,17 +209,18 @@ async function 主函数(): Promise<void> {
       日志.打印(`📦 解压到运行目录...`)
       await 执行远程命令(sshClient, `tar -xzf ${远程压缩包路径} -C ${远程运行目录}`)
 
-      日志.打印(`🚀 停止旧服务并启动项目...`)
-      await 执行远程命令(sshClient, `docker-compose down --remove-orphans || true && docker-compose up --build -d`, {
-        工作目录: docker文件目录,
-      })
+      日志.打印(`🔨 正在构建项目镜像 (此时旧服务仍在运行)...`)
+      await 执行远程命令(sshClient, `docker-compose build`, { 工作目录: docker文件目录 })
+
+      日志.打印(`🚀 正在启动新服务 (实现极短停机更新)...`)
+      await 执行远程命令(sshClient, `docker-compose up -d --remove-orphans`, { 工作目录: docker文件目录 })
 
       日志.打印(`✅ 确认部署后的新镜像状态...`)
       let 新镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录)
       日志.打印(`📊 部署后项目使用的镜像 ID 列表: [${新镜像列表.join(', ') || '无'}]`)
 
       日志.打印(`🧹 正在对比并清理不再使用的旧镜像...`)
-      await 清理旧镜像(sshClient, 旧镜像列表, 新镜像列表, 日志)
+      await 清理旧镜像(sshClient, Array.from(new Set([...旧镜像列表, ...重部署前镜像列表])), 新镜像列表, 日志)
 
       日志.打印(`✨ 所有操作均已完成`)
     }
