@@ -79,12 +79,18 @@ export async function 远程路径是否存在(ssh: NodeSSH, 路径: string): Pr
   return 结果.code === 0
 }
 
-export async function 获取Compose镜像列表(ssh: NodeSSH, 工作目录: string): Promise<string[]> {
+export async function 获取Compose镜像列表(ssh: NodeSSH, 工作目录: string, 项目名称?: string): Promise<string[]> {
   if ((await 远程路径是否存在(ssh, 工作目录)) === false) {
     return []
   }
 
-  let 结果 = await 执行远程命令(ssh, 'docker-compose images -q', { 工作目录: 工作目录, 打印输出: false })
+  let 命令 = 'docker-compose'
+  if (项目名称 !== void 0) {
+    命令 += ` -p ${项目名称}`
+  }
+  命令 += ' images -q'
+
+  let 结果 = await 执行远程命令(ssh, 命令, { 工作目录: 工作目录, 打印输出: false })
   return 结果.stdout.split(/\s+/).filter((id: string) => id.length > 0)
 }
 
