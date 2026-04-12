@@ -1,5 +1,5 @@
 import { 接口测试 } from '@lsby/net-core'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 import { Readable } from 'stream'
 import streamToBlob from 'stream-to-blob'

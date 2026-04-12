@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 import { version } from '../app/meta-info'
 import { 环境变量 } from '../global/env'

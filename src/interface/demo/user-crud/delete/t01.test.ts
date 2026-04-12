@@ -1,5 +1,5 @@
 import { 接口测试 } from '@lsby/net-core'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 import { cleanDB } from '../../../../../script/db/clean-db'
 import { 环境变量 } from '../../../../global/env'

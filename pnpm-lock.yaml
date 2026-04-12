@@ -41,9 +41,9 @@ importers:
       '@lsby/ts-log':
         specifier: ^0.3.1
         version: 0.3.1(@types/node@25.0.6)(lightningcss@1.30.2)
-      bcrypt:
-        specifier: ^6.0.0
-        version: 6.0.0
+      bcryptjs:
+        specifier: ^3.0.3
+        version: 3.0.3
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -82,8 +82,8 @@ importers:
         specifier: ^4.7.0
         version: 4.7.0(prettier@3.7.4)
       '@lsby/eslint-config':
-        specifier: ^0.5.4
-        version: 0.5.4(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)
+        specifier: ^0.5.6
+        version: 0.5.6(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)
       '@lsby/eslint-plugin':
         specifier: ^0.2.1
         version: 0.2.1(eslint@9.39.2(jiti@2.6.1))
@@ -105,9 +105,9 @@ importers:
       '@types/archiver':
         specifier: ^7.0.0
         version: 7.0.0
-      '@types/bcrypt':
-        specifier: ^6.0.0
-        version: 6.0.0
+      '@types/bcryptjs':
+        specifier: ^3.0.0
+        version: 3.0.0
       '@types/eslint':
         specifier: ^9.6.1
         version: 9.6.1
@@ -992,8 +992,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@lsby/eslint-config@0.5.4':
-    resolution: {integrity: sha512-6bWcRvg3JmdO4XzShd+8nXxYFk5/iZe+lnCsJb+P7xPmd3K/k5PuuTeV2B0eTRbLTWOsUUu8rq5jFhE9lU38Jw==}
+  '@lsby/eslint-config@0.5.6':
+    resolution: {integrity: sha512-Z22ayQlJikGoHvM/uOW9SyvqO+NFg/phg6UPTfeHDDS3LTUQ+mEscH1J2E1SlOUS1GAe/dZ/ixNVE4s1OhMM9Q==}
     peerDependencies:
       '@lsby/eslint-plugin': ^0.2.1
       '@types/eslint': ^9.6.1
@@ -1875,8 +1875,9 @@ packages:
   '@types/archiver@7.0.0':
     resolution: {integrity: sha512-/3vwGwx9n+mCQdYZ2IKGGHEFL30I96UgBlk8EtRDDFQ9uxM1l4O5Ci6r00EMAkiDaTqD9DQ6nVrWRICnBPtzzg==}
 
-  '@types/bcrypt@6.0.0':
-    resolution: {integrity: sha512-/oJGukuH3D2+D+3H4JWLaAsJ/ji86dhRidzZ/Od7H/i8g+aCmvkeCc6Ni/f9uxGLSQVCRZkX2/lqEFG2BvWtlQ==}
+  '@types/bcryptjs@3.0.0':
+    resolution: {integrity: sha512-WRZOuCuaz8UcZZE4R5HXTco2goQSI2XxjGY3hbM/xDvwmqFWd4ivooImsMx65OKM6CtNKbnZ5YL+YwAwK7c1dg==}
+    deprecated: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
 
   '@types/body-parser@1.19.6':
     resolution: {integrity: sha512-HLFeCYgz89uk22N5Qg3dvGvsv46B8GLvKKo1zKG4NybA8U2DiEO3w9lqGg29t/tfLRJpJ6iQxnVw4OnB7MoM9g==}
@@ -2316,9 +2317,9 @@ packages:
   bcrypt-pbkdf@1.0.2:
     resolution: {integrity: sha512-qeFIXtP4MSoi6NLqO12WfqARWWuCKi2Rn/9hJLEmtB5yTNr9DqFWkJRCf2qShWzPeAMRnOgCrq0sg/KLv5ES9w==}
 
-  bcrypt@6.0.0:
-    resolution: {integrity: sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==}
-    engines: {node: '>= 18'}
+  bcryptjs@3.0.3:
+    resolution: {integrity: sha512-GlF5wPWnSa/X5LKM1o0wz0suXIINz1iHRLvTS+sLyi7XPbe5ycmYI3DlZqVGZZtDgl4DmasFg7gOB3JYbphV5g==}
+    hasBin: true
 
   big-integer@1.6.52:
     resolution: {integrity: sha512-QxD8cf2eVqJOOz63z6JIN9BzvVs/dlySa5HGSBH5xtR8dPteIRQnBxxKqkNTiT6jbDTF6jAfrd4oMcND9RGbQg==}
@@ -4228,10 +4229,6 @@ packages:
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
 
-  node-addon-api@8.5.0:
-    resolution: {integrity: sha512-/bRZty2mXUIFY/xU5HLvveNHlswNJej+RnxBjOMkidWfwZzgTbPG1E3K5TOxRLOR+5hX7bSofy8yf1hZevMS8A==}
-    engines: {node: ^18 || ^20 || >= 21}
-
   node-api-version@0.2.1:
     resolution: {integrity: sha512-2xP/IGGMmmSQpI1+O/k72jF/ykvZ89JeuKX3TLJAYPDVLUalrshrLHkeVcCCZqG/eEa635cr8IBYzgnDvM2O8Q==}
 
@@ -4262,10 +4259,6 @@ packages:
 
   node-gyp-build-optional-packages@5.2.2:
     resolution: {integrity: sha512-s+w+rBWnpTMwSFbaE0UXsRlg7hU4FjekKU4eyAih5T8nJuNZT1nNsskXpxmeqSK9UzkBl6UgRlnKc8hz8IEqOw==}
-    hasBin: true
-
-  node-gyp-build@4.8.4:
-    resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
     hasBin: true
 
   node-releases@2.0.21:
@@ -6412,7 +6405,7 @@ snapshots:
   '@lmdb/lmdb-win32-x64@2.8.5':
     optional: true
 
-  '@lsby/eslint-config@0.5.4(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)':
+  '@lsby/eslint-config@0.5.6(@lsby/eslint-plugin@0.2.1(eslint@9.39.2(jiti@2.6.1)))(@types/eslint@9.6.1)(eslint-config-prettier@10.1.8(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-jsdoc@62.0.0(eslint@9.39.2(jiti@2.6.1)))(eslint-plugin-sort-class-members@1.21.0(eslint@9.39.2(jiti@2.6.1)))(eslint@9.39.2(jiti@2.6.1))(typescript-eslint@8.52.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(typescript@5.9.3)':
     dependencies:
       '@lsby/eslint-plugin': 0.2.1(eslint@9.39.2(jiti@2.6.1))
       '@types/eslint': 9.6.1
@@ -7743,9 +7736,9 @@ snapshots:
     dependencies:
       '@types/readdir-glob': 1.1.5
 
-  '@types/bcrypt@6.0.0':
+  '@types/bcryptjs@3.0.0':
     dependencies:
-      '@types/node': 25.0.6
+      bcryptjs: 3.0.3
 
   '@types/body-parser@1.19.6':
     dependencies:
@@ -8290,10 +8283,7 @@ snapshots:
     dependencies:
       tweetnacl: 0.14.5
 
-  bcrypt@6.0.0:
-    dependencies:
-      node-addon-api: 8.5.0
-      node-gyp-build: 4.8.4
+  bcryptjs@3.0.3: {}
 
   big-integer@1.6.52: {}
 
@@ -10427,8 +10417,6 @@ snapshots:
 
   node-addon-api@7.1.1: {}
 
-  node-addon-api@8.5.0: {}
-
   node-api-version@0.2.1:
     dependencies:
       semver: 7.7.3
@@ -10455,8 +10443,6 @@ snapshots:
     dependencies:
       detect-libc: 2.0.4
     optional: true
-
-  node-gyp-build@4.8.4: {}
 
   node-releases@2.0.21: {}
 

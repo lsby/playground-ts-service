@@ -122,7 +122,6 @@ trigger: always_on
 - 永远使用 let, 拒绝 var 和 const
 - 条件里必须显式布尔值: strict-boolean-expressions
 - 禁止对非布尔值取反: no-negation
-- 禁止使用 undefined: no-undefined (若必须使用 undefined, 则在值等级上用 void 0 替代, 类型等级上依然写 undefined)
 - 总是考虑数组通过下标取项时可能出现的越界问题, 并做安全检查 (数组若越界, 则值为 void 0)
 - 总是使用严格的条件判断, 不省略判断条件等于真, 空, null的情况
 - 尽可能不要使用简写

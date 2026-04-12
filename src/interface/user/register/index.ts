@@ -7,7 +7,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Left, Right } from '@lsby/ts-fp-data'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 import { z } from 'zod'
 import { 环境变量 } from '../../../global/env'

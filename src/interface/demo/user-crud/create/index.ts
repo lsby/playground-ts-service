@@ -8,7 +8,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Kysely管理器 } from '@lsby/ts-kysely'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { 环境变量 } from '../../../../global/env'
 import { jwt插件, kysely插件 } from '../../../../global/plugin'

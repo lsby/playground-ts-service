@@ -9,7 +9,7 @@ import {
 } from '@lsby/net-core'
 import { Left } from '@lsby/ts-fp-data'
 import { Kysely管理器 } from '@lsby/ts-kysely'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { 环境变量 } from '../../../../global/env'
 import { kysely插件 } from '../../../../global/plugin'

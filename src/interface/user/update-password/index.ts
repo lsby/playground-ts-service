@@ -7,7 +7,7 @@ import {
   计算接口逻辑错误结果,
 } from '@lsby/net-core'
 import { Right } from '@lsby/ts-fp-data'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../global/plugin'
 import { 检查JSON参数 } from '../../../interface-logic/check/check-json-args'
