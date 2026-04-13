@@ -1,7 +1,7 @@
 import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import { randomUUID } from 'crypto'
-import { cleanDB } from '../../../../script/db/clean-db'
+import { cleanDB } from '../../../../scripts/db/clean-db'
 import { version } from '../../../app/meta-info'
 import { kysely管理器 } from '../../../global/global'
 import { POST_JSON请求用例 } from '../../../tools/request'

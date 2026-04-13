@@ -1,5 +1,5 @@
 import { 接口测试 } from '@lsby/net-core'
-import { cleanDB } from '../../../../../script/db/clean-db'
+import { cleanDB } from '../../../../../scripts/db/clean-db'
 import { kysely管理器 } from '../../../../global/global'
 import { POST_JSON请求用例 } from '../../../../tools/request'
 import 接口 from './index'
