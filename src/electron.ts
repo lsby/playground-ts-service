@@ -9,13 +9,16 @@ import { 环境变量 } from './global/env'
 import { globalLog } from './global/global'
 import { init } from './init/init'
 
-try {
-  await init()
-  await new App().run()
-} catch (error) {
-  console.error('启动过程中发生错误:', error)
-  app.quit()
+async function main(): Promise<void> {
+  try {
+    await init()
+    await new App().run()
+  } catch (error) {
+    console.error('启动过程中发生错误:', error)
+    app.quit()
+  }
 }
+main().catch(console.error)
 
 export let 主窗口: BrowserWindow | null = null
 

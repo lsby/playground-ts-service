@@ -30,15 +30,19 @@ export class App {
           new RegExp('/public/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
-            let 文件路径
+            let 项目根路径: string
             switch (环境变量.RUN_MODE) {
               case 'tsx':
-                文件路径 = path.join(import.meta.dirname, '../../public/', 参数.path.file)
+                项目根路径 = path.join(import.meta.dirname, '../../')
                 break
               case 'dist':
-                文件路径 = path.join(import.meta.dirname, '../../../public', 参数.path.file)
+                项目根路径 = path.join(import.meta.dirname, '../../../')
+                break
+              case 'sea':
+                项目根路径 = path.join(import.meta.dirname, './')
                 break
             }
+            let 文件路径 = path.join(项目根路径, 'public', 参数.path.file)
             return new Right({ filePath: 文件路径 })
           }),
           new 静态文件返回器({}),
@@ -48,13 +52,16 @@ export class App {
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
-            let web根路径
+            let web根路径: string
             switch (环境变量.RUN_MODE) {
               case 'tsx':
                 web根路径 = path.join(import.meta.dirname, '../../dist/src/web', 路径)
                 break
               case 'dist':
                 web根路径 = path.join(import.meta.dirname, '../web', 路径)
+                break
+              case 'sea':
+                web根路径 = path.join(import.meta.dirname, './dist/src/web', 路径)
                 break
             }
             return new Right({ filePath: web根路径 })

@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import inquirer from 'inquirer'
 import { NodeSSH } from 'node-ssh'
 import * as path from 'path'
-import { 日志类 } from './model'
+import { 日志类 } from './tools/model'
 import {
   上传文件,
   压缩项目,
@@ -11,7 +11,7 @@ import {
   获取Compose镜像列表,
   获取完整忽略名单,
   远程路径是否存在,
-} from './tools'
+} from './tools/tools'
 
 // ============= 配置区 =============
 let 服务器地址 = '0.0.0.0'

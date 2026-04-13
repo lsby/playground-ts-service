@@ -1,13 +1,13 @@
 import { Env } from '@lsby/ts-env'
 import { z } from 'zod'
 
-export let 环境变量 = await new Env({
+export let 环境变量 = new Env({
   环境变量名称: 'ENV_FILE_PATH',
   环境描述: z.object({
     // 环境名称
     NODE_ENV: z.enum(['development', 'production', 'test']),
     // 运行模式
-    RUN_MODE: z.enum(['tsx', 'dist']),
+    RUN_MODE: z.enum(['tsx', 'dist', 'sea']),
     // 调试名称
     DEBUG_NAME: z.string(),
     // ========= 数据库部分 开始 =========
