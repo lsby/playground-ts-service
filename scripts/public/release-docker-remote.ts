@@ -22,7 +22,7 @@ let 密码 = 'xxx'
 // 读取项目名称
 let { name: 原始项目名称 } = JSON.parse(
   fs.readFileSync(path.join(path.resolve(import.meta.dirname, '../', '../'), 'package.json'), 'utf8'),
-)
+) as { name: string }
 let 项目名称 = 原始项目名称.replace('@', '').replace(/\//g, '-')
 
 // 本地
@@ -30,7 +30,7 @@ let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
 let 本地压缩包路径: string = path.join(本地根目录, `${项目名称}.tar.gz`)
 
 async function 主函数(): Promise<void> {
-  let { 模式, 环境 } = await inquirer.prompt([
+  let { 模式, 环境 } = (await inquirer.prompt([
     {
       type: 'list',
       name: '模式',
@@ -55,9 +55,9 @@ async function 主函数(): Promise<void> {
         { name: '生产环境 (production)', value: 'production' },
       ],
       default: 'development',
-      when: (answers: any) => answers.模式 !== 'delete',
+      when: (待回答: { 模式: string }): boolean => 待回答.模式 !== 'delete',
     },
-  ])
+  ] as any)) as { 模式: string; 环境: string }
 
   let 日志 = new 日志类()
   let sshClient = new NodeSSH()
@@ -86,7 +86,7 @@ async function 主函数(): Promise<void> {
 
     // 运行确认
     if (模式 === 'run' || 模式 === 'redeploy') {
-      let message = [
+      let 提示消息 = [
         `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
         '这通常是预期的, 但请确保您了解后果:',
         '- 打包内容会覆盖运行目录中的同名文件',
@@ -95,7 +95,7 @@ async function 主函数(): Promise<void> {
       ]
 
       if (模式 === 'redeploy') {
-        message = [
+        提示消息 = [
           `彻底重部署模式将完全删除远程运行目录 (${远程运行目录})`,
           '这将导致:',
           '- 强制停止并移除当前容器和关联镜像',
@@ -105,9 +105,9 @@ async function 主函数(): Promise<void> {
         ]
       }
 
-      let { 确认运行 } = await inquirer.prompt([
-        { type: 'confirm', name: '确认运行', message: message.join('\n') + '\n您确定要继续吗?', default: false },
-      ])
+      let { 确认运行 } = (await inquirer.prompt([
+        { type: 'confirm', name: '确认运行', message: 提示消息.join('\n') + '\n您确定要继续吗?', default: false },
+      ])) as { 确认运行: boolean }
       if (确认运行 === false) {
         return
       }
@@ -115,7 +115,7 @@ async function 主函数(): Promise<void> {
 
     // 运行确认
     if (模式 === 'delete') {
-      let { 确认删除 } = await inquirer.prompt([
+      let { 确认删除 } = (await inquirer.prompt([
         {
           type: 'confirm',
           name: '确认删除',
@@ -131,7 +131,7 @@ async function 主函数(): Promise<void> {
             ].join('\n') + '\n您确认要这么做吗?',
           default: false,
         },
-      ])
+      ])) as { 确认删除: boolean }
       if (确认删除 === false) {
         return
       }
@@ -142,12 +142,12 @@ async function 主函数(): Promise<void> {
     // ====================
     let 重部署前镜像列表: string[] = []
     if (模式 === 'redeploy') {
-      let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
+      let 某个docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
 
-      if (await 远程路径是否存在(sshClient, docker文件目录)) {
+      if ((await 远程路径是否存在(sshClient, 某个docker文件目录)) === true) {
         // 在 redeploy 模式下，为了最小化停机时间，我们不再提前停止容器
         // 我们只需记录旧项目使用的镜像 ID，以便在部署完成后进行清理
-        重部署前镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
+        重部署前镜像列表 = await 获取Compose镜像列表(sshClient, 某个docker文件目录, `${项目名称}-${环境}`)
       }
 
       日志.打印(`🧹 [redeploy] 彻底删除远程目录: ${远程运行目录}`)
@@ -204,7 +204,7 @@ async function 主函数(): Promise<void> {
 
       日志.打印(`🔍 记录部署前的镜像 ID...`)
       let 旧镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
-      日志.打印(`📊 当前项目使用的镜像 ID 列表: [${旧镜像列表.join(', ') || '无'}]`)
+      日志.打印(`📊 当前项目使用的镜像 ID 列表: [${旧镜像列表.join(', ') === '' ? '无' : 旧镜像列表.join(', ')}]`)
 
       日志.打印(`📦 解压到运行目录...`)
       await 执行远程命令(sshClient, `tar -xzf ${远程压缩包路径} -C ${远程运行目录}`)
@@ -219,7 +219,7 @@ async function 主函数(): Promise<void> {
 
       日志.打印(`✅ 确认部署后的新镜像状态...`)
       let 新镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
-      日志.打印(`📊 部署后项目使用的镜像 ID 列表: [${新镜像列表.join(', ') || '无'}]`)
+      日志.打印(`📊 部署后项目使用的镜像 ID 列表: [${新镜像列表.join(', ') === '' ? '无' : 新镜像列表.join(', ')}]`)
 
       日志.打印(`🧹 正在对比并清理不再使用的旧镜像...`)
       await 清理旧镜像(sshClient, Array.from(new Set([...旧镜像列表, ...重部署前镜像列表])), 新镜像列表, 日志)
@@ -240,7 +240,7 @@ async function 主函数(): Promise<void> {
 
       日志.打印(`🔍 停止前的镜像 ID...`)
       let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
-      日志.打印(`📊 待清理的镜像 ID 列表: [${待清理镜像列表.join(', ') || '无'}]`)
+      日志.打印(`📊 待清理的镜像 ID 列表: [${待清理镜像列表.join(', ') === '' ? '无' : 待清理镜像列表.join(', ')}]`)
 
       日志.打印(`🛑 正在停止并移除容器...`)
       await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} down --remove-orphans`, {
@@ -275,20 +275,21 @@ async function 主函数(): Promise<void> {
     // ====================
     if (模式 === 'delete') {
       let deploy目录 = path.posix.resolve(远程运行部署目录)
-      if (await 远程路径是否存在(sshClient, deploy目录)) {
-        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器和镜像...`)
-        let 环境列表 = (await 执行远程命令(sshClient, `ls -1 ${deploy目录}`, { 打印输出: false })).stdout
+      if ((await 远程路径是否存在(sshClient, deploy目录)) === true) {
+        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器 and 镜像...`)
+        let 环境列表内容 = (await 执行远程命令(sshClient, `ls -1 ${deploy目录}`, { 打印输出: false })).stdout
+        let 环境列表 = 环境列表内容
           .split('\n')
           .map((s) => s.trim())
           .filter((s) => s.length > 0)
 
         for (let 某个环境 of 环境列表) {
-          let 环境目录 = path.posix.resolve(deploy目录, 某个环境)
-          if (await 远程路径是否存在(sshClient, 环境目录)) {
+          let 某个环境目录 = path.posix.resolve(deploy目录, 某个环境)
+          if ((await 远程路径是否存在(sshClient, 某个环境目录)) === true) {
             日志.打印(`🛑 正在停止并清理环境: ${某个环境} ...`)
-            let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 环境目录, `${项目名称}-${某个环境}`)
+            let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 某个环境目录, `${项目名称}-${某个环境}`)
             await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${某个环境} down --remove-orphans`, {
-              工作目录: 环境目录,
+              工作目录: 某个环境目录,
               抛出错误: false,
             })
             await 清理旧镜像(sshClient, 镜像ID列表, [], 日志)
@@ -312,8 +313,8 @@ async function 主函数(): Promise<void> {
         工作目录: docker文件目录,
       })
     }
-  } catch (err) {
-    console.error(`❌ 错误:`, err)
+  } catch (_错误) {
+    console.error(`❌ 错误:`, _错误)
   } finally {
     sshClient.dispose()
     if (fs.existsSync(本地压缩包路径) === true) {
@@ -323,7 +324,7 @@ async function 主函数(): Promise<void> {
   }
 }
 
-主函数().catch((err) => {
-  console.error(`\n💥 发生未处理的错误:`, err)
+主函数().catch((_错误) => {
+  console.error(`\n💥 发生未处理的错误:`, _错误)
   process.exit(1)
 })

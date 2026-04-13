@@ -2,9 +2,9 @@ import { execSync } from 'child_process'
 import fs from 'fs'
 import { resolve } from 'path'
 
-const 项目根目录 = resolve(import.meta.dirname, '../../')
+let 项目根目录 = resolve(import.meta.dirname, '../../')
 
-const 执行命令 = (命令: string, 描述: string): void => {
+let 执行命令 = (命令: string, 描述: string): void => {
   console.log(`\n📦 ${描述}...`)
   try {
     execSync(命令, { cwd: 项目根目录, stdio: 'inherit', shell: process.platform === 'win32' ? 'cmd.exe' : 'bash' })
@@ -15,17 +15,17 @@ const 执行命令 = (命令: string, 描述: string): void => {
   }
 }
 
-const 获取版本号 = (): string => {
-  const 包信息路径 = resolve(项目根目录, 'package.json')
-  const 包信息 = JSON.parse(fs.readFileSync(包信息路径, 'utf-8'))
+let 获取版本号 = (): string => {
+  let 包信息路径 = resolve(项目根目录, 'package.json')
+  let 包信息 = JSON.parse(fs.readFileSync(包信息路径, 'utf-8')) as { version: string }
   return 包信息.version
 }
 
-const 主程序 = (): void => {
+let 主程序 = (): void => {
   console.log('\n🚀 生成 meta 信息并提交...\n')
 
   try {
-    const 版本号 = 获取版本号()
+    let 版本号 = 获取版本号()
     console.log(`📌 当前版本: v${版本号}`)
 
     // 步骤 1: 生成 meta 信息
@@ -45,7 +45,7 @@ const 主程序 = (): void => {
     执行命令('git push --tags', '推送标签到远程')
 
     console.log('\n✨ 流程完成！')
-  } catch (错误) {
+  } catch (_错误) {
     console.error('\n❌ 流程中断，请检查上述错误信息')
     process.exit(1)
   }

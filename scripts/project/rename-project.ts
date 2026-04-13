@@ -31,8 +31,6 @@ function 递归读取文件(目录路径: string, 排除目录: string[] = []): 
 
   for (let 项 of 目录内容) {
     let 完整路径 = 路径.join(目录路径, 项)
-    let 相对路径 = 路径.relative(获取项目根目录(), 完整路径)
-
     let 状态 = 文件系统.statSync(完整路径)
     if (状态.isDirectory() === true) {
       // 跳过需要排除的目录

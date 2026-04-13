@@ -113,8 +113,8 @@ export async function 执行远程命令(
   命令: string,
   选项?: { 工作目录?: string; 打印输出?: boolean; 抛出错误?: boolean },
 ): Promise<{ stdout: string; stderr: string; code: number | null }> {
-  let 打印输出 = 选项?.打印输出 === void 0 ? true : 选项?.打印输出
-  let 抛出错误 = 选项?.抛出错误 === void 0 ? true : 选项?.抛出错误
+  let 打印输出 = 选项?.打印输出 === void 0 ? true : 选项.打印输出
+  let 抛出错误 = 选项?.抛出错误 === void 0 ? true : 选项.抛出错误
 
   let 结果 = await ssh.execCommand(命令, {
     cwd: 选项?.工作目录 ?? '/',

@@ -3,10 +3,10 @@ import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const root = path.resolve(__dirname, '../../')
-const 相对发布目录 = 'release/sea'
-const seaDir = path.join(root, 相对发布目录)
+let __dirname = path.dirname(fileURLToPath(import.meta.url))
+let root = path.resolve(__dirname, '../../')
+let 相对发布目录 = 'release/sea'
+let seaDir = path.join(root, 相对发布目录)
 
 /**
  * 递归复制文件夹
@@ -42,7 +42,7 @@ async function run(): Promise<void> {
     )
 
     console.log('[3/9] 正在生成 SEA 配置...')
-    const seaConfig = {
+    let seaConfig = {
       main: `${相对发布目录}/server.bundle.js`,
       output: `${相对发布目录}/sea-prep.blob`,
       disableExperimentalSEAWarning: true,
@@ -54,8 +54,8 @@ async function run(): Promise<void> {
     execSync(`node --experimental-sea-config ${相对发布目录}/sea-config.json`, { stdio: 'inherit', cwd: root })
 
     console.log('[5/9] 正在准备可执行文件...')
-    const nodeExe = process.execPath
-    const targetExe = path.join(seaDir, 'lsby-playground-ts-service.exe')
+    let nodeExe = process.execPath
+    let targetExe = path.join(seaDir, 'lsby-playground-ts-service.exe')
     fs.copyFileSync(nodeExe, targetExe)
 
     console.log('[6/9] 正在移除 Windows 代码签名...')
@@ -78,7 +78,7 @@ async function run(): Promise<void> {
     递归复制(path.join(root, 'db'), path.join(seaDir, 'db'))
 
     // 拷贝 sqlite wasm (node-sqlite3-wasm 库需要它在二进制运行目录下)
-    const wasmPath = path.join(root, 'node_modules/node-sqlite3-wasm/dist/node-sqlite3-wasm.wasm')
+    let wasmPath = path.join(root, 'node_modules/node-sqlite3-wasm/dist/node-sqlite3-wasm.wasm')
     if (fs.existsSync(wasmPath)) {
       fs.copyFileSync(wasmPath, path.join(seaDir, 'node-sqlite3-wasm.wasm'))
     }
@@ -128,4 +128,4 @@ async function run(): Promise<void> {
   }
 }
 
-run()
+run().catch(console.error)

@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 config({ path: '.env/.env.development' })
 
 function 启动任务(): void {
-  const 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
+  let 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
 
   子进程.on('close', (代码: number | null) => {
     if (代码 !== 0) {
@@ -14,7 +14,7 @@ function 启动任务(): void {
       return
     }
 
-    const parcel进程 = spawn(
+    let parcel进程 = spawn(
       'parcel',
       [
         '--no-cache',
@@ -22,9 +22,9 @@ function 启动任务(): void {
         'dist/src/web',
         '--watch-for-stdin',
         '--port',
-        process.env['WEB_PORT'] || '4000',
+        process.env['WEB_PORT'] ?? '4000',
         '--hmr-port',
-        process.env['WEB_HMR_PORT'] || '4001',
+        process.env['WEB_HMR_PORT'] ?? '4001',
         'src/web/page/**/*.html',
         // '--lazy',
       ],
