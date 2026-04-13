@@ -6,7 +6,9 @@ import { fileURLToPath } from 'url'
 const __当前文件名 = fileURLToPath(import.meta.url)
 const __当前目录名 = path.dirname(__当前文件名)
 const 项目根目录 = path.resolve(__当前目录名, '../../')
-const 生成目录 = path.join(项目根目录, 'package/win-unpacked')
+const 相对发布目录 = 'release/electron'
+const 待清理路径 = path.join(项目根目录, 相对发布目录)
+const 生成目录 = path.join(待清理路径, 'win-unpacked')
 
 function 确保目录存在(目录路径: string): void {
   if (!fs.existsSync(目录路径)) {
@@ -18,7 +20,7 @@ async function 执行构建(): Promise<void> {
   try {
     // 1. 清理
     console.log('正在清理生成目录...')
-    const 待清理路径 = path.join(项目根目录, 'package')
+    const 待清理路径 = path.join(项目根目录, 相对发布目录)
     if (fs.existsSync(待清理路径)) {
       fs.rmSync(待清理路径, { recursive: true, force: true })
       console.log('已清理:', 待清理路径)
@@ -26,7 +28,7 @@ async function 执行构建(): Promise<void> {
 
     // 2. 运行 electron-builder
     console.log('正在启动 electron-builder...')
-    execSync('npx electron-builder', { stdio: 'inherit', cwd: 项目根目录 })
+    execSync(`npx electron-builder -c.directories.output=${相对发布目录}`, { stdio: 'inherit', cwd: 项目根目录 })
 
     // 3. 后处理
     console.log('正在进行后处理...')
