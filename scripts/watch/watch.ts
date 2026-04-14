@@ -3,11 +3,12 @@ import nodeWatch from 'node-watch'
 import * as path from 'path'
 
 let 参数 = process.argv.slice(2)
-let 监控路径 = 参数[0]
-let 命令 = 参数[1]
+if (参数.length < 2) {
+  throw new Error('参数不足。用法: tsx watch.ts <路径1> [路径2...] <命令>')
+}
 
-if (监控路径 === undefined || 监控路径.length === 0) throw new Error('没有提供监视路径')
-if (命令 === undefined || 命令.length === 0) throw new Error('没有提供命令')
+let 命令 = 参数.pop() as string
+let 监控路径列表 = 参数
 
 function 任务(): void {
   console.log('========生成开始========')
@@ -26,7 +27,7 @@ let 状态: '执行中' | '空闲中' | '等待稍后执行' = '空闲中'
 let 延时 = 1000
 let 执行堆积 = false
 nodeWatch(
-  path.resolve(监控路径),
+  监控路径列表.map((项) => path.resolve(项)),
   {
     recursive: true,
     filter: (name) => {
