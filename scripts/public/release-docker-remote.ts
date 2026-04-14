@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import inquirer from 'inquirer'
 import { NodeSSH } from 'node-ssh'
 import * as path from 'path'
+import { z } from 'zod'
 import { 日志类 } from './tools/model'
 import {
   上传文件,
@@ -20,9 +21,11 @@ let 密码 = 'xxx'
 // ============= 配置区 =============
 
 // 读取项目名称
-let { name: 原始项目名称 } = JSON.parse(
-  fs.readFileSync(path.join(path.resolve(import.meta.dirname, '../', '../'), 'package.json'), 'utf8'),
-) as { name: string }
+let 包信息模式 = z.object({ name: z.string() })
+
+let { name: 原始项目名称 } = 包信息模式.parse(
+  JSON.parse(fs.readFileSync(path.join(path.resolve(import.meta.dirname, '../', '../'), 'package.json'), 'utf8')),
+)
 let 项目名称 = 原始项目名称.replace('@', '').replace(/\//g, '-')
 
 // 本地

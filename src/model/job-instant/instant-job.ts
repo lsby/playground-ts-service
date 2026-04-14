@@ -165,14 +165,14 @@ export abstract class 即时任务抽象类<输出类型> {
     await this.集线器.广播(新日志)
   }
 
-  public 等待完成(): Promise<输出类型> {
+  public 等待完成(): Promise<输出类型 | null> {
     let _轮询时间 = 100
     return new Promise((resolve, reject) => {
       let 检查状态 = (): void => {
         let 状态 = this.获得当前状态()
         switch (状态) {
           case '已完成':
-            let 结果 = this.获得输出结果() as 输出类型
+            let 结果 = this.获得输出结果()
             resolve(结果)
             break
           case '已失败':

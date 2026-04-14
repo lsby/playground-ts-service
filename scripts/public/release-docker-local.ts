@@ -4,11 +4,12 @@ import fs from 'fs'
 import inquirer from 'inquirer'
 import path from 'path'
 import { exit } from 'process'
+import { z } from 'zod'
 
 // 读取 package.json 文件并解析
 let 包信息路径 = path.resolve(import.meta.dirname, '../../package.json')
-type 包信息类型 = { name: string; version: string }
-let 包信息 = JSON.parse(fs.readFileSync(包信息路径, 'utf-8')) as 包信息类型
+let 包信息模式 = z.object({ name: z.string(), version: z.string() })
+let 包信息 = 包信息模式.parse(JSON.parse(fs.readFileSync(包信息路径, 'utf-8')))
 
 // 默认项目名称，如果项目名称以 @ 开头，去掉它
 let 项目名称 = 包信息.name.startsWith('@') === true ? 包信息.name.slice(1) : 包信息.name

@@ -1,6 +1,7 @@
 import { execSync } from 'child_process'
 import fs from 'fs'
 import { resolve } from 'path'
+import { z } from 'zod'
 
 let 项目根目录 = resolve(import.meta.dirname, '../../')
 
@@ -17,7 +18,8 @@ let 执行命令 = (命令: string, 描述: string): void => {
 
 let 获取版本号 = (): string => {
   let 包信息路径 = resolve(项目根目录, 'package.json')
-  let 包信息 = JSON.parse(fs.readFileSync(包信息路径, 'utf-8')) as { version: string }
+  let 包信息模式 = z.object({ version: z.string() })
+  let 包信息 = 包信息模式.parse(JSON.parse(fs.readFileSync(包信息路径, 'utf-8')))
   return 包信息.version
 }
 

@@ -81,10 +81,9 @@ export class 右键菜单管理器 {
     菜单容器.style.top = `${最终Y}px`
 
     let 处理关闭 = (事件: Event): void => {
+      if (事件.target instanceof Node === false) throw new Error('目标不是 Node')
       // 如果点击的是菜单容器内部，不关闭
-      if (菜单容器.contains(事件.target as Node) === true) {
-        return
-      }
+      if (菜单容器.contains(事件.target) === true) return
       this.隐藏菜单()
     }
 
@@ -92,11 +91,11 @@ export class 右键菜单管理器 {
     // 这样可以防止当前冒泡到 document 的 contextmenu/mousedown 事件立即触发关闭
     setTimeout(() => {
       document.onmousedown = (事件: MouseEvent): void => {
-        处理关闭(事件 as Event)
+        处理关闭(事件)
       }
 
       document.oncontextmenu = (事件: MouseEvent): void => {
-        处理关闭(事件 as Event)
+        处理关闭(事件)
       }
     }, 0)
   }

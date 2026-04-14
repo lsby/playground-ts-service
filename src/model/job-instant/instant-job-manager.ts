@@ -93,7 +93,7 @@ export class 即时任务管理器类 {
 
     return 任务id
   }
-  public async 执行任务<输出类型>(任务id: string): Promise<void> {
+  public async 执行任务(任务id: string): Promise<void> {
     let 任务 = this.任务映射表.get(任务id)
 
     if (任务 === undefined) throw new Error(`任务ID ${任务id} 不存在`)
@@ -118,7 +118,7 @@ export class 即时任务管理器类 {
       }
 
       // 执行任务逻辑
-      let 输出数据 = (await 任务.任务逻辑(上下文)) as 输出类型
+      let 输出数据 = await 任务.任务逻辑(上下文)
 
       // 执行成功钩子
       await 任务.执行成功钩子(输出数据)

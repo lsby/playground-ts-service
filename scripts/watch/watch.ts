@@ -7,7 +7,7 @@ if (参数.length < 2) {
   throw new Error('参数不足。用法: tsx watch.ts <路径1> [路径2...] <命令>')
 }
 
-let 命令 = 参数.pop() as string
+let 命令 = 参数.pop()
 let 监控路径列表 = 参数
 
 function 任务(): void {

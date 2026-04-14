@@ -3,7 +3,7 @@ import { API管理器 } from './api-manager'
 type 主题类型 = '系统' | '亮色' | '暗色'
 
 export let 主题管理器 = {
-  当前主题: '系统' as 主题类型,
+  当前主题: '系统',
 
   async 初始化(从数据库加载: boolean = true): Promise<void> {
     if (从数据库加载) {
