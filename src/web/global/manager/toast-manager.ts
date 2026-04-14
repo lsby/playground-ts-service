@@ -134,7 +134,7 @@ export function 显示吐司(消息: string, 选项: 吐司选项 = {}): void {
 // 便捷方法
 export function 成功提示(消息: string, 持续时间?: number): void {
   let 选项: 吐司选项 = { 类型: 'success' }
-  if (持续时间 !== void 0) {
+  if (持续时间 !== undefined) {
     选项.持续时间 = 持续时间
   }
   显示吐司(消息, 选项)
@@ -142,7 +142,7 @@ export function 成功提示(消息: string, 持续时间?: number): void {
 
 export function 错误提示(消息: string, 持续时间?: number): void {
   let 选项: 吐司选项 = { 类型: 'error' }
-  if (持续时间 !== void 0) {
+  if (持续时间 !== undefined) {
     选项.持续时间 = 持续时间
   }
   显示吐司(消息, 选项)
@@ -150,7 +150,7 @@ export function 错误提示(消息: string, 持续时间?: number): void {
 
 export function 警告提示(消息: string, 持续时间?: number): void {
   let 选项: 吐司选项 = { 类型: 'warning' }
-  if (持续时间 !== void 0) {
+  if (持续时间 !== undefined) {
     选项.持续时间 = 持续时间
   }
   显示吐司(消息, 选项)
@@ -158,7 +158,7 @@ export function 警告提示(消息: string, 持续时间?: number): void {
 
 export function 信息提示(消息: string, 持续时间?: number): void {
   let 选项: 吐司选项 = { 类型: 'info' }
-  if (持续时间 !== void 0) {
+  if (持续时间 !== undefined) {
     选项.持续时间 = 持续时间
   }
   显示吐司(消息, 选项)

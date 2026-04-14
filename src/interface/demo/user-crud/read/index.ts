@@ -39,12 +39,12 @@ let 接口逻辑实现 = 接口逻辑
           选择的字段们: ['id', 'name'],
           当前页: page,
           每页数量: size,
-          ...(orderBy !== void 0 ? { 排序字段们: orderBy } : {}),
+          ...(orderBy !== undefined ? { 排序字段们: orderBy } : {}),
           应用筛选函数: (builder): 已审阅的any => {
             let newBuilder = builder
-            if (filter !== void 0) {
-              if (filter.id !== void 0) newBuilder = newBuilder.where('id', 'like', `%${filter.id}%`)
-              if (filter.name !== void 0) newBuilder = newBuilder.where('name', 'like', `%${filter.name}%`)
+            if (filter !== undefined) {
+              if (filter.id !== undefined) newBuilder = newBuilder.where('id', 'like', `%${filter.id}%`)
+              if (filter.name !== undefined) newBuilder = newBuilder.where('name', 'like', `%${filter.name}%`)
             }
             return newBuilder
           },

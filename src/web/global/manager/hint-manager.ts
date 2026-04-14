@@ -7,7 +7,7 @@ class 提示管理器内部 {
   private 当前目标?: HTMLElement
 
   private 初始化(): void {
-    if (this.浮窗元素 !== void 0) return
+    if (this.浮窗元素 !== undefined) return
 
     this.浮窗元素 = 创建元素('div', {
       style: {
@@ -52,7 +52,7 @@ class 提示管理器内部 {
 
   public 显示(数据: 提示数据, 目标: HTMLElement): void {
     this.初始化()
-    if (this.浮窗元素 === void 0) return
+    if (this.浮窗元素 === undefined) return
 
     this.当前目标 = 目标
 
@@ -84,18 +84,18 @@ class 提示管理器内部 {
   }
 
   public 隐藏(): void {
-    if (this.浮窗元素 === void 0) return
+    if (this.浮窗元素 === undefined) return
     this.浮窗元素.style.opacity = '0'
     this.浮窗元素.style.transform = 'translateY(4px)'
     setTimeout(() => {
-      if (this.浮窗元素 !== void 0 && this.浮窗元素.style.opacity === '0') {
+      if (this.浮窗元素 !== undefined && this.浮窗元素.style.opacity === '0') {
         this.浮窗元素.style.display = 'none'
       }
     }, 150)
   }
 
   private 更新位置(): void {
-    if (this.浮窗元素 === void 0 || this.当前目标 === void 0) return
+    if (this.浮窗元素 === undefined || this.当前目标 === undefined) return
 
     let 矩形 = this.当前目标.getBoundingClientRect()
     let 浮窗矩形 = this.浮窗元素.getBoundingClientRect()

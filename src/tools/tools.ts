@@ -78,7 +78,7 @@ export async function 异步map<T, U>(
   let 结果: U[] = []
   for (let i = 0; i < arr.length; i++) {
     let item = arr[i]
-    if (item === void 0) throw new Error('意外的数组越界')
+    if (item === undefined) throw new Error('意外的数组越界')
     let 值 = await callback(item, i, arr)
     结果.push(值)
   }
@@ -105,7 +105,7 @@ export function 严格zip<A extends any[], B extends any[]>(数组1: [...A], 数
     let 元素1 = 数组1[i]
     let 元素2 = 数组2[i]
 
-    if (元素1 === void 0 || 元素2 === void 0) {
+    if (元素1 === undefined || 元素2 === undefined) {
       throw new Error('意外的数组越界')
     }
 

@@ -27,7 +27,7 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
       (子): 子 is HTMLElement => 子 instanceof HTMLElement && 子.hasAttribute('标签'),
     )
     let 目标元素 = 标签元素列表[this.当前索引]
-    if (目标元素 !== void 0) {
+    if (目标元素 !== undefined) {
       if (目标元素 instanceof 组件基类) await 目标元素.刷新()
       for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) await 子.刷新()
     }
@@ -158,7 +158,7 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
       this.派发事件('切换', { 当前索引: index })
     }
 
-    if (目标元素 !== void 0) {
+    if (目标元素 !== undefined) {
       if (目标元素 instanceof 组件基类) await 目标元素.刷新()
       for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) await 子.刷新()
     }

@@ -31,22 +31,22 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
 
   protected async 当加载时(): Promise<void> {
     应用宿主样式(this.获得宿主样式(), this.配置.宿主样式)
-    if (this.配置.id !== void 0) {
+    if (this.配置.id !== undefined) {
       this.id = this.配置.id
     }
 
     let 按钮样式 = this.获得按钮样式对象()
-    if (this.配置.元素样式 !== void 0) {
+    if (this.配置.元素样式 !== undefined) {
       按钮样式 = { ...按钮样式, ...this.配置.元素样式 }
     }
 
     let 按钮元素 = 创建元素('button', { style: 按钮样式 })
-    if (this.配置.文本 !== void 0) {
+    if (this.配置.文本 !== undefined) {
       let 文本元素 = 创建元素('span', { textContent: this.配置.文本 })
       按钮元素.appendChild(文本元素)
       this.文本元素 = 文本元素
     }
-    if (this.配置.标题 !== void 0) {
+    if (this.配置.标题 !== undefined) {
       按钮元素.title = this.配置.标题
     }
     if (this.配置.禁用 === true) {
@@ -56,7 +56,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
       e.preventDefault()
       if (this.配置.禁用 === true) return
       await this.配置.点击处理函数?.(e)
-      this.派发事件('点击', void 0)
+      this.派发事件('点击', undefined)
     }
     this.shadow.appendChild(按钮元素)
     this.按钮元素 = 按钮元素
@@ -66,7 +66,7 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
 
   public 设置禁用(值: boolean): void {
     this.配置.禁用 = 值
-    if (this.按钮元素 !== void 0) {
+    if (this.按钮元素 !== undefined) {
       this.按钮元素.disabled = 值
       应用样式(this.按钮元素, this.获得按钮样式对象())
     }
@@ -81,21 +81,21 @@ abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监
   }
 
   public 按钮聚焦(): void {
-    if (this.按钮元素 !== void 0) {
+    if (this.按钮元素 !== undefined) {
       this.按钮元素.focus()
     }
   }
 
   public 设置文本(文本: string): void {
     this.配置.文本 = 文本
-    if (this.文本元素 !== void 0) {
+    if (this.文本元素 !== undefined) {
       this.文本元素.textContent = 文本
     }
   }
 
   public 设置标题(标题: string): void {
     this.配置.标题 = 标题
-    if (this.按钮元素 !== void 0) {
+    if (this.按钮元素 !== undefined) {
       this.按钮元素.title = 标题
     }
   }

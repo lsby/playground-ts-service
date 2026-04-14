@@ -14,7 +14,7 @@ type 子元素类型 =
 type 元素属性 = { style?: 增强样式类型; children?: 子元素类型 }
 
 function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): void {
-  if (子元素 === null || 子元素 === void 0 || typeof 子元素 === 'boolean') {
+  if (子元素 === null || 子元素 === undefined || typeof 子元素 === 'boolean') {
     return
   }
   if (Array.isArray(子元素)) {
@@ -39,7 +39,7 @@ function 添加子元素(父元素: HTMLElement, 子元素: 子元素类型): vo
 export function 应用样式(元素: HTMLElement, 样式: 增强样式类型): void {
   for (let 键 in 样式) {
     let 值 = 样式[键 as keyof 增强样式类型]
-    if (值 !== void 0) {
+    if (值 !== undefined) {
       元素.style[键 as any] = String(值)
     }
   }
@@ -51,13 +51,13 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
 ): HTMLElementTagNameMap[K] {
   let 元素 = document.createElement(标签)
 
-  if (属性 === void 0) return 元素
+  if (属性 === undefined) return 元素
 
   let { children, style, ...其他属性 } = 属性
 
   for (let 键 in 其他属性) {
     let 值 = 其他属性[键 as keyof typeof 其他属性]
-    if (值 !== void 0) {
+    if (值 !== undefined) {
       if (键.includes('-') || 键.includes(':')) {
         元素.setAttribute(键, String(值))
       } else {
@@ -66,11 +66,11 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
     }
   }
 
-  if (style !== void 0) {
+  if (style !== undefined) {
     应用样式(元素, style)
   }
 
-  if (children !== void 0) {
+  if (children !== undefined) {
     添加子元素(元素, children)
   }
 
@@ -78,10 +78,10 @@ export function 创建元素<K extends keyof HTMLElementTagNameMap>(
 }
 
 export function 应用宿主样式(样式对象: CSSStyleDeclaration, 样式?: 增强样式类型): void {
-  if (样式 !== void 0) {
+  if (样式 !== undefined) {
     for (let 键 in 样式) {
       let 值 = 样式[键 as keyof 增强样式类型]
-      if (值 !== void 0) {
+      if (值 !== undefined) {
         样式对象.setProperty(键, String(值))
       }
     }

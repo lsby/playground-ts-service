@@ -82,9 +82,9 @@ async function 创建主窗口(): Promise<void> {
 
     if (位置有效 === true) {
       let 保存时的显示器 = 所有显示器.find((显示器) => 显示器.id === 保存的状态.displayId)
-      await log.info('保存时的显示器:', 保存时的显示器 !== void 0 ? `ID ${保存时的显示器.id}` : '未找到')
+      await log.info('保存时的显示器:', 保存时的显示器 !== undefined ? `ID ${保存时的显示器.id}` : '未找到')
 
-      if (保存时的显示器 !== void 0) {
+      if (保存时的显示器 !== undefined) {
         let 补偿后的配置 = 计算补偿后的窗口配置(保存的状态)
 
         await log.info('使用保存的位置和补偿后的大小:', {

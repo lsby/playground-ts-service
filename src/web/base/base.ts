@@ -11,7 +11,7 @@ export abstract class 组件基类<
   }
 
   public static 注册组件(组件名称: string, 组件: CustomElementConstructor): void {
-    if (customElements.get(组件名称) === void 0) customElements.define(组件名称, 组件)
+    if (customElements.get(组件名称) === undefined) customElements.define(组件名称, 组件)
     else console.warn(`组件名称 ${组件名称} 重复`)
   }
 
@@ -25,7 +25,7 @@ export abstract class 组件基类<
 
   public constructor(属性?: Partial<属性类型> | undefined) {
     super()
-    if (属性 === void 0) return
+    if (属性 === undefined) return
     Object.entries(属性).forEach(([k, v]) => {
       if (typeof v === 'string') this.setAttribute(k, v)
     })
@@ -164,7 +164,7 @@ export abstract class 组件基类<
     let 宿主初始样式: { [key: string]: string } = {}
     for (let i = 0; i < 宿主样式.length; i++) {
       let 样式名 = 宿主样式[i]
-      if (样式名 === void 0) continue
+      if (样式名 === undefined) continue
       宿主初始样式[样式名] = 宿主样式.getPropertyValue(样式名)
     }
 
@@ -181,14 +181,14 @@ export abstract class 组件基类<
     // 还原初始样式
     for (let 样式名 in 宿主初始样式) {
       let 初始样式 = 宿主初始样式[样式名]
-      if (初始样式 === void 0 || 宿主样式.getPropertyValue(样式名) === 初始样式) continue
+      if (初始样式 === undefined || 宿主样式.getPropertyValue(样式名) === 初始样式) continue
       宿主样式.setProperty(样式名, 初始样式)
     }
 
     // 应用缓存的变化
     while (true) {
       let 变化 = this.变化队列.shift()
-      if (变化 === void 0) break
+      if (变化 === undefined) break
       try {
         await this.当变化时?.(变化.name, 变化.oldValue, 变化.newValue)
       } catch (e) {
@@ -197,16 +197,16 @@ export abstract class 组件基类<
     }
   }
   private async disconnectedCallback(): Promise<void> {
-    if (this.当卸载时 !== void 0) void this.log.debug('disconnectedCallback, 对象: %O', this)
+    if (this.当卸载时 !== undefined) void this.log.debug('disconnectedCallback, 对象: %O', this)
     this.清理所有监听器()
     await this.当卸载时?.()
   }
   private async adoptedCallback(): Promise<void> {
-    if (this.当转移时 !== void 0) void this.log.debug('adoptedCallback, 对象: %O', this)
+    if (this.当转移时 !== undefined) void this.log.debug('adoptedCallback, 对象: %O', this)
     await this.当转移时?.()
   }
   private async attributeChangedCallback(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void> {
-    if (this.当变化时 !== void 0)
+    if (this.当变化时 !== undefined)
       void this.log.debug('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
     if (this.初始化完毕 === false) {
       this.变化队列.push({ name: name, oldValue, newValue })

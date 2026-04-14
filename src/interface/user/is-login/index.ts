@@ -21,7 +21,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
       let _log = 请求附加参数.log.extend(接口路径)
 
       let userId = 参数.userId
-      if (userId === void 0) return new Right({ isLogin: false })
+      if (userId === undefined) return new Right({ isLogin: false })
 
       let 用户存在确认 = await 参数.kysely
         .获得句柄()
@@ -30,7 +30,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
         .where('user.id', '=', userId)
         .executeTakeFirst()
 
-      if (用户存在确认 === void 0) return new Right({ isLogin: false })
+      if (用户存在确认 === undefined) return new Right({ isLogin: false })
       return new Right({ isLogin: true })
     },
   ),

@@ -48,7 +48,7 @@ export class 查询逻辑<
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     let 基础builder = (参数.kysely.获得句柄() as 已审阅的any).selectFrom(this.表名).distinct()
 
-    if (参数结果.条件们 !== void 0 && 参数结果.条件们.length > 0) {
+    if (参数结果.条件们 !== undefined && 参数结果.条件们.length > 0) {
       for (let 条件 of 参数结果.条件们) {
         switch (条件[1]) {
           case '=':
@@ -67,7 +67,7 @@ export class 查询逻辑<
       }
     }
 
-    if (参数结果.应用筛选函数 !== void 0) {
+    if (参数结果.应用筛选函数 !== undefined) {
       基础builder = 参数结果.应用筛选函数(基础builder)
     }
 
@@ -81,7 +81,7 @@ export class 查询逻辑<
       .limit(参数结果.每页数量)
       .offset((参数结果.当前页 - 1) * 参数结果.每页数量)
 
-    if (参数结果.排序字段们 !== void 0) {
+    if (参数结果.排序字段们 !== undefined) {
       for (let 排序项 of 参数结果.排序字段们) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         builder数据 = builder数据.orderBy(排序项.field, 排序项.direction)

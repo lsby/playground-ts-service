@@ -36,7 +36,7 @@ class 定时任务实现 extends 定时任务抽象类 {
         .select('id')
         .where('is_admin', '=', 1)
         .executeTakeFirst()
-      if (管理员用户 === void 0) {
+      if (管理员用户 === undefined) {
         throw new Error('没有管理员用户')
       }
 

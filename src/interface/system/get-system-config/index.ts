@@ -23,7 +23,7 @@ let 接口逻辑实现 = 接口逻辑
       let _log = 请求附加参数.log.extend(接口路径)
 
       let 配置 = await 参数.kysely.获得句柄().selectFrom('system_config').selectAll().executeTakeFirst()
-      if (配置 === void 0) return new Left('系统配置不存在' as const)
+      if (配置 === undefined) return new Left('系统配置不存在' as const)
       return new Right({
         id: 配置.id,
         is_initialized: 配置.is_initialized === 1,

@@ -49,7 +49,7 @@ export class 检查管理员登录<
       .select(参数结果.标识字段)
       .where(参数结果.id字段, '=', userId)
       .executeTakeFirst()
-    if (存在确认 === void 0) return new Left('未登录')
+    if (存在确认 === undefined) return new Left('未登录')
 
     if (存在确认[参数结果.标识字段] !== 1) return new Left('非管理员')
 

@@ -92,31 +92,32 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
   }
 
   private async 加载数据(): Promise<void> {
-    if (this.用户信息 !== void 0 && this.用户信息.is_admin && this.系统配置表单 !== void 0) {
+    if (this.用户信息 !== undefined && this.用户信息.is_admin && this.系统配置表单 !== undefined) {
       let 系统配置 = await API管理器.请求postJson并处理错误('/api/system/get-system-config', {})
       this.系统配置表单.设置数据(系统配置)
     }
 
-    if (this.用户配置表单 !== void 0) {
+    if (this.用户配置表单 !== undefined) {
       let 用户配置 = await API管理器.请求postJson并处理错误('/api/system/get-user-config', {})
       this.用户配置表单.设置数据(用户配置)
     }
   }
 
   private async 保存系统配置(): Promise<void> {
-    if (this.系统配置表单 === void 0) return
+    if (this.系统配置表单 === undefined) return
     let 数据 = this.系统配置表单.获得数据()
     await API管理器.请求postJson并处理错误('/api/system/update-system-config', 数据)
   }
 
   private async 保存用户配置(): Promise<void> {
-    if (this.用户配置表单 === void 0) return
+    if (this.用户配置表单 === undefined) return
     let 数据 = this.用户配置表单.获得数据()
     await 主题管理器.设置主题(数据.theme)
   }
 
   private async 保存所有配置(): Promise<void> {
-    if (this.用户信息 !== void 0 && this.用户信息.is_admin && this.系统配置表单 !== void 0) await this.保存系统配置()
+    if (this.用户信息 !== undefined && this.用户信息.is_admin && this.系统配置表单 !== undefined)
+      await this.保存系统配置()
     await this.保存用户配置()
     成功提示('保存成功')
   }

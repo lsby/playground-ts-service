@@ -139,16 +139,16 @@ export class API管理器类 {
       }
 
       let ws回调选项: Record<string, 已审阅的any> = {
-        ...(ws输出回调 !== void 0
+        ...(ws输出回调 !== undefined
           ? {
               ws信息回调: async (e: MessageEvent): Promise<void> => {
                 await ws输出回调(JSON.parse(e.data))
               },
             }
           : {}),
-        ...(ws关闭回调 !== void 0 ? { ws关闭回调: ws关闭回调 } : {}),
-        ...(ws错误回调 !== void 0 ? { ws错误回调: ws错误回调 } : {}),
-        ...(ws连接回调 !== void 0
+        ...(ws关闭回调 !== undefined ? { ws关闭回调: ws关闭回调 } : {}),
+        ...(ws错误回调 !== undefined ? { ws错误回调: ws错误回调 } : {}),
+        ...(ws连接回调 !== undefined
           ? {
               ws连接回调: async (ws: WebSocket): Promise<void> => {
                 let 发送消息 = (data: 已审阅的any): void => {

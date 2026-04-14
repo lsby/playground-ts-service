@@ -44,7 +44,7 @@ export class 检查唯一性<
       .where(this.opt.数据库字段名, '=', 逻辑附加参数[this.opt.参数字段名])
       .executeTakeFirst()
 
-    if (已存在 !== void 0) {
+    if (已存在 !== undefined) {
       return new Left(this.opt.错误信息)
     }
 

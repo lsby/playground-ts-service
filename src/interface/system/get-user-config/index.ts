@@ -29,7 +29,7 @@ let 接口逻辑实现 = 接口逻辑
         .where('user_id', '=', 逻辑附加参数.userId)
         .executeTakeFirst()
 
-      if (配置 === void 0) return new Left('用户配置不存在' as const)
+      if (配置 === undefined) return new Left('用户配置不存在' as const)
 
       let 主题: '系统' | '亮色' | '暗色'
       try {

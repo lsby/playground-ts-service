@@ -39,7 +39,7 @@ export class 集线器模型<T> {
     监听器: 集线器监听器<any>
   }>(({ 实例引用, 监听器 }) => {
     let 实例 = 实例引用.deref()
-    if (实例 === void 0) return
+    if (实例 === undefined) return
 
     实例.监听器集合.delete(监听器)
   })
@@ -68,7 +68,7 @@ export class 集线器模型<T> {
 
     宿主.绑定回调(() => {
       let 实例 = 实例弱引用.deref()
-      if (实例 !== void 0) {
+      if (实例 !== undefined) {
         实例.监听器集合.delete(监听器)
       }
       集线器模型.清理注册器.unregister(宿主)

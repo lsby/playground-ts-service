@@ -116,7 +116,7 @@ export function 显示确认对话框(消息: string, 提示?: string): Promise<
 
     对话框.appendChild(消息元素)
 
-    if (提示 !== void 0) {
+    if (提示 !== undefined) {
       let 提示元素 = 创建元素('div', {
         textContent: 提示,
         style: { fontSize: '12px', lineHeight: '1.5', color: 'var(--次要文字颜色)', whiteSpace: 'pre-wrap' },
@@ -213,7 +213,7 @@ export function 显示输入对话框(消息: string, 默认值?: string, 提示
 
     对话框.appendChild(消息元素)
 
-    if (提示 !== void 0) {
+    if (提示 !== undefined) {
       let 提示元素 = 创建元素('div', {
         textContent: 提示,
         style: { fontSize: '12px', lineHeight: '1.5', color: 'var(--次要文字颜色)', whiteSpace: 'pre-wrap' },
@@ -224,7 +224,7 @@ export function 显示输入对话框(消息: string, 默认值?: string, 提示
     let 输入框 = new 普通输入框({
       占位符: '请输入内容',
       元素样式: { width: '100%' },
-      ...(默认值 !== void 0 ? { 值: 默认值 } : {}),
+      ...(默认值 !== undefined ? { 值: 默认值 } : {}),
     })
 
     对话框.appendChild(输入框)

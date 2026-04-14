@@ -134,7 +134,7 @@ class 模态框管理器 {
 
   private 切换最大化(栈索引: number): void {
     let 栈项 = this.模态框栈[栈索引]
-    if (栈项 === void 0) return
+    if (栈项 === undefined) return
 
     栈项.是否最大化 = 栈项.是否最大化 === false
 
@@ -239,7 +239,7 @@ class 模态框管理器 {
     if (this.模态框栈.length === 1) {
       this.键盘处理器 = async (e: KeyboardEvent): Promise<void> => {
         let 当前模态框 = this.模态框栈[this.模态框栈.length - 1]
-        if (当前模态框 !== void 0 && e.key === 'Escape' && 当前模态框.选项.可关闭 !== false) {
+        if (当前模态框 !== undefined && e.key === 'Escape' && 当前模态框.选项.可关闭 !== false) {
           await this.关闭()
         }
       }
@@ -253,10 +253,10 @@ class 模态框管理器 {
     }
 
     let 栈项 = this.模态框栈.pop()
-    if (栈项 === void 0) return
+    if (栈项 === undefined) return
 
     // 执行关闭回调
-    if (栈项.选项.关闭回调 !== void 0) {
+    if (栈项.选项.关闭回调 !== undefined) {
       await 栈项.选项.关闭回调()
     }
 

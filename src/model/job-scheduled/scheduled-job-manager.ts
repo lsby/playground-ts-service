@@ -90,7 +90,7 @@ export class 定时任务管理器类 {
 
   public async 手动触发任务(任务id: string): Promise<boolean> {
     let 任务条目 = this.调度任务列表.find((item) => item.信息.id === 任务id)
-    if (任务条目 === void 0) {
+    if (任务条目 === undefined) {
       return false
     }
 
@@ -110,7 +110,7 @@ export class 定时任务管理器类 {
   }
   public 通过id获得任务(id: string): 定时任务抽象类 | null {
     let 任务条目 = this.调度任务列表.find((item) => item.信息.id === id)
-    if (任务条目 === void 0) {
+    if (任务条目 === undefined) {
       return null
     }
     return 任务条目.任务

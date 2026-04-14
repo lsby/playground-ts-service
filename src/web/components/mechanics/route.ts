@@ -58,7 +58,7 @@ export class 路由组件 extends 组件基类<属性类型, 发出事件类型,
     this.监听冒泡事件('lsby-route-listen', async (data: CustomEvent<路由事件监听对象<string, any>>) => {
       let 事件名称 = data.detail.获得事件名称()
       await globalWebLog.debug(`路由组件注册了监听器: ${事件名称}`)
-      if (this.监听表[事件名称] === void 0) {
+      if (this.监听表[事件名称] === undefined) {
         this.监听表[事件名称] = []
       }
       this.监听表[事件名称].push(data.detail.获得回调函数())
@@ -67,7 +67,7 @@ export class 路由组件 extends 组件基类<属性类型, 发出事件类型,
       let 事件名称 = data.detail.获得事件名称()
       await globalWebLog.debug(`路由组件接收到事件: ${事件名称}`)
       let 函数列表 = this.监听表[事件名称]
-      if (函数列表 !== void 0) {
+      if (函数列表 !== undefined) {
         await globalWebLog.debug(`路由组件找到 ${函数列表.length} 个监听器`)
         for (let 函数 of 函数列表) {
           try {

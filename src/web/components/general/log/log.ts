@@ -431,7 +431,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     for (let i = 0; i < this.日志容器.children.length; i++) {
       let 子元素 = this.日志容器.children[i] as HTMLDivElement
       let 对应日志 = this.日志数组[i]
-      if (对应日志 !== void 0 && 子元素.textContent !== 对应日志) {
+      if (对应日志 !== undefined && 子元素.textContent !== 对应日志) {
         子元素.textContent = 对应日志
       }
     }
@@ -439,7 +439,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     // 添加新的日志行
     for (let i = this.日志容器.children.length; i < this.日志数组.length; i++) {
       let 日志 = this.日志数组[i]
-      if (日志 !== void 0) {
+      if (日志 !== undefined) {
         let 日志行 = 创建元素('div', {
           textContent: 日志,
           style: { marginBottom: '2px', wordBreak: 'break-word', cursor: 'default' },
@@ -462,7 +462,7 @@ export class 日志组件 extends 组件基类<属性类型, 发出事件类型,
     let 排序的索引 = Array.from(this.选中的索引集合).sort((a, b) => a - b)
     for (let 索引 of 排序的索引) {
       let 日志 = this.日志数组[索引]
-      if (日志 !== void 0) {
+      if (日志 !== undefined) {
         选中的日志.push(日志)
       }
     }

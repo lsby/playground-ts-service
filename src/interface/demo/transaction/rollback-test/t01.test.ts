@@ -20,6 +20,6 @@ export default new 接口测试(
   async (_解析结果): Promise<void> => {
     let db = kysely管理器.获得句柄()
     let userRow = await db.selectFrom('user').select('id').where('name', '=', name).executeTakeFirst()
-    if (userRow !== void 0) throw new Error('不应该插入成功')
+    if (userRow !== undefined) throw new Error('不应该插入成功')
   },
 )

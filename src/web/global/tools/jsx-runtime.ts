@@ -63,7 +63,7 @@ function 处理组件<K extends keyof HTMLElementTagNameMap>(
       元素.dataset['key'] = String(key)
     }
 
-    if (ref !== void 0) {
+    if (ref !== undefined) {
       switch (typeof ref) {
         case 'function':
           ref(元素)
@@ -89,7 +89,7 @@ export function jsx<K extends keyof HTMLElementTagNameMap>(
   属性: JSX属性基础类型 & Partial<Omit<HTMLElementTagNameMap[K], 'style' | 'children'>>,
   key?: string | number,
 ): JSX有效返回值 {
-  if (key !== void 0) {
+  if (key !== undefined) {
     return 处理组件(类型, { ...属性, key })
   }
   return 处理组件(类型, 属性)
@@ -100,7 +100,7 @@ export function jsxs<K extends keyof HTMLElementTagNameMap>(
   属性: JSX属性基础类型 & Partial<Omit<HTMLElementTagNameMap[K], 'style' | 'children'>>,
   key?: string | number,
 ): JSX有效返回值 {
-  if (key !== void 0) {
+  if (key !== undefined) {
     return 处理组件(类型, { ...属性, key })
   }
   return 处理组件(类型, 属性)
@@ -108,14 +108,14 @@ export function jsxs<K extends keyof HTMLElementTagNameMap>(
 
 export function Fragment(属性: { children?: JSX子元素 }): DocumentFragment {
   let 片段 = document.createDocumentFragment()
-  if (属性.children !== null && 属性.children !== void 0) {
+  if (属性.children !== null && 属性.children !== undefined) {
     添加子元素到片段(片段, 属性.children)
   }
   return 片段
 }
 
 function 添加子元素到片段(片段: DocumentFragment, 子元素: JSX子元素): void {
-  if (子元素 === null || 子元素 === void 0 || typeof 子元素 === 'boolean') {
+  if (子元素 === null || 子元素 === undefined || typeof 子元素 === 'boolean') {
     return
   }
   if (Array.isArray(子元素)) {

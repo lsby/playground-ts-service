@@ -26,7 +26,7 @@ export async function init(): Promise<void> {
       .where('name', '=', 环境变量.DEFAULT_SYSTEM_USER)
       .where('pwd', '=', await bcrypt.hash(环境变量.DEFAULT_SYSTEM_PWD, 环境变量.BCRYPT_ROUNDS))
       .executeTakeFirst()
-    if (用户存在判定 === void 0) {
+    if (用户存在判定 === undefined) {
       初始用户id = randomUUID()
 
       项目名称 = '用户'

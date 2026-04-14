@@ -30,7 +30,7 @@ export class 检查密码<逻辑附加参数类型 extends {}, 字段类型 exte
     let _log = 请求附加参数.log.extend(检查密码.name)
 
     let body = 参数.json
-    if (body === void 0) return new Left('缺少必要参数')
+    if (body === undefined) return new Left('缺少必要参数')
 
     if (body[this.字段名].includes(' ')) return new Left('密码不能包含空格')
     if (body[this.字段名] === '') return new Left('密码不能为空')

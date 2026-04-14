@@ -29,7 +29,7 @@ let 接口逻辑实现 = 接口逻辑
         .where('user.id', '=', 逻辑附加参数.userId)
         .executeTakeFirst()
 
-      if (用户 === void 0) return new Left('用户不存在' as const)
+      if (用户 === undefined) return new Left('用户不存在' as const)
       return new Right({ id: 用户.id, name: 用户.name, is_admin: 用户.is_admin === 1 })
     }),
   )

@@ -54,7 +54,7 @@ class 复选框 extends 表单组件基类<复选框属性, 复选框事件, 监
 
     容器.appendChild(复选框元素)
 
-    if (this.配置.标签 !== void 0) {
+    if (this.配置.标签 !== undefined) {
       let 标签元素 = 创建元素('span', { textContent: this.配置.标签 })
       容器.appendChild(标签元素)
     }
@@ -65,7 +65,7 @@ class 复选框 extends 表单组件基类<复选框属性, 复选框事件, 监
 
   public 设置值(值: boolean): void {
     this.配置.值 = 值
-    if (this.复选框元素 !== void 0) {
+    if (this.复选框元素 !== undefined) {
       this.复选框元素.checked = 值
     }
   }
@@ -76,7 +76,7 @@ class 复选框 extends 表单组件基类<复选框属性, 复选框事件, 监
 
   public 设置禁用(值: boolean): void {
     this.配置.禁用 = 值
-    if (this.复选框元素 !== void 0) {
+    if (this.复选框元素 !== undefined) {
       this.复选框元素.disabled = 值
     }
   }

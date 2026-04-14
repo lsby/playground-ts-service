@@ -44,7 +44,7 @@ export class 检查登录<
       .select(参数结果.id字段)
       .where(参数结果.id字段, '=', userId)
       .executeTakeFirst()
-    if (存在确认 === void 0) return new Left('未登录')
+    if (存在确认 === undefined) return new Left('未登录')
 
     return new Right({ userId: userId })
   }

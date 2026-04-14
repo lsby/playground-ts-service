@@ -78,11 +78,11 @@ export class 表格选择管理器<数据项> {
     let 内容 = ''
     if (this.选中的行.size === 1 && this.最后点击的单元格 !== null) {
       let 行数据 = this.上下文.数据列表[this.最后点击的单元格.行]
-      if (行数据 !== void 0 && 行数据 !== null) {
+      if (行数据 !== undefined && 行数据 !== null) {
         let 列配置 = this.上下文.列配置[this.最后点击的单元格.列]
-        if (列配置 !== void 0) {
+        if (列配置 !== undefined) {
           let 值 = 行数据[列配置.字段名]
-          内容 = 值 === null || 值 === void 0 ? 'NULL' : String(值)
+          内容 = 值 === null || 值 === undefined ? 'NULL' : String(值)
         }
       }
     } else if (this.选中的行.size > 0) {
@@ -90,11 +90,11 @@ export class 表格选择管理器<数据项> {
       for (let 行索引 = 0; 行索引 < this.上下文.数据列表.length; 行索引++) {
         if (this.选中的行.has(行索引) === true) {
           let 行数据 = this.上下文.数据列表[行索引]
-          if (行数据 !== void 0 && 行数据 !== null) {
+          if (行数据 !== undefined && 行数据 !== null) {
             let 单元格内容列表: string[] = []
             for (let 列 of this.上下文.列配置) {
               let 值 = 行数据[列.字段名]
-              单元格内容列表.push(值 === null || 值 === void 0 ? 'NULL' : String(值))
+              单元格内容列表.push(值 === null || 值 === undefined ? 'NULL' : String(值))
             }
             行内容列表.push(单元格内容列表.join('\t'))
           }

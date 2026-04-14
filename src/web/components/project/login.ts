@@ -213,10 +213,10 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
 
     // 为登录表单的input元素添加回车键监听
     let 登录元素 = this.登录表单.获得所有元素()
-    if (登录元素.username !== void 0) {
+    if (登录元素.username !== undefined) {
       登录元素.username.onkeydown = 处理回车键
     }
-    if (登录元素.password !== void 0) {
+    if (登录元素.password !== undefined) {
       登录元素.password.onkeydown = 处理回车键
     }
 

@@ -32,7 +32,7 @@ let 接口逻辑实现 = 接口逻辑
         let 任务管理器 = 即时任务管理器
 
         let 任务 = 任务管理器.获得所有任务列表().find((t) => t.获得id() === 参数.json.任务id)
-        if (任务 === void 0) {
+        if (任务 === undefined) {
           throw new Error('任务不存在')
         }
 

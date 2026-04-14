@@ -28,7 +28,7 @@ let 接口逻辑实现 = 接口逻辑
         .select(['id', 'pwd'])
         .where('name', '=', 逻辑附加参数.userName)
         .executeTakeFirst()
-      if (用户存在 === void 0) return new Left('用户不存在或密码错误' as const)
+      if (用户存在 === undefined) return new Left('用户不存在或密码错误' as const)
 
       let 验证密码 = await bcrypt.compare(逻辑附加参数.userPassword, 用户存在.pwd)
       if (验证密码 === false) return new Left('用户不存在或密码错误' as const)

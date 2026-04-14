@@ -41,22 +41,22 @@ export abstract class 即时任务抽象类<输出类型> {
       }
 
       public override async 执行前钩子(): Promise<void> {
-        if (任务配置.执行前钩子 !== void 0) {
+        if (任务配置.执行前钩子 !== undefined) {
           return await 任务配置.执行前钩子()
         }
       }
       public override async 执行成功钩子(输出: 输出类型): Promise<void> {
-        if (任务配置.执行成功钩子 !== void 0) {
+        if (任务配置.执行成功钩子 !== undefined) {
           return await 任务配置.执行成功钩子(输出)
         }
       }
       public override async 执行失败钩子(错误: Error): Promise<void> {
-        if (任务配置.执行失败钩子 !== void 0) {
+        if (任务配置.执行失败钩子 !== undefined) {
           return await 任务配置.执行失败钩子(错误)
         }
       }
       public override async 执行完成钩子(): Promise<void> {
-        if (任务配置.执行完成钩子 !== void 0) {
+        if (任务配置.执行完成钩子 !== undefined) {
           return await 任务配置.执行完成钩子()
         }
       }

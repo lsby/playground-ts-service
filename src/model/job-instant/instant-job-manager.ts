@@ -48,7 +48,7 @@ export class 即时任务管理器类 {
 
     // 执行优先级最高的任务
     let 第一个任务 = 等待中任务列表[0]
-    if (第一个任务 !== void 0) await this.执行任务(第一个任务.获得id())
+    if (第一个任务 !== undefined) await this.执行任务(第一个任务.获得id())
   }
 
   public 获得最大并发数(): number {
@@ -96,7 +96,7 @@ export class 即时任务管理器类 {
   public async 执行任务<输出类型>(任务id: string): Promise<void> {
     let 任务 = this.任务映射表.get(任务id)
 
-    if (任务 === void 0) throw new Error(`任务ID ${任务id} 不存在`)
+    if (任务 === undefined) throw new Error(`任务ID ${任务id} 不存在`)
     if (任务.获得当前状态() === '运行中') throw new Error(`任务ID ${任务id} 正在运行中`)
     if (任务.获得当前状态() === '已完成') throw new Error(`任务ID ${任务id} 已经完成`)
 
@@ -172,7 +172,7 @@ export class 即时任务管理器类 {
     let 所有任务条目 = Array.from(this.任务映射表.entries())
     for (let i = 0; i < 所有任务条目.length; i = i + 1) {
       let 条目 = 所有任务条目[i]
-      if (条目 === void 0) continue
+      if (条目 === undefined) continue
 
       let 任务信息 = 条目[1]
       let 任务 = 任务信息
@@ -191,7 +191,7 @@ export class 即时任务管理器类 {
     let 所有任务条目 = Array.from(this.任务映射表.entries())
     for (let i = 0; i < 所有任务条目.length; i = i + 1) {
       let 条目 = 所有任务条目[i]
-      if (条目 === void 0) continue
+      if (条目 === undefined) continue
 
       let 任务id = 条目[0]
       let 任务 = 条目[1]
