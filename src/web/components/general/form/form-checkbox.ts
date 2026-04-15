@@ -12,6 +12,7 @@ type 复选框配置 = {
   标签?: string
   值?: boolean
   禁用?: boolean
+  额外提示?: string
   变化处理函数?: (值: boolean) => void | Promise<void>
   宿主样式?: 增强样式类型
   元素样式?: 增强样式类型
@@ -55,8 +56,14 @@ class 复选框 extends 表单组件基类<复选框属性, 复选框事件, 监
     容器.appendChild(复选框元素)
 
     if (this.配置.标签 !== undefined) {
-      let 标签元素 = 创建元素('span', { textContent: this.配置.标签 })
+      let 标签元素 = 创建元素('span', { textContent: this.配置.标签, style: { fontSize: '14px' } })
       容器.appendChild(标签元素)
+
+      if (this.配置.额外提示 !== undefined) {
+        let 提示图标 = this.创建提示图标(this.配置.额外提示)
+        提示图标.style.marginLeft = '4px'
+        容器.appendChild(提示图标)
+      }
     }
 
     this.shadow.appendChild(容器)

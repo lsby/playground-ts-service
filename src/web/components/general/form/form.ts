@@ -163,22 +163,34 @@ abstract class 表单组件基类<
   extends 组件基类<属性类型, 发出事件类型, 监听事件类型>
   implements 表单元素<值类型>
 {
-  protected 提示内容?: { html: string }
-
-  public 设置提示(提示: { html: string }): void {
-    this.提示内容 = 提示
-    this.onmouseenter = (): void => {
-      if (this.提示内容 !== undefined) {
-        提示管理器.显示(this.提示内容, this)
-      }
-    }
-    this.onmouseleave = (): void => {
-      提示管理器.隐藏()
-    }
-  }
-
   public abstract 获得值(): 值类型
   public abstract 设置值(值: 值类型): void
+
+  protected 创建提示图标(提示内容: string): HTMLElement {
+    let 提示图标 = 创建元素('span', {
+      textContent: '?',
+      style: {
+        width: '14px',
+        height: '14px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+        backgroundColor: 'var(--边框颜色)',
+        color: 'var(--次要文字颜色)',
+        fontSize: '10px',
+        fontWeight: 'bold',
+        cursor: 'help',
+      },
+    })
+    提示图标.onmouseenter = (): void => {
+      提示管理器.显示({ html: 提示内容 }, 提示图标)
+    }
+    提示图标.onmouseleave = (): void => {
+      提示管理器.隐藏()
+    }
+    return 提示图标
+  }
 }
 
 export { 基础值, 基础值结构, 表单, 表单元素, 表单组件基类, 表单配置, 表单项配置 }
