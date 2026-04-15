@@ -8,8 +8,10 @@ import { 保存窗口状态, 检查窗口是否在可见区域内, 获取默认�
 import { 环境变量 } from './global/env'
 import { globalLog } from './global/global'
 import { init } from './init/init'
+import { 启动异常兜底 } from './tools/fallback'
 
 async function main(): Promise<void> {
+  启动异常兜底()
   try {
     await init()
     await new App().run()
