@@ -1,4 +1,3 @@
-import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/manager/api-manager'
 import { 显示模态框 } from '../../global/manager/modal-manager'
@@ -6,18 +5,16 @@ import { 创建元素 } from '../../global/tools/create-element'
 import { 普通按钮 } from '../general/base/base-button'
 import { 日志分栏组件 } from '../general/log/log-split'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 数据库备份组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
+export class 数据库备份组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-sqlite-admin-backup-database', this)
   }
 
-  public constructor(属性: 属性类型) {
-    super(属性)
+  public constructor() {
+    super()
   }
 
   protected override async 当加载时(): Promise<void> {

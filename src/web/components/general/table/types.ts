@@ -33,8 +33,6 @@ export type 数据表格选项<数据项> = {
   加载数据: (参数: 数据表加载数据参数<数据项>) => Promise<{ 数据: 数据项[]; 总数: number }>
 }
 
-export type 属性类型 = {}
-
 export type 发出事件类型<数据项> = { 操作点击: { 操作名: string; 数据项: 数据项 }; 页码变化: { 页码: number } }
 
 export type 监听事件类型 = {}

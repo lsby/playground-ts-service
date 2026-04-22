@@ -8,14 +8,13 @@ import { 表单, 表单项配置 } from '../general/form/form'
 import { 复选框 } from '../general/form/form-checkbox'
 import { 单选框组 } from '../general/form/form-radio-group'
 
-type 设置属性 = {}
 type 设置事件 = {}
 type 监听设置事件 = {}
 
 type 系统配置数据 = { id: string; enable_register: boolean; is_initialized: boolean }
 type 用户配置数据 = { id: string; theme: '系统' | '亮色' | '暗色' }
 
-export class 用户设置组件 extends 组件基类<设置属性, 设置事件, 监听设置事件> {
+export class 用户设置组件 extends 组件基类<设置事件, 监听设置事件> {
   private 用户信息?: { id: string; name: string; is_admin: boolean }
   private 系统配置表单?: 表单<系统配置数据>
   private 用户配置表单?: 表单<用户配置数据>
@@ -25,7 +24,7 @@ export class 用户设置组件 extends 组件基类<设置属性, 设置事件,
   }
 
   public constructor() {
-    super({})
+    super()
   }
 
   protected async 当加载时(): Promise<void> {

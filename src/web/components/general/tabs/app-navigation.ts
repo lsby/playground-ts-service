@@ -1,28 +1,28 @@
-import { 联合转元组 } from '../../../../tools/types'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/tools/create-element'
 
-type 属性类型 = { 路由键?: string }
+type App导航配置 = { 路由键?: string }
 export type appNavigation发出事件类型 = { 切换: { 当前索引: number } }
 type 监听事件类型 = {}
 
-export class App导航组件 extends 组件基类<属性类型, appNavigation发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['路由键']
+export class App导航组件 extends 组件基类<appNavigation发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-app-navigation', this)
   }
 
+  private 配置: App导航配置
   private 当前索引: number = 0
   private 导航栏容器: HTMLDivElement = 创建元素('div')
   private 内容容器: HTMLDivElement = 创建元素('div')
   private 是移动端: boolean = false
 
-  public constructor(属性: 属性类型) {
-    super(属性)
+  public constructor(配置: App导航配置 = {}) {
+    super()
+    this.配置 = 配置
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 路由键 = await this.获得属性('路由键')
+    let 路由键 = this.配置.路由键
     if (typeof 路由键 === 'string') {
       let params = new URLSearchParams(window.location.search)
       let 索引字符串 = params.get(路由键)
@@ -175,7 +175,7 @@ export class App导航组件 extends 组件基类<属性类型, appNavigation发
       this.当前索引 = index
       this.更新UI()
 
-      let 路由键 = await this.获得属性('路由键')
+      let 路由键 = this.配置.路由键
       if (typeof 路由键 === 'string') {
         let params = new URLSearchParams(window.location.search)
         params.set(路由键, index.toString())

@@ -1,23 +1,20 @@
-import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/tools/create-element'
 import { tabHorizontal发出事件类型, 横向tab组件 } from '../general/tabs/tabs-horizontal'
 import { 即时任务管理组件 } from './admin-job-instant'
 import { 定时任务管理组件 } from './admin-job-scheduled'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {} & tabHorizontal发出事件类型
 
-export class 任务管理组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
+export class 任务管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-admin-job', this)
   }
 
-  private tabs = new 横向tab组件({})
-  private 即时任务组件 = new 即时任务管理组件({})
-  private 定时任务组件 = new 定时任务管理组件({})
+  private tabs = new 横向tab组件()
+  private 即时任务组件 = new 即时任务管理组件()
+  private 定时任务组件 = new 定时任务管理组件()
 
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'

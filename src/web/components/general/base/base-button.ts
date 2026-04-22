@@ -2,8 +2,6 @@ import { 增强样式类型 } from 'src/web/global/types/style'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素, 应用宿主样式, 应用样式 } from '../../../global/tools/create-element'
 
-type 按钮属性 = {}
-
 type 按钮事件 = { 点击: void }
 
 type 监听按钮事件 = {}
@@ -19,13 +17,13 @@ type 按钮配置 = {
   ref?: (el: 按钮基类) => void
 }
 
-abstract class 按钮基类 extends 组件基类<按钮属性, 按钮事件, 监听按钮事件> {
+abstract class 按钮基类 extends 组件基类<按钮事件, 监听按钮事件> {
   protected 配置: 按钮配置
   private 按钮元素?: HTMLButtonElement
   private 文本元素?: HTMLSpanElement
 
   public constructor(配置: 按钮配置 = {}) {
-    super({})
+    super()
     this.配置 = 配置
   }
 

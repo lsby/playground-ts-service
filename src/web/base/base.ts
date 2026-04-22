@@ -1,15 +1,9 @@
 import { globalWebLog } from '../global/manager/log-manager'
 
 export abstract class 组件基类<
-  属性类型 extends Record<string, string>,
   发出事件类型 extends Record<string, any>,
   监听事件类型 extends Record<string, any>,
 > extends HTMLElement {
-  protected static 观察的属性: string[] = []
-  public static get observedAttributes(): string[] {
-    return this.观察的属性
-  }
-
   public static 注册组件(组件名称: string, 组件: CustomElementConstructor): void {
     if (customElements.get(组件名称) === undefined) customElements.define(组件名称, 组件)
     else console.warn(`组件名称 ${组件名称} 重复`)
@@ -19,30 +13,15 @@ export abstract class 组件基类<
   private 初始化完毕 = false
   private 初始化完成事件: Promise<void> | null = null
   private 初始化完成解析器: (() => void) | null = null
-  private 变化队列: { name: keyof 属性类型; oldValue: string; newValue: string }[] = []
   private 监听器列表: Array<{ type: string; handler: EventListener; options?: AddEventListenerOptions }> = []
   private _shadow = this.attachShadow({ mode: 'open' })
 
-  public constructor(属性?: Partial<属性类型> | undefined) {
+  public constructor() {
     super()
-    if (属性 === undefined) return
-    Object.entries(属性).forEach(([k, v]) => {
-      if (typeof v === 'string') this.setAttribute(k, v)
-    })
   }
 
   protected get shadow(): ShadowRoot {
     return this._shadow
-  }
-
-  public async 设置属性<K extends keyof 属性类型>(k: K, v: 属性类型[K]): Promise<void> {
-    void this.log.debug('设置属性: %o = %o, 对象: %O', k, v, this)
-    this.setAttribute(k.toString(), v)
-  }
-  public async 获得属性<K extends keyof 属性类型>(k: K): Promise<(属性类型[K] & string) | null> {
-    let r = this.getAttribute(k.toString())
-    void this.log.debug('获得属性: %o = %o, 对象: %O', k, r, this)
-    return r as 属性类型[K]
   }
 
   public 获得宿主样式(): CSSStyleDeclaration {
@@ -154,7 +133,6 @@ export abstract class 组件基类<
   protected abstract 当加载时(): Promise<void>
   protected 当卸载时?(): Promise<void>
   protected 当转移时?(): Promise<void>
-  protected 当变化时?(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void>
 
   private async connectedCallback(): Promise<void> {
     void this.log.debug('connectedCallback, 对象: %O', this)
@@ -184,17 +162,6 @@ export abstract class 组件基类<
       if (初始样式 === undefined || 宿主样式.getPropertyValue(样式名) === 初始样式) continue
       宿主样式.setProperty(样式名, 初始样式)
     }
-
-    // 应用缓存的变化
-    while (true) {
-      let 变化 = this.变化队列.shift()
-      if (变化 === undefined) break
-      try {
-        await this.当变化时?.(变化.name, 变化.oldValue, 变化.newValue)
-      } catch (e) {
-        void this.log.error('属性变化处理异常: %O, 变化: %O', e, 变化)
-      }
-    }
   }
   private async disconnectedCallback(): Promise<void> {
     if (this.当卸载时 !== undefined) void this.log.debug('disconnectedCallback, 对象: %O', this)
@@ -204,18 +171,5 @@ export abstract class 组件基类<
   private async adoptedCallback(): Promise<void> {
     if (this.当转移时 !== undefined) void this.log.debug('adoptedCallback, 对象: %O', this)
     await this.当转移时?.()
-  }
-  private async attributeChangedCallback(name: keyof 属性类型, oldValue: string, newValue: string): Promise<void> {
-    if (this.当变化时 !== undefined)
-      void this.log.debug('attributeChangedCallback: %o: %o => %o, 对象: %O', name, oldValue, newValue, this)
-    if (this.初始化完毕 === false) {
-      this.变化队列.push({ name: name, oldValue, newValue })
-    } else {
-      try {
-        await this.当变化时?.(name, oldValue, newValue)
-      } catch (e) {
-        void this.log.error('属性变化处理异常: %O, 属性: %O', e, name)
-      }
-    }
   }
 }

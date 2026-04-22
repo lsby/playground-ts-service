@@ -1,19 +1,16 @@
-import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/manager/api-manager'
 import { 日志组件 } from '../general/log/log'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 系统日志管理组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
+export class 系统日志管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-admin-system-log', this)
   }
 
-  private 日志组件 = new 日志组件({})
+  private 日志组件 = new 日志组件()
 
   protected override async 当加载时(): Promise<void> {
     this.获得宿主样式().width = '100%'

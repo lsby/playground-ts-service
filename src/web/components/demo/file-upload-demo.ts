@@ -1,11 +1,10 @@
 import { 组件基类 } from '../../base/base'
 import { API管理器类 } from '../../global/class/api'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class FileUploadDemo extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
+export class FileUploadDemo extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-file-upload-demo', this)
   }

@@ -2,8 +2,6 @@ import { 增强样式类型 } from 'src/web/global/types/style'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
 import { 表单组件基类 } from './form'
 
-type 复选框组属性 = {}
-
 type 复选框组事件 = { 变化: string[] }
 
 type 监听复选框组事件 = {}
@@ -18,12 +16,12 @@ type 复选框组配置 = {
   元素样式?: 增强样式类型
 }
 
-class 复选框组 extends 表单组件基类<复选框组属性, 复选框组事件, 监听复选框组事件, string[]> {
+class 复选框组 extends 表单组件基类<复选框组事件, 监听复选框组事件, string[]> {
   protected 配置: 复选框组配置
   private 复选框元素们: HTMLInputElement[] = []
 
   public constructor(配置: 复选框组配置 = {}) {
-    super({})
+    super()
     this.配置 = 配置
   }
 

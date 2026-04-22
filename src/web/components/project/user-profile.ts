@@ -4,12 +4,10 @@ import { 获得滚动条样式 } from '../../global/style/scrollbar'
 import { 创建元素 } from '../../global/tools/create-element'
 import { 危险按钮 } from '../general/base/base-button'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 用户信息组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: Array<keyof 属性类型> = []
+export class 用户信息组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-user-profile', this)
   }

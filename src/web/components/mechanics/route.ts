@@ -40,19 +40,17 @@ export class 路由事件监听对象<事件名称 extends string, 事件数据>
   }
 }
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = 路由事件派发类型<string, any> & 路由事件监听类型
 
-export class 路由组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: Array<keyof 属性类型> = []
+export class 路由组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-route', this)
   }
 
   private 监听表: Record<string, Array<(a: 已审阅的any) => Promise<void>>> = {}
-  public constructor(属性: 属性类型) {
-    super(属性)
+  public constructor() {
+    super()
 
     void globalWebLog.info('路由组件开始加载')
     this.监听冒泡事件('lsby-route-listen', async (data: CustomEvent<路由事件监听对象<string, any>>) => {

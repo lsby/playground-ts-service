@@ -1,24 +1,24 @@
-import { 联合转元组 } from '../../../../tools/types'
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/tools/create-element'
 import { 文本按钮 } from '../base/base-button'
 
-type 属性类型 = { 路由键?: string }
+type 横向tab配置 = { 路由键?: string }
 export type tabHorizontal发出事件类型 = { 切换: { 当前索引: number } }
 type 监听事件类型 = {}
 
-export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = ['路由键']
+export class 横向tab组件 extends 组件基类<tabHorizontal发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-tabs-horizontal', this)
   }
 
+  private 配置: 横向tab配置
   private 当前索引: number = 0
   private 标签头容器: HTMLDivElement = 创建元素('div')
   private 插槽容器: HTMLDivElement = 创建元素('div')
 
-  public constructor(属性: 属性类型) {
-    super(属性)
+  public constructor(配置: 横向tab配置 = {}) {
+    super()
+    this.配置 = 配置
   }
 
   public override async 刷新(): Promise<void> {
@@ -34,7 +34,7 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
   }
 
   protected override async 当加载时(): Promise<void> {
-    let 路由键 = await this.获得属性('路由键')
+    let 路由键 = this.配置.路由键
     if (typeof 路由键 === 'string') {
       let params = new URLSearchParams(window.location.search)
       let 索引字符串 = params.get(路由键)
@@ -148,7 +148,7 @@ export class 横向tab组件 extends 组件基类<属性类型, tabHorizontal发
       this.当前索引 = index
       this.更新UI()
 
-      let 路由键 = await this.获得属性('路由键')
+      let 路由键 = this.配置.路由键
       if (typeof 路由键 === 'string') {
         let params = new URLSearchParams(window.location.search)
         params.set(路由键, index.toString())

@@ -2,8 +2,6 @@ import { 增强样式类型 } from 'src/web/global/types/style'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
 import { 表单组件基类 } from './form'
 
-type 输入框属性 = {}
-
 type 输入框事件 = { 输入: string; 变化: string; 焦点: void; 失焦: void }
 
 type 监听输入框事件 = {}
@@ -24,12 +22,12 @@ type 输入框配置 = {
   元素样式?: 增强样式类型
 }
 
-abstract class 输入框基类 extends 表单组件基类<输入框属性, 输入框事件, 监听输入框事件, string> {
+abstract class 输入框基类 extends 表单组件基类<输入框事件, 监听输入框事件, string> {
   protected 配置: 输入框配置
   private 输入框元素?: HTMLInputElement
 
   public constructor(配置: 输入框配置 = {}) {
-    super({})
+    super()
     this.配置 = 配置
   }
 

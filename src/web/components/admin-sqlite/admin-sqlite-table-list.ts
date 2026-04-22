@@ -1,22 +1,19 @@
-import { 联合转元组 } from '../../../tools/types'
 import { 组件基类 } from '../../base/base'
 import { API管理器 } from '../../global/manager/api-manager'
 import { 创建元素 } from '../../global/tools/create-element'
 
-type 属性类型 = {}
 type 发出事件类型 = { 选择表: { 表名: string } }
 type 监听事件类型 = {}
 
-export class 数据库列表组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: 联合转元组<keyof 属性类型> = []
+export class 数据库列表组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-sqlite-admin-table-list', this)
   }
 
   private 表列表容器: HTMLDivElement | undefined = undefined
 
-  public constructor(属性: 属性类型) {
-    super(属性)
+  public constructor() {
+    super()
   }
 
   protected override async 当加载时(): Promise<void> {

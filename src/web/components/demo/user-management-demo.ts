@@ -10,15 +10,12 @@ import { 密码输入框, 普通输入框 } from '../general/form/form-input'
 import { 表格组件 } from '../general/table/table'
 import { 数据表加载数据参数 } from '../general/table/types'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 type 数据项 = { id: string; name: string }
 
-export class 演示用户管理组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: Array<keyof 属性类型> = []
-
+export class 演示用户管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-user-management-demo', this)
   }

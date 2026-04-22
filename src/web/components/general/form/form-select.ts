@@ -2,8 +2,6 @@ import { 增强样式类型 } from 'src/web/global/types/style'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
 import { 表单组件基类 } from './form'
 
-type 下拉框属性 = {}
-
 type 下拉框事件 = { 变化: string; 焦点: void; 失焦: string }
 
 type 监听下拉框事件 = {}
@@ -23,12 +21,12 @@ type 下拉框配置 = {
   元素样式?: 增强样式类型
 }
 
-abstract class 下拉框基类 extends 表单组件基类<下拉框属性, 下拉框事件, 监听下拉框事件, string> {
+abstract class 下拉框基类 extends 表单组件基类<下拉框事件, 监听下拉框事件, string> {
   protected 配置: 下拉框配置
   private 下拉框元素?: HTMLSelectElement
 
   public constructor(配置: 下拉框配置 = {}) {
-    super({})
+    super()
     this.配置 = 配置
   }
 

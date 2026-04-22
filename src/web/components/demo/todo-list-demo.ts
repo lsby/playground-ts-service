@@ -3,12 +3,10 @@ import { 创建元素 } from '../../global/tools/create-element'
 import { 主要按钮, 文本按钮 } from '../general/base/base-button'
 import { 普通输入框 } from '../general/form/form-input'
 
-type 属性类型 = {}
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 演示todo组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: Array<keyof 属性类型> = []
+export class 演示todo组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-todo-list-demo', this)
   }

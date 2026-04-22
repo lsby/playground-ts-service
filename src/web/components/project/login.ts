@@ -5,7 +5,6 @@ import { 主要按钮, 链接按钮 } from '../general/base/base-button'
 import { 表单 } from '../general/form/form'
 import { 密码输入框, 普通输入框 } from '../general/form/form-input'
 
-type 属性类型 = { username: string; password: string; confirmPassword: string; mode: 'login' | 'register' }
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
@@ -13,8 +12,7 @@ type 登录表单数据 = { username: string; password: string }
 
 type 注册表单数据 = { username: string; password: string; confirmPassword: string }
 
-export class 登录组件 extends 组件基类<属性类型, 发出事件类型, 监听事件类型> {
-  protected static override 观察的属性: Array<keyof 属性类型> = ['username', 'password', 'confirmPassword', 'mode']
+export class 登录组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('lsby-login', this)
   }
@@ -28,6 +26,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
   private 注册按钮: 主要按钮 | null = null
   private 切换按钮: 链接按钮 | null = null
   private enableRegister = false
+  private 当前模式: 'login' | 'register' = 'login'
 
   protected override async 当加载时(): Promise<void> {
     // 获取注册启用状态
@@ -223,14 +222,14 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
     // 检查 URL 参数是否指定注册模式
     let urlParams = new URLSearchParams(window.location.search)
     if (urlParams.get('register') === 'true' && this.enableRegister) {
-      await this.设置属性('mode', 'register')
+      this.当前模式 = 'register'
     }
 
     await this.更新UI()
   }
 
   private async 更新UI(): Promise<void> {
-    let 模式 = (await this.获得属性('mode')) ?? 'login'
+    let 模式 = this.当前模式
     if (模式 === 'login') {
       this.结果.textContent = '请输入用户名和密码'
       this.登录表单容器.style.display = 'block'
@@ -263,12 +262,12 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
   }
 
   private async 切换模式(): Promise<void> {
-    let 当前模式 = (await this.获得属性('mode')) ?? 'login'
+    let 当前模式 = this.当前模式
     if (当前模式 === 'login' && this.enableRegister === false) {
       return
     }
     let 新模式: 'login' | 'register' = 当前模式 === 'login' ? 'register' : 'login'
-    await this.设置属性('mode', 新模式)
+    this.当前模式 = 新模式
     // 更新 URL 参数
     let url = new URL(window.location.href)
     if (新模式 === 'register') {
@@ -281,7 +280,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
   }
 
   private async 执行认证(): Promise<void> {
-    let 模式 = (await this.获得属性('mode')) ?? 'login'
+    let 模式 = this.当前模式
 
     if (模式 === 'register') {
       if (this.注册表单 === null) return
@@ -296,7 +295,7 @@ export class 登录组件 extends 组件基类<属性类型, 发出事件类型,
       }
       await API管理器.请求postJson并处理错误('/api/user/register', { userName: 用户名, userPassword: 密码 })
       this.结果.textContent = '注册成功，请登录'
-      await this.设置属性('mode', 'login')
+      this.当前模式 = 'login'
       await this.更新UI()
     } else {
       if (this.登录表单 === null) return
