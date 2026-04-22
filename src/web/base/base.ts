@@ -1,4 +1,5 @@
 import { globalWebLog } from '../global/manager/log-manager'
+import { 获得滚动条样式 } from '../global/style/scrollbar'
 
 export abstract class 组件基类<
   发出事件类型 extends Record<string, any>,
@@ -133,7 +134,6 @@ export abstract class 组件基类<
   protected abstract 当加载时(): Promise<void>
   protected 当卸载时?(): Promise<void>
   protected 当转移时?(): Promise<void>
-
   private async connectedCallback(): Promise<void> {
     void this.log.debug('connectedCallback, 对象: %O', this)
 
@@ -148,6 +148,9 @@ export abstract class 组件基类<
 
     // 清空影子dom, 避免重复挂载, 因为connectedCallback可能会执行多次
     this.清空影子dom()
+
+    // 应用默认样式
+    this._应用默认样式()
 
     // 执行子类的过程
     await this.当加载时()
@@ -171,5 +174,10 @@ export abstract class 组件基类<
   private async adoptedCallback(): Promise<void> {
     if (this.当转移时 !== undefined) void this.log.debug('adoptedCallback, 对象: %O', this)
     await this.当转移时?.()
+  }
+  private _应用默认样式(): void {
+    let 样式 = document.createElement('style')
+    样式.textContent = 获得滚动条样式(':host') + 获得滚动条样式('*')
+    this._shadow.appendChild(样式)
   }
 }

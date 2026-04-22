@@ -4,7 +4,7 @@ import { 主要按钮 } from './base/base-button'
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
-export class 浮动管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
+export class 悬浮管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
     this.注册组件('management-float', this)
   }

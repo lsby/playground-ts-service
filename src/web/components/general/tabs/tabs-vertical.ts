@@ -2,9 +2,11 @@ import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/tools/create-element'
 import { 文本按钮 } from '../base/base-button'
 
-type 纵向tab配置 = { 路由键?: string }
+type 纵向tab配置 = { 路由键?: string | undefined }
 export type tabVertical发出事件类型 = { 切换: { 当前索引: number } }
 type 监听事件类型 = {}
+
+type 标签页项 = { 标签: string; 内容: HTMLElement }
 
 export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型, 监听事件类型> {
   static {
@@ -15,21 +17,25 @@ export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型,
   private 当前索引: number = 0
   private 标签头容器: HTMLDivElement = 创建元素('div')
   private 插槽容器: HTMLDivElement = 创建元素('div')
+  private 标签页列表: 标签页项[] = []
 
   public constructor(配置: 纵向tab配置 = {}) {
     super()
     this.配置 = 配置
   }
 
+  public 添加标签页(配置: { 标签: string }, 内容: HTMLElement): void {
+    this.标签页列表.push({ 标签: 配置.标签, 内容 })
+    this.appendChild(内容)
+  }
+
   public override async 刷新(): Promise<void> {
     await super.刷新()
-    let 标签元素列表 = Array.from(this.children).filter(
-      (子): 子 is HTMLElement => 子 instanceof HTMLElement && 子.hasAttribute('标签'),
-    )
-    let 目标元素 = 标签元素列表[this.当前索引]
-    if (目标元素 !== undefined) {
-      if (目标元素 instanceof 组件基类) void 目标元素.刷新()
-      for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) void 子.刷新()
+    let 目标项 = this.标签页列表[this.当前索引]
+    if (目标项 !== undefined) {
+      let 内容 = 目标项.内容
+      if (内容 instanceof 组件基类) await 内容.刷新()
+      for (let 子 of Array.from(内容.children)) if (子 instanceof 组件基类) await 子.刷新()
     }
   }
 
@@ -40,9 +46,7 @@ export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型,
       let 索引字符串 = params.get(路由键)
       if (索引字符串 !== null) {
         let 索引 = parseInt(索引字符串)
-        let 子元素 = Array.from(this.children).filter((子): 子 is HTMLElement => 子 instanceof HTMLElement)
-        let 标签元素数量 = 子元素.filter((el) => el.hasAttribute('标签')).length
-        if (Number.isNaN(索引) === false && 索引 >= 0 && 索引 < 标签元素数量) {
+        if (Number.isNaN(索引) === false && 索引 >= 0 && 索引 < this.标签页列表.length) {
           this.当前索引 = 索引
         }
       }
@@ -94,15 +98,11 @@ export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型,
   }
 
   private 更新UI(): void {
-    let 子元素 = Array.from(this.children).filter((子): 子 is HTMLElement => 子 instanceof HTMLElement)
-    let 标签元素 = 子元素.filter((el) => el.hasAttribute('标签'))
-
     this.标签头容器.innerHTML = ''
 
-    标签元素.forEach((el, idx) => {
-      let 标签名 = el.getAttribute('标签') ?? `标签${idx}`
+    this.标签页列表.forEach((项, idx) => {
       let 按钮 = new 文本按钮({
-        文本: 标签名,
+        文本: 项.标签,
         元素样式: {
           padding: '6px 12px',
           border: 'none',
@@ -122,25 +122,22 @@ export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型,
       this.标签头容器.appendChild(按钮)
     })
 
-    标签元素.forEach((el, idx) => {
+    this.标签页列表.forEach((项, idx) => {
       if (idx === this.当前索引) {
-        el.style.display = 'flex'
-        el.style.flex = '1'
-        el.style.flexDirection = 'column'
-        el.style.minHeight = '0'
-        el.style.minWidth = '0'
-        el.style.overflow = 'hidden'
+        项.内容.style.display = 'flex'
+        项.内容.style.flex = '1'
+        项.内容.style.flexDirection = 'column'
+        项.内容.style.minHeight = '0'
+        项.内容.style.minWidth = '0'
+        项.内容.style.overflow = 'hidden'
       } else {
-        el.style.display = 'none'
+        项.内容.style.display = 'none'
       }
     })
   }
 
   private async 切换标签(index: number): Promise<void> {
-    let 标签元素列表 = Array.from(this.children).filter(
-      (子): 子 is HTMLElement => 子 instanceof HTMLElement && 子.hasAttribute('标签'),
-    )
-    let 目标元素 = 标签元素列表[index]
+    let 目标项 = this.标签页列表[index]
 
     if (this.当前索引 !== index) {
       this.当前索引 = index
@@ -156,9 +153,10 @@ export class 纵向tab组件 extends 组件基类<tabVertical发出事件类型,
       this.派发事件('切换', { 当前索引: index })
     }
 
-    if (目标元素 !== undefined) {
-      if (目标元素 instanceof 组件基类) await 目标元素.刷新()
-      for (let 子 of Array.from(目标元素.children)) if (子 instanceof 组件基类) await 子.刷新()
+    if (目标项 !== undefined) {
+      let 内容 = 目标项.内容
+      if (内容 instanceof 组件基类) await 内容.刷新()
+      for (let 子 of Array.from(内容.children)) if (子 instanceof 组件基类) await 子.刷新()
     }
   }
 
