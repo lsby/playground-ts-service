@@ -55,7 +55,7 @@
     "watch:gen:web:index": "cross-env DEBUG=@lsby:* tsx scripts/watch/watch.ts ./src/web/components/ \"npm run _gen:web:index\""
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx,json,css,html}": [
+    "*.{ts,js,json,css,html}": [
       "prettier --write",
       "eslint --fix"
     ]
@@ -90,10 +90,7 @@
     "@lsby/eslint-config": "^0.5.6",
     "@lsby/eslint-plugin": "^0.2.1",
     "@parcel/config-default": "^2.16.4",
-    "@parcel/transformer-css": "^2.16.4",
     "@parcel/transformer-inline-string": "^2.16.4",
-    "@parcel/transformer-postcss": "^2.16.4",
-    "@tailwindcss/postcss": "^4.1.18",
     "@types/archiver": "^7.0.0",
     "@types/bcryptjs": "^3.0.0",
     "@types/eslint": "^9.6.1",
@@ -119,7 +116,6 @@
     "nodemon": "^3.1.11",
     "open-cli": "^8.0.0",
     "parcel": "^2.16.4",
-    "postcss": "^8.2.1",
     "postject": "1.0.0-alpha.6",
     "prettier": "^3.7.4",
     "prettier-plugin-organize-imports": "^4.3.0",
@@ -127,7 +123,6 @@
     "prisma-kysely": "^1.8.0",
     "process": "^0.11.10",
     "stream-to-blob": "^2.0.1",
-    "tailwindcss": "^4.1.18",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
