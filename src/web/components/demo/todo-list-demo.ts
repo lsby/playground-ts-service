@@ -2,9 +2,6 @@ import { 组件基类 } from '../../base/base'
 import { 创建元素 } from '../../global/tools/create-element'
 import { 主要按钮, 文本按钮 } from '../general/base/base-button'
 import { 普通输入框 } from '../general/form/form-input'
-import { 纵向容器 } from '../layout/column'
-import { 一般容器 } from '../layout/container'
-import { 横向容器 } from '../layout/row'
 
 type 属性类型 = {}
 type 发出事件类型 = {}
@@ -71,11 +68,37 @@ export class 演示todo组件 extends 组件基类<属性类型, 发出事件类
 
   protected override async 当加载时(): Promise<void> {
     // ===== 布局容器 =====
-    let 主容器 = new 一般容器({})
-    let 列布局 = new 纵向容器({})
-    let 输入行 = new 横向容器({})
-
-    列布局.style.justifyContent = 'center'
+    let 主容器 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        width: '100%',
+        height: '100%',
+      },
+    })
+    let 列布局 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '10px',
+        width: '100%',
+      },
+    })
+    let 输入行 = 创建元素('div', {
+      style: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        gap: '10px',
+        width: '100%',
+      },
+    })
 
     // ===== 列表容器样=====
     this.列表容器.style.listStyle = 'none'
