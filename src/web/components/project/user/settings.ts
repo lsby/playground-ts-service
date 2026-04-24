@@ -1,12 +1,12 @@
-import { 组件基类 } from '../../base/base'
-import { API管理器 } from '../../global/manager/api-manager'
-import { 主题管理器 } from '../../global/manager/theme-manager'
-import { 成功提示 } from '../../global/manager/toast-manager'
-import { 创建元素 } from '../../global/tools/create-element'
-import { 主要按钮 } from '../general/base/base-button'
-import { 表单, 表单项配置 } from '../general/form/form'
-import { 复选框 } from '../general/form/form-checkbox'
-import { 单选框组 } from '../general/form/form-radio-group'
+import { 组件基类 } from '../../../base/base'
+import { API管理器 } from '../../../global/manager/api-manager'
+import { 主题管理器 } from '../../../global/manager/theme-manager'
+import { 成功提示 } from '../../../global/manager/toast-manager'
+import { 创建元素 } from '../../../global/tools/create-element'
+import { 主要按钮 } from '../../general/base/base-button'
+import { 表单, 表单项配置 } from '../../general/form/form'
+import { 复选框 } from '../../general/form/form-checkbox'
+import { 单选框组 } from '../../general/form/form-radio-group'
 
 type 设置事件 = {}
 type 监听设置事件 = {}

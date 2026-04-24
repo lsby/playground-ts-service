@@ -1,7 +1,7 @@
-import { 组件基类 } from '../../base/base'
-import { API管理器 } from '../../global/manager/api-manager'
-import { 创建元素 } from '../../global/tools/create-element'
-import { 危险按钮 } from '../general/base/base-button'
+import { 组件基类 } from '../../../base/base'
+import { API管理器 } from '../../../global/manager/api-manager'
+import { 创建元素 } from '../../../global/tools/create-element'
+import { 危险按钮 } from '../../general/base/base-button'
 
 type 发出事件类型 = {}
 type 监听事件类型 = {}

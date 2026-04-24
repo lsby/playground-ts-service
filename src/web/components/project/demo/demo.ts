@@ -1,27 +1,27 @@
-import { 组件基类 } from '../../base/base'
-import { 创建元素 } from '../../global/tools/create-element'
-import { 横向tab组件 } from '../general/tabs/tabs-horizontal'
-import { 检查登录组件 } from '../process/login-check'
-import { 设置调试组件 } from '../process/set-debug'
-import { 设置网页全屏组件 } from '../process/set-html-full'
-import { 设置主题组件 } from '../process/set-theme'
+import { 组件基类 } from '../../../base/base'
+import { 创建元素 } from '../../../global/tools/create-element'
+import { 横向tab组件 } from '../../general/tabs/tabs-horizontal'
+import { 检查登录组件 } from '../../process/login-check'
+import { 设置调试组件 } from '../../process/set-debug'
+import { 设置网页全屏组件 } from '../../process/set-html-full'
+import { 设置主题组件 } from '../../process/set-theme'
 // 业务组件
-import { 演示加法组件 } from '../demo/add-demo'
-import { 演示capacitor组件 } from '../demo/capacitor-demo'
-import { 演示对话框组件 } from '../demo/dialog-demo'
-import { 演示electron组件 } from '../demo/electron-demo'
-import { FileUploadDemo as 演示文件上传组件 } from '../demo/file-upload-demo'
-import { 演示吐司消息组件 } from '../demo/toast-demo'
-import { 演示todo组件 } from '../demo/todo-list-demo'
-import { 演示用户管理组件 } from '../demo/user-management-demo'
-import { 演示ws组件 } from '../demo/ws-demo'
+import { 演示加法组件 } from '../../demo/add-demo'
+import { 演示capacitor组件 } from '../../demo/capacitor-demo'
+import { 演示对话框组件 } from '../../demo/dialog-demo'
+import { 演示electron组件 } from '../../demo/electron-demo'
+import { FileUploadDemo as 演示文件上传组件 } from '../../demo/file-upload-demo'
+import { 演示吐司消息组件 } from '../../demo/toast-demo'
+import { 演示todo组件 } from '../../demo/todo-list-demo'
+import { 演示用户管理组件 } from '../../demo/user-management-demo'
+import { 演示ws组件 } from '../../demo/ws-demo'
 
 type 发出事件类型 = {}
 type 监听事件类型 = {}
 
 export class 演示页面组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-page-demo', this)
+    this.注册组件('lsby-demo', this)
   }
 
   protected override async 当加载时(): Promise<void> {
