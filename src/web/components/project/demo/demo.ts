@@ -1,10 +1,6 @@
 import { 组件基类 } from '../../../base/base'
 import { 创建元素 } from '../../../global/tools/create-element'
 import { 横向tab组件 } from '../../general/tabs/tabs-horizontal'
-import { 检查登录组件 } from '../../process/login-check'
-import { 设置调试组件 } from '../../process/set-debug'
-import { 设置网页全屏组件 } from '../../process/set-html-full'
-import { 设置主题组件 } from '../../process/set-theme'
 // 业务组件
 import { 演示加法组件 } from '../../demo/add-demo'
 import { 演示capacitor组件 } from '../../demo/capacitor-demo'
@@ -25,12 +21,6 @@ export class 演示页面组件 extends 组件基类<发出事件类型, 监听�
   }
 
   protected override async 当加载时(): Promise<void> {
-    // 初始化基础组件
-    this.shadow.append(new 设置主题组件())
-    this.shadow.append(new 设置调试组件({ 排除事件: 'mousemove,mouseenter,mouseleave,scroll' }))
-    this.shadow.append(new 设置网页全屏组件())
-    this.shadow.append(new 检查登录组件())
-
     // 布局
     let tabs = new 横向tab组件({ 路由键: 'tab' })
 
