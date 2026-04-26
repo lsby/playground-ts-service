@@ -17,7 +17,7 @@ type 数据项 = Record<string, string | number>
 
 export class 数据库数据组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-sqlite-admin-table-data', this)
+    this.注册组件('lsby-admin-sqlite-table-data', this)
   }
 
   private 表格组件: 表格组件<数据项> | null = null

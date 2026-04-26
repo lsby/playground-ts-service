@@ -7,7 +7,7 @@ type 监听事件类型 = {}
 
 export class 数据库列表组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-sqlite-admin-table-list', this)
+    this.注册组件('lsby-admin-sqlite-table-list', this)
   }
 
   private 表列表容器: HTMLDivElement | undefined = undefined

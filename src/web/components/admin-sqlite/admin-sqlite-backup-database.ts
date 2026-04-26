@@ -10,7 +10,7 @@ type 监听事件类型 = {}
 
 export class 数据库备份组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-sqlite-admin-backup-database', this)
+    this.注册组件('lsby-admin-sqlite-backup-database', this)
   }
 
   public constructor() {

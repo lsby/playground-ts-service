@@ -10,7 +10,7 @@ type 监听事件类型 = { 选择表: { 表名: string } }
 
 export class 数据库管理组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-sqlite-admin-database-manager', this)
+    this.注册组件('lsby-admin-sqlite-database-manager', this)
   }
 
   private 左侧容器: HTMLDivElement | null = null

@@ -14,7 +14,7 @@ type 查询结果数据 = { rows: Record<string, any>[]; numAffectedRows?: numbe
 
 export class 数据库执行查询组件 extends 组件基类<发出事件类型, 监听事件类型> {
   static {
-    this.注册组件('lsby-sqlite-admin-execute-query', this)
+    this.注册组件('lsby-admin-sqlite-execute-query', this)
   }
 
   private 选项卡列表: 选项卡数据[] = []
