@@ -185,7 +185,11 @@ export class API管理器类 {
     if (this.是标准返回格式(请求结果) === false) return 请求结果
 
     if (请求结果.status === 'fail' || 请求结果.status === 'unexpected') {
-      let 提示 = `请求接口失败: ${接口路径}: ${请求结果.data}`
+      let 错误详情: string =
+        typeof 请求结果.data === 'object' && 请求结果.data !== null
+          ? JSON.stringify(请求结果.data)
+          : String(请求结果.data)
+      let 提示 = `请求接口失败: ${接口路径}: ${错误详情}`
       void 错误提示(提示)
       throw new Error(提示)
     }
@@ -195,9 +199,9 @@ export class API管理器类 {
   private 是标准返回格式(
     x: unknown,
   ): x is
-    | { status: 'fail'; data: string }
+    | { status: 'fail'; data: 已审阅的any }
     | { status: 'success'; data: Record<string, 已审阅的any> }
-    | { status: 'unexpected'; data: string } {
+    | { status: 'unexpected'; data: 已审阅的any } {
     return typeof x === 'object' && x !== null && 'status' in x && 'data' in x
   }
 }
