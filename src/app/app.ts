@@ -47,7 +47,8 @@ export class App {
               基础路径,
               参数.path.file.startsWith('/') ? 参数.path.file.slice(1) : 参数.path.file,
             )
-            if (!目标文件路径.startsWith(基础路径)) {
+            let 校验基础路径 = 基础路径.endsWith(path.sep) ? 基础路径 : 基础路径 + path.sep
+            if (!目标文件路径.startsWith(校验基础路径) && 目标文件路径 !== 基础路径) {
               return new Right({ filePath: path.join(基础路径, 'not-found') })
             }
             return new Right({ filePath: 目标文件路径 })
@@ -73,7 +74,8 @@ export class App {
             }
             let 网页资源根目录 = path.join(项目根路径, 'dist/src/web')
             let 目标文件路径 = path.resolve(网页资源根目录, 相对路径.startsWith('/') ? 相对路径.slice(1) : 相对路径)
-            if (!目标文件路径.startsWith(网页资源根目录)) {
+            let 校验网页资源根目录 = 网页资源根目录.endsWith(path.sep) ? 网页资源根目录 : 网页资源根目录 + path.sep
+            if (!目标文件路径.startsWith(校验网页资源根目录) && 目标文件路径 !== 网页资源根目录) {
               return new Right({ filePath: path.join(网页资源根目录, 'index.html') })
             }
             return new Right({ filePath: 目标文件路径 })
