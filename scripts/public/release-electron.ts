@@ -43,18 +43,18 @@ async function 执行构建(): Promise<void> {
     }
     let 环境目标目录 = path.join(生成目录, '.env')
     确保目录存在(环境目标目录)
-    let 环境目标文件 = path.join(环境目标目录, '.env.production')
+    let 环境目标文件 = path.join(环境目标目录, '.env.production-electron')
     fs.copyFileSync(环境源文件, 环境目标文件)
     console.log(`✅ 已复制 ${环境源文件} 到 ${环境目标文件}`)
 
     // 复制数据库
-    let 数据库源文件 = path.resolve(项目根目录, 'db/prod.db')
+    let 数据库源文件 = path.resolve(项目根目录, 'db/prod-electron.db')
     if (!fs.existsSync(数据库源文件)) {
-      throw new Error('❌ 未找到 db/prod.db 文件，无法继续。')
+      throw new Error('❌ 未找到 db/prod-electron.db 文件，无法继续。')
     }
     let 数据库目标目录 = path.join(生成目录, 'db')
     确保目录存在(数据库目标目录)
-    let 数据库目标文件 = path.join(数据库目标目录, 'prod.db')
+    let 数据库目标文件 = path.join(数据库目标目录, 'prod-electron.db')
     fs.copyFileSync(数据库源文件, 数据库目标文件)
     console.log(`✅ 已复制 ${数据库源文件} 到 ${数据库目标文件}`)
 
@@ -65,7 +65,7 @@ async function 执行构建(): Promise<void> {
       'echo 正在启动 lsby-playground-ts-service (Electron模式) ...',
       'echo.',
       'cd /d "%~dp0"',
-      'set "ENV_FILE_PATH=.env/.env.production"',
+      'set "ENV_FILE_PATH=.env/.env.production-electron"',
       'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
       'lsby-playground-ts-service.exe',
       'if errorlevel 1 (',
