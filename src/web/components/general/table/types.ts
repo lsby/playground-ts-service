@@ -1,4 +1,4 @@
-import { 增强样式类型 } from 'src/web/global/types/style'
+import { 增强样式类型 } from '../../../global/types/style'
 
 export type 数据表列配置<数据项> = {
   字段名: keyof 数据项
