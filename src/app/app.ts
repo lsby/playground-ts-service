@@ -31,15 +31,15 @@ export class App {
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 项目根路径: string
-            switch (环境变量.RUN_MODE) {
-              case 'tsx':
-                项目根路径 = path.resolve(import.meta.dirname, '../../')
+            switch (环境变量.CODE_LAYOUT) {
+              case 'source':
+                项目根路径 = path.join(import.meta.dirname, '../../')
                 break
               case 'dist':
-                项目根路径 = path.resolve(import.meta.dirname, '../../../')
+                项目根路径 = path.join(import.meta.dirname, '../../../')
                 break
-              case 'sea':
-                项目根路径 = path.resolve(import.meta.dirname, './')
+              case 'flat':
+                项目根路径 = path.join(import.meta.dirname, './')
                 break
             }
             let 基础路径 = path.join(项目根路径, 'public')
@@ -59,21 +59,22 @@ export class App {
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 相对路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
-            let 静态资源根目录: string
-            switch (环境变量.RUN_MODE) {
-              case 'tsx':
-                静态资源根目录 = path.resolve(import.meta.dirname, '../../dist/src/web')
+            let 项目根路径: string
+            switch (环境变量.CODE_LAYOUT) {
+              case 'source':
+                项目根路径 = path.join(import.meta.dirname, '../../')
                 break
               case 'dist':
-                静态资源根目录 = path.resolve(import.meta.dirname, '../web')
+                项目根路径 = path.join(import.meta.dirname, '../../../')
                 break
-              case 'sea':
-                静态资源根目录 = path.resolve(import.meta.dirname, './dist/src/web')
+              case 'flat':
+                项目根路径 = path.join(import.meta.dirname, './')
                 break
             }
-            let 目标文件路径 = path.resolve(静态资源根目录, 相对路径.startsWith('/') ? 相对路径.slice(1) : 相对路径)
-            if (!目标文件路径.startsWith(静态资源根目录)) {
-              return new Right({ filePath: path.join(静态资源根目录, 'index.html') })
+            let 网页资源根目录 = path.join(项目根路径, 'dist/src/web')
+            let 目标文件路径 = path.resolve(网页资源根目录, 相对路径.startsWith('/') ? 相对路径.slice(1) : 相对路径)
+            if (!目标文件路径.startsWith(网页资源根目录)) {
+              return new Right({ filePath: path.join(网页资源根目录, 'index.html') })
             }
             return new Right({ filePath: 目标文件路径 })
           }),
