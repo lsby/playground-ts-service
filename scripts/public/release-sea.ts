@@ -76,11 +76,11 @@ async function run(): Promise<void> {
     递归复制(path.join(root, 'public'), path.join(seaDir, 'public'))
     递归复制(path.join(root, 'dist/src/web'), path.join(seaDir, 'dist/src/web'))
     // 仅复制指定的数据库文件
-    let 数据库源文件 = path.join(root, 'db/db-sea.db')
+    let 数据库源文件 = path.join(root, 'db/prod-sea.db')
     let 数据库目标目录 = path.join(seaDir, 'db')
     if (fs.existsSync(数据库源文件)) {
       if (!fs.existsSync(数据库目标目录)) fs.mkdirSync(数据库目标目录, { recursive: true })
-      fs.copyFileSync(数据库源文件, path.join(数据库目标目录, 'db-sea.db'))
+      fs.copyFileSync(数据库源文件, path.join(数据库目标目录, 'prod-sea.db'))
     }
 
     // 拷贝 sqlite wasm (node-sqlite3-wasm 库需要它在二进制运行目录下)
