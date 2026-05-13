@@ -11,6 +11,7 @@ export type system_config = {
     is_initialized: Generated<number>;
     enable_register: number;
     version: string;
+    jwt_secret: string;
 };
 export type user = {
     id: string;

@@ -42,7 +42,7 @@ export let 环境变量 = new Env({
     // 文件上传
     UPLOAD_MAX_FILE_SIZE: z.coerce.number(),
     // JWT
-    JWT_SECRET: z.string(),
+    DEFAULT_JWT_SECRET: z.string(),
     JWT_EXPIRES_IN: z.string(),
     // bcrypt
     BCRYPT_ROUNDS: z.coerce.number(),

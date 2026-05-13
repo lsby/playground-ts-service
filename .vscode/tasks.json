@@ -115,7 +115,7 @@
     {
       "label": "_运行web后端",
       "type": "npm",
-      "script": "run:service:watch",
+      "script": "run:service:dev",
       "isBackground": true,
       "presentation": { "reveal": "never" },
       "group": { "kind": "build", "isDefault": true }

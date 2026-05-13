@@ -20,7 +20,7 @@ export default new 接口测试(
     await cleanDB(db)
     await db
       .insertInto('system_config')
-      .values({ id: randomUUID(), is_initialized: 1, enable_register: 1, version: version })
+      .values({ id: randomUUID(), is_initialized: 1, enable_register: 1, version: version, jwt_secret: '' })
       .execute()
     await db
       .insertInto('user')

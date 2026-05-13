@@ -25,6 +25,7 @@ model system_config {
   is_initialized  Boolean @default(false) // 是否已初始化
   enable_register Boolean // 启用注册
   version         String // 软件版本
+  jwt_secret      String // JWT 密钥
 }
 
 // 用户配置

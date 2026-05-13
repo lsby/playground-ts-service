@@ -33,7 +33,7 @@ let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
 let 本地压缩包路径: string = path.join(本地根目录, `${项目名称}.tar.gz`)
 
 async function 主函数(): Promise<void> {
-  let { 模式, 环境 } = (await inquirer.prompt([
+  let { 模式, 环境, 确认 } = (await inquirer.prompt([
     {
       type: 'list',
       name: '模式',
@@ -58,15 +58,63 @@ async function 主函数(): Promise<void> {
         { name: '生产环境 (production)', value: 'production' },
       ],
       default: 'development',
-      when: (待回答: { 模式: string }): boolean => 待回答.模式 !== 'delete',
+      when: (待回答: any): boolean => 待回答.模式 !== 'delete',
     },
-  ] as any)) as { 模式: string; 环境: string }
+    {
+      type: 'confirm',
+      name: '确认',
+      message: (待回答: any): string => {
+        if (待回答.模式 === 'run' || 待回答.模式 === 'redeploy') {
+          let 提示消息 = [
+            `运行模式将使用项目打包内容覆盖远程项目目录 (~/${项目名称}) 中的同名文件`,
+            '这通常是预期的, 但请确保您了解后果:',
+            '- 打包内容会覆盖运行目录中的同名文件',
+            '- 远程新生成的文件及外部持久化数据不受影响',
+            '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
+          ]
+
+          if (待回答.模式 === 'redeploy') {
+            提示消息 = [
+              `彻底重部署模式将完全删除远程运行目录 (~/${项目名称}/run)`,
+              '这将导致:',
+              '- 强制停止并移除当前容器和关联镜像',
+              '- 删除运行目录下的所有文件 (包括不在项目仓库中的数据/持久化文件等)',
+              '- 之后从零开始重新部署',
+              '🚨 警告: 这是一个不可逆的操作, 远程未备份的数据将永久丢失!',
+            ]
+          }
+          return 提示消息.join('\n') + '\n您确定要继续吗?'
+        }
+
+        if (待回答.模式 === 'delete') {
+          return (
+            [
+              `🚨 警告: 此操作将从服务器彻底删除该项目的所有痕迹!`,
+              `项目根目录: ~/${项目名称}`,
+              '操作包含:',
+              '- 停止所有运行中的容器 (跨环境)',
+              '- 清理所有关联镜像',
+              '- 彻底删除远程目录 (build, run, upload)',
+              '这是一个极其危险的操作, 不可撤销!',
+            ].join('\n') + '\n您确认要这么做吗?'
+          )
+        }
+        return ''
+      },
+      when: (待回答: any): boolean => ['run', 'redeploy', 'delete'].includes(待回答.模式),
+      default: false,
+    },
+  ] as any)) as { 模式: string; 环境: string; 确认?: boolean }
+
+  if (确认 === false) {
+    return
+  }
 
   let 日志 = new 日志类()
   let sshClient = new NodeSSH()
 
   try {
-    日志.打印(`🚀 [${模式}] [${环境}] 开始连接服务器...`)
+    日志.打印(`🚀 [${模式}] [${(环境 as string | undefined) ?? 'all'}] 开始连接服务器...`)
     await sshClient.connect({ host: 服务器地址, username: 用户名, password: 密码 })
     日志.打印(`✅ 已连接到 服务器`)
 
@@ -86,59 +134,6 @@ async function 主函数(): Promise<void> {
     日志.打印(`- 远程上传目录: ${远程上传目录}`)
     日志.打印(`- 远程构建目录: ${远程构建目录}`)
     日志.打印(`- 远程运行目录: ${远程运行目录}`)
-
-    // 运行确认
-    if (模式 === 'run' || 模式 === 'redeploy') {
-      let 提示消息 = [
-        `运行模式将使用项目打包内容覆盖远程运行目录 (${远程运行目录}) 中的同名文件`,
-        '这通常是预期的, 但请确保您了解后果:',
-        '- 打包内容会覆盖运行目录中的同名文件',
-        '- 远程新生成的文件及外部持久化数据不受影响',
-        '⚠️ 风险提示: 若打包内容中包含会在运行时修改的文件(如 SQLite 数据库), 部署后这些文件将被打包中的初始版本重置, 导致远程积累的数据丢失',
-      ]
-
-      if (模式 === 'redeploy') {
-        提示消息 = [
-          `彻底重部署模式将完全删除远程运行目录 (${远程运行目录})`,
-          '这将导致:',
-          '- 强制停止并移除当前容器和关联镜像',
-          '- 删除运行目录下的所有文件 (包括不在项目仓库中的数据/持久化文件等)',
-          '- 之后从零开始重新部署',
-          '🚨 警告: 这是一个不可逆的操作, 远程未备份的数据将永久丢失!',
-        ]
-      }
-
-      let { 确认运行 } = (await inquirer.prompt([
-        { type: 'confirm', name: '确认运行', message: 提示消息.join('\n') + '\n您确定要继续吗?', default: false },
-      ])) as { 确认运行: boolean }
-      if (确认运行 === false) {
-        return
-      }
-    }
-
-    // 运行确认
-    if (模式 === 'delete') {
-      let { 确认删除 } = (await inquirer.prompt([
-        {
-          type: 'confirm',
-          name: '确认删除',
-          message:
-            [
-              `🚨 警告: 此操作将从服务器彻底删除该项目的所有痕迹!`,
-              `项目根目录: ${远程根目录}`,
-              '操作包含:',
-              '- 停止所有运行中的容器 (跨环境)',
-              '- 清理所有关联镜像',
-              '- 彻底删除远程目录 (build, run, upload)',
-              '这是一个极其危险的操作, 不可撤销!',
-            ].join('\n') + '\n您确认要这么做吗?',
-          default: false,
-        },
-      ])) as { 确认删除: boolean }
-      if (确认删除 === false) {
-        return
-      }
-    }
 
     // ====================
     // 特殊流程: 彻底重部署的前置清理
