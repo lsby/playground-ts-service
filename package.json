@@ -65,7 +65,7 @@
     "@capacitor/android": "^7.4.3",
     "@capacitor/core": "^7.4.1",
     "@capacitor/dialog": "^7.0.2",
-    "@lsby/net-core": "^0.14.5",
+    "@lsby/net-core": "^0.14.6",
     "@lsby/net-core-jwt": "^0.5.3",
     "@lsby/net-core-kysely": "^0.5.1",
     "@lsby/ts-env": "^0.0.14",
