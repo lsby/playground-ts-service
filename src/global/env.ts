@@ -7,13 +7,14 @@ export let 环境变量 = new Env({
     // 环境名称
     NODE_ENV: z.enum(['development', 'production', 'test']),
     /**
-     * 代码布局策略
-     * 用于决定如何根据当前 JS 文件的位置（import.meta.dirname）推导出项目根目录。
-     * - source: 代码在 src 目录下（开发模式），根目录为 ../../
-     * - dist: 代码在 dist/src 目录下（构建模式），根目录为 ../../../
-     * - flat: 代码在根目录或包内（SEA 模式），根目录为 ./
+     * 应用环境预设
+     * - development-web: web 开发环境
+     * - production-web: web 生产环境
+     * - test-web: web 测试环境
+     * - production-electron: Electron 生产环境
+     * - production-sea: SEA 生产环境
      */
-    CODE_LAYOUT: z.enum(['source', 'dist', 'flat']),
+    APP_ENV: z.enum(['development-web', 'production-web', 'test-web', 'production-electron', 'production-sea']),
     // 调试名称
     DEBUG_NAME: z.string(),
     // ========= 数据库部分 开始 =========

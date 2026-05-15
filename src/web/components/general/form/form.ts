@@ -1,5 +1,5 @@
-import { 增强样式类型 } from 'src/web/global/types/style'
 import { 已审阅的any } from '../../../../tools/types'
+import { 增强样式类型 } from '../../../../web/global/types/style'
 import { 组件基类 } from '../../../base/base'
 import { 提示管理器 } from '../../../global/manager/hint-manager'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'

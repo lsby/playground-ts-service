@@ -8,3 +8,7 @@
 /android
 /OCR-portable-python*
 /release
+/package
+/out
+/release-portable
+/.cache-portable

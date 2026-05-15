@@ -1,4 +1,4 @@
-import { 增强样式类型 } from 'src/web/global/types/style'
+import { 增强样式类型 } from '../../../../web/global/types/style'
 import { 组件基类 } from '../../../base/base'
 import { 右键菜单管理器 } from '../../../global/manager/context-menu-manager'
 import { 创建元素 } from '../../../global/tools/create-element'

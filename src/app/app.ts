@@ -10,6 +10,19 @@ import { databaseBackupCron } from '../job/scheduled-job/database-backup'
 import { onTimeAlarm } from '../job/scheduled-job/on-time-alarm'
 
 export class App {
+  private 获得项目根路径(): string {
+    switch (环境变量.APP_ENV) {
+      case 'development-web':
+      case 'test-web':
+        return path.resolve(import.meta.dirname, '../../')
+      case 'production-web':
+      case 'production-electron':
+        return path.resolve(import.meta.dirname, '../../../')
+      case 'production-sea':
+        return path.resolve(import.meta.dirname, './')
+    }
+  }
+
   public async run(): Promise<void> {
     let log = globalLog.extend('service')
     await 定时任务管理器.执行([onTimeAlarm, databaseBackupCron])
@@ -30,28 +43,21 @@ export class App {
           new RegExp('/public/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
-            let 项目根路径: string
-            switch (环境变量.CODE_LAYOUT) {
-              case 'source':
-                项目根路径 = path.join(import.meta.dirname, '../../')
-                break
-              case 'dist':
-                项目根路径 = path.join(import.meta.dirname, '../../../')
-                break
-              case 'flat':
-                项目根路径 = path.join(import.meta.dirname, './')
-                break
+            let 项目根路径 = this.获得项目根路径()
+            let 基准目录 = path.resolve(项目根路径, 'public')
+            let 相对路径 = 参数.path.rawPath.replace(/^\/public\//, '')
+
+            let 文件路径 = path.join(基准目录, 相对路径)
+
+            // 路径遍历检查
+            let 规范化文件路径 = path.resolve(文件路径)
+            let 规范化基准目录 = path.resolve(基准目录)
+            let 相对路径检查 = path.relative(规范化基准目录, 规范化文件路径)
+            if (相对路径检查.startsWith('..') || path.isAbsolute(相对路径检查)) {
+              return new Right({ filePath: '' })
             }
-            let 基础路径 = path.join(项目根路径, 'public')
-            let 目标文件路径 = path.resolve(
-              基础路径,
-              参数.path.file.startsWith('/') ? 参数.path.file.slice(1) : 参数.path.file,
-            )
-            let 校验基础路径 = 基础路径.endsWith(path.sep) ? 基础路径 : 基础路径 + path.sep
-            if (!目标文件路径.startsWith(校验基础路径) && 目标文件路径 !== 基础路径) {
-              return new Right({ filePath: path.join(基础路径, 'not-found') })
-            }
-            return new Right({ filePath: 目标文件路径 })
+
+            return new Right({ filePath: 文件路径 })
           }),
           new 静态文件返回器({}),
         ),
@@ -59,26 +65,22 @@ export class App {
           new RegExp('/.*'),
           'get',
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
-            let 相对路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
-            let 项目根路径: string
-            switch (环境变量.CODE_LAYOUT) {
-              case 'source':
-                项目根路径 = path.join(import.meta.dirname, '../../')
-                break
-              case 'dist':
-                项目根路径 = path.join(import.meta.dirname, '../../../')
-                break
-              case 'flat':
-                项目根路径 = path.join(import.meta.dirname, './')
-                break
+            let 路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
+            let 项目根路径 = this.获得项目根路径()
+            let web根目录 = path.join(项目根路径, 'dist/src/web')
+
+            let 基准目录 = path.resolve(web根目录)
+            let 文件路径 = path.join(基准目录, 路径)
+
+            // 路径遍历检查
+            let 规范化文件路径 = path.resolve(文件路径)
+            let 规范化基准目录 = path.resolve(基准目录)
+            let 相对路径检查 = path.relative(规范化基准目录, 规范化文件路径)
+            if (相对路径检查.startsWith('..') || path.isAbsolute(相对路径检查)) {
+              return new Right({ filePath: '' })
             }
-            let 网页资源根目录 = path.join(项目根路径, 'dist/src/web')
-            let 目标文件路径 = path.resolve(网页资源根目录, 相对路径.startsWith('/') ? 相对路径.slice(1) : 相对路径)
-            let 校验网页资源根目录 = 网页资源根目录.endsWith(path.sep) ? 网页资源根目录 : 网页资源根目录 + path.sep
-            if (!目标文件路径.startsWith(校验网页资源根目录) && 目标文件路径 !== 网页资源根目录) {
-              return new Right({ filePath: path.join(网页资源根目录, 'index.html') })
-            }
-            return new Right({ filePath: 目标文件路径 })
+
+            return new Right({ filePath: 文件路径 })
           }),
           new 静态文件返回器({}),
         ),

@@ -1,5 +1,6 @@
 import { execSync } from 'child_process'
 import fs from 'fs'
+import open from 'open'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -33,7 +34,7 @@ async function 执行构建(): Promise<void> {
     // 3. 后处理
     console.log('正在进行后处理...')
     if (!fs.existsSync(生成目录)) {
-      throw new Error(`生成目录不存在: ${生成目录}`)
+      throw new Error(`❌ 生成目录不存在: ${生成目录}`)
     }
 
     // 复制环境变量
@@ -50,7 +51,7 @@ async function 执行构建(): Promise<void> {
     // 复制数据库
     let 数据库源文件 = path.resolve(项目根目录, 'db/prod-electron.db')
     if (!fs.existsSync(数据库源文件)) {
-      throw new Error('❌ 未找到 db/prod-electron.db 文件，无法继续。')
+      throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
     }
     let 数据库目标目录 = path.join(生成目录, 'db')
     确保目录存在(数据库目标目录)
@@ -79,8 +80,15 @@ async function 执行构建(): Promise<void> {
     fs.writeFileSync(runCmd路径, runCmd内容, { encoding: 'utf8' })
     console.log(`✅ 已生成 ${runCmd路径}`)
 
-    console.log('\n✨ Electron 构建完成！')
+    console.log('✅ 构建成功！')
     console.log(`成果物位置: ${生成目录}`)
+
+    // 构建完成后打开文件夹
+    try {
+      await open(生成目录, { wait: true })
+    } catch (_错误) {
+      // console.error('打开目录错误: %o', 错误)
+    }
   } catch (错误) {
     console.error('❌ 构建过程中发生错误:', 错误)
     process.exit(1)

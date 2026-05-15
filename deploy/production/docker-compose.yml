@@ -7,7 +7,7 @@ services:
     ports:
       - 80:80
     env_file:
-      - ../../.env/.env.production
+      - ../../.env/.env.production-web
     restart: always
     volumes:
       - ../../db:/opt/app/db

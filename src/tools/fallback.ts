@@ -1,4 +1,4 @@
-import { 环境变量 } from 'src/global/env'
+import { 环境变量 } from '../global/env'
 import { globalLog } from '../global/global'
 
 /**

@@ -14,7 +14,7 @@ RUN export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
 # 初始化默认数据库
-RUN echo "\n" | npm run db:push:dev
+RUN echo "\n" | npm run db:push:dev:web
 
 # ====================
 # 安装阶段
@@ -39,15 +39,15 @@ ENV TZ=Asia/Shanghai
 WORKDIR /opt/app
 
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
-COPY --from=builder /opt/app/db/dev.db /opt/app/db-default-dev.db
+COPY --from=builder /opt/app/db/dev-web.db /opt/app/db-default-dev-web.db
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/tsconfig.json /opt/app/
 COPY --from=builder /opt/app/src /opt/app/src
 COPY --from=builder /opt/app/prisma /opt/app/prisma
 COPY --from=builder /opt/app/dist/src/web /opt/app/dist/src/web
 COPY --from=builder /opt/app/public /opt/app/public
-COPY --from=builder /opt/app/.env/.env.development /opt/app/.env/.env.development
+COPY --from=builder /opt/app/.env/.env.development-web /opt/app/.env/.env.development-web
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/dev.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-dev.db /opt/app/db/dev.db; else echo 'Database already exists'; fi && npm run run:service:dev"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/dev-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-dev-web.db /opt/app/db/dev-web.db; else echo 'Database already exists'; fi && npm run run:service:dev"]

@@ -14,7 +14,7 @@ RUN export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
 # 初始化默认数据库
-RUN echo "\n" | npm run db:push:prod
+RUN echo "\n" | npm run db:push:prod:web
 
 # ====================
 # 安装阶段
@@ -39,12 +39,12 @@ ENV TZ=Asia/Shanghai
 WORKDIR /opt/app
 
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
-COPY --from=builder /opt/app/db/prod.db /opt/app/db-default-prod.db
+COPY --from=builder /opt/app/db/prod-web.db /opt/app/db-default-prod-web.db
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
 COPY --from=builder /opt/app/public /opt/app/public
-COPY --from=builder /opt/app/.env/.env.production /opt/app/.env/.env.production
+COPY --from=builder /opt/app/.env/.env.production-web /opt/app/.env/.env.production-web
 
 EXPOSE 80
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod.db /opt/app/db/prod.db; else echo 'Database already exists'; fi && npm run run:service:prod"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod-web.db /opt/app/db/prod-web.db; else echo 'Database already exists'; fi && npm run run:service:prod"]

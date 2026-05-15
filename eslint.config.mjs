@@ -16,6 +16,7 @@ export default [
     rules: {
       // ..
       'project/no-dom-query': 'error',
+      'project/no-absolute-src-import': 'error',
     },
   },
 ]

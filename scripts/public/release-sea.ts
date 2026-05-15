@@ -1,5 +1,6 @@
 import { execSync } from 'child_process'
 import fs from 'fs'
+import open from 'open'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -77,11 +78,10 @@ async function run(): Promise<void> {
     递归复制(path.join(root, 'dist/src/web'), path.join(seaDir, 'dist/src/web'))
     // 仅复制指定的数据库文件
     let 数据库源文件 = path.join(root, 'db/prod-sea.db')
+    if (!fs.existsSync(数据库源文件)) throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
     let 数据库目标目录 = path.join(seaDir, 'db')
-    if (fs.existsSync(数据库源文件)) {
-      if (!fs.existsSync(数据库目标目录)) fs.mkdirSync(数据库目标目录, { recursive: true })
-      fs.copyFileSync(数据库源文件, path.join(数据库目标目录, 'prod-sea.db'))
-    }
+    if (!fs.existsSync(数据库目标目录)) fs.mkdirSync(数据库目标目录, { recursive: true })
+    fs.copyFileSync(数据库源文件, path.join(数据库目标目录, 'prod-sea.db'))
 
     // 拷贝 sqlite wasm (node-sqlite3-wasm 库需要它在二进制运行目录下)
     let wasmPath = path.join(root, 'node_modules/node-sqlite3-wasm/dist/node-sqlite3-wasm.wasm')
@@ -90,11 +90,13 @@ async function run(): Promise<void> {
     }
 
     // 复制环境变量并修改为 sea 模式
-    if (fs.existsSync(path.join(root, '.env/.env.production-sea'))) {
-      if (fs.existsSync(path.join(seaDir, '.env')) === false) fs.mkdirSync(path.join(seaDir, '.env'))
-      let envContent = fs.readFileSync(path.join(root, '.env/.env.production-sea'), 'utf-8')
-      fs.writeFileSync(path.join(seaDir, '.env/.env.production-sea'), envContent)
+    let 环境源文件 = path.join(root, '.env/.env.production-sea')
+    if (!fs.existsSync(环境源文件)) {
+      throw new Error(`❌ 未找到环境变量文件: ${环境源文件}，无法继续。`)
     }
+    if (fs.existsSync(path.join(seaDir, '.env')) === false) fs.mkdirSync(path.join(seaDir, '.env'))
+    let 环境变量内容 = fs.readFileSync(环境源文件, 'utf-8')
+    fs.writeFileSync(path.join(seaDir, '.env/.env.production-sea'), 环境变量内容)
 
     console.log('[9/9] 正在生成启动脚本...')
     // 生成 run.cmd 启动脚本
@@ -128,6 +130,13 @@ async function run(): Promise<void> {
     console.log('---')
     console.log('运行说明：')
     console.log('  双击 run.cmd 即可启动服务。')
+
+    // 构建完成后打开文件夹
+    try {
+      await open(seaDir, { wait: true })
+    } catch (_error) {
+      // console.error('打开目录错误: %o', error)
+    }
   } catch (error) {
     console.error('❌ 构建过程中发生错误:', error)
     process.exit(1)

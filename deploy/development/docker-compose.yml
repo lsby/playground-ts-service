@@ -7,7 +7,7 @@ services:
     ports:
       - 3000:3000
     env_file:
-      - ../../.env/.env.development
+      - ../../.env/.env.development-web
     restart: always
     volumes:
       - ../../db:/opt/app/db

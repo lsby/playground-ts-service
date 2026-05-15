@@ -1,4 +1,4 @@
-import { 增强样式类型 } from 'src/web/global/types/style'
+import { 增强样式类型 } from '../../../../web/global/types/style'
 import { 创建元素, 应用宿主样式 } from '../../../global/tools/create-element'
 import { 表单组件基类 } from './form'
 
