@@ -3,13 +3,29 @@
 # ====================
 FROM node:22 AS builder
 
+ARG NPM_REGISTRY=https://registry.npmjs.org
+ARG PRISMA_ENGINES_MIRROR=
+ARG ELECTRON_MIRROR=
+
 ENV TZ=Asia/Shanghai
+ENV PRISMA_ENGINES_MIRROR=${PRISMA_ENGINES_MIRROR}
+ENV ELECTRON_MIRROR=${ELECTRON_MIRROR}
+
 WORKDIR /opt/app
 
+# 先拷贝依赖文件以利用 Docker 缓存
+COPY package.json pnpm-lock.yaml ./
+
+# 配置分层镜像并安装依赖
+RUN corepack enable && \
+    pnpm config set registry ${NPM_REGISTRY} && \
+    pnpm config set @lsby:registry https://registry.npmjs.org && \
+    pnpm install
+
+# 拷贝剩余源码
 COPY . .
 
-RUN corepack enable && \
-    pnpm install
+# 执行构建脚本
 RUN export PARCEL_WORKER_BACKEND=process && \
     npm run _build:all
 
@@ -20,14 +36,19 @@ RUN echo "\n" | npm run db:push:dev:web
 # 安装阶段
 # ====================
 FROM node:22 AS installer
+ARG NPM_REGISTRY=https://registry.npmjs.org
 
 ENV TZ=Asia/Shanghai
 WORKDIR /opt/app
 
+# 从构建阶段拷贝依赖文件
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/pnpm-lock.yaml /opt/app/
 
+# 安装依赖
 RUN corepack enable && \
+    pnpm config set registry ${NPM_REGISTRY} && \
+    pnpm config set @lsby:registry https://registry.npmjs.org && \
     pnpm install --ignore-scripts
 
 # ====================

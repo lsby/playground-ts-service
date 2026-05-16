@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { 日志类 } from './tools/model'
 import {
   上传文件,
+  下载文件,
   压缩项目,
   执行远程命令,
   清理旧镜像,
@@ -15,9 +16,7 @@ import {
 } from './tools/tools'
 
 // ============= 配置区 =============
-let 服务器地址 = '0.0.0.0'
-let 用户名 = 'root'
-let 密码 = 'xxx'
+let 服务器列表 = [{ name: '默认服务器', value: { host: '0.0.0.0', username: 'xxx', password: 'xxx', useMirror: true } }]
 // ============= 配置区 =============
 
 // 读取项目名称
@@ -33,7 +32,8 @@ let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
 let 本地压缩包路径: string = path.join(本地根目录, `${项目名称}.tar.gz`)
 
 async function 主函数(): Promise<void> {
-  let { 模式, 环境, 确认 } = (await inquirer.prompt([
+  let { 目标服务器, 模式, 环境, 使用缓存, 确认 } = (await inquirer.prompt([
+    { type: 'list', name: '目标服务器', message: '请选择目标服务器:', choices: 服务器列表 },
     {
       type: 'list',
       name: '模式',
@@ -46,6 +46,8 @@ async function 主函数(): Promise<void> {
         { name: '重新部署 (redeploy)', value: 'redeploy' },
         { name: '停止运行 (stop)', value: 'stop' },
         { name: '删除项目 (delete)', value: 'delete' },
+        { name: '同步数据到本地 (sync-to-local)', value: 'sync-to-local' },
+        { name: '同步数据到服务器 (sync-to-server)', value: 'sync-to-server' },
       ],
       default: 'run',
     },
@@ -57,8 +59,15 @@ async function 主函数(): Promise<void> {
         { name: '开发环境 (development)', value: 'development' },
         { name: '生产环境 (production)', value: 'production' },
       ],
-      default: 'development',
+      default: 'production',
       when: (待回答: any): boolean => 待回答.模式 !== 'delete',
+    },
+    {
+      type: 'confirm',
+      name: '使用缓存',
+      message: '是否使用镜像缓存?',
+      default: (待回答: any): boolean => 待回答.模式 !== 'redeploy',
+      when: (待回答: any): boolean => ['build', 'run', 'redeploy'].includes(待回答.模式),
     },
     {
       type: 'confirm',
@@ -99,24 +108,39 @@ async function 主函数(): Promise<void> {
             ].join('\n') + '\n您确认要这么做吗?'
           )
         }
+        if (待回答.模式 === 'sync-to-server') {
+          return `🚨 警告: 此操作将使用本地数据库覆盖服务器上的数据库!\n服务器文件将先备份, 但这仍是一个敏感操作。\n您确认要继续吗?`
+        }
         return ''
       },
-      when: (待回答: any): boolean => ['run', 'redeploy', 'delete'].includes(待回答.模式),
-      default: false,
+      when: (待回答: any): boolean => ['run', 'redeploy', 'delete', 'sync-to-server'].includes(待回答.模式),
+      default: true,
     },
-  ] as any)) as { 模式: string; 环境: string; 确认?: boolean }
+  ] as any)) as {
+    目标服务器: (typeof 服务器列表)[number]['value']
+    模式: string
+    环境: string
+    使用缓存?: boolean
+    确认?: boolean
+  }
 
   if (确认 === false) {
     return
   }
 
+  let { host: 服务器地址, username: 用户名, password: 密码, useMirror: 是否使用镜像 } = 目标服务器
+
+  let 镜像参数 = 是否使用镜像
+    ? '--build-arg NPM_REGISTRY=https://registry.npmmirror.com --build-arg PRISMA_ENGINES_MIRROR=https://registry.npmmirror.com/-/binary/prisma --build-arg ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/'
+    : ''
+
   let 日志 = new 日志类()
   let sshClient = new NodeSSH()
 
   try {
-    日志.打印(`🚀 [${模式}] [${(环境 as string | undefined) ?? 'all'}] 开始连接服务器...`)
+    日志.打印(`🚀 [${模式}] [${(环境 as string | undefined) ?? 'all'}] 开始连接服务器 [${服务器地址}]...`)
     await sshClient.connect({ host: 服务器地址, username: 用户名, password: 密码 })
-    日志.打印(`✅ 已连接到 服务器`)
+    日志.打印(`✅ 已连接到 服务器 [${服务器地址}]`)
 
     // 获取远程家目录并初始化路径
     let 远程家目录 = (await 执行远程命令(sshClient, 'echo $HOME', { 打印输出: false })).stdout.trim()
@@ -188,7 +212,11 @@ async function 主函数(): Promise<void> {
 
       日志.打印(`🔨 正在使用 docker-compose 构建镜像...`)
       let 构建目录 = path.posix.resolve(远程构建docker目录, 环境)
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} build`, { 工作目录: 构建目录 })
+      let 构建命令 = `docker-compose -p ${项目名称}-${环境} build ${镜像参数}`
+      if (使用缓存 === false) {
+        构建命令 += ' --no-cache'
+      }
+      await 执行远程命令(sshClient, 构建命令, { 工作目录: 构建目录 })
     }
 
     // ====================
@@ -208,7 +236,11 @@ async function 主函数(): Promise<void> {
       await 执行远程命令(sshClient, `tar -xzf ${远程压缩包路径} -C ${远程运行目录}`)
 
       日志.打印(`🔨 正在构建项目镜像 (此时旧服务仍在运行)...`)
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} build`, { 工作目录: docker文件目录 })
+      let 构建命令 = `docker-compose -p ${项目名称}-${环境} build ${镜像参数}`
+      if (使用缓存 === false) {
+        构建命令 += ' --no-cache'
+      }
+      await 执行远程命令(sshClient, 构建命令, { 工作目录: docker文件目录 })
 
       日志.打印(`🚀 正在启动新服务 (实现极短停机更新)...`)
       await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} up -d --remove-orphans`, {
@@ -274,7 +306,7 @@ async function 主函数(): Promise<void> {
     if (模式 === 'delete') {
       let deploy目录 = path.posix.resolve(远程运行部署目录)
       if ((await 远程路径是否存在(sshClient, deploy目录)) === true) {
-        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器 and 镜像...`)
+        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器和镜像...`)
         let 环境列表内容 = (await 执行远程命令(sshClient, `ls -1 ${deploy目录}`, { 打印输出: false })).stdout
         let 环境列表 = 环境列表内容
           .split('\n')
@@ -299,6 +331,67 @@ async function 主函数(): Promise<void> {
       await 执行远程命令(sshClient, `rm -rf ${远程根目录}`)
       日志.打印(`✨ 项目已彻底从服务器删除`)
       return
+    }
+
+    // ====================
+    // 模式: 数据同步
+    // ====================
+    if (模式 === 'sync-to-local' || 模式 === 'sync-to-server') {
+      let 数据库文件名 = 环境 === 'production' ? 'prod-web.db' : 'dev-web.db'
+      let 本地数据库路径 = path.join(本地根目录, 'db', 数据库文件名)
+      let 远程数据库路径 = path.posix.join(远程运行目录, 'db', 数据库文件名)
+
+      if (模式 === 'sync-to-local') {
+        日志.打印(`🔄 模式: 同步服务器数据到本地 [${数据库文件名}]`)
+
+        // 1. 检查远程文件是否存在
+        let 结果 = await 执行远程命令(sshClient, `[ -f "${远程数据库路径}" ]`, { 打印输出: false, 抛出错误: false })
+        if (结果.code !== 0) {
+          throw new Error(`远程数据库文件不存在: ${远程数据库路径}`)
+        }
+
+        // 2. 备份本地文件
+        if (fs.existsSync(本地数据库路径) === true) {
+          let 时间戳 = new Date().toISOString().replace(/[:.]/g, '-')
+          let 备份路径 = 本地数据库路径.replace(/\.db$/, `.${时间戳}.bak.db`)
+          日志.打印(`📦 正在备份本地数据库到: ${备份路径}`)
+          fs.copyFileSync(本地数据库路径, 备份路径)
+        }
+
+        // 3. 下载文件
+        日志.打印(`⬇️ 正在从服务器下载数据库...`)
+        await 下载文件(sshClient, 远程数据库路径, 本地数据库路径)
+        日志.打印(`✨ 同步完成: 服务器 -> 本地`)
+      }
+
+      if (模式 === 'sync-to-server') {
+        日志.打印(`🔄 模式: 同步本地数据到服务器 [${数据库文件名}]`)
+
+        // 1. 检查本地文件是否存在
+        if (fs.existsSync(本地数据库路径) === false) {
+          throw new Error(`本地数据库文件不存在: ${本地数据库路径}`)
+        }
+
+        // 2. 备份远程文件
+        let 远程是否存在 = await 执行远程命令(sshClient, `[ -f "${远程数据库路径}" ]`, {
+          打印输出: false,
+          抛出错误: false,
+        })
+        if (远程是否存在.code === 0) {
+          let 时间戳 = new Date().toISOString().replace(/[:.]/g, '-')
+          let 备份路径 = 远程数据库路径.replace(/\.db$/, `.${时间戳}.bak.db`)
+          日志.打印(`📦 正在备份服务器数据库到: ${备份路径}`)
+          await 执行远程命令(sshClient, `cp ${远程数据库路径} ${备份路径}`)
+        } else {
+          // 确保远程目录存在
+          await 执行远程命令(sshClient, `mkdir -p ${path.posix.dirname(远程数据库路径)}`)
+        }
+
+        // 3. 上传文件
+        日志.打印(`⬆️ 正在上传数据库到服务器...`)
+        await 上传文件(sshClient, 本地数据库路径, 远程数据库路径)
+        日志.打印(`✨ 同步完成: 本地 -> 服务器`)
+      }
     }
 
     // ====================

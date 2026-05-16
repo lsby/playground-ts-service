@@ -144,3 +144,10 @@ export async function 上传文件(ssh: NodeSSH, 本地路径: string, 远程路
     throw new Error(`文件上传失败 [${本地路径} -> ${远程路径}]: ${错误}`)
   }
 }
+export async function 下载文件(ssh: NodeSSH, 远程路径: string, 本地路径: string): Promise<void> {
+  try {
+    await ssh.getFile(本地路径, 远程路径)
+  } catch (错误) {
+    throw new Error(`文件下载失败 [${远程路径} -> ${本地路径}]: ${错误}`)
+  }
+}

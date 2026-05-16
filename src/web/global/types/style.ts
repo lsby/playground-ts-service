@@ -106,4 +106,8 @@ export type 增强样式类型 = Omit<
   minWidth?: string | undefined
   maxHeight?: string | undefined
   minHeight?: string | undefined
+} & {
+  // Filter
+  backdropFilter?: string
+  webkitBackdropFilter?: string
 }
