@@ -1,6 +1,6 @@
 {
   "env": {
     "DEBUG": "@lsby:*,@lsby:playground-ts-service:*",
-    "ENV_FILE_PATH": "./.env/.env.test"
+    "ENV_FILE_PATH": "./.env/.env.test-web"
   }
 }
