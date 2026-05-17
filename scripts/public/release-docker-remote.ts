@@ -75,7 +75,7 @@ async function 主函数(): Promise<void> {
       message: (待回答: any): string => {
         if (待回答.模式 === 'run' || 待回答.模式 === 'redeploy') {
           let 提示消息 = [
-            `运行模式将使用项目打包内容覆盖远程项目目录 (~/${项目名称}) 中的同名文件`,
+            `运行模式将使用项目打包内容覆盖远程运行目录 (~/${项目名称}/run/${待回答.环境}) 中的同名文件`,
             '这通常是预期的, 但请确保您了解后果:',
             '- 打包内容会覆盖运行目录中的同名文件',
             '- 远程新生成的文件及外部持久化数据不受影响',
@@ -84,7 +84,7 @@ async function 主函数(): Promise<void> {
 
           if (待回答.模式 === 'redeploy') {
             提示消息 = [
-              `彻底重部署模式将完全删除远程运行目录 (~/${项目名称}/run)`,
+              `彻底重部署模式将完全删除该环境的远程运行目录 (~/${项目名称}/run/${待回答.环境})`,
               '这将导致:',
               '- 强制停止并移除当前容器和关联镜像',
               '- 删除运行目录下的所有文件 (包括不在项目仓库中的数据/持久化文件等)',
@@ -147,9 +147,11 @@ async function 主函数(): Promise<void> {
     let 远程根目录 = path.posix.join(远程家目录, 项目名称)
     let 远程上传目录 = path.posix.resolve(远程根目录, 'upload')
     let 远程压缩包路径: string = path.posix.resolve(远程上传目录, `${项目名称}.tar.gz`)
-    let 远程构建目录 = path.posix.resolve(远程根目录, 'build')
+    let 远程构建目录 =
+      typeof 环境 === 'string' ? path.posix.resolve(远程根目录, 'build', 环境) : path.posix.resolve(远程根目录, 'build')
     let 远程构建docker目录: string = path.posix.resolve(远程构建目录, 'deploy')
-    let 远程运行目录 = path.posix.resolve(远程根目录, 'run')
+    let 远程运行目录 =
+      typeof 环境 === 'string' ? path.posix.resolve(远程根目录, 'run', 环境) : path.posix.resolve(远程根目录, 'run')
     let 远程运行部署目录: string = path.posix.resolve(远程运行目录, 'deploy')
 
     日志.打印(`📂 远程路径初始化完成:`)
@@ -304,17 +306,17 @@ async function 主函数(): Promise<void> {
     // 模式: 删除项目
     // ====================
     if (模式 === 'delete') {
-      let deploy目录 = path.posix.resolve(远程运行部署目录)
-      if ((await 远程路径是否存在(sshClient, deploy目录)) === true) {
-        日志.打印(`🔍 探测到部署目录，尝试清理运行中的容器和镜像...`)
-        let 环境列表内容 = (await 执行远程命令(sshClient, `ls -1 ${deploy目录}`, { 打印输出: false })).stdout
+      let 运行根目录 = path.posix.resolve(远程根目录, 'run')
+      if ((await 远程路径是否存在(sshClient, 运行根目录)) === true) {
+        日志.打印(`🔍 探测到运行根目录，尝试清理运行中的容器和镜像...`)
+        let 环境列表内容 = (await 执行远程命令(sshClient, `ls -1 ${运行根目录}`, { 打印输出: false })).stdout
         let 环境列表 = 环境列表内容
           .split('\n')
           .map((s) => s.trim())
           .filter((s) => s.length > 0)
 
         for (let 某个环境 of 环境列表) {
-          let 某个环境目录 = path.posix.resolve(deploy目录, 某个环境)
+          let 某个环境目录 = path.posix.resolve(运行根目录, 某个环境, 'deploy', 某个环境)
           if ((await 远程路径是否存在(sshClient, 某个环境目录)) === true) {
             日志.打印(`🛑 正在停止并清理环境: ${某个环境} ...`)
             let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 某个环境目录, `${项目名称}-${某个环境}`)
