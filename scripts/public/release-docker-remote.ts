@@ -66,7 +66,7 @@ async function 主函数(): Promise<void> {
       type: 'confirm',
       name: '使用缓存',
       message: '是否使用镜像缓存?',
-      default: (待回答: any): boolean => 待回答.模式 !== 'redeploy',
+      default: true,
       when: (待回答: any): boolean => ['build', 'run', 'redeploy'].includes(待回答.模式),
     },
     {
