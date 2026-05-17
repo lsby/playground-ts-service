@@ -2,15 +2,13 @@ import { 接口测试 } from '@lsby/net-core'
 import assert from 'assert'
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
-import { cleanDB } from '../../../../../scripts/db/clean-db'
-import { 环境变量 } from '../../../../global/env'
-import { kysely管理器 } from '../../../../global/global'
-import { POST_JSON请求用例 } from '../../../../tools/request'
+import { cleanDB } from '../../../../scripts/db/clean-db'
+import { 环境变量 } from '../../../global/env'
+import { kysely管理器 } from '../../../global/global'
 import 接口 from './index'
 
 let name = 'admin'
 let pwd = '123456'
-
 export default new 接口测试(
   接口,
   '成功',
@@ -27,13 +25,17 @@ export default new 接口测试(
       .execute()
   },
   async (): Promise<object> => {
-    return POST_JSON请求用例(
-      接口,
-      { a: 2, b: 1 },
-      { 接口: '/api/project/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
-    )
+    let urlPath = 接口.获得路径()
+    let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
+
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', authorization: '' },
+      body: JSON.stringify({}),
+    })
+    return await response.json()
   },
   async (解析结果): Promise<void> => {
-    assert.equal(解析结果.data.res, 1)
+    assert.equal(解析结果.data.isLogin, false)
   },
 )

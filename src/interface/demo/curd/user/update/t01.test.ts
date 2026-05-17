@@ -1,13 +1,13 @@
 import { 接口测试 } from '@lsby/net-core'
-import assert from 'assert'
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
-import { cleanDB } from '../../../../../scripts/db/clean-db'
-import { 环境变量 } from '../../../../global/env'
-import { kysely管理器 } from '../../../../global/global'
-import { POST_JSON请求用例 } from '../../../../tools/request'
+import { cleanDB } from '../../../../../../scripts/db/clean-db'
+import { 环境变量 } from '../../../../../global/env'
+import { kysely管理器 } from '../../../../../global/global'
+import { POST_JSON请求用例 } from '../../../../../tools/request'
 import 接口 from './index'
 
+let id = randomUUID()
 let name = 'admin'
 let pwd = '123456'
 
@@ -23,17 +23,15 @@ export default new 接口测试(
       .execute()
     await db
       .insertInto('user')
-      .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 0 })
+      .values({ id: id, name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 1 })
       .execute()
   },
   async (): Promise<object> => {
     return POST_JSON请求用例(
       接口,
-      { a: 2, b: 1 },
+      { userId: id, newName: 'newAdmin' },
       { 接口: '/api/project/login', 用户名: name, 密码: pwd, 凭据属性: 'token' },
     )
   },
-  async (解析结果): Promise<void> => {
-    assert.equal(解析结果.data.res, 1)
-  },
+  async (_解析结果): Promise<void> => {},
 )

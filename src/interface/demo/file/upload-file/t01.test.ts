@@ -21,6 +21,10 @@ export default new 接口测试(
     let db = kysely管理器.获得句柄()
     await cleanDB(db)
     await db
+      .insertInto('system_config')
+      .values({ id: randomUUID(), is_initialized: 1, enable_register: 0, version: '', jwt_secret: '123' })
+      .execute()
+    await db
       .insertInto('user')
       .values({ id: randomUUID(), name: name, pwd: await bcrypt.hash(pwd, 环境变量.BCRYPT_ROUNDS), is_admin: 0 })
       .execute()
@@ -38,7 +42,7 @@ export default new 接口测试(
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
 
-    let loginResponse = await fetch(`http://127.0.0.1:${环境变量.APP_PORT}${'/api/system/login'}`, {
+    let loginResponse = await fetch(`http://127.0.0.1:${环境变量.APP_PORT}${'/api/project/login'}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userName: name, userPassword: pwd }),
