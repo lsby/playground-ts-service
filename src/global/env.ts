@@ -7,12 +7,26 @@ export let 环境变量 = new Env({
     // 环境名称
     NODE_ENV: z.enum(['development', 'production', 'test']),
     /**
-     * 应用环境预设
-     * - development-web: web 开发环境
-     * - production-web: web 生产环境
-     * - test-web: web 测试环境
-     * - production-electron: Electron 生产环境
-     * - production-sea: SEA 生产环境
+     * 应用环境预设, 各模式运行时的文件结构不同:
+     *
+     * - development-web / test-web: 通过 tsx 直接运行源码, 代码在 src/ 下
+     *   项目根/
+     *   ├── src/server.ts    ← 入口
+     *   ├── src/web/         ← 前端源码 (由 parcel dev server 代理)
+     *   └── public/          ← 静态资源
+     *
+     * - production-web / production-electron: tsc 编译后运行, 代码在 dist/src/ 下, 多了一层 dist
+     *   项目根/
+     *   ├── dist/src/server.js    ← 入口 (production-web 用 node 运行)
+     *   ├── dist/src/electron.js  ← 入口 (production-electron 由 electron-builder 打包)
+     *   ├── dist/src/web/         ← parcel 编译后的前端产物
+     *   └── public/               ← 静态资源
+     *
+     * - production-sea: 打包为单文件可执行程序, 没有项目根的概念
+     *   任意目录/
+     *   ├── app.exe          ← 入口 (所有后端代码打包在内)
+     *   ├── dist/src/web/    ← 前端产物 (需要放在 exe 同级)
+     *   └── public/          ← 静态资源 (需要放在 exe 同级)
      */
     APP_ENV: z.enum(['development-web', 'production-web', 'test-web', 'production-electron', 'production-sea']),
     // 调试名称
