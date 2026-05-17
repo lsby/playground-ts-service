@@ -12,7 +12,7 @@ import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../global/plugin'
 import { 检查登录 } from '../../../interface-logic/check/check-login-jwt'
 
-let 接口路径 = '/api/system/get-current-user' as const
+let 接口路径 = '/api/user/get-user-info' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑
