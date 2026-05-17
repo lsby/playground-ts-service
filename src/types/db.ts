@@ -10,6 +10,7 @@ export type system_config = {
     updated_at: Generated<string>;
     is_initialized: Generated<number>;
     enable_register: number;
+    enable_get_interface_type: Generated<number>;
     version: string;
     jwt_secret: string;
 };

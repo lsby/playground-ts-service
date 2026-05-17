@@ -58,7 +58,14 @@ export async function init(): Promise<void> {
     await kysely管理器
       .获得句柄()
       .insertInto('system_config')
-      .values({ id: randomUUID(), is_initialized: 1, enable_register: 0, version: version, jwt_secret: jwt密钥 })
+      .values({
+        id: randomUUID(),
+        is_initialized: 1,
+        enable_register: 0,
+        enable_get_interface_type: 0,
+        version: version,
+        jwt_secret: jwt密钥,
+      })
       .execute()
 
     if (密码是生成的) {

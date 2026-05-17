@@ -20,15 +20,25 @@ let 接口逻辑实现 = 接口逻辑
   .绑定(new 检查管理员登录([jwt插件.解析器, kysely插件], () => ({ 表名: 'user', id字段: 'id', 标识字段: 'is_admin' })))
   .绑定(
     接口逻辑.构造(
-      [new JSON参数解析插件(z.object({ enable_register: z.boolean() }), {}), kysely插件],
+      [
+        new JSON参数解析插件(
+          z.object({ enable_register: z.boolean().optional(), enable_get_interface_type: z.boolean().optional() }),
+          {},
+        ),
+        kysely插件,
+      ],
       async (参数, 逻辑附加参数, 请求附加参数) => {
         let _log = 请求附加参数.log.extend(接口路径)
 
-        await 参数.kysely
-          .获得句柄()
-          .updateTable('system_config')
-          .set({ enable_register: 参数.json.enable_register ? 1 : 0 })
-          .execute()
+        let 更新数据: { enable_register?: number; enable_get_interface_type?: number } = {}
+        if (参数.json.enable_register !== undefined) {
+          更新数据.enable_register = 参数.json.enable_register === true ? 1 : 0
+        }
+        if (参数.json.enable_get_interface_type !== undefined) {
+          更新数据.enable_get_interface_type = 参数.json.enable_get_interface_type === true ? 1 : 0
+        }
+
+        await 参数.kysely.获得句柄().updateTable('system_config').set(更新数据).execute()
         return new Right({})
       },
     ),

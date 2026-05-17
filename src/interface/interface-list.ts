@@ -42,6 +42,7 @@ import _src_interface_demo_curd_user_create_index_ts from './demo/curd/user/crea
 import _src_interface_demo_curd_user_delete_index_ts from './demo/curd/user/delete/index'
 import _src_interface_demo_curd_user_read_index_ts from './demo/curd/user/read/index'
 import _src_interface_demo_curd_user_update_index_ts from './demo/curd/user/update/index'
+import _src_interface_system_get_interface_type_index_ts from './system/get-interface-type/index'
 
 export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_backup_database_index_ts,
@@ -85,4 +86,5 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_curd_user_delete_index_ts,
   _src_interface_demo_curd_user_read_index_ts,
   _src_interface_demo_curd_user_update_index_ts,
+  _src_interface_system_get_interface_type_index_ts,
 ]

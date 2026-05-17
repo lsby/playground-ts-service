@@ -36,9 +36,19 @@ function 递归复制(源路径: string, 目标路径: string): void {
 
 async function 执行构建(): Promise<void> {
   try {
-    // 1. 准备目录
+    let 环境源文件 = path.join(项目根目录, '.env/.env.production-sea')
+    let 数据库源文件 = path.join(项目根目录, 'db/prod-sea.db')
+
+    // 提前检查
+    if (fs.existsSync(环境源文件) === false) {
+      throw new Error(`❌ 未找到 ${环境源文件}，无法继续。`)
+    }
+    if (fs.existsSync(数据库源文件) === false) {
+      throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
+    }
+
     console.log('[1/9] 正在准备目录...')
-    if (fs.existsSync(发布目录)) {
+    if (fs.existsSync(发布目录) === true) {
       fs.rmSync(发布目录, { recursive: true, force: true })
     }
     确保目录存在(发布目录)
@@ -85,25 +95,17 @@ async function 执行构建(): Promise<void> {
     递归复制(path.join(项目根目录, 'dist/src/web'), path.join(发布目录, 'dist/src/web'))
 
     // 仅复制指定的数据库文件
-    let 数据库源文件 = path.join(项目根目录, 'db/prod-sea.db')
-    if (!fs.existsSync(数据库源文件)) {
-      throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
-    }
     let 数据库目标目录 = path.join(发布目录, 'db')
     确保目录存在(数据库目标目录)
     fs.copyFileSync(数据库源文件, path.join(数据库目标目录, 'prod-sea.db'))
 
     // 拷贝 sqlite wasm (node-sqlite3-wasm 库需要它在二进制运行目录下)
     let WASM路径 = path.join(项目根目录, 'node_modules/node-sqlite3-wasm/dist/node-sqlite3-wasm.wasm')
-    if (fs.existsSync(WASM路径)) {
+    if (fs.existsSync(WASM路径) === true) {
       fs.copyFileSync(WASM路径, path.join(发布目录, 'node-sqlite3-wasm.wasm'))
     }
 
     // 复制环境变量并修改为 sea 模式
-    let 环境源文件 = path.join(项目根目录, '.env/.env.production-sea')
-    if (!fs.existsSync(环境源文件)) {
-      throw new Error(`❌ 未找到环境变量文件: ${环境源文件}，无法继续。`)
-    }
     let 环境目标目录 = path.join(发布目录, '.env')
     确保目录存在(环境目标目录)
     let 环境变量内容 = fs.readFileSync(环境源文件, 'utf-8')

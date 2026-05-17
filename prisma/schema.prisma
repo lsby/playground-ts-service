@@ -22,10 +22,11 @@ model system_config {
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 
-  is_initialized  Boolean @default(false) // 是否已初始化
-  enable_register Boolean // 启用注册
-  version         String // 软件版本
-  jwt_secret      String // JWT 密钥
+  is_initialized            Boolean @default(false) // 是否已初始化
+  enable_register           Boolean // 启用注册
+  enable_get_interface_type Boolean @default(false) // 启用获取接口类型定义
+  version                   String // 软件版本
+  jwt_secret                String // JWT 密钥
 }
 
 // 用户配置

@@ -19,29 +19,36 @@ function 确保目录存在(目录路径: string): void {
 
 async function 执行构建(): Promise<void> {
   try {
-    // 1. 清理
+    let 环境源文件 = path.resolve(项目根目录, '.env/.env.production-electron')
+    let 数据库源文件 = path.resolve(项目根目录, 'db/prod-electron.db')
+
+    // 1. 提前检查
+    if (fs.existsSync(环境源文件) === false) {
+      throw new Error(`❌ 未找到 ${环境源文件} 文件，无法继续。`)
+    }
+    if (fs.existsSync(数据库源文件) === false) {
+      throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
+    }
+
+    // 2. 清理
     console.log('正在清理生成目录...')
     let 待清理路径 = path.join(项目根目录, 相对发布目录)
-    if (fs.existsSync(待清理路径)) {
+    if (fs.existsSync(待清理路径) === true) {
       fs.rmSync(待清理路径, { recursive: true, force: true })
       console.log('已清理:', 待清理路径)
     }
 
-    // 2. 运行 electron-builder
+    // 3. 运行 electron-builder
     console.log('正在启动 electron-builder...')
     execSync(`npx electron-builder -c.directories.output=${相对发布目录}`, { stdio: 'inherit', cwd: 项目根目录 })
 
-    // 3. 后处理
+    // 4. 后处理
     console.log('正在进行后处理...')
-    if (!fs.existsSync(生成目录)) {
+    if (fs.existsSync(生成目录) === false) {
       throw new Error(`❌ 生成目录不存在: ${生成目录}`)
     }
 
     // 复制环境变量
-    let 环境源文件 = path.resolve(项目根目录, '.env/.env.production-electron')
-    if (!fs.existsSync(环境源文件)) {
-      throw new Error('❌ 未找到 .env/.env.production-electron 文件，无法继续。')
-    }
     let 环境目标目录 = path.join(生成目录, '.env')
     确保目录存在(环境目标目录)
     let 环境目标文件 = path.join(环境目标目录, '.env.production-electron')
@@ -49,10 +56,6 @@ async function 执行构建(): Promise<void> {
     console.log(`✅ 已复制 ${环境源文件} 到 ${环境目标文件}`)
 
     // 复制数据库
-    let 数据库源文件 = path.resolve(项目根目录, 'db/prod-electron.db')
-    if (!fs.existsSync(数据库源文件)) {
-      throw new Error(`❌ 未找到 ${数据库源文件} 文件，无法继续。`)
-    }
     let 数据库目标目录 = path.join(生成目录, 'db')
     确保目录存在(数据库目标目录)
     let 数据库目标文件 = path.join(数据库目标目录, 'prod-electron.db')
@@ -80,10 +83,10 @@ async function 执行构建(): Promise<void> {
     fs.writeFileSync(runCmd路径, runCmd内容, { encoding: 'utf8' })
     console.log(`✅ 已生成 ${runCmd路径}`)
 
+    // 5. 构建完成后打开文件夹
     console.log('✅ 构建成功！')
     console.log(`成果物位置: ${生成目录}`)
 
-    // 构建完成后打开文件夹
     try {
       await open(生成目录, { wait: true })
     } catch (_错误) {
