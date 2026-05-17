@@ -38,7 +38,7 @@ export default new 接口测试(
     let urlPath = 接口.获得路径()
     let url = `http://127.0.0.1:${环境变量.APP_PORT}${urlPath}`
 
-    let loginResponse = await fetch(`http://127.0.0.1:${环境变量.APP_PORT}${'/api/user/login'}`, {
+    let loginResponse = await fetch(`http://127.0.0.1:${环境变量.APP_PORT}${'/api/system/login'}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userName: name, userPassword: pwd }),

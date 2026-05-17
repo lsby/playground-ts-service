@@ -11,7 +11,7 @@ import { Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 import { jwt插件, kysely插件 } from '../../../global/plugin'
 
-let 接口路径 = '/api/user/is-login' as const
+let 接口路径 = '/api/system/is-login' as const
 let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(

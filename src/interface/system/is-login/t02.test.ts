@@ -22,7 +22,7 @@ export default new 接口测试(
       .execute()
   },
   async (): Promise<object> => {
-    return POST_JSON请求用例(接口, {}, { 接口: '/api/user/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
+    return POST_JSON请求用例(接口, {}, { 接口: '/api/system/login', 用户名: name, 密码: pwd, 凭据属性: 'token' })
   },
   async (解析结果): Promise<void> => {
     assert.equal(解析结果.data.isLogin, true)

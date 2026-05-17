@@ -16,7 +16,7 @@ import { 检查唯一性 } from '../../../interface-logic/check/check-exist'
 import { 检查用户名 } from '../../../interface-logic/check/check-user-name'
 import { 检查密码 } from '../../../interface-logic/check/check-user-pwd'
 
-let 接口路径 = '/api/user/register' as const
+let 接口路径 = '/api/system/register' as const
 let 接口方法 = 'post' as const
 
 let 用户表 = z.object({ id: z.string(), name: z.string(), pwd: z.string() })
