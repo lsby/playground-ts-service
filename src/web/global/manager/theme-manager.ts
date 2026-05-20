@@ -8,9 +8,14 @@ export let 主题管理器 = {
   async 初始化(从数据库加载: boolean = true): Promise<void> {
     if (从数据库加载) {
       try {
-        let 用户配置 = await API管理器.请求postJson并处理错误('/api/user/get-user-config', {})
-        this.当前主题 = 用户配置.theme
-        this.应用主题()
+        let 结果 = await API管理器.请求postJson('/api/user/get-user-config', {})
+        if (结果.status === 'success') {
+          this.当前主题 = 结果.data.theme
+          this.应用主题()
+        } else {
+          this.当前主题 = '系统'
+          this.应用主题()
+        }
       } catch (_e) {
         // 如果获取失败，使用系统主题
         this.当前主题 = '系统'
