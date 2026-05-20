@@ -77,7 +77,11 @@ export async function init(): Promise<void> {
       console.log('='.repeat(50) + '\n')
     }
     await log.debug('初始化流程结束')
+  } else if (系统数据.version !== version) {
+    await log.debug('初始化标记已存在, 且版本不一致, 更新系统版本号...')
+    await kysely管理器.获得句柄().updateTable('system_config').set({ version: version }).execute()
+    await log.debug('升级流程结束')
   } else {
-    await log.debug('初始化标记已存在, 正常启动')
+    await log.debug('初始化标记已存在, 且版本一致, 正常启动')
   }
 }

@@ -67,10 +67,12 @@ WORKDIR /opt/app
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
 COPY --from=builder /opt/app/db/prod-web.db /opt/app/db-default-prod-web.db
 COPY --from=builder /opt/app/package.json /opt/app/
+COPY --from=builder /opt/app/tsconfig.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
 COPY --from=builder /opt/app/public /opt/app/public
 COPY --from=builder /opt/app/.env/.env.production-web /opt/app/.env/.env.production-web
 COPY --from=builder /opt/app/prisma /opt/app/prisma
+COPY --from=builder /opt/app/prisma.config.ts /opt/app/prisma.config.ts
 
 EXPOSE 80
 

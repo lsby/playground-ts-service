@@ -70,6 +70,7 @@ COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/tsconfig.json /opt/app/
 COPY --from=builder /opt/app/src /opt/app/src
 COPY --from=builder /opt/app/prisma /opt/app/prisma
+COPY --from=builder /opt/app/prisma.config.ts /opt/app/prisma.config.ts
 COPY --from=builder /opt/app/dist/src/web /opt/app/dist/src/web
 COPY --from=builder /opt/app/public /opt/app/public
 COPY --from=builder /opt/app/.env/.env.development-web /opt/app/.env/.env.development-web
