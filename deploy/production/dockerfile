@@ -20,14 +20,19 @@ COPY package.json pnpm-lock.yaml ./
 RUN corepack enable && \
     pnpm config set registry ${NPM_REGISTRY} && \
     pnpm config set @lsby:registry https://registry.npmjs.org && \
-    pnpm install
+    pnpm install --ignore-scripts
 
 # 拷贝剩余源码
 COPY . .
 
 # 执行构建脚本
-RUN export PARCEL_WORKER_BACKEND=process && \
-    npm run _build:all
+ARG SKIP_BUILD=false
+RUN if [ "$SKIP_BUILD" != "true" ]; then \
+      export PARCEL_WORKER_BACKEND=process && \
+      npm run _build:all; \
+    else \
+      echo "Skipping build, using pre-built dist folder."; \
+    fi
 
 # 初始化默认数据库
 RUN echo "\n" | npm run db:push:prod:web
@@ -65,7 +70,8 @@ COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/dist /opt/app/dist
 COPY --from=builder /opt/app/public /opt/app/public
 COPY --from=builder /opt/app/.env/.env.production-web /opt/app/.env/.env.production-web
+COPY --from=builder /opt/app/prisma /opt/app/prisma
 
 EXPOSE 80
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod-web.db /opt/app/db/prod-web.db; else echo 'Database already exists'; fi && npm run run:service:prod"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod-web.db /opt/app/db/prod-web.db; else echo 'Database already exists'; fi; npx dotenv -e ./.env/.env.production-web -- prisma migrate deploy && npm run run:service:prod"]

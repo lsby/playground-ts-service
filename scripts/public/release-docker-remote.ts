@@ -1,3 +1,4 @@
+import { spawn } from 'child_process'
 import * as fs from 'fs'
 import inquirer from 'inquirer'
 import { NodeSSH } from 'node-ssh'
@@ -31,8 +32,26 @@ let 项目名称 = 原始项目名称.replace('@', '').replace(/\//g, '-')
 let 本地根目录 = path.resolve(import.meta.dirname, '../', '../')
 let 本地压缩包路径: string = path.join(本地根目录, `${项目名称}.tar.gz`)
 
+async function 执行本地命令(命令: string, 选项?: { 工作目录?: string; 打印输出?: boolean }): Promise<void> {
+  return new Promise((resolve, reject) => {
+    let 终端 = process.platform === 'win32' ? 'cmd' : 'sh'
+    let 终端参数 = process.platform === 'win32' ? '/c' : '-c'
+    let 进程 = spawn(终端, [终端参数, 命令], { cwd: 选项?.工作目录 ?? process.cwd() })
+
+    if (选项?.打印输出 !== false) {
+      进程.stdout.on('data', (数据) => process.stdout.write(数据))
+      进程.stderr.on('data', (数据) => process.stderr.write(数据))
+    }
+
+    进程.on('close', (退出码) => {
+      if (退出码 === 0) resolve()
+      else reject(new Error(`本地命令执行失败，退出码: ${退出码}`))
+    })
+  })
+}
+
 async function 主函数(): Promise<void> {
-  let { 目标服务器, 模式, 环境, 使用缓存, 确认 } = (await inquirer.prompt([
+  let { 目标服务器, 模式, 环境, 使用缓存, 复用本地构建, 确认 } = (await inquirer.prompt([
     { type: 'list', name: '目标服务器', message: '请选择目标服务器:', choices: 服务器列表 },
     {
       type: 'list',
@@ -66,6 +85,13 @@ async function 主函数(): Promise<void> {
       type: 'confirm',
       name: '使用缓存',
       message: '是否使用镜像缓存?',
+      default: true,
+      when: (待回答: any): boolean => ['build', 'run', 'redeploy'].includes(待回答.模式),
+    },
+    {
+      type: 'confirm',
+      name: '复用本地构建',
+      message: '是否复用本地构建产物 (dist) 以免去服务器编译?',
       default: true,
       when: (待回答: any): boolean => ['build', 'run', 'redeploy'].includes(待回答.模式),
     },
@@ -121,6 +147,7 @@ async function 主函数(): Promise<void> {
     模式: string
     环境: string
     使用缓存?: boolean
+    复用本地构建?: boolean
     确认?: boolean
   }
 
@@ -133,6 +160,11 @@ async function 主函数(): Promise<void> {
   let 镜像参数 = 是否使用镜像
     ? '--build-arg NPM_REGISTRY=https://registry.npmmirror.com --build-arg PRISMA_ENGINES_MIRROR=https://registry.npmmirror.com/-/binary/prisma --build-arg ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/'
     : ''
+  if (复用本地构建 === true) {
+    镜像参数 += ' --build-arg SKIP_BUILD=true'
+  } else {
+    镜像参数 += ' --build-arg SKIP_BUILD=false'
+  }
 
   let 日志 = new 日志类()
   let sshClient = new NodeSSH()
@@ -182,13 +214,26 @@ async function 主函数(): Promise<void> {
     // 步骤: 打包并上传 (仅 build, run, rededeploy 模式需要)
     // ====================
     if (模式 === 'build' || 模式 === 'run' || 模式 === 'redeploy') {
+      if (复用本地构建 === true) {
+        日志.打印(`📦 正在本地预构建项目 (用于远程复用 dist，避免服务器内存溢出假死)...`)
+        await 执行本地命令('npm run _build:all', { 工作目录: 本地根目录 })
+      }
+
       日志.打印(`🧹 清理旧的本地压缩包`)
       if (fs.existsSync(本地压缩包路径) === true) {
         fs.unlinkSync(本地压缩包路径)
       }
 
       日志.打印(`📦 正在打包项目 (根目录: ${本地根目录})...`)
-      await 压缩项目(本地压缩包路径, 本地根目录, 获取完整忽略名单(本地根目录), 日志)
+      let 忽略名单 = 获取完整忽略名单(本地根目录)
+      if (复用本地构建 === true) {
+        忽略名单 = 忽略名单.filter((项) => {
+          return 项 !== 'dist' && 项 !== 'dist/**' && 项 !== '/dist' && 项 !== '/dist/**'
+        })
+        // 复用本地构建时，不打包 .dockerignore 到远程，使得远程构建时无忽略规则从而能够 COPY dist 目录
+        忽略名单.push('.dockerignore')
+      }
+      await 压缩项目(本地压缩包路径, 本地根目录, 忽略名单, 日志)
 
       日志.打印(`🧹 清理并创建远程上传目录...`)
       await 执行远程命令(sshClient, `rm -rf ${远程上传目录} && mkdir -p ${远程上传目录}`)
