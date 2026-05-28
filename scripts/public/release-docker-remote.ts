@@ -215,6 +215,10 @@ async function 主函数(): Promise<void> {
     // ====================
     if (模式 === 'build' || 模式 === 'run' || 模式 === 'redeploy') {
       if (复用本地构建 === true) {
+        日志.打印(`📦 正在本地生成代码 (gen)...`)
+        await 执行本地命令('npm run _gen:all', { 工作目录: 本地根目录 })
+        日志.打印(`🔍 正在本地检查代码 (check)...`)
+        await 执行本地命令('npm run _check:all', { 工作目录: 本地根目录 })
         日志.打印(`📦 正在本地预构建项目 (用于远程复用 dist，避免服务器内存溢出假死)...`)
         await 执行本地命令('npm run _build:all', { 工作目录: 本地根目录 })
       }
