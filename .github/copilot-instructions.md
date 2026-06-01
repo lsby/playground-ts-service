@@ -16,6 +16,8 @@
 - 使用 Prisma + Kysely 管理数据库
 - Schema 定义在 `prisma/schema.prisma`
 - 应用 Prisma 时会生成 Kysely 使用的类型: `src/types/db.ts`
+- 总是使用 npm run db:push:dev 生成迁移, 如果迁移失败, 通过修改生成的 sql 文件的方式兼容
+- 不要使用 prisma db push
 
 2. **接口层**
 
