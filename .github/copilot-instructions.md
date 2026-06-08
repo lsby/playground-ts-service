@@ -57,6 +57,7 @@
   - 包含多个 html 入口, 每个 html 文件对应一个 url
   - 演示页面: `src/web/page/demo.html`
 - 系统会自动生成组件列表: `src/web/components/index.ts`
+- 请求后端请使用 API管理器(`src/web/global/manager/api-manager.ts`), 它会自动推断接口的参数和返回类型, 严禁将返回值通过as强制类型转换
 
 4. **Electron应用**
 
