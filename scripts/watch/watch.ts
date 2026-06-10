@@ -11,6 +11,7 @@ let 命令 = 参数.pop()
 let 监控路径列表 = 参数
 
 function 任务(): void {
+  console.clear()
   console.log('========生成开始========')
   try {
     console.log('执行', 命令)
