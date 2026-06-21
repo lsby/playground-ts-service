@@ -128,3 +128,6 @@ trigger: always_on
 - 尽可能不要用 dom 查询, 例如 querySelector, 而是用对象引用, 避免 dom 结构变化导致代码失效
 - 数据库里永远存UTC时间
 - 文件名总是使用英文, 并且使用短横线连接, 而不是用驼峰, 因为git对大小写不敏感
+- 谨慎的使用'as'强制类型转换, 优先考虑用 zod 进行类型类型校验和收窄
+- 极度谨慎的使用 'as Record<string, any>', 'as Record<string, unknown>', 'as any', 'as unknown' 等不安全的写法, 优先考虑用 zod 进行类型类型校验和收窄
+- 进行 zod 校验时，不要分两行(如声明临时变量 parsed)进行中转，而是总是直接在一行里组合调用, 例如: Schema.parse(JSON.parse(json))
