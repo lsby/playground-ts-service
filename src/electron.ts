@@ -40,22 +40,27 @@ async function 创建主窗口(): Promise<void> {
   let log = globalLog.extend('electron')
   let 开发环境 = 环境变量.NODE_ENV === 'development'
 
-  // 先处理端口冲突（先检查后启动）
   let 端口 = 环境变量.WEB_PORT
-  if ((await 检查端口可用(端口)) === false) {
-    端口 = await 获取随机可用端口()
-    // 覆盖环境变量，这样稍后启动的服务器就会使用新端口
-    环境变量.APP_PORT = 端口
-    环境变量.WEB_PORT = 端口
-    await log.info(`默认端口被占用，已切换为随机端口: ${端口}`)
-  }
 
-  // 然后再启动后端服务器，确保使用的是最终确定的无冲突端口
-  if (已经启动服务器 === false) {
-    已经启动服务器 = true
-    // 开发环境下前端是由 Parcel 启动的，后端由 tsx 外部启动，所以不需要 Electron 来启动服务器
-    // 生产环境下 Electron 需要负责启动后端的 main()
-    if (开发环境 === false) {
+  if (开发环境 === false) {
+    // 生产环境下：先处理端口冲突（先检查后启动）
+    if ((await 检查端口可用(端口)) === false) {
+      端口 = await 获取随机可用端口()
+      // 覆盖环境变量，这样稍后启动的服务器就会使用新端口
+      环境变量.APP_PORT = 端口
+      环境变量.WEB_PORT = 端口
+      await log.info(`默认端口被占用，已切换为随机端口: ${端口}`)
+    }
+
+    // 然后再启动后端服务器，确保使用的是最终确定的无冲突端口
+    if (已经启动服务器 === false) {
+      已经启动服务器 = true
+      await main()
+    }
+  } else {
+    // 开发环境下：直接启动后端服务器，不检查端口（由开发者自行保证端口可用）
+    if (已经启动服务器 === false) {
+      已经启动服务器 = true
       await main()
     }
   }
