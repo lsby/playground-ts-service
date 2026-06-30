@@ -2,7 +2,7 @@ import { spawn } from 'child_process'
 import { config } from 'dotenv'
 
 // 加载环境变量
-config({ path: '.env/.env.development' })
+config({ path: '.env/.env.development-web' })
 
 function 启动任务(): void {
   let 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
