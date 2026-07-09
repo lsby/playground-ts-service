@@ -55,7 +55,7 @@ pnpm-lock.yaml
 /src/interface/interface-list.ts
 /src/tools/electron/preload.js
 /src/web/components/index.ts
-/test/unit-test.test.ts
+/test/unit/unit-test.test.ts
 
 # 忽略静态文件
 /public
