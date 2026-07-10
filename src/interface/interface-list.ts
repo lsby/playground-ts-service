@@ -37,6 +37,7 @@ import _src_interface_project_register_index_ts from './project/register/index'
 import _src_interface_system_get_enable_registration_index_ts from './system/get-enable-registration/index'
 import _src_interface_system_get_interface_type_index_ts from './system/get-interface-type/index'
 import _src_interface_system_get_system_config_index_ts from './system/get-system-config/index'
+import _src_interface_system_reset_database_index_ts from './system/reset-database/index'
 import _src_interface_system_update_system_config_index_ts from './system/update-system-config/index'
 import _src_interface_user_admin_update_password_index_ts from './user-admin/update-password/index'
 import _src_interface_user_get_user_config_index_ts from './user/get-user-config/index'
@@ -81,6 +82,7 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_system_get_enable_registration_index_ts,
   _src_interface_system_get_interface_type_index_ts,
   _src_interface_system_get_system_config_index_ts,
+  _src_interface_system_reset_database_index_ts,
   _src_interface_system_update_system_config_index_ts,
   _src_interface_user_admin_update_password_index_ts,
   _src_interface_user_get_user_config_index_ts,
