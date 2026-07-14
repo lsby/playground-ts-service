@@ -79,6 +79,10 @@ trigger: always_on
 1. **API接口定义**
 
 - 尽可能写 post 接口而不是 get 接口
+- **递归/共享类型定义与导出**:
+  - 由于后端生成器 (基于 AST 解析) 无法跨文件深入解析 `z.lazy` 等复杂递归 Zod Schema，当接口需要返回或接收复杂的递归类型时，请遵循以下规范：
+    1. **使用专用文件导出类型**: 将 TypeScript 类型定义在单独的 `types.ts` 文件中，并通过 `@lsby/net-core` 的 `NetCoreExportType<'TypeName', Type>` 暴露给系统，这会自动将此 TS 类型写入生成的前端 `interface-type.ts` 中。(参考示例: `src/interface/demo/plugin-advanced/custom-type-export/types.ts`)
+    2. **本地声明 Zod Schema**: 在每个使用该类型的 API 接口文件 (`index.ts`) 内，**本地重新声明**该递归类型的 `z.lazy()` Schema。通过这种方式，既能让生成器正常工作，也能保持入口的严格类型校验。严禁在 API 响应结构中使用 `z.any()` 逃避检查。(参考示例: `src/interface/demo/plugin-advanced/custom-type-export/index.ts`)
 
 2. **Web组件开发**
 
