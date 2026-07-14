@@ -93,7 +93,12 @@
   这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端 ws 的推送信息
   参考 `src/web/components/demo/ws-demo.ts`
 
-3. **其他**
+3. **多环境路径解析**
+
+- **绝对禁止使用 `process.cwd()` 或简单的 `__dirname` 配合不断向上查找 `package.json` 的方式来获取项目根目录**。由于本项目包含多个构建目标（Web/Electron/SEA单文件应用等），不同环境下运行的起始目录及打包后的产物结构（如 `.sea` 模式下没有 `package.json`）存在显著差异，这种动态试探的路径获取方式非常不安全。
+- **必须基于全局环境变量 `APP_ENV` 进行静态路径计算**。当需要获取项目根目录等绝对路径时，请参考类似 `src/app/app.ts` 中的做法，引入 `src/global/env.ts` 中的 `环境变量`，并通过 `switch (环境变量.APP_ENV)` 为每个特定的部署目标明确指定 `path.resolve` 逻辑。
+
+4. **其他**
 
 - 使用 pnpm 安装依赖
 
