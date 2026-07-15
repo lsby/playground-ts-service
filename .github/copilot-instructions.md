@@ -136,3 +136,4 @@
 - 谨慎的使用'as'强制类型转换, 优先考虑用 zod 进行类型类型校验和收窄
 - 极度谨慎的使用 'as Record<string, any>', 'as Record<string, unknown>', 'as any', 'as unknown' 等不安全的写法, 优先考虑用 zod 进行类型类型校验和收窄
 - 进行 zod 校验时，不要分两行(如声明临时变量 parsed)进行中转，而是总是直接在一行里组合调用, 例如: Schema.parse(JSON.parse(json))
+- 解析 JSON 或执行其他可能返回 `any` 的操作时，应尽可能将其直接内联到期望强类型的函数调用中，而不是先赋值给临时变量，以避免触发 'Unsafe assignment of an any value' 等校验报错。例如：`API管理器.请求postJson('/api/xxx', JSON.parse(jsonStr))`。
