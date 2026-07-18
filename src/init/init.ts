@@ -2,9 +2,10 @@ import bcrypt from 'bcryptjs'
 import { randomBytes, randomUUID } from 'crypto'
 import { version } from '../app/meta-info'
 import { 环境变量 } from '../global/env'
-import { globalLog, kysely管理器 } from '../global/global'
+import { globalLog, kysely管理器, 检查数据库是否可用 } from '../global/global'
 
 export async function init(): Promise<void> {
+  await 检查数据库是否可用()
   let log = globalLog.extend('init')
 
   await log.debug('检索系统配置...')

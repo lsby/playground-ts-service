@@ -12,5 +12,4 @@
 /out
 /release-portable
 /.cache-portable
-/playwright-report
-/test-results
+/test-outputs

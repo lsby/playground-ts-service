@@ -3,7 +3,7 @@ import { Right } from '@lsby/ts-fp-data'
 import path from 'path'
 import { z } from 'zod'
 import { 环境变量 } from '../global/env'
-import { globalLog, syncLogCallBack, 即时任务管理器, 定时任务管理器 } from '../global/global'
+import { globalLog, syncLogCallBack, 即时任务管理器, 定时任务管理器, 检查数据库是否可用 } from '../global/global'
 import { interfaceApiList } from '../interface/interface-list'
 import { 报告系统情况任务 } from '../job/instant-job/report-system-status'
 import { databaseBackupCron } from '../job/scheduled-job/database-backup'
@@ -24,6 +24,7 @@ export class App {
   }
 
   public async run(): Promise<void> {
+    await 检查数据库是否可用()
     let log = globalLog.extend('service')
     await 定时任务管理器.执行([onTimeAlarm, databaseBackupCron])
 
@@ -67,7 +68,8 @@ export class App {
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
             let 项目根路径 = this.获得项目根路径()
-            let web根目录 = path.join(项目根路径, 'dist/src/web')
+            let web目录名 = 环境变量.APP_ENV === 'test-web' ? 'test-outputs/web-test' : 'dist/src/web'
+            let web根目录 = path.join(项目根路径, web目录名)
 
             let 基准目录 = path.resolve(web根目录)
             let 文件路径 = path.join(基准目录, 路径)

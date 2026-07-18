@@ -5,6 +5,8 @@ import { defineConfig, devices } from '@playwright/test'
  */
 export default defineConfig({
   testDir: './test/e2e',
+  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
+  outputDir: './test-outputs/test-results',
   /* Run tests in files in parallel */
   fullyParallel: false, // E2E 涉及到清空数据库，最好串行运行避免互相干扰
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -14,7 +16,7 @@ export default defineConfig({
   /* Opt out of parallel tests */
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['html', { outputFolder: './test-outputs/playwright-report' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -23,8 +25,8 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
-    // 我们跑有头模式
-    headless: false,
+    // demo 模式下走有头，非 demo 模式下走无头
+    headless: process.env.DEMO_MODE !== 'true',
   },
 
   /* Configure projects for major browsers */
@@ -33,7 +35,7 @@ export default defineConfig({
   /* 自动拉起测试服务器 */
   webServer: {
     // 启动前先构建一下前端，然后拉起以 test-web 环境变量运行的服务端进程 (端口 9000)
-    command: 'pnpm _build:web && pnpm run:service:test',
+    command: 'pnpm _build:web-test && pnpm run:service:test',
     url: 'http://127.0.0.1:9000',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,

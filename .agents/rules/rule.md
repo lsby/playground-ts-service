@@ -20,13 +20,14 @@ trigger: always_on
 - 使用 Prisma + Kysely 管理数据库
 - Schema 定义在 `prisma/schema.prisma`
 - 应用 Prisma 时会生成 Kysely 使用的类型: `src/types/db.ts`
-- 总是使用 npm run db:push:dev 生成迁移, 如果迁移失败, 通过修改生成的 sql 文件的方式兼容
-- 不要使用 prisma db push
+- 总是使用 `npm run db:push:xxx` 生成迁移。如果迁移失败（如 Prisma 生成了错误的 SQL），直接手动去生成的 migration 文件夹中修改 `.sql` 文件，修改完成后再次运行 `npm run db:push:xxx` 重新应用即可。
+- 不要使用 `prisma db push`
 
 2. **接口层**
 
 - 接口: `src/interface/`
   - 接口示例: `src/interface/demo`
+  - 项目相关接口请写到: `src/interface/project`
 - 通用接口抽象: `src/interface-logic`
 - 系统会自动生成接口列表: `src/interface/interface-list.ts`
 - 系统会自动生成接口类型: `src/types/interface-type.ts`
@@ -61,7 +62,7 @@ trigger: always_on
   - 包含多个 html 入口, 每个 html 文件对应一个 url
   - 演示页面: `src/web/page/demo.html`
 - 系统会自动生成组件列表: `src/web/components/index.ts`
-- 请求后端请使用 API管理器(`src/web/global/manager/api-manager.ts`), 它会自动推断接口的参数和返回类型, 严禁将返回值通过as强制类型转换
+- 请求后端请使用 API管理器(`src/web/global/manager/api-manager.ts`), 它会自动推断接口的参数和返回类型, 严禁将返回值通过`as`强制类型转换
 
 4. **Electron应用**
 
@@ -91,7 +92,11 @@ trigger: always_on
   - 尽可能复用基础通用组件: `src/web/components/general/base`, 便于统一样式和行为
   - 尽可能复用基础表单组件: `src/web/components/general/form`, 便于统一样式和行为
 - 尽可能使用工厂函数创建元素: `src/web/global/tools/create-element.ts`
-- 不要直接使用`document.createElement`, 这会丢失类型信息, 对于自定义组件, 可以直接 new 出来
+- 不要直接使用 `document.createElement`（会丢失类型信息），也**极力避免使用 DOM 查询**（如 `querySelector`），而是将组件作为类`new`出来, 或使用`创建元素`工厂函数。
+- **获取对象引用的正确做法**：将元素直接作为类的成员变量实例化，从而天生持有引用。
+  - 标准元素使用工厂函数：`private 结果 = 创建元素('p')`
+  - 自定义组件直接 `new` 出来：`private 按钮 = new 主要按钮({ ... })`
+  - 然后在 `当加载时()` 等生命周期中追加：`this.shadow.append(this.结果)`
 - 支持黑暗模式: `src/web/global/style/global.css` 内定义了相关 css 变量
 - 使用 `src/web/global/api-manager.ts` 来请求后端
   这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端 ws 的推送信息
@@ -134,7 +139,7 @@ trigger: always_on
 - 写出完整的类型, 尽可能不要使用 any
 - 写类型时, 尽可能写 type 而不是 interface
 - 尽可能不要用 addEventListener, 而是用 onxxx, 避免回调函数被一直持有造成内存泄漏
-- 尽可能不要用 dom 查询, 例如 querySelector, 而是用对象引用, 避免 dom 结构变化导致代码失效
+- 避免使用 DOM 查询 (例如 `querySelector`)，而是将元素保存为类的 private 成员变量来持有对象引用，避免 DOM 结构变化导致代码失效。
 - 数据库里永远存UTC时间
 - 文件名总是使用英文, 并且使用短横线连接, 而不是用驼峰, 因为git对大小写不敏感
 - 谨慎的使用'as'强制类型转换, 优先考虑用 zod 进行类型类型校验和收窄
@@ -143,3 +148,11 @@ trigger: always_on
 - 解析 JSON 或执行其他可能返回 `any` 的操作时，应尽可能将其直接内联到期望强类型的函数调用中，而不是先赋值给临时变量，以避免触发 'Unsafe assignment of an any value' 等校验报错。例如：`API管理器.请求postJson('/api/xxx', JSON.parse(jsonStr))`。
 - 旧代码兼容性：修改代码时，如果发现涉及到需要兼容旧有数据或旧代码逻辑（如保留带特定名称的旧角色、兼容旧格式等），不要默默地自行编写冗余的兼容性代码。遇到这种情况时，请务必先主动询问用户，由用户明确决定是否需要兼容。
 - 联合类型判断: 对于如 `obj.type` 等可枚举类型，请总是使用 `switch` 语句而不是连续的 `if`。这不仅是为了避免最后一条 `if` 因类型推断收窄而触发 `@typescript-eslint/no-unnecessary-condition` 报错，更是为了配合项目启用的 `@typescript-eslint/switch-exhaustiveness-check` 和 `@lsby/no-switch-default` 规则，利用 `switch` 的有穷性检查机制。这样当未来联合类型或枚举增加新成员时，如果没有补全对应分支，TypeScript 就会在编译期抛出错误，极大提升代码安全性。
+
+## 关于测试
+
+- 除非用户要求, 否则不要主动写测试
+- 测试分单元测试, 集成测试和端到端测试
+  - 单元测试: 使用 Co-location 测试风格, 测试代码和接口代码在同一文件夹, 参考 `src/interface/demo/base/add/t01.test.ts`
+  - 集成测试: 借助接口两用性, 对多个接口进行集成测试, 写在 `test/integration` 文件夹中
+  - 端到端测试: 借助 playwright, 实际模拟用户操作来进行测试, 写在 `test/e2e` 文件夹中, 注意 `test/e2e/tools/demo-mode.ts` 提供了一种 demo 模式, 方便做演示, 但调试代码时, 总是使用非 demo 模式来快速开发
