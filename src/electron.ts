@@ -17,7 +17,8 @@ async function main(): Promise<void> {
     await new App().run()
   } catch (error) {
     console.error('启动过程中发生错误:', error)
-    app.quit()
+    app.exit(1) // 必须直接 exit(1)，不能用 quit()，否则会触发正常退出的 0 码，并导致后续的 loadURL 继续执行
+    throw error // 抛出错误以阻断后续执行
   }
 }
 let 已经启动服务器 = false
@@ -163,7 +164,12 @@ async function 创建主窗口(): Promise<void> {
     主窗口.webContents.openDevTools({ mode: 'detach', activate: false })
   }
 
-  await 主窗口.loadURL(`http://localhost:${端口}/`)
+  try {
+    await 主窗口.loadURL(`http://127.0.0.1:${端口}/`)
+  } catch (error) {
+    await log.error('主窗口加载失败:', error)
+    app.exit(1)
+  }
 
   主窗口.on('close', async () => {
     if (主窗口 !== null) {

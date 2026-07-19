@@ -15,6 +15,7 @@ let 接口方法 = 'post' as const
 
 let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
   接口逻辑.构造([new JSON参数解析插件(z.object({}), {})], async (参数, 逻辑附加参数, 请求附加参数) => {
+    // 在web环境中, 不存在'electron'依赖, 所以这里使用动态加载, 以免阻碍web环境运行
     let electron = await import('electron')
     let _log = 请求附加参数.log.extend(接口路径)
     new electron.Notification({ title: '提示', body: '你好世界' }).show()

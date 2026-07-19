@@ -21,7 +21,7 @@ trigger: always_on
 - Schema 定义在 `prisma/schema.prisma`
 - 应用 Prisma 时会生成 Kysely 使用的类型: `src/types/db.ts`
 - 总是使用 `npm run db:push:xxx` 生成迁移。如果迁移失败（如 Prisma 生成了错误的 SQL），直接手动去生成的 migration 文件夹中修改 `.sql` 文件，修改完成后再次运行 `npm run db:push:xxx` 重新应用即可。
-- 不要使用 `prisma db push`
+- 不要使用 `prisma db push`, 因为它会调整数据库但不生成迁移文件, 产生脱节
 
 2. **接口层**
 

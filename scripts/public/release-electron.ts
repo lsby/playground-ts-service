@@ -11,6 +11,26 @@ let 相对发布目录 = 'release/electron'
 let 待清理路径 = path.join(项目根目录, 相对发布目录)
 let 生成目录 = path.join(待清理路径, 'win-unpacked')
 
+function 寻找内置Csc编译器(): string | null {
+  let 框架目录组 = ['C:\\Windows\\Microsoft.NET\\Framework64', 'C:\\Windows\\Microsoft.NET\\Framework']
+  for (let 框架目录 of 框架目录组) {
+    if (fs.existsSync(框架目录) === true) {
+      let 版本目录组 = fs
+        .readdirSync(框架目录)
+        .filter((名字) => 名字.startsWith('v'))
+        .sort()
+        .reverse()
+      for (let 目录名 of 版本目录组) {
+        let csc路径 = path.join(框架目录, 目录名, 'csc.exe')
+        if (fs.existsSync(csc路径) === true) {
+          return csc路径
+        }
+      }
+    }
+  }
+  return null
+}
+
 function 确保目录存在(目录路径: string): void {
   if (!fs.existsSync(目录路径)) {
     fs.mkdirSync(目录路径, { recursive: true })
@@ -71,7 +91,7 @@ async function 执行构建(): Promise<void> {
       'cd /d "%~dp0"',
       'set "ENV_FILE_PATH=.env/.env.production-electron"',
       'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
-      'lsby-playground-ts-service.exe',
+      'start /wait "" "lsby-playground-ts-service.exe"',
       'if errorlevel 1 (',
       '  echo.',
       '  echo 程序异常退出, 按任意键关闭...',
@@ -79,13 +99,36 @@ async function 执行构建(): Promise<void> {
       ')',
     ].join('\r\n')
 
-    let runCmd路径 = path.join(生成目录, 'run.cmd')
+    let runCmd路径 = path.join(生成目录, 'lsby-playground-ts-service-debug.cmd')
     fs.writeFileSync(runCmd路径, runCmd内容, { encoding: 'utf8' })
     console.log(`✅ 已生成 ${runCmd路径}`)
 
+    // 生成 start.exe (C# 引导器)
+    let cscPath = 寻找内置Csc编译器()
+    let launcher源文件 = path.join(__当前目录名, 'launcher', 'launcher.cs')
+    let runExe路径 = path.join(生成目录, 'lsby-playground-ts-service-start.exe')
+
+    if (cscPath === null || fs.existsSync(cscPath) === false) {
+      console.warn(`⚠️ 未找到 C# 编译器，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+    } else if (fs.existsSync(launcher源文件) === false) {
+      console.warn(`⚠️ 未找到引导器源码: ${launcher源文件}，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+    } else {
+      console.log('✅ 正在编译引导器 lsby-playground-ts-service-start.exe ...')
+      try {
+        // 使用 /target:exe 避免控制台流异常
+        execSync(
+          `"${cscPath}" /nologo /target:exe /out:"${runExe路径}" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll "${launcher源文件}"`,
+          { stdio: 'inherit' },
+        )
+        console.log(`✅ 已生成 ${runExe路径}`)
+      } catch (error) {
+        console.error(`❌ 引导器 run.exe 编译失败:`, error)
+      }
+    }
+
     // 5. 构建完成后打开文件夹
     console.log('✅ 构建成功！')
-    console.log(`成果物位置: ${生成目录}`)
+    console.log(`✨ 成果物位置: ${生成目录}`)
 
     try {
       await open(生成目录, { wait: true })
