@@ -13,6 +13,7 @@ import _src_interface_admin_sqlite_get_table_schema_index_ts from './admin-sqlit
 import _src_interface_admin_sqlite_get_tables_index_ts from './admin-sqlite/get-tables/index'
 import _src_interface_admin_system_log_get_logs_index_ts from './admin-system-log/get-logs/index'
 import _src_interface_demo_base_add_index_ts from './demo/base/add/index'
+import _src_interface_demo_base_div_index_ts from './demo/base/div/index'
 import _src_interface_demo_base_sub_index_ts from './demo/base/sub/index'
 import _src_interface_demo_curd_user_create_index_ts from './demo/curd/user/create/index'
 import _src_interface_demo_curd_user_delete_index_ts from './demo/curd/user/delete/index'
@@ -58,6 +59,7 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_admin_sqlite_get_tables_index_ts,
   _src_interface_admin_system_log_get_logs_index_ts,
   _src_interface_demo_base_add_index_ts,
+  _src_interface_demo_base_div_index_ts,
   _src_interface_demo_base_sub_index_ts,
   _src_interface_demo_curd_user_create_index_ts,
   _src_interface_demo_curd_user_delete_index_ts,
