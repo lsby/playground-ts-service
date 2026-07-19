@@ -17,7 +17,7 @@ async function 主函数(): Promise<void> {
   let 运行命令 = `lsby-net-core-gen-test ./tsconfig.json ./src/interface ./test/unit/unit-test.test.ts ${实际过滤器} && vitest run`
 
   if (生成覆盖率 === true) {
-    运行命令 += ' --coverage && open-cli ./coverage/index.html'
+    运行命令 += ' --coverage && open-cli ./test-outputs/coverage/index.html'
   }
 
   console.log(`\n==========================================`)
