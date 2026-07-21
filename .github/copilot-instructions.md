@@ -84,6 +84,7 @@
 2. **Web组件开发**
 
 - 组件的注册名不要使用中文
+- 前端代码及界面中不要使用 emoji
 - 尽可能复用通用组件: `src/web/components/general`, 便于统一样式和行为
   - 尽可能复用基础通用组件: `src/web/components/general/base`, 便于统一样式和行为
   - 尽可能复用基础表单组件: `src/web/components/general/form`, 便于统一样式和行为
