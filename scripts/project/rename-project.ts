@@ -164,6 +164,7 @@ async function 主函数(): Promise<void> {
     '.dockerignore',
     '.prettierignore',
     '.prettierrc',
+    '.cs',
   ]
   let 当前脚本路径 = 路径.relative(项目根目录, import.meta.filename)
   let 需要处理的文件 = 所有文件.filter((文件) => {
