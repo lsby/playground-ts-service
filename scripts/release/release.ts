@@ -6,7 +6,7 @@ import { z } from 'zod'
 let 项目根目录 = resolve(import.meta.dirname, '../../')
 
 let 执行命令 = (命令: string, 描述: string): void => {
-  console.log(`\n📦 ${描述}...`)
+  console.log(`📦 ${描述}...`)
   try {
     execSync(命令, { cwd: 项目根目录, stdio: 'inherit', shell: process.platform === 'win32' ? 'cmd.exe' : 'bash' })
     console.log(`✅ ${描述}完成`)
@@ -46,9 +46,9 @@ let 主程序 = (): void => {
     执行命令('git push', '推送提交到远程')
     执行命令('git push --tags', '推送标签到远程')
 
-    console.log('\n✨ 流程完成！')
+    console.log('✨ 流程完成！')
   } catch (_错误) {
-    console.error('\n❌ 流程中断，请检查上述错误信息')
+    console.error('❌ 流程中断，请检查上述错误信息')
     process.exit(1)
   }
 }
