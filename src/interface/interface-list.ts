@@ -33,6 +33,7 @@ import _src_interface_demo_plugin_advanced_express_middleware_wrap_index_ts from
 import _src_interface_demo_pure_pure_string_index_ts from './demo/pure/pure-string/index'
 import _src_interface_demo_ws_ws_test_index_ts from './demo/ws/ws-test/index'
 import _src_interface_project_is_login_index_ts from './project/is-login/index'
+import _src_interface_project_local_login_index_ts from './project/local-login/index'
 import _src_interface_project_login_index_ts from './project/login/index'
 import _src_interface_project_register_index_ts from './project/register/index'
 import _src_interface_system_get_enable_registration_index_ts from './system/get-enable-registration/index'
@@ -79,6 +80,7 @@ export let interfaceApiList: 任意接口[] = [
   _src_interface_demo_pure_pure_string_index_ts,
   _src_interface_demo_ws_ws_test_index_ts,
   _src_interface_project_is_login_index_ts,
+  _src_interface_project_local_login_index_ts,
   _src_interface_project_login_index_ts,
   _src_interface_project_register_index_ts,
   _src_interface_system_get_enable_registration_index_ts,

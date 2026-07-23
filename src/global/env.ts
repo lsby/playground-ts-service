@@ -31,6 +31,8 @@ export let 环境变量 = new Env({
     APP_ENV: z.enum(['development-web', 'production-web', 'test-web', 'production-electron', 'production-sea']),
     // 调试名称
     DEBUG_NAME: z.string(),
+    // 本地免登录模式
+    LOCAL_MODE: z.coerce.boolean(),
     // ========= 数据库部分 开始 =========
     DB_TYPE: z.enum(['sqlite', 'pg', 'mysql']),
     // sqlite
