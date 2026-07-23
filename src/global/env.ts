@@ -32,7 +32,10 @@ export let 环境变量 = new Env({
     // 调试名称
     DEBUG_NAME: z.string(),
     // 本地免登录模式
-    LOCAL_MODE: z.coerce.boolean(),
+    LOCAL_MODE: z.preprocess((val) => {
+      if (typeof val === 'string') return val.toLowerCase() === 'true'
+      return Boolean(val)
+    }, z.boolean()),
     // ========= 数据库部分 开始 =========
     DB_TYPE: z.enum(['sqlite', 'pg', 'mysql']),
     // sqlite
