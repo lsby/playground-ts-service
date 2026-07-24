@@ -62,6 +62,7 @@ RUN corepack enable && \
 FROM node:22-alpine
 
 ENV TZ=Asia/Shanghai
+ENV PATH="/opt/app/node_modules/.bin:${PATH}"
 WORKDIR /opt/app
 
 COPY --from=installer /opt/app/node_modules /opt/app/node_modules
@@ -76,4 +77,4 @@ COPY --from=builder /opt/app/prisma.config.ts /opt/app/prisma.config.ts
 
 EXPOSE 80
 
-CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod-web.db /opt/app/db/prod-web.db; else echo 'Database already exists'; fi; npx dotenv -e ./.env/.env.production-web -- prisma migrate deploy && npm run run:service:prod"]
+CMD ["sh", "-c", "mkdir -p /opt/app/db; if [ ! -f /opt/app/db/prod-web.db ]; then echo 'Initializing database from default'; cp /opt/app/db-default-prod-web.db /opt/app/db/prod-web.db; else echo 'Database already exists'; fi; if [ -d \"prisma/migrations\" ] && [ \"$(ls -A prisma/migrations)\" ]; then npx dotenv -e ./.env/.env.production-web -- prisma migrate deploy; else PRISMA_GENERATE_SKIP=true npx dotenv -e ./.env/.env.production-web -- prisma db push; fi && npm run run:service:prod"]
