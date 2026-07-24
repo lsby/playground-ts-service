@@ -149,6 +149,7 @@ trigger: always_on
 - 解析 JSON 或执行其他可能返回 `any` 的操作时，应尽可能将其直接内联到期望强类型的函数调用中，而不是先赋值给临时变量，以避免触发 'Unsafe assignment of an any value' 等校验报错。例如：`API管理器.请求postJson('/api/xxx', JSON.parse(jsonStr))`。
 - 旧代码兼容性：修改代码时，如果发现涉及到需要兼容旧有数据或旧代码逻辑（如保留带特定名称的旧角色、兼容旧格式等），不要默默地自行编写冗余的兼容性代码。遇到这种情况时，请务必先主动询问用户，由用户明确决定是否需要兼容。
 - 联合类型判断: 对于如 `obj.type` 等可枚举类型，请总是使用 `switch` 语句而不是连续的 `if`。这不仅是为了避免最后一条 `if` 因类型推断收窄而触发 `@typescript-eslint/no-unnecessary-condition` 报错，更是为了配合项目启用的 `@typescript-eslint/switch-exhaustiveness-check` 和 `@lsby/no-switch-default` 规则，利用 `switch` 的有穷性检查机制。这样当未来联合类型或枚举增加新成员时，如果没有补全对应分支，TypeScript 就会在编译期抛出错误，极大提升代码安全性。
+- 请勿使用 eslint-disable max-lines 来禁用行数检测
 
 ## 关于测试
 
