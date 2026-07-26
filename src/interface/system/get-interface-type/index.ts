@@ -12,6 +12,7 @@ let 接口方法 = 'get' as const
 let 获得类型文件路径 = (): string => {
   switch (环境变量.APP_ENV) {
     case 'development-web':
+    case 'development-electron':
     case 'test-web':
       return path.join(path.resolve(import.meta.dirname, '../../../../'), 'src/types/interface-type.ts')
     case 'production-web':

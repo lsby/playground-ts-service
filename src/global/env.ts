@@ -28,7 +28,14 @@ export let 环境变量 = new Env({
      *   ├── dist/src/web/    ← 前端产物 (需要放在 exe 同级)
      *   └── public/          ← 静态资源 (需要放在 exe 同级)
      */
-    APP_ENV: z.enum(['development-web', 'production-web', 'test-web', 'production-electron', 'production-sea']),
+    APP_ENV: z.enum([
+      'development-web',
+      'development-electron',
+      'production-web',
+      'test-web',
+      'production-electron',
+      'production-sea',
+    ]),
     // 调试名称
     DEBUG_NAME: z.string(),
     // 本地免登录模式
