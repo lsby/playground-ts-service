@@ -39,7 +39,7 @@ function 确保目录存在(目录路径: string): void {
 
 async function 执行构建(): Promise<void> {
   try {
-    let 环境源文件 = path.resolve(项目根目录, '.env/.env.production-electron')
+    let 环境源文件 = path.resolve(项目根目录, '.env/.env.production.electron')
     let 数据库源文件 = path.resolve(项目根目录, 'db/prod-electron.db')
 
     // 1. 提前检查
@@ -71,7 +71,7 @@ async function 执行构建(): Promise<void> {
     // 复制环境变量
     let 环境目标目录 = path.join(生成目录, '.env')
     确保目录存在(环境目标目录)
-    let 环境目标文件 = path.join(环境目标目录, '.env.production-electron')
+    let 环境目标文件 = path.join(环境目标目录, '.env.production.electron')
     fs.copyFileSync(环境源文件, 环境目标文件)
     console.log(`✅ 已复制 ${环境源文件} 到 ${环境目标文件}`)
 
@@ -89,7 +89,7 @@ async function 执行构建(): Promise<void> {
       'echo 正在启动 lsby-playground-ts-service (Electron模式) ...',
       'echo.',
       'cd /d "%~dp0"',
-      'set "ENV_FILE_PATH=.env/.env.production-electron"',
+      'set "ENV_FILE_PATH=.env/.env.production.electron"',
       'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
       'start /wait "" "lsby-playground-ts-service.exe"',
       'if errorlevel 1 (',

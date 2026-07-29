@@ -1,7 +1,7 @@
 import { existsSync, rmSync } from 'fs'
 
 function 清理Web目录(): void {
-  let 路径们 = ['dist/src/web']
+  let 路径们 = ['dist/src/web', '.parcel-cache']
 
   for (let 路径 of 路径们) {
     if (existsSync(路径)) {

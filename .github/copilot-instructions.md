@@ -5,6 +5,7 @@
 这是一个具有多个部署目标的全栈 TypeScript 应用程序:
 
 - **Web 服务器**: Express-like 服务器
+- **纯前端应用**: 后端逻辑与数据库打包至浏览器 Worker 本地运行的应用
 - **桌面应用**: 使用 Electron 编译的桌面应用
 - **安卓应用**: 使用 Capacitor 编译的安卓应用
 - **命令行应用**: 命令行应用
@@ -99,12 +100,31 @@
   这是一个包装过的http请求, 第三个参数是一个回调, 可以直接获得后端 ws 的推送信息
   参考 `src/web/components/demo/ws-demo.ts`
 
-3. **多环境路径解析**
+3. **环境变量与多环境架构**
 
-- **绝对禁止使用 `process.cwd()` 或简单的 `__dirname` 配合不断向上查找 `package.json` 的方式来获取项目根目录**。由于本项目包含多个构建目标（Web/Electron/SEA单文件应用等），不同环境下运行的起始目录及打包后的产物结构（如 `.sea` 模式下没有 `package.json`）存在显著差异，这种动态试探的路径获取方式非常不安全。
-- **必须基于全局环境变量 `APP_ENV` 进行静态路径计算**。当需要获取项目根目录等绝对路径时，请参考类似 `src/app/app.ts` 中的做法，引入 `src/global/env.ts` 中的 `环境变量`，并通过 `switch (环境变量.APP_ENV)` 为每个特定的部署目标明确指定 `path.resolve` 逻辑。
+- **环境变量规范**:
+  - 全局环境变量受到 `zod` 的严格校验，位于 `src/global/env.ts`。其中最核心的三个维度是：
+    1. `NODE_ENV`: 运行环境 (`development`, `production`, `test`)。
+    2. `BUILD_TARGET`: 编译目标 (`web`, `electron`, `sea`, `pure-frontend`)。
+    3. `LOCAL_MODE`: 是否为本地免登录模式 (布尔值)。
+  - **绝不提供兜底默认值** (Fail-Fast 原则)。所有依赖的环境变量必须在启动或打包前通过 `ENV_FILE_PATH` 指定的 `.env` 文件提供，缺少即报错。
+  - **绝不允许在业务代码（无论是前端还是后端）中直接使用 `process.env['XXX']`**。总是导入 `src/global/env.ts` 中的 `环境变量` 对象以获得类型提示和严格校验。前端打包时（Parcel），系统会通过 `src/web/mock/env-provider-mock.ts` 将环境变量在编译时静态注入。
 
-4. **其他**
+- **多环境路径解析**:
+  - **绝对禁止使用 `process.cwd()` 或简单的 `__dirname` 配合不断向上查找 `package.json` 的方式来获取项目根目录**。由于本项目包含多个构建目标，不同环境下运行的起始目录及打包后的产物结构（如 `.sea`）存在显著差异。
+  - **必须基于 `BUILD_TARGET` 和 `NODE_ENV` 进行静态路径计算**。获取绝对路径时，参考 `src/app/app.ts` 中的做法，通过 `switch (环境变量.BUILD_TARGET)` 结合 `NODE_ENV` 为每个特定的部署目标明确指定 `path.resolve` 逻辑。
+
+4. **纯前端模式 (Pure Frontend Architecture)**
+
+本项目支持将后端逻辑和数据库完全打包到浏览器中独立运行，无需依赖任何真实服务端。当 `BUILD_TARGET='pure-frontend'` 时，系统采用三层架构运行：
+
+- **Tier 1 (UI 主线程)**: 负责渲染页面UI。传统的 HTTP 请求会被 `src/web/global/manager/api-manager.ts` 自动拦截，转换为基于 `MessageChannel` 的 Web Worker 通信，转发给 API Worker。
+- **Tier 2 (API Worker)**: 位于 `src/web/pure-frontend-api-worker.ts`。在此处加载原本跑在后端的业务逻辑与接口代码。为了让 Node.js 代码能在浏览器运行，打包器会根据 `package.json` 中的 `alias` 配置，借助 `src/web/mock/` 目录将 `fs`、`crypto`、`express` 等核心库 Mock 掉。
+- **Tier 3 (DB Worker)**: 位于 `src/web/local-sqlite-worker.ts`。在独立的 Worker 中基于 WebAssembly (WASM) 运行 SQLite，并通过 OPFS (Origin Private File System) 进行数据的浏览器本地持久化。
+- **多标签页并发安全**: 为防止多个浏览器标签页同时读写本地 SQLite 导致数据库损坏，系统启动时会利用 Web Locks API (`navigator.locks.request('lsby-pure-frontend:local.db')`) 申请排他锁。只有抢到锁的标签页才会初始化这些 Worker。
+- **构建与生成**: 开发时必须使用 `运行纯前端开发套件`，因为它会独占性地启动 `_持续生成纯前端本地API列表` 这类专属任务；纯前端的构建命令同样需要严格配合专有的 `.env.xxx.pure-frontend` 配置文件使用。
+
+5. **其他**
 
 - 使用 pnpm 安装依赖
 
@@ -115,6 +135,7 @@
 
 ## 代码风格
 
+- 对于支持的语言, 变量名, 函数名, 类名, 方法名等, 都尽可能使用中文(没错, 是中文), 但文件名总是使用英文
 - 除非指定, 否则默认为ts代码
 - 对于变量名, 函数名, 类名, 方法名等, 都尽可能使用中文(没错, 是中文), 但文件名总是使用英文
 - 使用tsx直接运行ts代码, 而不是ts-node
@@ -152,5 +173,5 @@
 - 除非用户要求, 否则不要主动写测试
 - 测试分单元测试, 集成测试和端到端测试
   - 单元测试: 使用 Co-location 测试风格, 测试代码和接口代码在同一文件夹, 参考 `src/interface/demo/base/add/t01.test.ts`
-  - 集成测试: 借助接口两用性, 对多个接口进行集成测试, 写在 `test/integration` 文件夹中
+  - 集成测试: 借助接口两用性, 对多个接口进行集成测试, 写在 `test/integration` 文件夹中, 注意, 这里的操作使用黑箱模式(只能通过接口两用性调用接口来操作), 验证使用灰箱模式(可以通过数据库句柄直接查询数据库验证数据是否符合预期)
   - 端到端测试: 借助 playwright, 实际模拟用户操作来进行测试, 写在 `test/e2e` 文件夹中, 注意 `test/e2e/tools/demo-mode.ts` 提供了一种 demo 模式, 方便做演示, 但调试代码时, 总是使用非 demo 模式来快速开发

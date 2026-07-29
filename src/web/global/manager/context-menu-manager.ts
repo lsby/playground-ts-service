@@ -1,6 +1,6 @@
-import { 创建元素 } from '../tools/create-element'
+import { 创建元素, 应用样式 } from '../tools/create-element'
 
-export type 右键菜单项 = { 文本: string; 回调: () => Promise<void> } | '分隔符'
+export type 右键菜单项 = { 文本: string; 回调: () => Promise<void>; 图标?: string | HTMLElement } | '分隔符'
 
 export class 右键菜单管理器 {
   private static 实例: 右键菜单管理器 | null = null
@@ -23,15 +23,17 @@ export class 右键菜单管理器 {
     let 菜单容器 = 创建元素('div', {
       style: {
         position: 'fixed',
-        backgroundColor: 'var(--主要背景颜色)',
+        backgroundColor: 'var(--卡片背景颜色)',
         border: '1px solid var(--边框颜色)',
         borderRadius: '8px',
-        padding: '6px 0',
-        boxShadow: '0 4px 12px var(--深阴影颜色)',
+        padding: '4px 0',
+        boxShadow: '0 8px 24px var(--深阴影颜色)',
         zIndex: '10000',
-        minWidth: '160px',
-        backdropFilter: 'blur(8px)',
+        minWidth: '130px',
+        overflow: 'hidden',
         userSelect: 'none',
+        backdropFilter: 'blur(10px)',
+        boxSizing: 'border-box',
       },
     })
 
@@ -46,13 +48,41 @@ export class 右键菜单管理器 {
 
       let 项元素 = 创建元素('div', {
         className: 'context-menu-item',
-        textContent: 菜单项.文本,
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          padding: '8px 14px',
+          fontSize: '13px',
+          color: 'var(--文字颜色)',
+          cursor: 'pointer',
+          transition: 'background-color 0.15s ease',
+        },
+        onmouseenter: (): void => {
+          应用样式(项元素, { backgroundColor: 'var(--悬浮背景颜色)' })
+        },
+        onmouseleave: (): void => {
+          应用样式(项元素, { backgroundColor: 'transparent' })
+        },
         onclick: async (): Promise<void> => {
           let 回调 = 菜单项.回调
           this.隐藏菜单()
           await 回调()
         },
       })
+
+      if (菜单项.图标 !== undefined) {
+        let 图标容器 = 创建元素('span', { style: { display: 'inline-flex', alignItems: 'center', opacity: '0.8' } })
+        if (typeof 菜单项.图标 === 'string') {
+          图标容器.innerHTML = 菜单项.图标
+        } else {
+          图标容器.appendChild(菜单项.图标)
+        }
+        项元素.appendChild(图标容器)
+      }
+
+      let 文本标签 = 创建元素('span', { textContent: 菜单项.文本 })
+      项元素.appendChild(文本标签)
       菜单容器.appendChild(项元素)
     }
 

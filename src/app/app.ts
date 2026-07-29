@@ -11,17 +11,13 @@ import { onTimeAlarm } from '../job/scheduled-job/on-time-alarm'
 
 export class App {
   private 获得项目根路径(): string {
-    switch (环境变量.APP_ENV) {
-      case 'development-web':
-      case 'development-electron':
-      case 'test-web':
-        return path.resolve(import.meta.dirname, '../../')
-      case 'production-web':
-      case 'production-electron':
-        return path.resolve(import.meta.dirname, '../../../')
-      case 'production-sea':
-        return path.resolve(import.meta.dirname, './')
+    if (环境变量.BUILD_TARGET === 'sea') {
+      return path.resolve(import.meta.dirname, './')
     }
+    if (环境变量.NODE_ENV === 'development' || 环境变量.NODE_ENV === 'test') {
+      return path.resolve(import.meta.dirname, '../../')
+    }
+    return path.resolve(import.meta.dirname, '../../../')
   }
 
   public async run(): Promise<void> {
@@ -69,7 +65,7 @@ export class App {
           接口逻辑.构造([new 路径解析插件()], async (参数) => {
             let 路径 = 参数.path.rawPath === '/' ? '/index.html' : 参数.path.rawPath
             let 项目根路径 = this.获得项目根路径()
-            let web目录名 = 环境变量.APP_ENV === 'test-web' ? 'test-outputs/web-test' : 'dist/src/web'
+            let web目录名 = 环境变量.NODE_ENV === 'test' ? 'test-outputs/web-test' : 'dist/src/web'
             let web根目录 = path.join(项目根路径, web目录名)
 
             let 基准目录 = path.resolve(web根目录)

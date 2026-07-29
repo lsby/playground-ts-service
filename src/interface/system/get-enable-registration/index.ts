@@ -28,4 +28,6 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.never()
 let 接口正确类型描述 = z.object({ enable_register: z.boolean() })
 
-export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述), {
+  支持纯前端模式: true,
+})

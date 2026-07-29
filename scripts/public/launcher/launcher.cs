@@ -70,34 +70,51 @@ namespace LsbyLauncher
                 ShowWindow(consoleWindow, isConsoleVisible ? SW_SHOW : SW_HIDE);
             };
 
-            // 3. 准备启动 Electron 进程
-            Environment.SetEnvironmentVariable("ENV_FILE_PATH", ".env/.env.production-electron");
-            Environment.SetEnvironmentVariable("DEBUG", "@lsby:*,@lsby:playground-ts-service:*");
+            // 3. 准备启动进程
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ENV_FILE_PATH")))
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string envDir = Path.Combine(baseDir, ".env");
+                if (Directory.Exists(envDir))
+                {
+                    string[] envFiles = Directory.GetFiles(envDir, ".env.production.*");
+                    if (envFiles.Length > 0)
+                    {
+                        string relativePath = Path.Combine(".env", Path.GetFileName(envFiles[0]));
+                        Environment.SetEnvironmentVariable("ENV_FILE_PATH", relativePath);
+                    }
+                }
+            }
 
-            Process electronProcess = new Process();
-            electronProcess.StartInfo.FileName = "lsby-playground-ts-service.exe";
-            electronProcess.StartInfo.UseShellExecute = false; // 继承当前引导器的控制台句柄，这样日志会打印到我们的黑框里
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DEBUG")))
+            {
+                Environment.SetEnvironmentVariable("DEBUG", "@lsby:*,@lsby:playground-ts-service:*");
+            }
+
+            Process appProcess = new Process();
+            appProcess.StartInfo.FileName = "lsby-playground-ts-service.exe";
+            appProcess.StartInfo.UseShellExecute = false; // 继承当前引导器的控制台句柄，这样日志会打印到我们的黑框里
 
             exitMenuItem.Click += (s, e) =>
             {
                 trayIcon.Visible = false;
                 try {
-                    if (!electronProcess.HasExited) {
-                        electronProcess.Kill();
+                    if (!appProcess.HasExited) {
+                        appProcess.Kill();
                     }
                 } catch { }
                 Application.Exit();
             };
 
-            electronProcess.EnableRaisingEvents = true;
-            electronProcess.Exited += (s, e) =>
+            appProcess.EnableRaisingEvents = true;
+            appProcess.Exited += (s, e) =>
             {
                 trayIcon.Visible = false;
-                if (electronProcess.ExitCode != 0)
+                if (appProcess.ExitCode != 0)
                 {
                     // 异常退出兜底：强制弹出黑框框显示报错
                     ShowWindow(consoleWindow, SW_SHOW);
-                    Console.WriteLine("\n[引导器拦截] 程序异常退出 (ExitCode: " + electronProcess.ExitCode + ")");
+                    Console.WriteLine("\n[引导器拦截] 程序异常退出 (ExitCode: " + appProcess.ExitCode + ")");
                     Console.WriteLine("按任意键关闭...");
                     Console.ReadKey();
                 }
@@ -107,7 +124,7 @@ namespace LsbyLauncher
             try
             {
                 Console.WriteLine("正在启动...");
-                electronProcess.Start();
+                appProcess.Start();
             }
             catch (Exception ex)
             {

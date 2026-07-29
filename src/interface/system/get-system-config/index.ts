@@ -45,4 +45,6 @@ let 接口正确类型描述 = z.object({
   enable_get_interface_type: z.boolean(),
 })
 
-export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述), {
+  支持纯前端模式: true,
+})

@@ -1,3 +1,4 @@
+import { 环境变量 } from '../../../../global/env'
 import { 组件基类 } from '../../../base/base'
 import { API管理器 } from '../../../global/manager/api-manager'
 import { 显示对话框, 显示确认对话框 } from '../../../global/manager/dialog-manager'
@@ -150,12 +151,19 @@ export class 用户设置组件 extends 组件基类<设置事件, 监听设置�
             '【严重警告】此操作将清空数据库所有业务数据并恢复至初始状态，且不可逆！确认继续吗？',
           )
           if (确认 === true) {
+            if (环境变量.BUILD_TARGET === 'pure-frontend') {
+              await API管理器.重置纯前端数据库()
+              API管理器.清除token()
+              await 显示对话框('本机数据库已彻底清除并重新初始化。请在登录页重设管理员密码后登录。')
+              window.location.href = '/login.html'
+              return
+            }
             let 结果 = await API管理器.请求postJson('/api/system/reset-database', {})
             if (结果.status === 'success') {
               await 显示对话框(
                 '数据库重置成功！即将跳转到登录页。请在服务端控制台查看新生成的管理员密码（如果你没有配置固定默认密码的话）。',
               )
-              window.location.href = '/'
+              window.location.href = '/index.html'
             } else {
               await 显示对话框(`重置失败: ${结果.data}`)
             }

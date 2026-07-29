@@ -1,3 +1,4 @@
+import { 环境变量 } from '../../../../global/env'
 import { 组件基类 } from '../../../base/base'
 import { API管理器 } from '../../../global/manager/api-manager'
 import { 创建元素 } from '../../../global/tools/create-element'
@@ -198,6 +199,14 @@ export class 登录组件 extends 组件基类<发出事件类型, 监听事件�
       点击处理函数: async (): Promise<void> => this.切换模式(),
     })
     切换容器.appendChild(this.切换按钮)
+    if (环境变量.BUILD_TARGET === 'pure-frontend') {
+      let 重设管理员密码按钮 = new 链接按钮({
+        文本: '忘记本机管理员密码？点击重设',
+        元素样式: { fontSize: '14px' },
+        点击处理函数: async (): Promise<void> => this.重设本机管理员密码(),
+      })
+      切换容器.appendChild(重设管理员密码按钮)
+    }
 
     表单容器.append(按钮容器, 切换容器)
     卡片.append(标题, 提示区域, 表单容器)
@@ -279,6 +288,22 @@ export class 登录组件 extends 组件基类<发出事件类型, 监听事件�
     await this.更新UI()
   }
 
+  private async 重设本机管理员密码(): Promise<void> {
+    let password = window.prompt('请输入新的本机管理员密码（6 到 32 位，不能包含空格）')
+    if (password === null) return
+    let confirmPassword = window.prompt('请再次输入新的本机管理员密码')
+    if (confirmPassword === null) return
+    if (password !== confirmPassword) {
+      this.结果.textContent = '两次输入的密码不一致'
+      return
+    }
+    try {
+      await API管理器.重置纯前端管理员密码(password)
+      this.结果.textContent = '本机管理员密码已重设，请使用 admin 和新密码登录'
+    } catch (error: unknown) {
+      this.结果.textContent = error instanceof Error ? `重设失败：${error.message}` : '重设管理员密码失败'
+    }
+  }
   private async 执行认证(): Promise<void> {
     let 模式 = this.当前模式
 
@@ -312,9 +337,10 @@ export class 登录组件 extends 组件基类<发出事件类型, 监听事件�
       let urlParams = new URLSearchParams(window.location.search)
       let 重定向路径 = urlParams.get('redirect')
       if (重定向路径 !== null) {
-        window.location.assign(decodeURIComponent(重定向路径))
+        let 重定向地址 = decodeURIComponent(重定向路径)
+        window.location.assign(重定向地址 === '/' ? '/index.html' : 重定向地址)
       } else {
-        window.location.assign('/')
+        window.location.assign('/index.html')
       }
     }
   }

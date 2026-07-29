@@ -34,7 +34,7 @@ let 接口逻辑实现 = 接口逻辑.空逻辑().绑定(
 
       if (默认用户 === undefined) return new Left('默认系统用户不存在' as const)
 
-      return new Right({ token: 参数.signJwt({ userId: 默认用户.id }) })
+      return new Right({ token: await 参数.signJwt({ userId: 默认用户.id }) })
     },
   ),
 )
@@ -46,4 +46,6 @@ type _接口逻辑正确返回 = 计算接口逻辑正确结果<typeof 接口逻
 let 接口错误类型描述 = z.enum(['未开启本地模式', '默认系统用户不存在'])
 let 接口正确类型描述 = z.object({ token: z.string() })
 
-export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述))
+export default new 接口(接口路径, 接口方法, 接口逻辑实现, new 常用接口返回器(接口错误类型描述, 接口正确类型描述), {
+  支持纯前端模式: true,
+})

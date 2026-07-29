@@ -1,3 +1,4 @@
+import { 环境变量 } from '../../../global/env'
 import { 组件基类 } from '../../base/base'
 import { globalWebLog } from '../../global/manager/log-manager'
 
@@ -17,9 +18,9 @@ export class 设置调试组件 extends 组件基类<发出事件类型, 监听�
   }
 
   protected override async 当加载时(): Promise<void> {
-    console.log('当前环境: %o', process.env['NODE_ENV'])
+    console.log('当前环境: %o', 环境变量.NODE_ENV)
 
-    if (process.env['NODE_ENV'] !== 'development') {
+    if (环境变量.NODE_ENV !== 'development') {
       // 生产模式
       localStorage['debug'] = ''
     } else {

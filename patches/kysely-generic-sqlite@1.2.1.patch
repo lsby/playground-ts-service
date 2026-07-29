@@ -1,0 +1,16 @@
+diff --git a/dist/chunk-YWE62C55.js b/dist/chunk-YWE62C55.js
+index fe8a9dc2ebfecbc4beb0834c133aa279568219d2..0000000000000000000000000000000000000000 100644
+--- a/dist/chunk-YWE62C55.js
++++ b/dist/chunk-YWE62C55.js
+@@ -1 +1 @@
+-import { SqliteQueryCompiler, SqliteAdapter, SqliteIntrospector, CompiledQuery, RawNode, IdentifierNode } from 'kysely';
++import { SqliteQueryCompiler, SqliteAdapter, SqliteIntrospector, CompiledQuery, RawNode, IdentifierNode, createQueryId } from 'kysely';
+@@ -63,7 +63,7 @@ var BaseSqliteDriver = class {
+    * You **MUST** assign `this.conn` in `init` and implement `destroy` method
+    */
+   constructor(init) {
+-    this.init = () => import('kysely').then(({ createQueryId }) => {
++    this.init = () => Promise.resolve().then(() => {
+       if (createQueryId) {
+         this.savepoint = runSavepoint.bind(null, "savepoint", createQueryId);
+         this.releaseSavepoint = runSavepoint.bind(null, "release", createQueryId);

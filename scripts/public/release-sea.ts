@@ -10,6 +10,26 @@ let 项目根目录 = path.resolve(__当前目录名, '../../')
 let 相对发布目录 = 'release/sea'
 let 发布目录 = path.join(项目根目录, 相对发布目录)
 
+function 寻找内置Csc编译器(): string | null {
+  let 框架目录组 = ['C:\\Windows\\Microsoft.NET\\Framework64', 'C:\\Windows\\Microsoft.NET\\Framework']
+  for (let 框架目录 of 框架目录组) {
+    if (fs.existsSync(框架目录) === true) {
+      let 版本目录组 = fs
+        .readdirSync(框架目录)
+        .filter((名字) => 名字.startsWith('v'))
+        .sort()
+        .reverse()
+      for (let 目录名 of 版本目录组) {
+        let csc路径 = path.join(框架目录, 目录名, 'csc.exe')
+        if (fs.existsSync(csc路径) === true) {
+          return csc路径
+        }
+      }
+    }
+  }
+  return null
+}
+
 function 确保目录存在(目录路径: string): void {
   if (!fs.existsSync(目录路径)) {
     fs.mkdirSync(目录路径, { recursive: true })
@@ -36,7 +56,7 @@ function 递归复制(源路径: string, 目标路径: string): void {
 
 async function 执行构建(): Promise<void> {
   try {
-    let 环境源文件 = path.join(项目根目录, '.env/.env.production-sea')
+    let 环境源文件 = path.join(项目根目录, '.env/.env.production.sea')
     let 数据库源文件 = path.join(项目根目录, 'db/prod-sea.db')
 
     // 提前检查
@@ -109,7 +129,7 @@ async function 执行构建(): Promise<void> {
     let 环境目标目录 = path.join(发布目录, '.env')
     确保目录存在(环境目标目录)
     let 环境变量内容 = fs.readFileSync(环境源文件, 'utf-8')
-    fs.writeFileSync(path.join(环境目标目录, '.env.production-sea'), 环境变量内容)
+    fs.writeFileSync(path.join(环境目标目录, '.env.production.sea'), 环境变量内容)
 
     console.log('[9/9] 正在生成启动脚本...')
     // 生成 run.cmd 启动脚本
@@ -119,7 +139,7 @@ async function 执行构建(): Promise<void> {
       'echo 正在启动 lsby-playground-ts-service ...',
       'echo.',
       'cd /d "%~dp0"',
-      'set "ENV_FILE_PATH=./.env/.env.production-sea"',
+      'set "ENV_FILE_PATH=./.env/.env.production.sea"',
       'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
       'lsby-playground-ts-service.exe',
       'if errorlevel 1 (',
@@ -130,6 +150,31 @@ async function 执行构建(): Promise<void> {
       '',
     ].join('\r\n')
     fs.writeFileSync(path.join(发布目录, 'run.cmd'), 启动脚本内容)
+    fs.writeFileSync(path.join(发布目录, 'lsby-playground-ts-service-debug.cmd'), 启动脚本内容)
+    console.log(`✅ 已生成 ${path.join(发布目录, 'lsby-playground-ts-service-debug.cmd')}`)
+
+    // 生成 start.exe (C# 引导器)
+    let cscPath = 寻找内置Csc编译器()
+    let launcher源文件 = path.join(__当前目录名, 'launcher', 'launcher.cs')
+    let runExe路径 = path.join(发布目录, 'lsby-playground-ts-service-start.exe')
+
+    if (cscPath === null || fs.existsSync(cscPath) === false) {
+      console.warn(`⚠️ 未找到 C# 编译器，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+    } else if (fs.existsSync(launcher源文件) === false) {
+      console.warn(`⚠️ 未找到引导器源码: ${launcher源文件}，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+    } else {
+      console.log('✅ 正在编译引导器 lsby-playground-ts-service-start.exe ...')
+      try {
+        // 使用 /target:exe 避免控制台流异常
+        execSync(
+          `"${cscPath}" /nologo /target:exe /out:"${runExe路径}" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll "${launcher源文件}"`,
+          { stdio: 'inherit' },
+        )
+        console.log(`✅ 已生成 ${runExe路径}`)
+      } catch (error) {
+        console.error(`❌ 引导器 run.exe 编译失败:`, error)
+      }
+    }
 
     // 清理中间文件
     let 中间文件 = ['server.bundle.js', 'sea-prep.blob', 'sea-config.json']

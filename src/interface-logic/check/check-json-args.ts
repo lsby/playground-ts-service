@@ -1,5 +1,5 @@
 import { JSON参数解析插件, 合并插件正确结果, 接口逻辑, 接口逻辑附加参数类型, 请求附加参数类型 } from '@lsby/net-core'
-import { Either, Left, Right } from '@lsby/ts-fp-data'
+import { Either, Right } from '@lsby/ts-fp-data'
 import { z } from 'zod'
 
 type 逻辑错误类型 = '验证JSON参数失败'
@@ -28,7 +28,6 @@ export class 检查JSON参数<描述类型 extends z.AnyZodObject> extends 接�
   ): Promise<Either<逻辑错误类型, z.TypeOf<描述类型>>> {
     let _log = 请求附加参数.log.extend(检查JSON参数.name)
     let body = 参数['json']
-    if (body === undefined) return new Left('验证JSON参数失败' as const)
     return new Right(body)
   }
 }

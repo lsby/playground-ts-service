@@ -104,6 +104,7 @@ export class 表格组件<数据项> extends 组件基类<发出事件类型<数
     右键菜单管理器.获得实例().显示菜单(x, y, [
       {
         文本: '复制',
+        图标: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`,
         回调: async (): Promise<void> => {
           await this.选择管理器.复制选中内容()
         },
