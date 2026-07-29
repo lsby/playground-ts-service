@@ -1,5 +1,5 @@
 # @name login
-POST http://127.0.0.1:3000/api/project/login HTTP/1.1
+POST http://127.0.0.1:{{$dotenv APP_PORT}}/api/project/login HTTP/1.1
 content-type: application/json
 
 {
@@ -9,7 +9,7 @@ content-type: application/json
 
 ###
 
-POST http://127.0.0.1:3000/api/admin-sqlite/get-table-schema HTTP/1.1
+POST http://127.0.0.1:{{$dotenv APP_PORT}}/api/admin-sqlite/get-table-schema HTTP/1.1
 content-type: application/json
 Authorization: Bearer {{login.response.body.data.token}}
 

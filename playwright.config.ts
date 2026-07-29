@@ -1,4 +1,14 @@
 import { defineConfig, devices } from '@playwright/test'
+import { config } from 'dotenv'
+import path from 'path'
+
+// Load test environment variables
+config({ path: path.resolve(__dirname, '.env', '.env.test.web') })
+
+let port = process.env.APP_PORT
+if (port === undefined) {
+  throw new Error('运行测试失败：未在 .env.test.web 中找到 APP_PORT 环境变量！')
+}
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -20,7 +30,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://127.0.0.1:9000',
+    baseURL: `http://127.0.0.1:${port}`,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
@@ -36,7 +46,7 @@ export default defineConfig({
   webServer: {
     // 启动前先构建一下前端，然后拉起以 test-web 环境变量运行的服务端进程 (端口 9000)
     command: 'pnpm _build:web-test && pnpm run:service:test',
-    url: 'http://127.0.0.1:9000',
+    url: `http://127.0.0.1:${port}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },

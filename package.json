@@ -59,6 +59,8 @@
     "run:service:prod": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.production.web node ./dist/src/server.js",
     "run:service:test": "cross-env DEBUG=@lsby:*,@lsby:playground-ts-service:* ENV_FILE_PATH=./.env/.env.test.web tsx ./src/server.ts",
     "run:web:dev": "cross-env ENV_FILE_PATH=./.env/.env.development.web tsx scripts/web/web-run.ts",
+    "setup:ports": "tsx scripts/setup/init-ports.ts",
+    "setup:rename": "tsx scripts/setup/rename-project.ts",
     "test:e2e": "cross-env DEBUG=@lsby:*,-*:trace ENV_FILE_PATH=./.env/.env.test.web tsx scripts/test/run-e2e.ts",
     "test:integration": "cross-env DEBUG=@lsby:*,-*:trace ENV_FILE_PATH=./.env/.env.test.web tsx scripts/test/run-integration.ts",
     "test:unit": "cross-env DEBUG=@lsby:*,-*:trace ENV_FILE_PATH=./.env/.env.test.web tsx scripts/test/run-test.ts",

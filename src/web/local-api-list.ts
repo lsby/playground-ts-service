@@ -12,9 +12,9 @@ import _src_interface_project_register_index from '../interface/project/register
 import _src_interface_system_get_enable_registration_index from '../interface/system/get-enable-registration/index'
 import _src_interface_system_get_system_config_index from '../interface/system/get-system-config/index'
 import _src_interface_system_update_system_config_index from '../interface/system/update-system-config/index'
-import _src_interface_user_admin_update_password_index from '../interface/user-admin/update-password/index'
 import _src_interface_user_get_user_config_index from '../interface/user/get-user-config/index'
 import _src_interface_user_get_user_info_index from '../interface/user/get-user-info/index'
+import _src_interface_user_admin_update_password_index from '../interface/user-admin/update-password/index'
 
 export let 本地接口列表 = [
   _src_interface_demo_base_add_index,
