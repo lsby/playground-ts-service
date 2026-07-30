@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, nativeImage, screen, Tray } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { App } from './app/app'
@@ -23,62 +23,6 @@ async function main(): Promise<void> {
 }
 let 已经启动服务器 = false
 export let 主窗口: BrowserWindow | null = null
-export let 系统托盘: Tray | null = null
-
-function 创建系统托盘(): void {
-  if (系统托盘 !== null) return
-  try {
-    let 图标Base64 =
-      'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZSURBVDhPY2AYBaNgFIyCoUAYGBgY/h8GAOC0A/82b9T8AAAAAElFTkSuQmCC'
-    let 图标数据 = nativeImage.createFromBuffer(Buffer.from(图标Base64, 'base64'))
-    系统托盘 = new Tray(图标数据)
-    系统托盘.setToolTip('Playground Service')
-
-    let 菜单模板: Electron.MenuItemConstructorOptions[] = [
-      {
-        label: '显示主窗口',
-        click: (): void => {
-          if (主窗口 !== null) {
-            if (主窗口.isMinimized() === true) 主窗口.restore()
-            主窗口.show()
-            主窗口.focus()
-          }
-        },
-      },
-      {
-        label: '切换开发者工具',
-        click: (): void => {
-          if (主窗口 !== null) {
-            if (主窗口.webContents.isDevToolsOpened() === true) {
-              主窗口.webContents.closeDevTools()
-            } else {
-              主窗口.webContents.openDevTools({ mode: 'detach' })
-            }
-          }
-        },
-      },
-      { type: 'separator' },
-      {
-        label: '退出程序',
-        click: (): void => {
-          app.exit(0)
-        },
-      },
-    ]
-
-    let 上下文菜单 = Menu.buildFromTemplate(菜单模板)
-    系统托盘.setContextMenu(上下文菜单)
-    系统托盘.on('click', () => {
-      if (主窗口 !== null) {
-        if (主窗口.isMinimized() === true) 主窗口.restore()
-        主窗口.show()
-        主窗口.focus()
-      }
-    })
-  } catch (错误) {
-    console.error('创建系统托盘失败:', 错误)
-  }
-}
 
 let 资源目录 = process.resourcesPath
 let 预加载脚本路径 = path.join(资源目录, 'preload.js')
@@ -238,14 +182,10 @@ async function 创建主窗口(): Promise<void> {
   })
 }
 
-app.on('ready', async () => {
-  创建系统托盘()
-  await 创建主窗口()
-})
+app.on('ready', 创建主窗口)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 app.on('activate', async () => {
-  创建系统托盘()
   if (主窗口 === null) await 创建主窗口()
 })
