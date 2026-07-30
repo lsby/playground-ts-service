@@ -75,16 +75,16 @@ async function 执行构建(): Promise<void> {
 
     console.log('[2/9] 正在使用 esbuild 合并代码...')
     execSync(
-      `npx esbuild src/server.ts --bundle --platform=node --target=node22 --outfile=${相对发布目录}/server.bundle.js --format=cjs --packages=bundle --define:import.meta.dirname=__dirname --define:import.meta.url=__import_meta_url --banner:js="var __import_meta_url = require('url').pathToFileURL(__filename).href;"`,
+      `npx esbuild src/server.ts --bundle --platform=node --target=node22 --outfile=${相对发布目录}/server.bundle.cjs --format=cjs --packages=bundle --define:import.meta.dirname=__dirname --define:import.meta.url=__import_meta_url --banner:js="var __import_meta_url = typeof __filename !== 'undefined' && __filename ? require('url').pathToFileURL(__filename).href : 'file:///'; var __dirname = typeof __dirname !== 'undefined' ? __dirname : '/';"`,
       { stdio: 'inherit', cwd: 项目根目录 },
     )
 
     console.log('[3/9] 正在生成 SEA 配置...')
     let SEA配置 = {
-      main: `${相对发布目录}/server.bundle.js`,
+      main: `${相对发布目录}/server.bundle.cjs`,
       output: `${相对发布目录}/sea-prep.blob`,
       disableExperimentalSEAWarning: true,
-      useCodeCache: true,
+      useCodeCache: false,
     }
     fs.writeFileSync(path.join(项目根目录, `${相对发布目录}/sea-config.json`), JSON.stringify(SEA配置, null, 2))
 
@@ -93,22 +93,44 @@ async function 执行构建(): Promise<void> {
 
     console.log('[5/9] 正在准备可执行文件...')
     let Node可执行文件 = process.execPath
-    let 目标可执行文件 = path.join(发布目录, 'lsby-playground-ts-service.exe')
+    let 可执行文件名 = process.platform === 'win32' ? 'lsby-playground-ts-service.exe' : 'lsby-playground-ts-service'
+    let 目标可执行文件 = path.join(发布目录, 可执行文件名)
     fs.copyFileSync(Node可执行文件, 目标可执行文件)
 
-    console.log('[6/9] 正在移除 Windows 代码签名...')
-    // Windows 下 node.exe 是签名的, postject 无法注入已签名的二进制
-    try {
-      execSync(`signtool remove /s "${目标可执行文件}"`, { stdio: 'inherit', cwd: 项目根目录 })
-    } catch (_) {
-      console.log('  signtool 不可用, 将使用 --overwrite 标志')
+    if (process.platform === 'win32') {
+      console.log('[6/9] 正在移除 Windows 代码签名...')
+      // Windows 下 node.exe 是签名的, postject 无法注入已签名的二进制
+      try {
+        execSync(`signtool remove /s "${目标可执行文件}"`, { stdio: 'inherit', cwd: 项目根目录 })
+      } catch (_) {
+        console.log('  signtool 不可用, 将使用 --overwrite 标志')
+      }
+    } else if (process.platform === 'darwin') {
+      console.log('[6/9] 正在移除 macOS 代码签名...')
+      try {
+        execSync(`codesign --remove-signature "${目标可执行文件}"`, { stdio: 'inherit', cwd: 项目根目录 })
+      } catch (_) {
+        console.log('  codesign 移除签名失败，将使用 --overwrite 标志')
+      }
     }
 
     console.log('[7/9] 正在注入 blob...')
+    let machoFlags = process.platform === 'darwin' ? '--macho-segment-name NODE_SEA' : ''
     execSync(
-      `npx postject "${目标可执行文件}" NODE_SEA_BLOB "${相对发布目录}/sea-prep.blob" --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 --overwrite`,
+      `npx postject "${目标可执行文件}" NODE_SEA_BLOB "${相对发布目录}/sea-prep.blob" --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 ${machoFlags} --overwrite`,
       { stdio: 'inherit', cwd: 项目根目录 },
     )
+
+    if (process.platform !== 'win32') {
+      try {
+        fs.chmodSync(目标可执行文件, 0o755)
+      } catch (_) {}
+      if (process.platform === 'darwin') {
+        try {
+          execSync(`codesign -s - "${目标可执行文件}"`, { stdio: 'inherit', cwd: 项目根目录 })
+        } catch (_) {}
+      }
+    }
 
     console.log('[8/9] 正在整理资源文件夹...')
     递归复制(path.join(项目根目录, 'public'), path.join(发布目录, 'public'))
@@ -132,52 +154,76 @@ async function 执行构建(): Promise<void> {
     fs.writeFileSync(path.join(环境目标目录, '.env.production.sea'), 环境变量内容)
 
     console.log('[9/9] 正在生成启动脚本...')
-    // 生成 run.cmd 启动脚本
-    let 启动脚本内容 = [
-      '@echo off',
-      'chcp 65001 >nul',
-      'echo 正在启动 lsby-playground-ts-service ...',
-      'echo.',
-      'cd /d "%~dp0"',
-      'set "ENV_FILE_PATH=./.env/.env.production.sea"',
-      'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
-      'lsby-playground-ts-service.exe',
-      'if errorlevel 1 (',
-      '  echo.',
-      '  echo 程序异常退出, 按任意键关闭...',
-      '  pause >nul',
-      ')',
-      '',
-    ].join('\r\n')
-    fs.writeFileSync(path.join(发布目录, 'run.cmd'), 启动脚本内容)
-    fs.writeFileSync(path.join(发布目录, 'lsby-playground-ts-service-debug.cmd'), 启动脚本内容)
-    console.log(`✅ 已生成 ${path.join(发布目录, 'lsby-playground-ts-service-debug.cmd')}`)
+    if (process.platform === 'win32') {
+      // 生成 run.cmd 启动脚本
+      let 启动脚本内容 = [
+        '@echo off',
+        'chcp 65001 >nul',
+        'echo 正在启动 lsby-playground-ts-service ...',
+        'echo.',
+        'cd /d "%~dp0"',
+        'set "ENV_FILE_PATH=./.env/.env.production.sea"',
+        'set "DEBUG=@lsby:*,@lsby:playground-ts-service:*"',
+        'lsby-playground-ts-service.exe',
+        'if errorlevel 1 (',
+        '  echo.',
+        '  echo 程序异常退出, 按任意键关闭...',
+        '  pause >nul',
+        ')',
+        '',
+      ].join('\r\n')
+      fs.writeFileSync(path.join(发布目录, 'run.cmd'), 启动脚本内容)
+      fs.writeFileSync(path.join(发布目录, 'lsby-playground-ts-service-debug.cmd'), 启动脚本内容)
+      console.log(`✅ 已生成 ${path.join(发布目录, 'lsby-playground-ts-service-debug.cmd')}`)
 
-    // 生成 start.exe (C# 引导器)
-    let cscPath = 寻找内置Csc编译器()
-    let launcher源文件 = path.join(__当前目录名, 'launcher', 'launcher.cs')
-    let runExe路径 = path.join(发布目录, 'lsby-playground-ts-service-start.exe')
+      // 生成 start.exe (C# 引导器)
+      let cscPath = 寻找内置Csc编译器()
+      let launcher源文件 = path.join(__当前目录名, 'launcher', 'launcher.cs')
+      let runExe路径 = path.join(发布目录, 'lsby-playground-ts-service-start.exe')
 
-    if (cscPath === null || fs.existsSync(cscPath) === false) {
-      console.warn(`⚠️ 未找到 C# 编译器，跳过 lsby-playground-ts-service-start.exe 的编译。`)
-    } else if (fs.existsSync(launcher源文件) === false) {
-      console.warn(`⚠️ 未找到引导器源码: ${launcher源文件}，跳过 lsby-playground-ts-service-start.exe 的编译。`)
-    } else {
-      console.log('✅ 正在编译引导器 lsby-playground-ts-service-start.exe ...')
-      try {
-        // 使用 /target:exe 避免控制台流异常
-        execSync(
-          `"${cscPath}" /nologo /target:exe /out:"${runExe路径}" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll "${launcher源文件}"`,
-          { stdio: 'inherit' },
-        )
-        console.log(`✅ 已生成 ${runExe路径}`)
-      } catch (error) {
-        console.error(`❌ 引导器 run.exe 编译失败:`, error)
+      if (cscPath === null || fs.existsSync(cscPath) === false) {
+        console.warn(`⚠️ 未找到 C# 编译器，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+      } else if (fs.existsSync(launcher源文件) === false) {
+        console.warn(`⚠️ 未找到引导器源码: ${launcher源文件}，跳过 lsby-playground-ts-service-start.exe 的编译。`)
+      } else {
+        console.log('✅ 正在编译引导器 lsby-playground-ts-service-start.exe ...')
+        try {
+          // 使用 /target:exe 避免控制台流异常
+          execSync(
+            `"${cscPath}" /nologo /target:exe /out:"${runExe路径}" /reference:System.Windows.Forms.dll /reference:System.Drawing.dll "${launcher源文件}"`,
+            { stdio: 'inherit' },
+          )
+          console.log(`✅ 已生成 ${runExe路径}`)
+        } catch (error) {
+          console.error(`❌ 引导器 run.exe 编译失败:`, error)
+        }
       }
+    } else {
+      let 启动脚本内容 = [
+        '#!/usr/bin/env bash',
+        'DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"',
+        'cd "$DIR"',
+        'export ENV_FILE_PATH="./.env/.env.production.sea"',
+        'export DEBUG="@lsby:*,@lsby:playground-ts-service:*"',
+        'echo "=================================================="',
+        'echo "lsby-playground-ts-service (SEA单文件服务) 启动引导器"',
+        'echo "=================================================="',
+        'echo "正在启动后台服务..."',
+        './lsby-playground-ts-service',
+        'EXIT_CODE=$?',
+        'if [ $EXIT_CODE -ne 0 ]; then',
+        '  echo ""',
+        '  echo "[引导器拦截] 程序异常退出 (ExitCode: $EXIT_CODE)"',
+        '  read -p "按回车键关闭..."',
+        'fi',
+      ].join('\n')
+      let sh路径 = path.join(发布目录, 'run.command')
+      fs.writeFileSync(sh路径, 启动脚本内容, { encoding: 'utf8', mode: 0o755 })
+      console.log(`✅ 已生成 ${sh路径}`)
     }
 
     // 清理中间文件
-    let 中间文件 = ['server.bundle.js', 'sea-prep.blob', 'sea-config.json']
+    let 中间文件 = ['server.bundle.cjs', 'sea-prep.blob', 'sea-config.json']
     for (let 文件 of 中间文件) {
       let 路径 = path.join(发布目录, 文件)
       if (fs.existsSync(路径)) fs.rmSync(路径)
@@ -188,7 +234,7 @@ async function 执行构建(): Promise<void> {
 
     // 构建完成后打开文件夹
     try {
-      await open(发布目录, { wait: true })
+      await open(发布目录, { wait: false })
     } catch (_错误) {
       // console.error('打开目录错误: %o', 错误)
     }
