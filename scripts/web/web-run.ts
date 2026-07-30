@@ -12,6 +12,8 @@ function getHtmlEntries(directory: string): string[] {
 import { spawn } from 'child_process'
 import { config } from 'dotenv'
 
+import { writeFileSync } from 'fs'
+
 // 加载环境变量
 let envFile = process.env['ENV_FILE_PATH']
 if (envFile === undefined) {
@@ -19,6 +21,15 @@ if (envFile === undefined) {
   process.exit(1)
 }
 config({ path: envFile })
+
+// 根据 APP_PORT 动态写入 .proxyrc.json 供 Parcel 代理使用
+let appPort = process.env['APP_PORT'] ?? '3000'
+let proxyConfig = {
+  '/api': { target: `http://127.0.0.1:${appPort}`, changeOrigin: true },
+  '/ws': { target: `ws://127.0.0.1:${appPort}`, ws: true, changeOrigin: true },
+  '/public': { target: `http://127.0.0.1:${appPort}`, changeOrigin: true },
+}
+writeFileSync('.proxyrc.json', JSON.stringify(proxyConfig, null, 2), 'utf-8')
 
 function 启动任务(): void {
   let 子进程 = spawn('npm', ['run', '_clean:web'], { stdio: 'inherit', shell: true })
