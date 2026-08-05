@@ -11,6 +11,7 @@ import {
   压缩项目,
   执行远程命令,
   清理旧镜像,
+  获取Compose命令,
   获取Compose镜像列表,
   获取完整忽略名单,
   远程路径是否存在,
@@ -174,6 +175,9 @@ async function 主函数(): Promise<void> {
     await sshClient.connect({ host: 服务器地址, username: 用户名, password: 密码 })
     日志.打印(`✅ 已连接到 服务器 [${服务器地址}]`)
 
+    let compose命令 = await 获取Compose命令(sshClient)
+    日志.打印(`🐳 检测到 Compose 命令: ${compose命令}`)
+
     // 获取远程家目录并初始化路径
     let 远程家目录 = (await 执行远程命令(sshClient, 'echo $HOME', { 打印输出: false })).stdout.trim()
     let 远程根目录 = path.posix.join(远程家目录, 项目名称)
@@ -203,7 +207,7 @@ async function 主函数(): Promise<void> {
       if ((await 远程路径是否存在(sshClient, 某个docker文件目录)) === true) {
         // 在 redeploy 模式下，为了最小化停机时间，我们不再提前停止容器
         // 我们只需记录旧项目使用的镜像 ID，以便在部署完成后进行清理
-        重部署前镜像列表 = await 获取Compose镜像列表(sshClient, 某个docker文件目录, `${项目名称}-${环境}`)
+        重部署前镜像列表 = await 获取Compose镜像列表(sshClient, 某个docker文件目录, `${项目名称}-${环境}`, compose命令)
       }
 
       日志.打印(`🧹 [redeploy] 彻底删除远程目录: ${远程运行目录}`)
@@ -261,9 +265,9 @@ async function 主函数(): Promise<void> {
       日志.打印(`📦 解压到构建目录...`)
       await 执行远程命令(sshClient, `tar -xzf ${远程压缩包路径} -C ${远程构建目录}`)
 
-      日志.打印(`🔨 正在使用 docker-compose 构建镜像...`)
+      日志.打印(`🔨 正在使用 ${compose命令} 构建镜像...`)
       let 构建目录 = path.posix.resolve(远程构建docker目录, 环境)
-      let 构建命令 = `docker-compose -p ${项目名称}-${环境} build ${镜像参数}`
+      let 构建命令 = `${compose命令} -p ${项目名称}-${环境} build ${镜像参数}`
       if (使用缓存 === false) {
         构建命令 += ' --no-cache'
       }
@@ -280,26 +284,26 @@ async function 主函数(): Promise<void> {
       await 执行远程命令(sshClient, `mkdir -p ${远程运行目录}`)
 
       日志.打印(`🔍 记录部署前的镜像 ID...`)
-      let 旧镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
+      let 旧镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`, compose命令)
       日志.打印(`📊 当前项目使用的镜像 ID 列表: [${旧镜像列表.join(', ') === '' ? '无' : 旧镜像列表.join(', ')}]`)
 
       日志.打印(`📦 解压到运行目录...`)
       await 执行远程命令(sshClient, `tar -xzf ${远程压缩包路径} -C ${远程运行目录}`)
 
       日志.打印(`🔨 正在构建项目镜像 (此时旧服务仍在运行)...`)
-      let 构建命令 = `docker-compose -p ${项目名称}-${环境} build ${镜像参数}`
+      let 构建命令 = `${compose命令} -p ${项目名称}-${环境} build ${镜像参数}`
       if (使用缓存 === false) {
         构建命令 += ' --no-cache'
       }
       await 执行远程命令(sshClient, 构建命令, { 工作目录: docker文件目录 })
 
       日志.打印(`🚀 正在启动新服务 (实现极短停机更新)...`)
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} up -d --remove-orphans`, {
+      await 执行远程命令(sshClient, `${compose命令} -p ${项目名称}-${环境} up -d --remove-orphans`, {
         工作目录: docker文件目录,
       })
 
       日志.打印(`✅ 确认部署后的新镜像状态...`)
-      let 新镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
+      let 新镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`, compose命令)
       日志.打印(`📊 部署后项目使用的镜像 ID 列表: [${新镜像列表.join(', ') === '' ? '无' : 新镜像列表.join(', ')}]`)
 
       日志.打印(`🧹 正在对比并清理不再使用的旧镜像...`)
@@ -320,11 +324,11 @@ async function 主函数(): Promise<void> {
       }
 
       日志.打印(`🔍 停止前的镜像 ID...`)
-      let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`)
+      let 待清理镜像列表 = await 获取Compose镜像列表(sshClient, docker文件目录, `${项目名称}-${环境}`, compose命令)
       日志.打印(`📊 待清理的镜像 ID 列表: [${待清理镜像列表.join(', ') === '' ? '无' : 待清理镜像列表.join(', ')}]`)
 
       日志.打印(`🛑 正在停止并移除容器...`)
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} down --remove-orphans`, {
+      await 执行远程命令(sshClient, `${compose命令} -p ${项目名称}-${环境} down --remove-orphans`, {
         工作目录: docker文件目录,
       })
 
@@ -346,7 +350,7 @@ async function 主函数(): Promise<void> {
       }
 
       日志.打印(`🔄 正在重启容器...`)
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} restart`, { 工作目录: docker文件目录 })
+      await 执行远程命令(sshClient, `${compose命令} -p ${项目名称}-${环境} restart`, { 工作目录: docker文件目录 })
 
       日志.打印(`✨ 重启指令已发送`)
     }
@@ -368,8 +372,8 @@ async function 主函数(): Promise<void> {
           let 某个环境目录 = path.posix.resolve(运行根目录, 某个环境, 'deploy', 某个环境)
           if ((await 远程路径是否存在(sshClient, 某个环境目录)) === true) {
             日志.打印(`🛑 正在停止并清理环境: ${某个环境} ...`)
-            let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 某个环境目录, `${项目名称}-${某个环境}`)
-            await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${某个环境} down --remove-orphans`, {
+            let 镜像ID列表 = await 获取Compose镜像列表(sshClient, 某个环境目录, `${项目名称}-${某个环境}`, compose命令)
+            await 执行远程命令(sshClient, `${compose命令} -p ${项目名称}-${某个环境} down --remove-orphans`, {
               工作目录: 某个环境目录,
               抛出错误: false,
             })
@@ -451,7 +455,7 @@ async function 主函数(): Promise<void> {
     if (模式 === 'logs' || 模式 === 'run' || 模式 === 'restart' || 模式 === 'redeploy') {
       let docker文件目录 = path.posix.resolve(远程运行部署目录, 环境)
       日志.打印('--- 正在同步服务器实时日志 (按 Ctrl+C 退出) ---')
-      await 执行远程命令(sshClient, `docker-compose -p ${项目名称}-${环境} logs -f --tail 500`, {
+      await 执行远程命令(sshClient, `${compose命令} -p ${项目名称}-${环境} logs -f --tail 500`, {
         工作目录: docker文件目录,
       })
     }

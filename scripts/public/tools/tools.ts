@@ -79,26 +79,31 @@ export async function 远程路径是否存在(ssh: NodeSSH, 路径: string): Pr
   return 结果.code === 0
 }
 
+export async function 获取Compose命令(ssh: NodeSSH): Promise<string> {
+  let 插件版检测结果 = await 执行远程命令(ssh, 'docker compose version', { 打印输出: false, 抛出错误: false })
+  if (插件版检测结果.code === 0) {
+    return 'docker compose'
+  }
+  let 独立版检测结果 = await 执行远程命令(ssh, 'docker-compose version', { 打印输出: false, 抛出错误: false })
+  if (独立版检测结果.code === 0) {
+    return 'docker-compose'
+  }
+  return 'docker compose'
+}
+
 export async function 获取Compose镜像列表(
   ssh: NodeSSH,
   工作目录: string,
   项目名称?: string,
-  composeCommand?: string,
+  compose命令?: string,
 ): Promise<string[]> {
   if ((await 远程路径是否存在(ssh, 工作目录)) === false) {
     return []
   }
 
-  let composeCmd = composeCommand
-  if (composeCmd === undefined) {
-    composeCmd = 'docker-compose'
-    let checkCompose = await 执行远程命令(ssh, 'docker compose version', { 打印输出: false, 抛出错误: false })
-    if (checkCompose.code === 0) {
-      composeCmd = 'docker compose'
-    }
-  }
+  let 最终compose命令 = compose命令 ?? (await 获取Compose命令(ssh))
 
-  let 命令 = composeCmd
+  let 命令 = 最终compose命令
   if (项目名称 !== undefined) {
     命令 += ` -p ${项目名称}`
   }

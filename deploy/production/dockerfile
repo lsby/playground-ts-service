@@ -15,6 +15,7 @@ WORKDIR /opt/app
 
 # 先拷贝依赖文件以利用 Docker 缓存
 COPY package.json pnpm-lock.yaml ./
+COPY patche[s] ./patches/
 
 # 安装 pnpm 依赖
 RUN corepack enable && \
@@ -49,6 +50,7 @@ WORKDIR /opt/app
 # 从构建阶段拷贝依赖文件
 COPY --from=builder /opt/app/package.json /opt/app/
 COPY --from=builder /opt/app/pnpm-lock.yaml /opt/app/
+COPY --from=builder /opt/app/patche[s] /opt/app/patches/
 
 # 只安装生产环境依赖，并跳过脚本执行
 RUN corepack enable && \
